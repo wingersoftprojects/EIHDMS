@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="./assets/css/style.css"/>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panelGrid columns="2">
+                <p:outputLabel for="reportformid" value="Report Form:" />
+                <p:selectOneMenu id="reportformid" value="#{uploadBean.reportformid}" style="width:125px" required="true" requiredMessage="Field is Required">
+                    <f:selectItem itemLabel="" itemValue="" />
+                    <f:selectItems value="#{uploadBean.report_forms}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item.report_form_id}"/>
+                    <p:ajax process="@this"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Upload"/>
+                <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
+                              auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="reportformid" />
+                <p:outputLabel value="Uploaded values"/>
+                <!--<ui:repeat value="#{uploadBean.interface_datas}" var="interface_data" id="interface_data">
+                    <p:outputLabel value="#{interface_data.data_element.data_element_name}"/>:<p:outputLabel value="#{interface_data.data_element_value}"/><br/>
+                </ui:repeat>-->
+            </p:panelGrid>
+            <!--<p:dataTable value="#{uploadBean.interface_datas}" var="item">
+                <p:column headerText="Element">
+                    <h:outputText value="#{item.data_element.data_element_name}" />
+                </p:column>
+                <p:column headerText="Facility">
+                    <h:outputText value="#{item.health_facility_name}" />
+                </p:column>
+                <p:column headerText="Value">
+                    <h:outputText value="#{item.data_element_value}" />
+                </p:column>
+
+            </p:dataTable>-->
+            <!-- 1. Create a DIV container to insert the component -->
+            <div id="pivotContainer"></div>
+
+            <h:outputScript name="./component/flexmonster/flexmonster.js"/>
+            <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
+            <script type="text/javascript">
+                var jsonData = #{uploadBean.getjSONArray()};
+
+                var report = {
+                    dataSourceType: "json",
+                    data: jsonData,
+                    rows: [
+                        {uniqueName: "Facility"}
+                    ],
+                    columns: [
+                        {uniqueName: "DataElement"}
+                    ],
+                    measures: [
+                        {uniqueName: "DataElementValue", aggregation: "sum"}
+                    ],
+                    licenseKey: "Z53H-7B1PX3-3H16-3D01-1O36-0E0Q-3933-0G02-1U2W-08"
+                };
+
+                flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+
+            </script>
+        </h:form>
+    </h:body>
+</html>
+

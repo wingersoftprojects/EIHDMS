@@ -1,0 +1,20 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 24, 2015, 12:24:58 PM
+    Author     : bajuna
+*/
+
+.ui-widget .ui-widget,.ui-widget {
+    font-size: 12px  !important; 
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button,.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+    box-shadow: none !important;
+    border-radius: 0px !important;
+    font-size: 12px !important;
+    padding: 2px !important;
+}
