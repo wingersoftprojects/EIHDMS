@@ -31,8 +31,9 @@ public class ReadFile {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        List<Student> studentList = getStudentsListFromExcel();
-        System.out.println(studentList);
+        //List<Student> studentList = getStudentsListFromExcel();
+        ReadFile rf=new ReadFile();
+        System.out.println(rf.getClass().getSimpleName());
     }
 
     private static List<Student> getStudentsListFromExcel() {
