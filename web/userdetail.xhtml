@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="2">
+                <p:fieldset legend="User Categorie Detail" id="group_detail">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="User Category Name:" for="user_category_name"/>
+                        <p:inputText id="user_category_name"/>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectBooleanCheckbox id="is_active"/>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="group_table">
+                    <p:column headerText="User Category Name">
+                    </p:column>
+                    <p:column headerText="Active?">
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton update=":form:report_form" icon="ui-icon-search" title="View">
+                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+
+                <p:fieldset legend="User Detail" id="group_user">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="User Category:" for="user_category_id"/>
+                        <p:selectOneMenu id="user_category_id">
+                            <f:selectItem itemLabel=""/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Username:" for="user_name"/>
+                        <p:inputText id="user_name"/>
+                        <p:outputLabel value="Password:" for="password"/>
+                        <p:password id="password"/>
+                        <p:outputLabel value="Confirm Password:" for="confirm_password"/>
+                        <p:password id="confirm_password"/>
+                        <p:outputLabel value="First Name:" for="first_name"/>
+                        <p:inputText id="first_name"/>
+                        <p:outputLabel value="Second Name:" for="second_name"/>
+                        <p:inputText id="second_name"/>
+                        <p:outputLabel value="Third Name:" for="third_name"/>
+                        <p:inputText id="third_name"/>
+                        <p:outputLabel value="Is General Admin?:" for="is_user_gen_admin"/>
+                        <p:selectBooleanCheckbox id="is_user_gen_admin"/>
+                        <p:outputLabel value="Is Active?:" for="is_active2"/>
+                        <p:selectBooleanCheckbox id="is_active2"/>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="user_detail_table">
+                    <p:column headerText="Username">
+                    </p:column>
+                    <p:column headerText="First Name">
+                    </p:column>
+                    <p:column headerText="Second Name">
+                    </p:column>
+                    <p:column headerText="User Category">
+                    </p:column>
+                    <p:column headerText="General Admin?">
+                    </p:column>
+                    <p:column headerText="Active?">
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
+                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

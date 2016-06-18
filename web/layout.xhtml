@@ -15,7 +15,8 @@
     </h:head>
 
     <h:body>
-        <div id="top" class="top" style="height: 144px;">
+        <div id="top" class="top" style="height: 85px;text-align: center;padding-top: 8px;">
+            <p:outputLabel value="EGPAF INTEGRATED HEALTH DATA MANAGEMENT SYSTEM (EIHDMS)" style="font-family:Arial, Helvetica, sans-serif;font-size: 16px;color: white;"/>
             <ui:insert name="top">
                 <ui:include src="menu.xhtml"/>
             </ui:insert>
@@ -25,12 +26,12 @@
                 <ui:insert name="left">
                     <h:form>
                         <p:menu toggleable="true">
-                            <p:submenu label="Validation Errors">
-                                <p:menuitem value="Save"  icon="ui-icon-disk" />
-                                <p:menuitem value="Update"  icon="ui-icon-arrowrefresh-1-w"/>
+                            <p:submenu label="Missing Data">
+                                <p:menuitem value="Form 108 for May 2016" />
+                                <p:menuitem value="Form 105 for May 2016"/>
                             </p:submenu>
-                            <p:submenu label="Missing Reports">
-                                <p:menuitem value="Delete"  ajax="false" icon="ui-icon-close"/>
+                            <p:submenu label="Pending Validation">
+                                <p:menuitem value="HMIS 097 VHT Facility Quarterly"  ajax="false"/>
                             </p:submenu>
                         </p:menu>
                     </h:form>

@@ -11,10 +11,12 @@
         <link href="resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/default.css" rel="stylesheet" type="text/css"/>
     </h:head>
+    <f:event listener="#{configurationsFileBean.readConfigurationsFile()}" type="preRenderView" />
     <h:body style="">
-        <div id="top" class="top" style="height: 144px;">
-
+        <div id="top" class="top" style="height: 33px;text-align: center;padding-top: 8px;">
+            <p:outputLabel value="EGPAF INTEGRATED HEALTH DATA MANAGEMENT SYSTEM (EIHDMS)" style="font-family:Arial, Helvetica, sans-serif;font-size: 16px;color: white;"/>
         </div>
+        
         <div id="content">
             <div style="width: 30%; margin:0 auto;opacity: 0.95;padding-top: 60px;">
                 <f:view>
@@ -22,9 +24,8 @@
                         <p:growl/>
                         <p:panel>
                             <center>
-                                <h:panelGrid columns="2">
-                                <p:graphicImage library="images" name="egpaf-logo-stamp_nobkgdwhite.png" height="90" style=" margin: 0 auto;" cache="false"/>
-                                <p:outputLabel value="Elizabeth Glaser Pediatric AIDS Foundation" style="font-size: 16px; font-weight: bold;"/>
+                                <h:panelGrid style="border-style: none;">
+                                <p:outputLabel value="EIHDMS Login" style="font-size: 16px; font-weight: bold;"/>
                                 </h:panelGrid>
                                 <p:panelGrid columns="2">
                                     <p:outputLabel value="Username:" for="username" />

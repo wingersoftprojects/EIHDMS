@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="2">
+                <p:fieldset legend="Data Element Detail" id="data_element">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Report Form:" for="report_form_id"/>
+                        <p:selectOneMenu id="report_form_id">
+                            <f:selectItem itemLabel=""/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Group:" for="report_form_group_id"/>
+                        <p:selectOneMenu id="report_form_group_id">
+                            <f:selectItem itemLabel=""/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Section:" for="section_id"/>
+                        <p:selectOneMenu id="section_id">
+                            <f:selectItem itemLabel=""/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Sub Section:" for="sub_section_id"/>
+                        <p:selectOneMenu id="sub_section_id">
+                            <f:selectItem itemLabel=""/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Technical Area:" for="technical_area_id"/>
+                        <p:selectOneMenu id="technical_area_id">
+                            <f:selectItem itemLabel=""/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Group Column Number:" for="group_column_number"/>
+                        <p:inputText id="group_column_number"/>
+                        <p:outputLabel value="Section Column Number:" for="section_column_number"/>
+                        <p:inputText id="section_column_number"/>
+                        <p:outputLabel value="Code:" for="data_element_code"/>
+                        <p:inputText id="data_element_code"/>
+                        <p:outputLabel value="Data Element Name:" for="data_element_name"/>
+                        <p:inputText id="data_element_name"/>
+                        <p:outputLabel value="Description:" for="description"/>
+                        <p:inputText id="description"/>
+                        <p:outputLabel value="Age Category:" for="age_category"/>
+                        <p:inputText id="age_category"/>
+                        <p:outputLabel value="Sex Category:" for="sex_category"/>
+                        <p:inputText id="sex_category"/>
+                        <p:outputLabel value="Other Category:" for="other_category"/>
+                        <p:inputText id="other_category"/>
+                        <p:outputLabel value="Data Type:" for="data_type"/>
+                        <p:selectOneMenu id="data_type">
+                            <f:selectItem itemLabel="Integer" itemValue="Integer"/>
+                            <f:selectItem itemLabel="Text" itemValue="Text"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Data Size:" for="data_size"/>
+                        <p:inputText id="data_size"/>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectBooleanCheckbox id="is_active"/>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                    </p:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Data Element Tree" id="data_element_tree">
+                    <p:panelGrid columns="1">
+                        <p:outputLabel value="View Data Element Tree By:" for="data_element_tree_menu"/>
+                        <p:selectOneMenu id="data_element_tree_menu">
+                            <f:selectItem itemLabel="Default" itemValue="Default"/>
+                            <f:selectItem itemLabel="Group" itemValue="Group"/>
+                            <f:selectItem itemLabel="Technical Area" itemValue="Technical Area"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </p:fieldset>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
