@@ -13,23 +13,35 @@
                 <p:fieldset legend="Group Details" id="group_detail">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Group Name:" for="group_name"/>
-                        <p:inputText id="group_name"/>
+                        <p:inputText id="group_name" value="#{group_userBean.selected.group_name}" required="true" requiredMessage="Group Name is required"/>
                         <p:outputLabel value="Is Active?:" for="is_active"/>
-                        <p:selectBooleanCheckbox id="is_active"/>
-                        <p:commandButton value="SAVE" actionListener="#{group_detailBean.saveGroup()}" icon="ui-icon-disk"/>
-                        <p:commandButton value="SAVE2" actionListener="#{group_detailBean.saveGroup2}" icon="ui-icon-disk"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                        <p:selectOneMenu id="is_active" value="#{group_userBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" action="#{group_userBean.save(1)}" icon="ui-icon-disk" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_detail.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="group_table">
+                <p:dataTable id="group_table" value="#{group_userBean.ts}" var="item">
                     <p:column headerText="Group Name">
+                        #{item.group_name}
                     </p:column>
                     <p:column headerText="Active?">
+                        #{generalUtilities.convertYesNo(item.is_active)}
                     </p:column>
                     <p:column headerText="">
-                        <p:commandButton update=":form:report_form" icon="ui-icon-search" title="View">
-                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        <p:commandButton value="Edit" action="#{group_userBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
                         </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{group_userBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                     </p:column>
                 </p:dataTable>
 
@@ -37,9 +49,9 @@
                 <p:fieldset legend="Group Users" id="group_user">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Group Name:" for="group_name2"/>
-                        <p:outputLabel id="group_name2"/>
+                        <p:outputLabel id="group_name2" value="#{group_detailBean.selected.group_name}"/>
                         <p:outputLabel value="User Detail:" for="user_detail_id"/>
-                        <p:selectOneMenu id="user_detail_id">
+                        <p:selectOneMenu id="user_detail_id" >
                             <f:selectItem itemLabel=""/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Is Active?:" for="is_active2"/>
@@ -65,7 +77,7 @@
                 <p:fieldset legend="Group Rights" id="group_right">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Group Name:" for="group_name3"/>
-                        <p:outputLabel id="group_name3"/>
+                        <p:outputLabel id="group_name3" value="#{group_detailBean.selected.group_name}"/>
                         <p:outputLabel value="Report Form Name:" for="report_form_id"/>
                         <p:selectOneMenu id="report_form_id">
                             <f:selectItem itemLabel=""/>

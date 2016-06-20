@@ -41,7 +41,7 @@
                                         <p:menuitem value="Validation Rules" url="#" />
                                     </p:submenu>
                                     <p:submenu label="User Settings" icon="ui-icon-person">
-                                        <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true" /> 
+                                        <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true" actionListener="#{group_userBean.add()}" /> 
                                         <p:menuitem value="User Details" action="userdetail?faces-redirect=true" /> 
                                         <p:menuitem value="User Category"/> 
                                     </p:submenu>
