@@ -564,6 +564,21 @@ public class Sub_county implements Serializable {
 	}
 	
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Sub_county object = (Sub_county) obj;
+				        return (this.getSub_county_id() == object.getSub_county_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getSub_county_id());
 	}

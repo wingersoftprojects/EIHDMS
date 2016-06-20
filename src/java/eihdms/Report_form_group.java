@@ -427,6 +427,9 @@ public class Report_form_group implements Serializable {
 	@Column(name="is_active", nullable=false, length=1)	
 	private int is_active;
 	
+	@Column(name="group_order", nullable=false, length=11)	
+	private int group_order;
+	
 	@Column(name="add_date", nullable=true)	
 	private java.sql.Timestamp add_date;
 	
@@ -520,6 +523,14 @@ public class Report_form_group implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setGroup_order(int value) {
+		this.group_order = value;
+	}
+	
+	public int getGroup_order() {
+		return group_order;
+	}
+	
 	public void setReport_form(eihdms.Report_form value) {
 		this.report_form = value;
 	}
@@ -536,6 +547,21 @@ public class Report_form_group implements Serializable {
 		return data_element;
 	}
 	
+	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Report_form_group object = (Report_form_group) obj;
+				        return (this.getReport_form_group_id() == object.getReport_form_group_id());
+	}
 	
 	public String toString() {
 		return String.valueOf(getReport_form_group_id());

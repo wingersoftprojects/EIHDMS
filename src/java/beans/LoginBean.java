@@ -65,6 +65,7 @@ public class LoginBean implements Serializable {
     public String login() {
 
         //get grouprights for this User
+            setIsloggedin(true);
         if (isloggedin) {
             setIsloggedin(true);
             messageString = "";

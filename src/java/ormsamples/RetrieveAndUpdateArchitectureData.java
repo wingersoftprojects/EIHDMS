@@ -63,9 +63,6 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Group_user leihdmsGroup_user = eihdms.Group_user.loadGroup_userByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsGroup_user.save();
-			ehmis.ActionLog leHMISActionLog = ehmis.ActionLog.loadActionLogByQuery(null, null);
-			// Update the properties of the persistent object
-			leHMISActionLog.save();
 			eihdms.User_category leihdmsUser_category = eihdms.User_category.loadUser_categoryByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsUser_category.save();
@@ -206,12 +203,6 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsGroup_userCriteria.group_user_id.eq();
 		System.out.println(leihdmsGroup_userCriteria.uniqueGroup_user());
-		
-		System.out.println("Retrieving ActionLog by ActionLogCriteria");
-		ehmis.ActionLogCriteria leHMISActionLogCriteria = new ehmis.ActionLogCriteria();
-		// Please uncomment the follow line and fill in parameter(s)
-		//leHMISActionLogCriteria.logNo.eq();
-		System.out.println(leHMISActionLogCriteria.uniqueActionLog());
 		
 		System.out.println("Retrieving User_category by User_categoryCriteria");
 		eihdms.User_categoryCriteria leihdmsUser_categoryCriteria = new eihdms.User_categoryCriteria();

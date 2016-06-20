@@ -542,6 +542,21 @@ public class Sub_district implements Serializable {
 	}
 	
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Sub_district object = (Sub_district) obj;
+				        return (this.getSub_district_id() == object.getSub_district_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getSub_district_id());
 	}

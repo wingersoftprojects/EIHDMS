@@ -564,6 +564,21 @@ public class County implements Serializable {
 	}
 	
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        County object = (County) obj;
+				        return (this.getCounty_id() == object.getCounty_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getCounty_id());
 	}

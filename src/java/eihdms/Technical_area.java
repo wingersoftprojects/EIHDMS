@@ -414,16 +414,16 @@ public class Technical_area implements Serializable {
 	@Column(name="is_active", nullable=false, length=1)	
 	private int is_active;
 	
-	@Column(name="add_date", nullable=false)	
+	@Column(name="add_date", nullable=true)	
 	private java.sql.Timestamp add_date;
 	
-	@Column(name="add_by", nullable=false, length=10)	
+	@Column(name="add_by", nullable=true, length=10)	
 	private int add_by;
 	
-	@Column(name="last_edit_date", nullable=false)	
+	@Column(name="last_edit_date", nullable=true)	
 	private java.sql.Timestamp last_edit_date;
 	
-	@Column(name="last_edit_by", nullable=false, length=10)	
+	@Column(name="last_edit_by", nullable=true, length=10)	
 	private int last_edit_by;
 	
 	@OneToMany(mappedBy="technical_area", targetEntity=eihdms.Data_element.class)	
@@ -515,6 +515,21 @@ public class Technical_area implements Serializable {
 		return data_element;
 	}
 	
+	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Technical_area object = (Technical_area) obj;
+				        return (this.getTechnical_area_id() == object.getTechnical_area_id());
+	}
 	
 	public String toString() {
 		return String.valueOf(getTechnical_area_id());

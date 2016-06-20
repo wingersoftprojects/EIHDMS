@@ -543,6 +543,21 @@ public class Region implements Serializable {
 	}
 	
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Region object = (Region) obj;
+				        return (this.getRegion_id() == object.getRegion_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getRegion_id());
 	}

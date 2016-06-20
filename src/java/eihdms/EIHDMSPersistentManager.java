@@ -62,7 +62,6 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Sub_section.class);
 		configuration.addAnnotatedClass(eihdms.Report_form_group.class);
 		configuration.addAnnotatedClass(eihdms.Application_configuration.class);
-		configuration.addAnnotatedClass(ehmis.ActionLog.class);
 		configuration.buildMappings();
 		return configuration;
 	}

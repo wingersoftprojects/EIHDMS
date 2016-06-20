@@ -534,6 +534,21 @@ public class Validation_rule implements Serializable {
 		return data_element;
 	}
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Validation_rule object = (Validation_rule) obj;
+				        return (this.getValidation_rule_id() == object.getValidation_rule_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getValidation_rule_id());
 	}

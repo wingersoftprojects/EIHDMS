@@ -44,12 +44,12 @@
         </div>
         <h:form>
             <p:idleMonitor timeout="80000">
-                <p:ajax event="idle" listener="#{loginBean.logout()}" update="@all" oncomplete="logout()"/>
+                <p:ajax event="idle" listener="#{loginBean.redirectifnotloggedin()}" update="@all" oncomplete="logout()"/>
             </p:idleMonitor>
         </h:form>
         <script>
             function logout() {
-                window.location = '/PropertyManagementMaster/';
+                window.location = '/EIHDMS/';
             }
         </script>
     </h:body>

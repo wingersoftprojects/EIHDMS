@@ -14,7 +14,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.orm.PersistentException;
 
-
 /**
  *
  * @author bajuna
@@ -43,6 +42,7 @@ public class GeneralUtilities implements Serializable {
     public static SimpleDateFormat simpleDateFormat() {
         return new SimpleDateFormat("ddMMyyyyHmmss");
     }
+
     public static SimpleDateFormat simpleDateFormatDate() {
         return new SimpleDateFormat("yyyy-MM-ddd");
     }
@@ -64,5 +64,16 @@ public class GeneralUtilities implements Serializable {
 
     public String getCurrencyformat() {
         return currencyformat;
+    }
+
+    public String convertYesNo(int value) {
+        switch (value) {
+            case 0:
+                return "No";
+            case 1:
+                return "Yes";
+            default:
+                return "No";
+        }
     }
 }

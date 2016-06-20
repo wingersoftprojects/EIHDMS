@@ -45,8 +45,6 @@ public class DeleteArchitectureData {
 			leihdmsUser_detail.delete();
 			eihdms.Group_user leihdmsGroup_user = eihdms.Group_user.loadGroup_userByQuery(null, null);
 			leihdmsGroup_user.delete();
-			ehmis.ActionLog leHMISActionLog = ehmis.ActionLog.loadActionLogByQuery(null, null);
-			leHMISActionLog.delete();
 			eihdms.User_category leihdmsUser_category = eihdms.User_category.loadUser_categoryByQuery(null, null);
 			leihdmsUser_category.delete();
 			eihdms.Group_detail leihdmsGroup_detail = eihdms.Group_detail.loadGroup_detailByQuery(null, null);

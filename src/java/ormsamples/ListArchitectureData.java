@@ -153,14 +153,6 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
-		System.out.println("Listing ActionLog...");
-		ehmis.ActionLog[] eHMISActionLogs = ehmis.ActionLog.listActionLogByQuery(null, null);
-		length = Math.min(eHMISActionLogs.length, ROW_COUNT);
-		for (int i = 0; i < length; i++) {
-			System.out.println(eHMISActionLogs[i]);
-		}
-		System.out.println(length + " record(s) retrieved.");
-		
 		System.out.println("Listing User_category...");
 		eihdms.User_category[] eihdmsUser_categorys = eihdms.User_category.listUser_categoryByQuery(null, null);
 		length = Math.min(eihdmsUser_categorys.length, ROW_COUNT);
@@ -443,18 +435,6 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsGroup_users[i]);
 		}
 		System.out.println(length + " Group_user record(s) retrieved."); 
-		
-		System.out.println("Listing ActionLog by Criteria...");
-		ehmis.ActionLogCriteria leHMISActionLogCriteria = new ehmis.ActionLogCriteria();
-		// Please uncomment the follow line and fill in parameter(s) 
-		//leHMISActionLogCriteria.logNo.eq();
-		leHMISActionLogCriteria.setMaxResults(ROW_COUNT);
-		ehmis.ActionLog[] eHMISActionLogs = leHMISActionLogCriteria.listActionLog();
-		length =eHMISActionLogs== null ? 0 : Math.min(eHMISActionLogs.length, ROW_COUNT); 
-		for (int i = 0; i < length; i++) {
-			 System.out.println(eHMISActionLogs[i]);
-		}
-		System.out.println(length + " ActionLog record(s) retrieved."); 
 		
 		System.out.println("Listing User_category by Criteria...");
 		eihdms.User_categoryCriteria leihdmsUser_categoryCriteria = new eihdms.User_categoryCriteria();

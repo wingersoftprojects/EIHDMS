@@ -63,9 +63,6 @@ public class CreateArchitectureData {
 			eihdms.Group_user leihdmsGroup_user = eihdms.Group_user.createGroup_user();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : add_by, add_date, is_active, is_deleted, user_detail, group_detail
 			leihdmsGroup_user.save();
-			ehmis.ActionLog leHMISActionLog = ehmis.ActionLog.createActionLog();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : permissionNo, userNo, logYear, logMonth, logDay
-			leHMISActionLog.save();
 			eihdms.User_category leihdmsUser_category = eihdms.User_category.createUser_category();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : add_by, add_date, is_active, is_deleted, user_category_name
 			leihdmsUser_category.save();
@@ -79,13 +76,13 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : action_date, action, form_template, user_detail
 			leihdmsUser_action.save();
 			eihdms.Technical_area leihdmsTechnical_area = eihdms.Technical_area.createTechnical_area();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : last_edit_by, last_edit_date, add_by, add_date, is_active, is_deleted, description, technical_area_name
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, description, technical_area_name
 			leihdmsTechnical_area.save();
 			eihdms.Sub_section leihdmsSub_section = eihdms.Sub_section.createSub_section();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : data_element, is_active, is_deleted, section, sub_section_order, sub_section_name
 			leihdmsSub_section.save();
 			eihdms.Report_form_group leihdmsReport_form_group = eihdms.Report_form_group.createReport_form_group();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_form, description, report_form_group_name
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : group_order, is_active, is_deleted, report_form, description, report_form_group_name
 			leihdmsReport_form_group.save();
 			eihdms.Application_configuration leihdmsApplication_configuration = eihdms.Application_configuration.createApplication_configuration();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, parameter_value, parameter_name

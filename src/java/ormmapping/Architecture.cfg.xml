@@ -16,6 +16,8 @@ License Type: Purchased
 		<property name="connection.password">WTLura456</property>
 		<property name="show_sql">false</property>
 		<property name="query.substitutions">true 1, false 0, yes 'Y', no 'N'</property>
+		<property name="hibernate.connection.isolation">2</property>
+		<property name="show_sql">false</property>
 		<!-- mapping files -->
 	</session-factory>
 </hibernate-configuration>

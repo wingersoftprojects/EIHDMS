@@ -562,6 +562,21 @@ public class Group_right implements Serializable {
 		return report_form;
 	}
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Group_right object = (Group_right) obj;
+				        return (this.getGroup_right_id() == object.getGroup_right_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getGroup_right_id());
 	}

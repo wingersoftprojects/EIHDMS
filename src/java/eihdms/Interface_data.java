@@ -602,6 +602,21 @@ public class Interface_data implements Serializable {
 		return data_element;
 	}
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Interface_data object = (Interface_data) obj;
+				        return (this.getInterface_data_id() == object.getInterface_data_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getInterface_data_id());
 	}

@@ -610,6 +610,21 @@ public class Base_data implements Serializable {
 		return district;
 	}
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Base_data object = (Base_data) obj;
+				        return (this.getBase_data_id() == object.getBase_data_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getBase_data_id());
 	}

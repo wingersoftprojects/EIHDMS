@@ -470,6 +470,21 @@ public class User_action implements Serializable {
 		return form_template;
 	}
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        User_action object = (User_action) obj;
+				        return (this.getUser_action_id() == object.getUser_action_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getUser_action_id());
 	}

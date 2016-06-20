@@ -534,6 +534,21 @@ public class Standard_rule implements Serializable {
 		return data_element;
 	}
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Standard_rule object = (Standard_rule) obj;
+				        return (this.getStandard_rule_id() == object.getStandard_rule_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getStandard_rule_id());
 	}

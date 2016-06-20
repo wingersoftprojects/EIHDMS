@@ -33,7 +33,7 @@
                                         <p:menuitem value="Health Facility" url="#" />
                                     </p:submenu>
                                     <p:submenu label="Form Settings" icon="ui-icon-document">
-                                        <p:menuitem value="Technical Areas" action="technicalarea?faces-redirect=true" />
+                                        <p:menuitem value="Technical Areas" action="technicalarea?faces-redirect=true" actionListener="#{technical_Area_Bean.add()}" />
                                         <p:menuitem value="Report Form Details" action="reportform?faces-redirect=true" />
                                         <p:menuitem value="Report Form Groups" action="reportformgroup?faces-redirect=true" />
                                         <p:menuitem value="Data Elements" action="dataelement?faces-redirect=true" />
@@ -81,7 +81,7 @@
                                 <f:facet name="options">
                                     <p:outputPanel style="padding: 2px;background: antiquewhite; font-size: 16px !important; font-weight: bold;">
                                         <p:outputLabel value="Welcome: Eliab Natumanya   "/>
-                                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+                                        <p:commandButton value="Logout" icon="ui-icon-extlink" action="#{loginBean.logout()}" update="@all" ajax="false" />
                                     </p:outputPanel>
                                 </f:facet>
 

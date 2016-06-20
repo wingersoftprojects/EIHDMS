@@ -26,6 +26,7 @@ public class Report_form_groupCriteria extends AbstractORMCriteria {
 	public final AssociationExpression report_form;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
+	public final IntegerExpression group_order;
 	public final TimestampExpression add_date;
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
@@ -41,6 +42,7 @@ public class Report_form_groupCriteria extends AbstractORMCriteria {
 		report_form = new AssociationExpression("report_form", this);
 		is_deleted = new IntegerExpression("is_deleted", this);
 		is_active = new IntegerExpression("is_active", this);
+		group_order = new IntegerExpression("group_order", this);
 		add_date = new TimestampExpression("add_date", this);
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);

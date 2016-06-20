@@ -477,6 +477,21 @@ public class Application_configuration implements Serializable {
 		return last_edit_by;
 	}
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        Application_configuration object = (Application_configuration) obj;
+				        return (this.getApplication_configuration_id() == object.getApplication_configuration_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getApplication_configuration_id());
 	}

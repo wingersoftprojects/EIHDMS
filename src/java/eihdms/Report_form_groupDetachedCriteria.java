@@ -26,6 +26,7 @@ public class Report_form_groupDetachedCriteria extends AbstractORMDetachedCriter
 	public final AssociationExpression report_form;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
+	public final IntegerExpression group_order;
 	public final TimestampExpression add_date;
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
@@ -41,6 +42,7 @@ public class Report_form_groupDetachedCriteria extends AbstractORMDetachedCriter
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		group_order = new IntegerExpression("group_order", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
@@ -57,6 +59,7 @@ public class Report_form_groupDetachedCriteria extends AbstractORMDetachedCriter
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		group_order = new IntegerExpression("group_order", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
