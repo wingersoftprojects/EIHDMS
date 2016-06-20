@@ -191,7 +191,7 @@ public class UploadBean implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InvalidFormatException ex) {
-            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -23,7 +23,7 @@
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{technical_Area_Bean.save()}" update="@form"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{technical_Area_Bean.cancel()}" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{technical_Area_Bean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
 

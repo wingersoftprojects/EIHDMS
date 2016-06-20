@@ -25,12 +25,28 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>bluesky</param-value>
     </context-param>
-        <context-param>
+    <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
-        <mime-mapping>  
-        <extension>woff2</extension>  
-        <mime-type>application/x-font-woff2</mime-type>  
+    <mime-mapping>
+        <extension>woff2</extension>
+        <mime-type>application/x-font-woff2</mime-type>
     </mime-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error_page.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error_page.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/error_page.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.el.ELException</exception-type>
+        <location>/error_page.xhtml</location>
+    </error-page>
 </web-app>
