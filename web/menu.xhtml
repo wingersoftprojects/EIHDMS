@@ -13,48 +13,70 @@
                 <p:growl id="messages"/>
                 <div class="ui-grid ui-grid-responsive">
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-2" style="padding-top: 20px;">
-                            <img src="resources/images/egpaf-logo-stamp_nobkgdwhite.png" alt="" style="width: 90px; margin-left: 50px;"/>
+                        <div class="ui-grid-col-2" style="padding-top: 7px;">
+                            <img src="resources/images/EGPAF_Logo_Name.png" alt="" style="width: 100%;"/>
                         </div>
-                        <div class="ui-grid-col-10" style="padding-top: 20px;">
+                        <div class="ui-grid-col-10" style="padding-top: 7px;">
                             <p:menubar>
-                                <p:submenu label="Actions" icon="ui-icon-pencil">
-                                    <p:submenu label="Report Upload" icon="ui-icon-refresh">
-                                        <p:menuitem value="Save" actionListener="#{menuView.save}" icon="ui-icon-disk" update="messages"/>
-                                        <p:menuitem value="Update" actionListener="#{menuView.update}" icon="ui-icon-arrowrefresh-1-w" update="messages"/>
-                                    </p:submenu>
-                                    <p:submenu label="Non-Ajax" icon="ui-icon-newwin">
-                                        <p:menuitem value="Delete" actionListener="#{menuView.delete}" icon="ui-icon-close" update="messages" ajax="false"/>
-                                    </p:submenu>
+                                <p:submenu label="Data" icon="ui-icon-circle-plus">
+                                    <p:menuitem value="Data Upload" icon="ui-icon-circle-arrow-n" update="messages"/>
+                                    <p:menuitem value="Data Entry" icon="ui-icon-pencil" update="messages"/>
                                 </p:submenu>
-                                <p:submenu label="Reports" icon="ui-icon-document">
-                                    <p:submenu label="New" icon="ui-icon-contact">
-                                        <p:menuitem value="Project" url="#" />
-                                        <p:menuitem value="Other" url="#" />
-                                    </p:submenu>
-                                    <p:menuitem value="Open" url="#" />
-                                    <p:separator />
-                                    <p:menuitem value="Quit" url="#" />
-                                </p:submenu>
-
                                 <p:submenu label="Settings" icon="ui-icon-gear">
-                                    <p:menuitem value="Section" url="#" icon="ui-icon-arrowreturnthick-1-w" />
-                                    <p:submenu label="Location Settings" icon="ui-icon-contact">
+                                    <p:submenu label="Location Settings" icon="ui-icon-info">
                                         <p:menuitem value="Region" url="#" />
                                         <p:menuitem value="District" url="#" />
                                         <p:menuitem value="Sub District" url="#" />
+                                        <p:menuitem value="County" url="#" />
+                                        <p:menuitem value="Sub County" url="#" />
+                                        <p:menuitem value="Parish" url="#" />
+                                        <p:menuitem value="Health Facility" url="#" />
                                     </p:submenu>
-                                    <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
+                                    <p:submenu label="Form Settings" icon="ui-icon-document">
+                                        <p:menuitem value="Technical Areas" action="technicalarea?faces-redirect=true" />
+                                        <p:menuitem value="Report Form Details" action="reportform?faces-redirect=true" />
+                                        <p:menuitem value="Report Form Groups" action="reportformgroup?faces-redirect=true" />
+                                        <p:menuitem value="Data Elements" action="dataelement?faces-redirect=true" />
+                                        <p:menuitem value="Standard Rules" url="#" />
+                                        <p:menuitem value="Validation Rules" url="#" />
+                                    </p:submenu>
+                                    <p:submenu label="User Settings" icon="ui-icon-person">
+                                        <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true" /> 
+                                        <p:menuitem value="User Details" action="userdetail?faces-redirect=true" /> 
+                                        <p:menuitem value="User Category"/> 
+                                    </p:submenu>
+                                </p:submenu>
+
+                                <p:submenu label="Tools" icon="ui-icon-wrench">
+                                    <p:menuitem value="Download Template" url="#"/>
+                                </p:submenu>
+
+                                <p:submenu label="Reports" icon="ui-icon-copy">
+                                    <p:submenu label="Standard Reports">
+                                        <p:menuitem value="Report 1" url="#" />
+                                        <p:menuitem value="Report 2" url="#" />
+                                    </p:submenu>
+                                    <p:submenu label="Dynamic Reports">
+                                        <p:menuitem value="Report 1" url="#" />
+                                        <p:menuitem value="Report 2" url="#" />
+                                    </p:submenu>
+                                    <p:submenu label="Validation Reports">
+                                        <p:menuitem value="Report 1" url="#" />
+                                        <p:menuitem value="Report 2" url="#" />
+                                    </p:submenu>
+                                    <p:submenu label="User Action Reports">
+                                        <p:menuitem value="Report 1" url="#" />
+                                        <p:menuitem value="Report 2" url="#" />
+                                    </p:submenu>
+                                    <p:submenu label="Data Status Reports">
+                                        <p:menuitem value="Report 1" url="#" />
+                                        <p:menuitem value="Report 2" url="#" />
+                                    </p:submenu>
                                 </p:submenu>
 
                                 <p:submenu label="Help" icon="ui-icon-help">
-                                    <p:menuitem value="Contents" url="#" />
-                                    <p:submenu label="Search" icon="ui-icon-search">
-                                        <p:submenu label="Text">
-                                            <p:menuitem value="Workspace" url="#" />
-                                        </p:submenu>
-                                        <p:menuitem value="File" url="#" />
-                                    </p:submenu>
+                                    <p:menuitem value="Help Contents" url="#" />
+                                    <p:menuitem value="About" url="#" />
                                 </p:submenu>
                                 <f:facet name="options">
                                     <p:outputPanel style="padding: 2px;background: antiquewhite; font-size: 16px !important; font-weight: bold;">

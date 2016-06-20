@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="2">
+                <p:fieldset legend="Report Form Group Detail" id="report_form_group_detail">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Report Form:" for="report_form_id"/>
+                        <p:selectOneMenu id="report_form_id">
+                            <f:selectItem itemLabel=""/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Group Name:" for="report_form_group_name"/>
+                        <p:inputText id="report_form_group_name"/>
+                        <p:outputLabel value="Description:" for="description"/>
+                        <p:inputText id="description"/>
+                        <p:outputLabel value="Group Order:" for="group_order"/>
+                        <p:inputText id="group_order"/>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectBooleanCheckbox id="is_active"/>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                    </p:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Report Form Groups" id="report_form_groups">
+                    <p:dataTable id="report_form_group_table">
+                        <p:column headerText="Report Form Name">
+                        </p:column>
+                        <p:column headerText="Group Name">
+                        </p:column>
+                        <p:column headerText="Description">
+                        </p:column>
+                        <p:column headerText="Active?">
+                        </p:column>
+                        <p:column headerText="">
+                            <p:commandButton update=":form:report_form" icon="ui-icon-search" title="View">
+                                <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

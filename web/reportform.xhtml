@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="2">
+            <p:fieldset legend="Report Form Detail" id="report_form">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Code:" for="report_form_code"/>
+                    <p:inputText id="report_form_code"/>
+                    <p:outputLabel value="Report Form Name:" for="report_form_name"/>
+                    <p:inputText id="report_form_name"/>
+                    <p:outputLabel value="Description:" for="report_form_description"/>
+                    <p:inputTextarea id="report_form_description" rows="4" cols="35"/>
+                    <p:outputLabel value="Frequency:" for="report_form_frequency"/>
+                    <p:selectOneMenu id="report_form_frequency">
+                        <f:selectItem itemLabel=""/>
+                        <f:selectItem itemLabel="Weekly" itemValue="Weekly"/>
+                        <f:selectItem itemLabel="Monthly" itemValue="Monthly"/>
+                        <f:selectItem itemLabel="Bi-Monthly" itemValue="Bi-Monthly"/>
+                        <f:selectItem itemLabel="Quarterly" itemValue="Quarterly"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Reporting Level:" for="lowest_report_form_level"/>
+                    <p:selectOneMenu id="lowest_report_form_level">
+                        <f:selectItem itemLabel=""/>
+                        <f:selectItem itemLabel="Facility" itemValue="Facility"/>
+                        <f:selectItem itemLabel="Parish" itemValue="Parish"/>
+                        <f:selectItem itemLabel="District" itemValue="District"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Is Active?:" for="is_active"/>
+                    <p:selectBooleanCheckbox id="is_active"/>
+                    <p:commandButton value="SAVE" icon="ui-icon-disk"/>
+                    <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:dataTable id="report_form_table">
+                <p:column headerText="Code">
+                </p:column>
+                <p:column headerText="Report Form Name">
+                </p:column>
+                <p:column headerText="Frequency">
+                </p:column>
+                <p:column headerText="Level">
+                </p:column>
+                <p:column headerText="Active?">
+                </p:column>
+                <p:column headerText="">
+                    <p:commandButton update=":form:report_form" icon="ui-icon-search" title="View">
+                        <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            
+            
+            <p:fieldset legend="Report Form Section" id="section">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Report Form Name:" for="report_form_name2"/>
+                    <p:outputLabel id="report_form_name2"/>
+                    <p:outputLabel value="Oder:" for="section_order"/>
+                    <p:inputText id="section_order"/>
+                    <p:outputLabel value="Section Name:" for="section_name"/>
+                    <p:inputText id="section_name"/>
+                    <p:outputLabel value="Is Active?:" for="is_active2"/>
+                    <p:selectBooleanCheckbox id="is_active2"/>
+                    <p:commandButton value="SAVE" icon="ui-icon-disk"/>
+                    <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:dataTable id="section_table">
+                <p:column headerText="Order">
+                </p:column>
+                <p:column headerText="Section Name">
+                </p:column>
+                <p:column headerText="Active?">
+                </p:column>
+                <p:column headerText="">
+                    <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
+                        <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            
+            <p:fieldset legend="Report Form Sub-Section" id="sub_section">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Report Form Name:" for="report_form_name3"/>
+                    <p:outputLabel id="report_form_name3"/>
+                    <p:outputLabel value="Section Name:" for="section_name2"/>
+                    <p:outputLabel id="section_name2"/>
+                    <p:outputLabel value="Oder:" for="sub_section_order"/>
+                    <p:inputText id="sub_section_order"/>
+                    <p:outputLabel value="Sub Section Name:" for="sub_section_name"/>
+                    <p:inputText id="sub_section_name"/>
+                    <p:outputLabel value="Is Active?:" for="is_active3"/>
+                    <p:selectBooleanCheckbox id="is_active3"/>
+                    <p:commandButton value="SAVE" icon="ui-icon-disk"/>
+                    <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:dataTable id="sub_section_table">
+                <p:column headerText="Order">
+                </p:column>
+                <p:column headerText="Sub Section Name">
+                </p:column>
+                <p:column headerText="Active?">
+                </p:column>
+                <p:column headerText="">
+                    <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
+                        <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+                </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
