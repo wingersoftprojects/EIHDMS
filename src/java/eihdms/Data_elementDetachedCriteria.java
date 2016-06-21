@@ -46,7 +46,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final StringExpression data_element_code;
-	public final IntegerExpression column_order;
 	public final CollectionExpression validation_rule;
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
@@ -81,7 +80,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element_code = new StringExpression("data_element_code", this.getDetachedCriteria());
-		column_order = new IntegerExpression("column_order", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
@@ -117,7 +115,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element_code = new StringExpression("data_element_code", this.getDetachedCriteria());
-		column_order = new IntegerExpression("column_order", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());

@@ -1583,17 +1583,6 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="column_order">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>true</Nullable>
-      <IDGenerator>native</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
   </Entity>
   <Entity name="base_data" PKClustered="0">
     <Column name="base_data_id">

@@ -539,9 +539,6 @@ public class Data_element implements Serializable {
 	@Column(name="data_element_code", nullable=true, length=50)	
 	private String data_element_code;
 	
-	@Column(name="column_order", nullable=true, length=11)	
-	private Integer column_order;
-	
 	@OneToMany(mappedBy="data_element", targetEntity=eihdms.Validation_rule.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
@@ -720,18 +717,6 @@ public class Data_element implements Serializable {
 	
 	public String getOther_category() {
 		return other_category;
-	}
-	
-	public void setColumn_order(int value) {
-		setColumn_order(new Integer(value));
-	}
-	
-	public void setColumn_order(Integer value) {
-		this.column_order = value;
-	}
-	
-	public Integer getColumn_order() {
-		return column_order;
 	}
 	
 	public void setReport_form(eihdms.Report_form value) {

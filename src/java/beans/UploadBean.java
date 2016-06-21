@@ -6,15 +6,19 @@
 package beans;
 
 import eihdms.Data_element;
+import eihdms.EIHDMSPersistentManager;
 import eihdms.Interface_data;
 import eihdms.Report_form;
+import eihdms.Report_form_group;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -74,7 +78,43 @@ public class UploadBean implements Serializable {
     public void setReportformid(int reportformid) {
         this.reportformid = reportformid;
     }
+    private Report_form_group report_form_group;
 
+    public Report_form_group getReport_form_group() {
+        return report_form_group;
+    }
+
+    public void setReport_form_group(Report_form_group report_form_group) {
+        this.report_form_group = report_form_group;
+    }
+    private Report_form report_form;
+
+    public Report_form getReport_form() {
+        return report_form;
+    }
+
+    public void setReport_form(Report_form report_form) {
+        this.report_form = report_form;
+    }
+
+    private List<Report_form_group> report_form_groups;
+
+    public List<Report_form_group> getReport_form_groups() {
+        try {
+            if (report_form != null) {
+                report_form_groups = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), null);
+            } else {
+                report_form_groups = new ArrayList<>();
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return report_form_groups;
+    }
+
+    public void setReport_form_groups(List<Report_form_group> report_form_groups) {
+        this.report_form_groups = report_form_groups;
+    }
     private List<Report_form> report_forms;
 
     public List<Report_form> getReport_forms() {
@@ -122,8 +162,8 @@ public class UploadBean implements Serializable {
     public void uploadexcel(InputStream inputStream) {
         //FileInputStream fis = null;
         try {
-            Report_form report_form = Report_form.getReport_formByORMID(reportformid);
-            if (report_form != null) {
+            //Report_form report_form = Report_form.getReport_formByORMID(reportformid);
+            if (report_form != null && report_form_group != null) {
                 //fis = new FileInputStream(inputStream);
 
                 // Using XSSF for xlsx format, for xls use HSSF
@@ -136,7 +176,14 @@ public class UploadBean implements Serializable {
                 //looping over each workbook sheet
 //            for (int i = 0; i < numberOfSheets; i++) {
 //                Sheet sheet = workbook.getSheetAt(i);
-                List<Data_element> data_elements = Data_element.queryData_element("report_form_id=" + report_form.getReport_form_id(), "column_order asc");
+                List<Data_element> data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de from Data_element de INNER JOIN de.report_form_group fg order by fg.group_order,de.group_column_number ASC").list();
+                Map demap = new HashMap();
+                int tempcounter = 1;
+                for (Data_element de : data_elements) {
+                    demap.put(tempcounter, de);
+                    tempcounter++;
+                }
+
                 Iterator<Row> rowIterator = sheet.iterator();
                 int x = 0;
                 //iterating over each row
@@ -149,19 +196,21 @@ public class UploadBean implements Serializable {
                         String facility = "";
                         //Cell cell = row.getCell(1);
                         Iterator<Cell> cellIterator2 = row.cellIterator();
+                        if (row.getRowNum() > 0) {
+                            facility = row.getCell(0).getStringCellValue();
+                            //break;
+                        }
                         while (cellIterator2.hasNext()) {
                             Cell cell = cellIterator2.next();
                             int cellindex = cell.getColumnIndex();
-                            if (row.getRowNum() > 0) {
-                                facility = row.getCell(0).getStringCellValue();
-                                //break;
-                            }
                             if (row.getRowNum() > 0 && cellindex >= 0) {
-                                for (Data_element data_element : data_elements) {
+                                Iterator it = demap.entrySet().iterator();
+                                while (it.hasNext()) {
+                                    Map.Entry pair = (Map.Entry) it.next();
                                     Interface_data interface_data = new Interface_data();
-                                    if (cellindex > 0 && cellindex == data_element.getColumn_order()) {
+                                    if (cellindex > 0 && (int) pair.getKey() == cellindex) {
                                         interface_data.setHealth_facility_name(facility);
-                                        interface_data.setData_element(data_element);
+                                        interface_data.setData_element((Data_element) pair.getValue());
                                         if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
                                             //rowdata += "|Col"+cell.getColumnIndex()+"- Value=" + cell.getStringCellValue();
                                             interface_data.setData_element_value(cell.getStringCellValue());
@@ -177,6 +226,8 @@ public class UploadBean implements Serializable {
                                         interface_datas.add(interface_data);
                                         //break;
                                     }
+                                    //System.out.println(pair.getKey() + " = " + pair.getValue());
+                                    //it.remove(); // avoids a ConcurrentModificationException
                                 }
                             }
                         }
