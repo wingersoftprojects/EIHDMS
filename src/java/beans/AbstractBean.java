@@ -10,12 +10,14 @@ import eihdms.User_detail;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
@@ -113,12 +115,14 @@ public abstract class AbstractBean<T> {
         this.tsAll = tsAll;
     }
 
-    
-    
     public List<T> getTs() {
         try {
-            ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.eq("is_deleted", 0)).list();
-        } catch (PersistentException ex) {
+            if (entityClass != null) {
+                ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.eq("is_deleted", 0)).list();
+            } else {
+                ts = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ts;
@@ -196,7 +200,7 @@ public abstract class AbstractBean<T> {
             //        selected = t;
             //        formstate = "delete";
             //        Timestamp parameter
-            selected=t;
+            selected = t;
             Class[] paramTimestamp = new Class[1];
             paramTimestamp[0] = Timestamp.class;
             //int parameter
