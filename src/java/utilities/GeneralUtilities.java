@@ -73,7 +73,7 @@ public class GeneralUtilities implements Serializable {
             case 1:
                 return "Yes";
             default:
-                return "No";
+                return "";
         }
     }
 }
