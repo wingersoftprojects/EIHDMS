@@ -13,7 +13,7 @@
         <h:outputStylesheet name="./css/cssLayout.css"/>
         <title>EIHDMS</title>
     </h:head>
-<f:event listener="#{loginBean.redirectifnotloggedin()}" type="preRenderView" />
+    <f:event listener="#{loginBean.redirectifnotloggedin()}" type="preRenderView" />
     <h:body>
         <div id="top" class="top" style="height: 85px;text-align: center;padding-top: 8px;">
             <p:outputLabel value="EGPAF INTEGRATED HEALTH DATA MANAGEMENT SYSTEM (EIHDMS)" style="font-family:Arial, Helvetica, sans-serif;font-size: 16px;color: white;"/>
@@ -41,6 +41,16 @@
                 <ui:insert name="content">Content</ui:insert>
             </div>
         </div>
+        <h:form>
+            <p:idleMonitor timeout="80000">
+                <p:ajax event="idle" listener="#{loginBean.redirectifnotloggedin()}" update="@all" oncomplete="logout()"/>
+            </p:idleMonitor>
+        </h:form>
+        <script>
+            function logout() {
+                window.location = '/EIHDMS/';
+            }
+        </script>
     </h:body>
 
 </html>

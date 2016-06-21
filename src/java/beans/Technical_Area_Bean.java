@@ -8,6 +8,7 @@ package beans;
 import eihdms.Technical_area;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 /**
@@ -20,6 +21,23 @@ public class Technical_Area_Bean extends AbstractBean<Technical_area> implements
 
     public Technical_Area_Bean() {
         super(Technical_area.class);
+    }
+
+    @Override
+    public void init() {
+        if (super.getEntityClass() == null) {
+            loginBean.logout();
+        }
+    }
+    @ManagedProperty("#{loginBean}")
+    private LoginBean loginBean;
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
     }
 
 }
