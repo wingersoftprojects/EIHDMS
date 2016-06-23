@@ -24,16 +24,12 @@
                                 </p:submenu>
                                 <p:submenu label="Settings" icon="ui-icon-gear">
                                     <p:submenu label="Location Settings" icon="ui-icon-info">
-                                        <p:menuitem value="Region" url="#" />
-                                        <p:menuitem value="District" url="#" />
-                                        <p:menuitem value="Sub District" url="#" />
-                                        <p:menuitem value="County" url="#" />
-                                        <p:menuitem value="Sub County" url="#" />
-                                        <p:menuitem value="Parish" url="#" />
-                                        <p:menuitem value="Health Facility" url="#" />
+                                        <p:menuitem value="Location"  action="locationsettings?faces-redirect=true"  />
+                                        <p:menuitem value="Facility Level" action="facilitylevel?faces-redirect=true" />
+                                        <p:menuitem value="Health Facility" action="healthfacility?faces-redirect=true" />
                                     </p:submenu>
                                     <p:submenu label="Form Settings" icon="ui-icon-document">
-                                        <p:menuitem value="Technical Areas" action="technicalarea?faces-redirect=true" actionListener="#{technical_Area_Bean.add()}" />
+                                        <p:menuitem value="Technical Areas" action="technicalarea?faces-redirect=true" />
                                         <p:menuitem value="Report Form Details" action="reportform?faces-redirect=true" />
                                         <p:menuitem value="Report Form Groups" action="reportformgroup?faces-redirect=true" />
                                         <p:menuitem value="Data Elements" action="dataelement?faces-redirect=true" />
@@ -41,8 +37,10 @@
                                         <p:menuitem value="Validation Rules" url="#" />
                                     </p:submenu>
                                     <p:submenu label="User Settings" icon="ui-icon-person">
-                                        <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true" actionListener="#{group_userBean.add()}" /> 
-                                        <p:menuitem value="User Details" action="userdetail?faces-redirect=true" /> 
+                                        <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true">
+                                        </p:menuitem> 
+                                        <p:menuitem value="User Details" action="userdetail?faces-redirect=true">
+                                        </p:menuitem> 
                                         <p:menuitem value="User Category"/> 
                                     </p:submenu>
                                 </p:submenu>

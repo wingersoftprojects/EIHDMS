@@ -7,75 +7,110 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form>
+        <h:form id="main_form">
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="2">
-                <p:fieldset legend="User Categorie Detail" id="group_detail">
-                    <p:panelGrid columns="2">
+                <p:fieldset legend="User Categorie Detail">
+                    <p:panelGrid columns="2" id="user_category">
                         <p:outputLabel value="User Category Name:" for="user_category_name"/>
-                        <p:inputText id="user_category_name"/>
+                        <p:inputText id="user_category_name" value="#{user_categoryBean.selected.user_category_name}" required="true" requiredMessage="User category required"/>
                         <p:outputLabel value="Is Active?:" for="is_active"/>
-                        <p:selectBooleanCheckbox id="is_active"/>
-                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                        <p:selectOneMenu id="is_active" value="#{user_categoryBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" action="#{user_categoryBean.save(1)}" icon="ui-icon-disk" update="main_form:user_category,main_form:user_category_table"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{user_categoryBean.cancel()}" update="main_form:user_category" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="group_table">
+                <p:dataTable id="user_category_table" value="#{user_categoryBean.ts}" var="item">
                     <p:column headerText="User Category Name">
+                        #{item.user_category_name}
                     </p:column>
                     <p:column headerText="Active?">
+                        #{generalUtilities.convertYesNo(item.is_active)}
                     </p:column>
                     <p:column headerText="">
-                        <p:commandButton update=":form:report_form" icon="ui-icon-search" title="View">
-                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        <p:commandButton value="Edit" action="#{user_categoryBean.edit(item)}" process="@this" update="main_form:user_category" icon="ui-icon-pencil" title="View">
                         </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{user_categoryBean.delete(item)}" update="main_form:user_category_table" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                     </p:column>
                 </p:dataTable>
 
 
-                <p:fieldset legend="User Detail" id="group_user">
-                    <p:panelGrid columns="2">
+                <p:fieldset legend="User Detail">
+                    <p:panelGrid columns="2" id="user_detail">
                         <p:outputLabel value="User Category:" for="user_category_id"/>
-                        <p:selectOneMenu id="user_category_id">
+                        <p:selectOneMenu id="user_category_id" value="#{user_detailBean.selected.user_category}" converter="user_categoryConverter" required="true" requiredMessage="User Category is required">
                             <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{user_categoryBean.ts}" var="uc" itemLabel="#{uc.user_category_name}" itemValue="#{uc}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Username:" for="user_name"/>
-                        <p:inputText id="user_name"/>
+                        <p:inputText id="user_name" value="#{user_detailBean.selected.user_name}" required="true" requiredMessage=" is required"/>
                         <p:outputLabel value="Password:" for="password"/>
-                        <p:password id="password"/>
+                        <p:password id="password" value="#{user_detailBean.selected.user_password}" required="#{user_detailBean.selected.user_detail_id>0}" requiredMessage=" is required"/>
                         <p:outputLabel value="Confirm Password:" for="confirm_password"/>
                         <p:password id="confirm_password"/>
                         <p:outputLabel value="First Name:" for="first_name"/>
-                        <p:inputText id="first_name"/>
+                        <p:inputText id="first_name" value="#{user_detailBean.selected.first_name}" required="true" requiredMessage="First Name is required"/>
                         <p:outputLabel value="Second Name:" for="second_name"/>
-                        <p:inputText id="second_name"/>
+                        <p:inputText id="second_name" value="#{user_detailBean.selected.second_name}" required="true" requiredMessage="Second Name is required"/>
                         <p:outputLabel value="Third Name:" for="third_name"/>
-                        <p:inputText id="third_name"/>
+                        <p:inputText id="third_name" value="#{user_detailBean.selected.third_name}" required="false"/>
                         <p:outputLabel value="Is General Admin?:" for="is_user_gen_admin"/>
-                        <p:selectBooleanCheckbox id="is_user_gen_admin"/>
+                        <p:selectOneMenu id="is_user_gen_admin" value="#{user_detailBean.selected.is_user_gen_admin}" required="true" requiredMessage="Is general admin field is required">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="Is Active?:" for="is_active2"/>
-                        <p:selectBooleanCheckbox id="is_active2"/>
-                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                        <p:selectOneMenu id="is_active2" value="#{user_detailBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" action="#{user_detailBean.save(1)}" icon="ui-icon-disk" update="main_form:user_detail,main_form:user_detail_table"/>
+                        <p:commandButton value="CLEAR" action="#{user_detailBean.cancel()}" icon="ui-icon-cancel" update="main_form:user_detail"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="user_detail_table">
+                <p:dataTable id="user_detail_table" value="#{user_detailBean.ts}" var="item">
                     <p:column headerText="Username">
+                        #{item.user_name}
                     </p:column>
                     <p:column headerText="First Name">
+                        #{item.first_name}
                     </p:column>
                     <p:column headerText="Second Name">
+                        #{item.second_name}
                     </p:column>
                     <p:column headerText="User Category">
+                        #{item.user_category.user_category_name}
                     </p:column>
                     <p:column headerText="General Admin?">
+                        #{generalUtilities.convertYesNo(item.is_user_gen_admin)}
                     </p:column>
                     <p:column headerText="Active?">
+                        #{generalUtilities.convertYesNo(item.is_active)}
                     </p:column>
                     <p:column headerText="">
-                        <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
-                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        <p:commandButton value="Edit" action="#{user_detailBean.edit(item)}" process="@this" update="main_form:user_detail" icon="ui-icon-pencil" title="View">
                         </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{user_detailBean.delete(item)}" update="main_form:user_detail_table" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                     </p:column>
                 </p:dataTable>
 

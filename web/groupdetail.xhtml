@@ -5,31 +5,89 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{group_detailBean.init()}" type="preRenderView" />
+            <f:event listener="#{group_rightBean.init()}" type="preRenderView" />
+            <f:event listener="#{group_userBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_categoryBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_detailBean.init()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
 
     <ui:define name="content">
         <h:form>
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="2">
-                <p:fieldset legend="Group Details" id="group_detail">
+                <p:fieldset legend="Group Details">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Group Name:" for="group_name"/>
-                        <p:inputText id="group_name" value="#{group_userBean.selected.group_name}" required="true" requiredMessage="Group Name is required"/>
+                        <p:inputText id="group_name" value="#{group_detailBean.selected.group_name}" required="true" requiredMessage="Group Name is required"/>
                         <p:outputLabel value="Is Active?:" for="is_active"/>
-                        <p:selectOneMenu id="is_active" value="#{group_userBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                        <p:selectOneMenu id="is_active" value="#{group_detailBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" action="#{group_userBean.save(1)}" icon="ui-icon-disk" update="@form"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_detail.cancel()}" update="@form" process="@this"/>
+                        <p:commandButton value="SAVE" action="#{group_detailBean.save(1)}" icon="ui-icon-disk" process="group_name,is_active,@this" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_detailBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="group_table" value="#{group_userBean.ts}" var="item">
+                <p:dataTable id="group_table" value="#{group_detailBean.ts}" var="item">
                     <p:column headerText="Group Name">
-                        #{item.group_name}
+                        <h:outputText value="#{item.group_name}"/>
                     </p:column>
                     <p:column headerText="Active?">
-                        #{generalUtilities.convertYesNo(item.is_active)}
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{group_detailBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{group_detailBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+
+
+                <p:fieldset legend="Group Users" id="group_user">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Group Name:" for="group_detail"/>
+                        <p:selectOneMenu id="group_detail" value="#{group_userBean.selected.group_detail}" style="width:125px" required="true" requiredMessage="Group Detail field is Required" converter="group_detailConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{group_detailBean.tsActive}" var="item" itemLabel="#{item.group_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="User Detail:" for="user_detail"/>
+                        <p:selectOneMenu id="user_detail" value="#{group_userBean.selected.user_detail}" style="width:125px" required="true" requiredMessage="User Detail field is Required" converter="user_detailConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{user_detailBean.tsActive}" var="item" itemLabel="#{item.user_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Is Active?:" for="is_active2"/>
+                        <p:selectOneMenu id="is_active2" value="#{group_userBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" action="#{group_detailBean.save(1)}" icon="ui-icon-disk" process="is_active2,user_detail,group_detail,@this" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_detailBean.cancel()}" update="@form" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="group_users_table" value="#{group_userBean.ts}" var="item">
+                    <p:column headerText="Group Name">
+                        <h:outputText value="#{item.group_detail.group_name}"/>
+                    </p:column>
+                    <p:column headerText="User Name">
+                        <h:outputText value="#{item.user_detail.user_name}"/>
+                    </p:column>
+                    <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
                     </p:column>
                     <p:column headerText="">
                         <p:commandButton value="Edit" action="#{group_userBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
@@ -45,70 +103,88 @@
                     </p:column>
                 </p:dataTable>
 
-
-                <p:fieldset legend="Group Users" id="group_user">
-                    <p:panelGrid columns="2">
-                        <p:outputLabel value="Group Name:" for="group_name2"/>
-                        <p:outputLabel id="group_name2" value="#{group_detailBean.selected.group_name}"/>
-                        <p:outputLabel value="User Detail:" for="user_detail_id"/>
-                        <p:selectOneMenu id="user_detail_id" >
-                            <f:selectItem itemLabel=""/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Is Active?:" for="is_active2"/>
-                        <p:selectBooleanCheckbox id="is_active2"/>
-                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
-                    </p:panelGrid>
-                </p:fieldset>
-                <p:dataTable id="group_users_table">
-                    <p:column headerText="Group Name">
-                    </p:column>
-                    <p:column headerText="User Name">
-                    </p:column>
-                    <p:column headerText="Active?">
-                    </p:column>
-                    <p:column headerText="">
-                        <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
-                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable>
-
-                <p:fieldset legend="Group Rights" id="group_right">
+                <p:fieldset legend="Group Rights">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Group Name:" for="group_name3"/>
-                        <p:outputLabel id="group_name3" value="#{group_detailBean.selected.group_name}"/>
-                        <p:outputLabel value="Report Form Name:" for="report_form_id"/>
-                        <p:selectOneMenu id="report_form_id">
-                            <f:selectItem itemLabel=""/>
+                        <p:selectOneMenu id="group_name3" value="#{group_rightBean.selected.group_detail}" style="width:125px" required="true" requiredMessage="Group Detail field is Required" converter="group_detailConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{group_detailBean.tsActive}" var="item" itemLabel="#{item.group_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Report Form Name:" for="report_form"/>
+                        <p:selectOneMenu id="report_form" value="#{group_rightBean.selected.report_form}" style="width:125px" required="true" requiredMessage="Report Form field is Required" converter="report_formConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="View:" for="view"/>
-                        <p:selectBooleanCheckbox id="view"/>
+                        <p:selectOneMenu id="view" value="#{group_rightBean.selected.allow_view}" required="true" requiredMessage="View field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="Add:" for="add"/>
-                        <p:selectBooleanCheckbox id="add"/>
+                        <p:selectOneMenu id="add" value="#{group_rightBean.selected.allow_add}" required="true" requiredMessage="Add field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="Edit:" for="edit"/>
-                        <p:selectBooleanCheckbox id="edit"/>
+                        <p:selectOneMenu id="edit" value="#{group_rightBean.selected.allow_edit}" required="true" requiredMessage="Edit field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="Delete:" for="delete"/>
-                        <p:selectBooleanCheckbox id="delete"/>
+                        <p:selectOneMenu id="delete" value="#{group_rightBean.selected.allow_delete}" required="true" requiredMessage="Delete field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="Is Active?:" for="is_active3"/>
-                        <p:selectBooleanCheckbox id="is_active3"/>
-                        <p:commandButton value="SAVE" icon="ui-icon-disk"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
+                        <p:selectOneMenu id="is_active3" value="#{group_rightBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" action="#{group_rightBean.save(1)}" icon="ui-icon-disk" process="is_active3,delete,edit,add,view,report_form,group_name3,@this" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_rightBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="group_right_table">
+                <p:dataTable value="#{group_rightBean.ts}" var="item">
                     <p:column headerText="Group Name">
+                        <h:outputText value="#{item.group_detail.group_name}"/>
                     </p:column>
-                    <p:column headerText="Report Form Name">
+                    <p:column headerText="Report Form">
+                        <h:outputText value="#{item.report_form.report_form_name}"/>
+                    </p:column>
+                    <p:column headerText="View?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.allow_view)}"/>
+                    </p:column>
+                    <p:column headerText="Add?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.allow_add)}"/>
+                    </p:column>
+                    <p:column headerText="Edit?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.allow_edit)}"/>
+                    </p:column>
+                    <p:column headerText="Delete?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.allow_delete)}"/>
                     </p:column>
                     <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
                     </p:column>
                     <p:column headerText="">
-                        <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
-                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        <p:commandButton value="Edit" action="#{group_rightBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
                         </p:commandButton>
-                    </p:column>
-                </p:dataTable>
+                        <p:commandButton value="Delete" actionListener="#{group_rightBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>                </p:dataTable>
             </p:panelGrid>
         </h:form>
     </ui:define>

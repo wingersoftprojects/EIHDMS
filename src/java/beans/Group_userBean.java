@@ -9,6 +9,7 @@ import eihdms.Group_user;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 
 /**
  *
@@ -23,6 +24,22 @@ public class Group_userBean extends AbstractBean<Group_user> implements Serializ
      */
     public Group_userBean() {
         super(Group_user.class);
+    }
+    @Override
+    public void init() {
+        if (super.getEntityClass() == null) {
+            loginBean.logout();
+        }
+    }
+    @ManagedProperty("#{loginBean}")
+    private LoginBean loginBean;
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
     }
     
 }

@@ -20,6 +20,7 @@
     <h:body>
 
         <h:form>
+            <p:growl/>
             <p:panelGrid columns="2">
                 <p:outputLabel for="report_form" value="Report Form:" />
                 <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
@@ -36,23 +37,8 @@
                 <p:outputLabel value="Upload"/>
                 <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
                               auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="report_form,report_form_group" />
-                <p:outputLabel value="Uploaded values"/>
-                <!--<ui:repeat value="#{uploadBean.interface_datas}" var="interface_data" id="interface_data">
-                    <p:outputLabel value="#{interface_data.data_element.data_element_name}"/>:<p:outputLabel value="#{interface_data.data_element_value}"/><br/>
-                </ui:repeat>-->
+                <p:commandButton value="Load Interface" rendered="#{uploadBean.interface_datas.size()>0}"/>
             </p:panelGrid>
-            <!--<p:dataTable value="#{uploadBean.interface_datas}" var="item">
-                <p:column headerText="Element">
-                    <h:outputText value="#{item.data_element.data_element_name}" />
-                </p:column>
-                <p:column headerText="Facility">
-                    <h:outputText value="#{item.health_facility_name}" />
-                </p:column>
-                <p:column headerText="Value">
-                    <h:outputText value="#{item.data_element_value}" />
-                </p:column>
-
-            </p:dataTable>-->
             <!-- 1. Create a DIV container to insert the component -->
             <div id="pivotContainer"></div>
 

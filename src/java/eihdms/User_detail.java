@@ -318,23 +318,6 @@ public class User_detail implements Serializable {
 		return user_detailCriteria.listUser_detail();
 	}
 	
-	public boolean equals(Object aObj) {
-		if (aObj == this)
-			return true;
-		if (!(aObj instanceof User_detail))
-			return false;
-		User_detail user_detail = (User_detail)aObj;
-		if (getUser_detail_id() != user_detail.getUser_detail_id())
-			return false;
-		return true;
-	}
-	
-	public int hashCode() {
-		int hashcode = 0;
-		hashcode = hashcode + (int) getUser_detail_id();
-		return hashcode;
-	}
-	
 	public static User_detail createUser_detail() {
 		return new eihdms.User_detail();
 	}
@@ -442,6 +425,8 @@ public class User_detail implements Serializable {
 	
 	@Column(name="user_detail_id", nullable=false, length=11)	
 	@Id	
+	@GeneratedValue(generator="EIHDMS_USER_DETAIL_USER_DETAIL_ID_GENERATOR")	
+	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_USER_DETAIL_USER_DETAIL_ID_GENERATOR", strategy="native")	
 	private int user_detail_id;
 	
 	@Column(name="user_name", nullable=false, unique=true, length=20)	
@@ -503,7 +488,7 @@ public class User_detail implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set user_action = new java.util.HashSet();
 	
-	public void setUser_detail_id(int value) {
+	private void setUser_detail_id(int value) {
 		this.user_detail_id = value;
 	}
 	
@@ -658,26 +643,23 @@ public class User_detail implements Serializable {
 	}
 	
 	
+	@Override	
+	public int hashCode() {
+		int hash = 3;
+				return hash;
+	}
+	
+	@Override	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+				            return false;
+				        }
+				        User_detail object = (User_detail) obj;
+				        return (this.getUser_detail_id() == object.getUser_detail_id());
+	}
+	
 	public String toString() {
 		return String.valueOf(getUser_detail_id());
 	}
-	
-	@Transient	
-	private boolean _saved = false;
-	
-	public void onSave() {
-		_saved=true;
-	}
-	
-	
-	public void onLoad() {
-		_saved=true;
-	}
-	
-	
-	public boolean isSaved() {
-		return _saved;
-	}
-	
 	
 }

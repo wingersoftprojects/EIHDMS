@@ -6,7 +6,6 @@
 package beans;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 @ManagedBean
@@ -22,5 +21,5 @@ public class NavigationBean {
     public void NavigationGroupDetail(){
         
     }
-    
+   
 }

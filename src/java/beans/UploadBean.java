@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -159,6 +161,12 @@ public class UploadBean implements Serializable {
         }
     }
 
+    public void load_interface(){
+        if(!interface_datas.isEmpty()){
+            
+        }
+    }
+    
     public void uploadexcel(InputStream inputStream) {
         //FileInputStream fis = null;
         try {
@@ -195,6 +203,19 @@ public class UploadBean implements Serializable {
                         //Iterating over each cell (column wise)  in a particular row.
                         String facility = "";
                         //Cell cell = row.getCell(1);
+                        Iterator<Cell> cellIterator1 = row.cellIterator();
+                        int counter = 0;
+                        while (cellIterator1.hasNext()) {
+                            Cell cell = cellIterator1.next();
+                            counter++;
+                        }
+
+                        if ((counter - 1) != data_elements.size()) {
+                            FacesContext context = FacesContext.getCurrentInstance();
+                            context.addMessage(null, new FacesMessage("Invalid Upload dues to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
+                            return;
+                        }
+
                         Iterator<Cell> cellIterator2 = row.cellIterator();
                         if (row.getRowNum() > 0) {
                             facility = row.getCell(0).getStringCellValue();

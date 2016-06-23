@@ -104,7 +104,11 @@ public abstract class AbstractBean<T> {
 
     public List<T> getTsAll() {
         try {
-            tsAll = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).list();
+            if (entityClass != null) {
+                tsAll = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).list();
+            } else {
+                ts = new ArrayList<>();
+            }
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -118,7 +122,7 @@ public abstract class AbstractBean<T> {
     public List<T> getTs() {
         try {
             if (entityClass != null) {
-                ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.eq("is_deleted", 0)).list();
+                ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.ne("is_deleted", 1)).list();
             } else {
                 ts = new ArrayList<>();
             }
@@ -130,7 +134,11 @@ public abstract class AbstractBean<T> {
 
     public List<T> getTsActive() {
         try {
-            tsActive = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.eq("is_active", 0)).list();
+            if (entityClass != null) {
+                tsActive = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.eq("is_active", 1)).add(Restrictions.ne("is_deleted", 1)).list();
+            } else {
+                ts = new ArrayList<>();
+            }
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -155,6 +163,7 @@ public abstract class AbstractBean<T> {
 
     public AbstractBean(Class<T> entityClass) {
         this.entityClass = entityClass;
+        add();
     }
 
     public String getFormstate() {
@@ -192,7 +201,7 @@ public abstract class AbstractBean<T> {
 
     public void cancel() {
         add();
-        formstate = "view";
+        //formstate = "view";
     }
 
     public void delete(T t) {
@@ -250,7 +259,7 @@ public abstract class AbstractBean<T> {
             if (formstate.equals("add")) {
 //                Method method = selected.getClass().getMethod("setCreatedby", paramUser_detail);
 //                method.invoke(selected, loginBean.getUser_detail());
-                
+
                 Method method = selected.getClass().getMethod("setAdd_date", paramTimestamp);
                 method.invoke(selected, new Timestamp(new Date().getTime()));
                 method = selected.getClass().getMethod("setIs_deleted", paramInteger);
@@ -294,7 +303,7 @@ public abstract class AbstractBean<T> {
             formstate = "view";
             EIHDMSPersistentManager.instance().getSession().evict(selected);
             this.selected = null;
-
+            ts = null;
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class
                     .getName()).log(Level.SEVERE, null, ex);

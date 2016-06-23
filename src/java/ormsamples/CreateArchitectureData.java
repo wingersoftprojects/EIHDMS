@@ -58,7 +58,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : add_by, add_date, is_active, is_deleted, allow_delete, allow_edit, allow_add, allow_view, report_form, group_detail
 			leihdmsGroup_right.save();
 			eihdms.User_detail leihdmsUser_detail = eihdms.User_detail.createUser_detail();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : user_action, login_session, group_user, is_active, is_deleted, is_user_gen_admin, third_name, second_name, first_name, user_password, user_name, user_detail_id
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : user_action, login_session, group_user, is_active, is_deleted, is_user_gen_admin, third_name, second_name, first_name, user_password, user_name
 			leihdmsUser_detail.save();
 			eihdms.Group_user leihdmsGroup_user = eihdms.Group_user.createGroup_user();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : add_by, add_date, is_active, is_deleted, user_detail, group_detail
