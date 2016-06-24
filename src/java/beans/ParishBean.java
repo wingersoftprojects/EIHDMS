@@ -5,11 +5,21 @@
  */
 package beans;
 
+import eihdms.County;
+import eihdms.EIHDMSPersistentManager;
 import eihdms.Parish;
+import eihdms.Parish;
+import eihdms.Sub_county;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import org.hibernate.HibernateException;
+import org.orm.PersistentException;
 
 /**
  *
@@ -17,12 +27,13 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class ParishBean extends AbstractBean<Parish> implements Serializable  {
-    
-     public ParishBean() {
+public class ParishBean extends AbstractBean<Parish> implements Serializable {
+
+    public ParishBean() {
         super(Parish.class);
     }
-     @Override
+
+    @Override
     public void init() {
         if (super.getEntityClass() == null) {
             loginBean.logout();
@@ -38,5 +49,19 @@ public class ParishBean extends AbstractBean<Parish> implements Serializable  {
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-    
+
+    public List<Parish> getts(Sub_county sub_county) {
+        List<Parish> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && sub_county != null) {
+                temp = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select p FROM Parish  p where p.is_deleted<>1 AND p.sub_county=" + sub_county.getSub_county_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
 }

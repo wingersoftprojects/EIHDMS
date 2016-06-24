@@ -15,20 +15,20 @@
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="1">
                 <p:fieldset legend="Health Facilitys" id="data_element">
-                    <p:panelGrid columns="2">
+                    <p:panelGrid columns="4">
                         <p:outputLabel value="Health Facility:" for="health_facility_name"/>
                         <p:inputText id="health_facility_name" value="#{health_facilityBean.selected.health_facility_name}" required="true" requiredMessage="Health Facility name field is required"/>
                         <p:outputLabel for="region" value="Region:" />
                         <p:selectOneMenu id="region" value="#{health_facilityBean.selected.region}" style="width:125px" required="true" requiredMessage="Region field is Required" converter="regionConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{regionBean.tsActive}" var="item" itemLabel="#{item.region_name}" itemValue="#{item}"/>
-                            <p:ajax event="change" process="@this" update="district"/>
+                            <p:ajax event="change" process="@this" update="district,county,sub_district,sub_county,parish"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="district" value="District:" />
                         <p:selectOneMenu id="district" value="#{health_facilityBean.selected.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{districtBean.getts(health_facilityBean.selected.region)}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="county,sub_district"/>
+                            <p:ajax process="@this" update="county,sub_district,sub_county,parish"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="sub_district" value="Sub District:" />
                         <p:selectOneMenu id="sub_district" value="#{health_facilityBean.selected.sub_district}" style="width:125px" required="true" requiredMessage="Sub District field is Required" converter="sub_districtConverter">
@@ -40,8 +40,32 @@
                         <p:selectOneMenu id="county" value="#{health_facilityBean.selected.county}" style="width:125px" required="true" requiredMessage="County field is Required" converter="countyConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{countyBean.getts(health_facilityBean.selected.district)}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this" update="sub_county,parish"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="sub_county" value="Sub County:" />
+                        <p:selectOneMenu id="sub_county" value="#{health_facilityBean.selected.sub_county}" style="width:125px" required="true" requiredMessage="Sub_county field is Required" converter="sub_countyConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{sub_countyBean.getts(health_facilityBean.selected.county)}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this" update="parish"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="parish" value="Parish:" />
+                        <p:selectOneMenu id="parish" value="#{health_facilityBean.selected.parish}" style="width:125px" required="true" requiredMessage="Parish field is Required" converter="parishConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{parishBean.getts(health_facilityBean.selected.sub_county)}" var="item" itemLabel="#{item.parish_name}" itemValue="#{item}"/>
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
+                        <p:outputLabel for="facility_level" value="Facility Level:" />
+                        <p:selectOneMenu id="facility_level" value="#{health_facilityBean.selected.facility_level}" style="width:125px" required="true" requiredMessage="Facility Level Name field is Required" converter="facility_levelConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{facility_levelBean.tsActive}" var="item" itemLabel="#{item.facility_level_name}" itemValue="#{item}"/>
+                            <p:ajax event="change" process="@this" update="district"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="X-Coordinate:" for="xcoordinate"/>
+                        <p:inputText id="xcoordinate" value="#{health_facilityBean.selected.xcoordinate}"/>
+                        <p:outputLabel value="Y-Coordinate:" for="ycoordinate"/>
+                        <p:inputText id="ycoordinate" value="#{health_facilityBean.selected.ycoordinate}"/>
+                        <p:outputLabel value="Z-Coordinate:" for="zcoordinate"/>
+                        <p:inputText id="zcoordinate" value="#{health_facilityBean.selected.zcoordinate}"/>
                         <p:outputLabel value="Is Active?:" for="is_active"/>
                         <p:selectOneMenu id="is_active" value="#{health_facilityBean.selected.is_active}" required="true" requiredMessage="Health facility is active field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
@@ -54,8 +78,38 @@
                 </p:fieldset>
 
                 <p:dataTable id="health_facility_table" value="#{health_facilityBean.ts}" var="item">
-                    <p:column headerText="Health Facility">
+                    <p:column headerText="Health Facility Name">
                         <h:outputText value="#{item.health_facility_name}"/>
+                    </p:column>
+                    <p:column headerText="Region">
+                        <h:outputText value="#{item.region.region_name}"/>
+                    </p:column>
+                    <p:column headerText="District">
+                        <h:outputText value="#{item.district.district_name}"/>
+                    </p:column>
+                    <p:column headerText="Sub District">
+                        <h:outputText value="#{item.sub_district.sub_district_name}"/>
+                    </p:column>
+                    <p:column headerText="County">
+                        <h:outputText value="#{item.county.county_name}"/>
+                    </p:column>
+                    <p:column headerText="Sub County">
+                        <h:outputText value="#{item.sub_county.sub_county_name}"/>
+                    </p:column>
+                    <p:column headerText="Parish">
+                        <h:outputText value="#{item.parish.parish_name}"/>
+                    </p:column>
+                    <p:column headerText="Facility Level">
+                        <h:outputText value="#{item.facility_level.facility_level_name}"/>
+                    </p:column>
+                    <p:column headerText="X-Coordinate">
+                        <h:outputText value="#{item.xcoordinate}"/>
+                    </p:column>
+                    <p:column headerText="Y-Coordinate">
+                        <h:outputText value="#{item.ycoordinate}"/>
+                    </p:column>
+                    <p:column headerText="Z-Coordinate">
+                        <h:outputText value="#{item.xcoordinate}"/>
                     </p:column>
                     <p:column headerText="Active?">
                         <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>

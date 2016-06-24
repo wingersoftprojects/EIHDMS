@@ -6,7 +6,6 @@
 package beans;
 
 import eihdms.County;
-import eihdms.County;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Sub_county;
 import java.io.Serializable;
@@ -18,7 +17,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Restrictions;
 import org.orm.PersistentException;
 
 /**
@@ -61,6 +59,20 @@ public class Sub_countyBean extends AbstractBean<Sub_county> implements Serializ
     }
 
     public List<Sub_county> getts() {
+        List<Sub_county> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && county != null) {
+                temp = (List<Sub_county>) EIHDMSPersistentManager.instance().getSession().createQuery("select sc FROM Sub_county  sc where sc.is_deleted<>1 AND sc.county=" + county.getCounty_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<Sub_county> getts(County county) {
         List<Sub_county> temp = new ArrayList<>();
         try {
             if (this.getEntityClass() != null && county != null) {

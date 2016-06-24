@@ -100,15 +100,15 @@
 
                 <p:fieldset legend="Sub District">
                     <p:panelGrid columns="2">
-                        <p:outputLabel value="Sub District Name:" for="sub_district_name"/>
-                        <p:inputText id="sub_district_name" value="#{sub_districtBean.selected.sub_district_name}" required="true" requiredMessage="Sub District Name is required"/>
                         <p:outputLabel for="district3" value="District:" />
                         <p:selectOneMenu id="district3" value="#{sub_districtBean.selected.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{districtBean.tsActive}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Is Active?:" for="is_active6"/>
+                        <p:outputLabel value="Sub District Name:" for="sub_district_name"/>
+                        <p:inputText id="sub_district_name" value="#{sub_districtBean.selected.sub_district_name}" required="true" requiredMessage="Sub District Name is required"/>
+                                                <p:outputLabel value="Is Active?:" for="is_active6"/>
                         <p:selectOneMenu id="is_active6" value="#{sub_districtBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
@@ -119,11 +119,14 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="sub_district_table" value="#{sub_districtBean.ts}" var="item">
+                                        <p:column headerText="Region">
+                        #{item.district.region.region_name}
+                    </p:column>
+                                        <p:column headerText="District">
+                        #{item.district.district_name}
+                    </p:column>
                     <p:column headerText="Sub District Name">
                         #{item.sub_district_name}
-                    </p:column>
-                    <p:column headerText="District">
-                        #{item.district.district_name}
                     </p:column>
                     <p:column headerText="Active?">
                         #{generalUtilities.convertYesNo(item.is_active)}
@@ -144,15 +147,15 @@
 
                 <p:fieldset legend="County">
                     <p:panelGrid columns="2">
-                        <p:outputLabel value="County Name:" for="county_name"/>
-                        <p:inputText id="county_name" value="#{countyBean.selected.county_name}" required="true" requiredMessage="County Name is required"/>
                         <p:outputLabel for="district" value="District:" />
                         <p:selectOneMenu id="district" value="#{countyBean.selected.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{districtBean.tsActive}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Is Active?:" for="is_active3"/>
+                        <p:outputLabel value="County Name:" for="county_name"/>
+                        <p:inputText id="county_name" value="#{countyBean.selected.county_name}" required="true" requiredMessage="County Name is required"/>
+                                                <p:outputLabel value="Is Active?:" for="is_active3"/>
                         <p:selectOneMenu id="is_active3" value="#{countyBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
@@ -163,11 +166,14 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="county_table" value="#{countyBean.ts}" var="item">
-                    <p:column headerText="County Name">
-                        #{item.county_name}
+                    <p:column headerText="Region">
+                        #{item.district.region.region_name}
                     </p:column>
                     <p:column headerText="District">
                         #{item.district.district_name}
+                    </p:column>
+                    <p:column headerText="County Name">
+                        #{item.county_name}
                     </p:column>
                     <p:column headerText="Active?">
                         #{generalUtilities.convertYesNo(item.is_active)}
@@ -188,8 +194,6 @@
 
                 <p:fieldset legend="Sub County">
                     <p:panelGrid columns="2">
-                        <p:outputLabel value="Sub County Name:" for="sub_county_name"/>
-                        <p:inputText id="sub_county_name" value="#{sub_countyBean.selected.sub_county_name}" required="true" requiredMessage="Sub County Name is required"/>
                         <p:outputLabel for="district2" value="District:" />
                         <p:selectOneMenu id="district2" value="#{countyBean.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
@@ -202,7 +206,9 @@
                             <f:selectItems value="#{countyBean.getts()}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Is Active?:" for="is_active4"/>
+                        <p:outputLabel value="Sub County Name:" for="sub_county_name"/>
+                        <p:inputText id="sub_county_name" value="#{sub_countyBean.selected.sub_county_name}" required="true" requiredMessage="Sub County Name is required"/>
+                                                <p:outputLabel value="Is Active?:" for="is_active4"/>
                         <p:selectOneMenu id="is_active4" value="#{sub_countyBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
@@ -213,14 +219,17 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="sub_county_table" value="#{sub_countyBean.ts}" var="item">
-                    <p:column headerText="Sub County Name">
-                        #{item.sub_county_name}
+                    <p:column headerText="Region">
+                        #{item.county.district.district.region.region_name}
                     </p:column>
                     <p:column headerText="District">
                         #{item.county.district.district_name}
                     </p:column>
-                    <p:column headerText="County">
+                    <p:column headerText="County Name">
                         #{item.county.county_name}
+                    </p:column>
+                    <p:column headerText="Sub County Name">
+                        #{item.sub_county_name}
                     </p:column>
                     <p:column headerText="Active?">
                         #{generalUtilities.convertYesNo(item.is_active)}
@@ -241,8 +250,6 @@
 
                 <p:fieldset legend="Parish">
                     <p:panelGrid columns="2">
-                        <p:outputLabel value="Parish Name:" for="parish_name"/>
-                        <p:inputText id="parish_name" value="#{parishBean.selected.parish_name}" required="true" requiredMessage="Parish Name is required"/>
                         <p:outputLabel for="district4" value="District:" />
                         <p:selectOneMenu id="district4" value="#{countyBean.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
@@ -261,7 +268,9 @@
                             <f:selectItems value="#{sub_countyBean.getts()}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Is Active?:" for="is_active5"/>
+                        <p:outputLabel value="Parish Name:" for="parish_name"/>
+                        <p:inputText id="parish_name" value="#{parishBean.selected.parish_name}" required="true" requiredMessage="Parish Name is required"/>
+                                                <p:outputLabel value="Is Active?:" for="is_active5"/>
                         <p:selectOneMenu id="is_active5" value="#{parishBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
@@ -272,11 +281,20 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="parish_table" value="#{parishBean.ts}" var="item">
+                    <p:column headerText="Region">
+                        #{item.sub_county.county.district.district.region.region_name}
+                    </p:column>
+                    <p:column headerText="District">
+                        #{item.sub_county.county.district.district_name}
+                    </p:column>
+                    <p:column headerText="County Name">
+                        #{item.sub_county.county.county_name}
+                    </p:column>
+                    <p:column headerText="Sub County Name">
+                        #{item.sub_county.sub_county_name}
+                    </p:column>
                     <p:column headerText="Parish Name">
                         #{item.parish_name}
-                    </p:column>
-                    <p:column headerText="Sub_county">
-                        #{item.sub_county.sub_county_name}
                     </p:column>
                     <p:column headerText="Active?">
                         #{generalUtilities.convertYesNo(item.is_active)}

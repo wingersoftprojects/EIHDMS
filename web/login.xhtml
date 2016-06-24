@@ -43,7 +43,7 @@
             </div>
         </div>
         <h:form>
-            <p:idleMonitor timeout="80000">
+            <p:idleMonitor timeout="960000">
                 <p:ajax event="idle" listener="#{loginBean.redirectifnotloggedin()}" update="@all" oncomplete="logout()"/>
             </p:idleMonitor>
         </h:form>

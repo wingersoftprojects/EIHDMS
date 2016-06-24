@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{application_configurationBean.init()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="1">
+                <p:fieldset legend="Application Configuration">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Parameter Name:" for="parameter_name"/>
+                        <p:inputText id="parameter_name" value="#{application_configurationBean.selected.parameter_name}" required="true" requiredMessage="Parameter name field is required"/>
+                        <p:outputLabel value="Parameter Value:" for="parameter_value"/>
+                        <p:inputText id="parameter_value" value="#{application_configurationBean.selected.parameter_value}" required="true" requiredMessage="Parameter value field is required"/>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectOneMenu id="is_active" value="#{application_configurationBean.selected.is_active}" required="true" requiredMessage="Technical area is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{application_configurationBean.save(1)}" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{application_configurationBean.cancel()}" update="@form" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+
+                <p:dataTable id="technical_area_table" value="#{application_configurationBean.ts}" var="item">
+                    <p:column headerText="Technical Area">
+                        <h:outputText value="#{item.parameter_name}"/>
+                    </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{item.parameter_value}"/>
+                    </p:column>
+                    <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{application_configurationBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{application_configurationBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

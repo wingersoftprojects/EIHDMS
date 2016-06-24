@@ -5,117 +5,191 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{report_formBean.init()}" type="preRenderView" />
+            <f:event listener="#{sectionBean.init()}" type="preRenderView" />
+            <f:event listener="#{sub_sectionBean.init()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
     <ui:define name="content">
         <h:form>
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="2">
-            <p:fieldset legend="Report Form Detail" id="report_form">
-                <p:panelGrid columns="2">
-                    <p:outputLabel value="Code:" for="report_form_code"/>
-                    <p:inputText id="report_form_code"/>
-                    <p:outputLabel value="Report Form Name:" for="report_form_name"/>
-                    <p:inputText id="report_form_name"/>
-                    <p:outputLabel value="Description:" for="report_form_description"/>
-                    <p:inputTextarea id="report_form_description" rows="4" cols="35"/>
-                    <p:outputLabel value="Frequency:" for="report_form_frequency"/>
-                    <p:selectOneMenu id="report_form_frequency">
-                        <f:selectItem itemLabel=""/>
-                        <f:selectItem itemLabel="Weekly" itemValue="Weekly"/>
-                        <f:selectItem itemLabel="Monthly" itemValue="Monthly"/>
-                        <f:selectItem itemLabel="Bi-Monthly" itemValue="Bi-Monthly"/>
-                        <f:selectItem itemLabel="Quarterly" itemValue="Quarterly"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Reporting Level:" for="lowest_report_form_level"/>
-                    <p:selectOneMenu id="lowest_report_form_level">
-                        <f:selectItem itemLabel=""/>
-                        <f:selectItem itemLabel="Facility" itemValue="Facility"/>
-                        <f:selectItem itemLabel="Parish" itemValue="Parish"/>
-                        <f:selectItem itemLabel="District" itemValue="District"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Is Active?:" for="is_active"/>
-                    <p:selectBooleanCheckbox id="is_active"/>
-                    <p:commandButton value="SAVE" icon="ui-icon-disk"/>
-                    <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
-                </p:panelGrid>
-            </p:fieldset>
-            <p:dataTable id="report_form_table">
-                <p:column headerText="Code">
-                </p:column>
-                <p:column headerText="Report Form Name">
-                </p:column>
-                <p:column headerText="Frequency">
-                </p:column>
-                <p:column headerText="Level">
-                </p:column>
-                <p:column headerText="Active?">
-                </p:column>
-                <p:column headerText="">
-                    <p:commandButton update=":form:report_form" icon="ui-icon-search" title="View">
-                        <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
-            
-            
-            <p:fieldset legend="Report Form Section" id="section">
-                <p:panelGrid columns="2">
-                    <p:outputLabel value="Report Form Name:" for="report_form_name2"/>
-                    <p:outputLabel id="report_form_name2"/>
-                    <p:outputLabel value="Oder:" for="section_order"/>
-                    <p:inputText id="section_order"/>
-                    <p:outputLabel value="Section Name:" for="section_name"/>
-                    <p:inputText id="section_name"/>
-                    <p:outputLabel value="Is Active?:" for="is_active2"/>
-                    <p:selectBooleanCheckbox id="is_active2"/>
-                    <p:commandButton value="SAVE" icon="ui-icon-disk"/>
-                    <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
-                </p:panelGrid>
-            </p:fieldset>
-            <p:dataTable id="section_table">
-                <p:column headerText="Order">
-                </p:column>
-                <p:column headerText="Section Name">
-                </p:column>
-                <p:column headerText="Active?">
-                </p:column>
-                <p:column headerText="">
-                    <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
-                        <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
-            
-            <p:fieldset legend="Report Form Sub-Section" id="sub_section">
-                <p:panelGrid columns="2">
-                    <p:outputLabel value="Report Form Name:" for="report_form_name3"/>
-                    <p:outputLabel id="report_form_name3"/>
-                    <p:outputLabel value="Section Name:" for="section_name2"/>
-                    <p:outputLabel id="section_name2"/>
-                    <p:outputLabel value="Oder:" for="sub_section_order"/>
-                    <p:inputText id="sub_section_order"/>
-                    <p:outputLabel value="Sub Section Name:" for="sub_section_name"/>
-                    <p:inputText id="sub_section_name"/>
-                    <p:outputLabel value="Is Active?:" for="is_active3"/>
-                    <p:selectBooleanCheckbox id="is_active3"/>
-                    <p:commandButton value="SAVE" icon="ui-icon-disk"/>
-                    <p:commandButton value="CLEAR" icon="ui-icon-cancel"/>
-                </p:panelGrid>
-            </p:fieldset>
-            <p:dataTable id="sub_section_table">
-                <p:column headerText="Order">
-                </p:column>
-                <p:column headerText="Sub Section Name">
-                </p:column>
-                <p:column headerText="Active?">
-                </p:column>
-                <p:column headerText="">
-                    <p:commandButton update=":form:section" icon="ui-icon-search" title="View">
-                        <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
-                </p:panelGrid>
+                <p:fieldset legend="Report Form Detail">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Code:" for="report_form_code"/>
+                        <p:inputText id="report_form_code" value="#{report_formBean.selected.report_form_code}" required="true" requiredMessage="Report form Code field is required"/>
+                        <p:outputLabel value="Report Form Name:" for="report_form_name"/>
+                        <p:inputText id="report_form_name" value="#{report_formBean.selected.report_form_name}" required="true" requiredMessage="Report form Name field is required"/>
+                        <p:outputLabel value="Description:" for="report_form_description"/>
+                        <p:inputTextarea id="report_form_description" rows="4" cols="35" value="#{report_formBean.selected.report_form_description}" required="true" requiredMessage="Report form Description field is required"/>
+                        <p:outputLabel value="Frequency:" for="report_form_frequency"/>
+                        <p:selectOneMenu id="report_form_frequency" value="#{report_formBean.selected.report_form_frequency}" required="true" requiredMessage="Report Frequency field is required">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItem itemLabel="Weekly" itemValue="Weekly"/>
+                            <f:selectItem itemLabel="Monthly" itemValue="Monthly"/>
+                            <f:selectItem itemLabel="Bi-Monthly" itemValue="Bi-Monthly"/>
+                            <f:selectItem itemLabel="Quarterly" itemValue="Quarterly"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Reporting Level:" for="lowest_report_form_level"/>
+                        <p:selectOneMenu id="lowest_report_form_level" value="#{report_formBean.selected.lowest_report_form_level}" required="true" requiredMessage="Report form Lowest Level field is required">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItem itemLabel="Facility" itemValue="Facility"/>
+                            <f:selectItem itemLabel="Parish" itemValue="Parish"/>
+                            <f:selectItem itemLabel="District" itemValue="District"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectOneMenu id="is_active" value="#{report_formBean.selected.is_active}" required="true" requiredMessage="Health facility is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{report_formBean.save(1)}" update="@form" process="report_form_code,report_form_name,report_form_description,report_form_frequency,lowest_report_form_level,report_form_code,is_active"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{report_formBean.cancel()}" update="@form" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="report_form_table" value="#{report_formBean.ts}" var="item">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{item.report_form_code}"/>
+                    </p:column>
+                    <p:column headerText="Report Form Name">
+                        <h:outputText value="#{item.report_form_name}"/>
+                    </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{item.report_form_description}"/>
+                    </p:column>
+                    <p:column headerText="Frequency">
+                        <h:outputText value="#{item.report_form_frequency}"/>
+                    </p:column>
+                    <p:column headerText="Level">
+                        <h:outputText value="#{item.lowest_report_form_level}"/>
+                    </p:column>
+                    <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{report_formBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{report_formBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+
+
+                <p:fieldset legend="Report Form Section">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Report Form Name:" for="report_form_name2"/>
+                        <p:selectOneMenu id="report_form_name2" value="#{sectionBean.selected.report_form}" style="width:125px" required="true" requiredMessage="Report form field is Required" converter="report_formConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Order:" for="section_order"/>
+                        <p:inputText id="section_order" value="#{sectionBean.selected.section_order}" required="true" requiredMessage="Section Order field is Required"/>
+                        <p:outputLabel value="Section Name:" for="section_name"/>
+                        <p:inputText id="section_name" value="#{sectionBean.selected.section_name}" required="true" requiredMessage="Section name field is Required"/>
+                        <p:outputLabel value="Is Active?:" for="is_active2"/>
+                        <p:selectOneMenu id="is_active2" value="#{sectionBean.selected.is_active}" required="true" requiredMessage="Section is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{sectionBean.save(1)}" update="@form" process="report_form_name2,section_order,section_name,is_active2"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sectionBean.cancel()}" update="@form" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="section_table" value="#{sectionBean.ts}" var="item">
+                    <p:column headerText="Report Form">
+                        <h:outputText value="#{item.report_form.report_form_name}"/>
+                    </p:column>
+                    <p:column headerText="Section Name">
+                        <h:outputText value="#{item.section_name}"/>
+                    </p:column>
+                    <p:column headerText="Order">
+                        <h:outputText value="#{item.section_order}"/>
+                    </p:column>
+                    <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{sectionBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{sectionBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+
+                <p:fieldset legend="Report Form Sub-Section" id="sub_section">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Report Form Name:" for="report_form_name3"/>
+                        <p:selectOneMenu id="report_form_name3" value="#{sub_sectionBean.report_form}" style="width:125px" required="true" requiredMessage="Report form field is Required" converter="report_formConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this" update="section_name2"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="section_name2" value="Section Name" />
+                        <p:selectOneMenu id="section_name2" value="#{sub_sectionBean.selected.section}" style="width:125px" required="true" requiredMessage="Section field is Required" converter="sectionConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{sectionBean.getts(sub_sectionBean.report_form)}" var="item" itemLabel="#{item.section_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Sub Section Name:" for="sub_section_name"/>
+                        <p:inputText id="sub_section_name" value="#{sub_sectionBean.selected.sub_section_name}" required="true" requiredMessage="Sub Section name field is Required"/>
+                        <p:outputLabel value="Order:" for="sub_section_order"/>
+                        <p:inputText id="sub_section_order" value="#{sub_sectionBean.selected.sub_section_order}" required="true" requiredMessage="Sub Section order field is Required"/>
+                        <p:outputLabel value="Is Active?:" for="is_active3"/>
+                        <p:selectOneMenu id="is_active3" value="#{sub_sectionBean.selected.is_active}" required="true" requiredMessage="Sub Section is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{sub_sectionBean.save(1)}" update="@form" process="section_name2,sub_section_name,sub_section_order,is_active3"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sub_sectionBean.cancel()}" update="@form" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="sub_section_table" value="#{sub_sectionBean.ts}" var="item">
+                    <p:column headerText="Report Form">
+                        <h:outputText value="#{item.section.report_form.report_form_name}"/>
+                    </p:column>
+                    <p:column headerText="Section Name">
+                        <h:outputText value="#{item.section.section_name}"/>
+                    </p:column>
+                    <p:column headerText="Sub Section Name">
+                        <h:outputText value="#{item.sub_section_name}"/>
+                    </p:column>
+                    <p:column headerText="Order">
+                        <h:outputText value="#{item.sub_section_order}"/>
+                    </p:column>
+                    <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{sub_sectionBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{sub_sectionBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+            </p:panelGrid>
         </h:form>
     </ui:define>
 

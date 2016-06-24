@@ -33,8 +33,8 @@
                                         <p:menuitem value="Report Form Details" action="reportform?faces-redirect=true" />
                                         <p:menuitem value="Report Form Groups" action="reportformgroup?faces-redirect=true" />
                                         <p:menuitem value="Data Elements" action="dataelement?faces-redirect=true" />
-                                        <p:menuitem value="Standard Rules" url="#" />
-                                        <p:menuitem value="Validation Rules" url="#" />
+                                        <p:menuitem value="Standard Rules" action="standardrule?faces-redirect=true"  />
+                                        <p:menuitem value="Validation Rules" action="validationrule?faces-redirect=true" />
                                     </p:submenu>
                                     <p:submenu label="User Settings" icon="ui-icon-person">
                                         <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true">
@@ -43,6 +43,7 @@
                                         </p:menuitem> 
                                         <p:menuitem value="User Category"/> 
                                     </p:submenu>
+                                    <p:menuitem value="Application Configurations" action="applicationconfiguration?faces-redirect=true"/> 
                                 </p:submenu>
 
                                 <p:submenu label="Tools" icon="ui-icon-wrench">

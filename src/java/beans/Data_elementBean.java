@@ -1,0 +1,61 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package beans;
+
+import eihdms.Data_element;
+import eihdms.EIHDMSPersistentManager;
+import eihdms.Data_element;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import org.orm.PersistentException;
+
+/**
+ *
+ * @author bajuna
+ */
+@ManagedBean
+@SessionScoped
+public class Data_elementBean extends AbstractBean<Data_element> implements Serializable {
+
+    /**
+     * Creates a new instance of Data_elementBean
+     */
+    public Data_elementBean() {
+        super(Data_element.class);
+    }
+
+    @Override
+    public void init() {
+        if (super.getEntityClass() == null) {
+            loginBean.logout();
+        }
+    }
+    @ManagedProperty("#{loginBean}")
+    private LoginBean loginBean;
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+    public List<Data_element> completeData_element(String query) {
+        List<Data_element> filteredData_elements = new ArrayList<>();
+        try {
+            filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND ( de.description like '%" + query + "%' OR  de.technical_area.technical_area_name '%" + query + "%' or de.report_form.report_form_name like '%" + query + "%' OR de.data_element_name like '%" + query + "%')").list();
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return filteredData_elements;
+    }
+}
