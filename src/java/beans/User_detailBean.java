@@ -18,7 +18,8 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class User_detailBean extends AbstractBean<User_detail> implements Serializable {
-
+    private boolean OverridePassword;
+    
     /**
      * Creates a new instance of User_detailBean
      */
@@ -41,6 +42,20 @@ public class User_detailBean extends AbstractBean<User_detail> implements Serial
 
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
+    }
+
+    /**
+     * @return the OverridePassword
+     */
+    public boolean isOverridePassword() {
+        return OverridePassword;
+    }
+
+    /**
+     * @param OverridePassword the OverridePassword to set
+     */
+    public void setOverridePassword(boolean OverridePassword) {
+        this.OverridePassword = OverridePassword;
     }
     
 }

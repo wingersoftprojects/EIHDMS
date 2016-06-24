@@ -75,8 +75,8 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" action="#{group_detailBean.save(1)}" icon="ui-icon-disk" process="is_active2,user_detail,group_detail,@this" update="@form"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_detailBean.cancel()}" update="@form" process="@this"/>
+                        <p:commandButton value="SAVE" action="#{group_userBean.save(1)}" icon="ui-icon-disk" process="is_active2,user_detail,group_detail,@this" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_userBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="group_users_table" value="#{group_userBean.ts}" var="item">
