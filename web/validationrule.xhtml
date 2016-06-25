@@ -8,6 +8,7 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:event listener="#{validation_ruleBean.init()}" type="preRenderView" />
+            <f:event listener="#{validation_ruleBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -63,7 +64,10 @@
                 </p:fieldset>
 
                 <p:fieldset legend="Report Form Groups" id="report_form_groups">
-                    <p:dataTable id="report_form_group_table" value="#{validation_ruleBean.ts}" var="item">
+                    <p:dataTable id="report_form_group_table" value="#{validation_ruleBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                         <p:column headerText="Report Form Name">
                             <h:outputText value="#{item.data_element.report_form.report_form_name}"/>
                         </p:column>

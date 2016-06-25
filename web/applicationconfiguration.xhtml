@@ -8,6 +8,7 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:event listener="#{application_configurationBean.init()}" type="preRenderView" />
+            <f:event listener="#{application_configurationBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -31,7 +32,10 @@
                     </p:panelGrid>
                 </p:fieldset>
 
-                <p:dataTable id="technical_area_table" value="#{application_configurationBean.ts}" var="item">
+                <p:dataTable id="technical_area_table" value="#{application_configurationBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Technical Area">
                         <h:outputText value="#{item.parameter_name}"/>
                     </p:column>

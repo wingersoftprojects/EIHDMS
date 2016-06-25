@@ -30,7 +30,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 	
 	private EIHDMSPersistentManager() throws PersistentException {
 		super(_connectionSetting, _sessionType, _timeToAlive, new String[] {}, _extraProperties, _configurationFile);
-		setFlushMode(FlushMode.AUTO);
+		setFlushMode(FlushMode.ALWAYS);
 	}
 	
 	@Override

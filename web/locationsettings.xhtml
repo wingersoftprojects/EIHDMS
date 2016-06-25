@@ -13,6 +13,12 @@
             <f:event listener="#{sub_districtBean.init()}" type="preRenderView" />
             <f:event listener="#{regionBean.init()}" type="preRenderView" />
             <f:event listener="#{parishBean.init()}" type="preRenderView" />
+            <f:event listener="#{countyBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{districtBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{sub_districtBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{sub_countyBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{regionBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{parishBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -33,7 +39,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{districtBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="region_table" value="#{regionBean.ts}" var="item">
+                <p:dataTable id="region_table" value="#{regionBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Region Name">
                         #{item.region_name}
                     </p:column>
@@ -74,7 +83,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{districtBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="district_table" value="#{districtBean.ts}" var="item">
+                <p:dataTable id="district_table" value="#{districtBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="District Name">
                         #{item.district_name}
                     </p:column>
@@ -118,7 +130,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sub_districtBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="sub_district_table" value="#{sub_districtBean.ts}" var="item">
+                <p:dataTable id="sub_district_table" value="#{sub_districtBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                                         <p:column headerText="Region">
                         #{item.district.region.region_name}
                     </p:column>
@@ -165,7 +180,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{countyBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="county_table" value="#{countyBean.ts}" var="item">
+                <p:dataTable id="county_table" value="#{countyBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Region">
                         #{item.district.region.region_name}
                     </p:column>
@@ -218,9 +236,12 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sub_countyBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="sub_county_table" value="#{sub_countyBean.ts}" var="item">
+                <p:dataTable id="sub_county_table" value="#{sub_countyBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Region">
-                        #{item.county.district.district.region.region_name}
+                        #{item.county.district.region.region_name}
                     </p:column>
                     <p:column headerText="District">
                         #{item.county.district.district_name}
@@ -280,9 +301,12 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{parishBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="parish_table" value="#{parishBean.ts}" var="item">
+                <p:dataTable id="parish_table" value="#{parishBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Region">
-                        #{item.sub_county.county.district.district.region.region_name}
+                        #{item.sub_county.county.district.region.region_name}
                     </p:column>
                     <p:column headerText="District">
                         #{item.sub_county.county.district.district_name}

@@ -8,12 +8,13 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:event listener="#{technical_areaBean.init()}" type="preRenderView" />
+            <f:event listener="#{technical_areaBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
         <h:form>
             <p:growl id="messages" showDetail="true" />
-            <p:panelGrid columns="1">
+            <p:panelGrid columns="2">
                 <p:fieldset legend="Technical Areas" id="data_element">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Technical Area:" for="technical_area_name"/>
@@ -31,7 +32,10 @@
                     </p:panelGrid>
                 </p:fieldset>
 
-                <p:dataTable id="technical_area_table" value="#{technical_areaBean.ts}" var="item">
+                <p:dataTable id="technical_area_table" value="#{technical_areaBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Technical Area">
                         <h:outputText value="#{item.technical_area_name}"/>
                     </p:column>

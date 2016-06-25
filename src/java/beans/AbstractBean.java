@@ -52,11 +52,17 @@ public abstract class AbstractBean<T> {
 
     //@PostConstruct
     public void init() {
+
+    }
+
+    public void initializelist() {
         try {
-            //ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createQuery("from " + entityClass.getName()).list();
-            ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).list();
+            if (entityClass != null) {
+                tsAll = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).list();
+            } else {
+                ts = new ArrayList<>();
+            }
         } catch (PersistentException ex) {
-            GeneralUtilities.clearsession();
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -103,15 +109,6 @@ public abstract class AbstractBean<T> {
     }
 
     public List<T> getTsAll() {
-        try {
-            if (entityClass != null) {
-                tsAll = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).list();
-            } else {
-                ts = new ArrayList<>();
-            }
-        } catch (PersistentException ex) {
-            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return tsAll;
     }
 
@@ -190,8 +187,26 @@ public abstract class AbstractBean<T> {
     }
 
     public void edit(T t) {
-        selected = t;
-        formstate = "edit";
+        try {
+            //no paramater
+            Class noparams[] = {};
+            Method method = t.getClass().getMethod("get" + entityClass.getSimpleName() + "_id", noparams);
+            int id = (int) method.invoke(t);
+            if (id > 0) {
+                selected = t;
+                formstate = "edit";
+            }
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void view(T t) {
@@ -206,9 +221,13 @@ public abstract class AbstractBean<T> {
 
     public void delete(T t) {
         try {
-            //        selected = t;
-            //        formstate = "delete";
-            //        Timestamp parameter
+            //no paramater
+            Class noparams[] = {};
+            Method method = t.getClass().getMethod("get" + entityClass.getSimpleName() + "_id", noparams);
+            int id = (int) method.invoke(t);
+            if (id == 0) {
+                return;
+            }
             selected = t;
             Class[] paramTimestamp = new Class[1];
             paramTimestamp[0] = Timestamp.class;
@@ -216,7 +235,7 @@ public abstract class AbstractBean<T> {
             Class[] paramInteger = new Class[1];
             paramInteger[0] = int.class;
             PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-            Method method = selected.getClass().getMethod("setLast_edit_date", paramTimestamp);
+            method = selected.getClass().getMethod("setLast_edit_date", paramTimestamp);
             method.invoke(selected, new Timestamp(new Date().getTime()));
             method = selected.getClass().getMethod("setIs_deleted", paramInteger);
             method.invoke(selected, 1);
@@ -224,6 +243,7 @@ public abstract class AbstractBean<T> {
             transaction.commit();
             saveMessage();
             add();
+            initializelist();
         } catch (NoSuchMethodException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SecurityException ex) {
@@ -287,6 +307,7 @@ public abstract class AbstractBean<T> {
             clearCache(selected);
             formstate = "view";
             add();
+            initializelist();
             saveMessage();
         } catch (PersistentException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             GeneralUtilities.clearsession();
@@ -304,6 +325,7 @@ public abstract class AbstractBean<T> {
             EIHDMSPersistentManager.instance().getSession().evict(selected);
             this.selected = null;
             ts = null;
+            initializelist();
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class
                     .getName()).log(Level.SEVERE, null, ex);

@@ -8,6 +8,7 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:event listener="#{health_facilityBean.init()}" type="preRenderView" />
+            <f:event listener="#{health_facilityBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -77,7 +78,10 @@
                     </p:panelGrid>
                 </p:fieldset>
 
-                <p:dataTable id="health_facility_table" value="#{health_facilityBean.ts}" var="item">
+                <p:dataTable id="health_facility_table" value="#{health_facilityBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Health Facility Name">
                         <h:outputText value="#{item.health_facility_name}"/>
                     </p:column>

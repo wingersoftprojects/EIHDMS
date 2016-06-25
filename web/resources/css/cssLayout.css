@@ -78,3 +78,6 @@
 }
 
 
+.ui-datatable table, .ui-datatable-resizable table,.ui-treetable table {
+    table-layout: auto !important;
+}

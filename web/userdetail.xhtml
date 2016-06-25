@@ -9,6 +9,8 @@
         <f:metadata>
             <f:event listener="#{user_categoryBean.init()}" type="preRenderView" />
             <f:event listener="#{user_detailBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_detailBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{user_categoryBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -29,7 +31,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{user_categoryBean.cancel()}" update="user_category" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="user_category_table" value="#{user_categoryBean.ts}" var="item">
+                <p:dataTable id="user_category_table" value="#{user_categoryBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="User Category Name">
                         #{item.user_category_name}
                     </p:column>

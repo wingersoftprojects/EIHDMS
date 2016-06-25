@@ -11,7 +11,10 @@
             <f:event listener="#{group_rightBean.init()}" type="preRenderView" />
             <f:event listener="#{group_userBean.init()}" type="preRenderView" />
             <f:event listener="#{user_categoryBean.init()}" type="preRenderView" />
-            <f:event listener="#{user_detailBean.init()}" type="preRenderView" />
+            <f:event listener="#{group_detailBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{group_rightBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{group_userBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{user_categoryBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
 
@@ -33,7 +36,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_detailBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="group_table" value="#{group_detailBean.ts}" var="item">
+                <p:dataTable id="group_table" value="#{group_detailBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Group Name">
                         <h:outputText value="#{item.group_name}"/>
                     </p:column>
@@ -79,7 +85,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_userBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="group_users_table" value="#{group_userBean.ts}" var="item">
+                <p:dataTable id="group_users_table" value="#{group_userBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Group Name">
                         <h:outputText value="#{item.group_detail.group_name}"/>
                     </p:column>
@@ -151,7 +160,10 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{group_rightBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable value="#{group_rightBean.ts}" var="item">
+                <p:dataTable value="#{group_rightBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Group Name">
                         <h:outputText value="#{item.group_detail.group_name}"/>
                     </p:column>

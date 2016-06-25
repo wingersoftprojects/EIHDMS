@@ -8,6 +8,7 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:event listener="#{facility_levelBean.init()}" type="preRenderView" />
+            <f:event listener="#{facility_levelBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -29,7 +30,10 @@
                     </p:panelGrid>
                 </p:fieldset>
 
-                <p:dataTable id="technical_area_table" value="#{facility_levelBean.ts}" var="item">
+                <p:dataTable id="technical_area_table" value="#{facility_levelBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Facility Level">
                         <h:outputText value="#{item.facility_level_name}"/>
                     </p:column>
