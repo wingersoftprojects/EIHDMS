@@ -12,7 +12,7 @@
         </f:metadata>
     </ui:define>
     <ui:define name="content">
-        <h:form id="form">
+        <h:form id="form" rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="1">
                 <p:outputLabel value="View Data Element Tree By:" for="data_element_tree_menu"/>

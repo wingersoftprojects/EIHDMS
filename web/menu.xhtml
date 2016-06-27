@@ -79,7 +79,7 @@
                                 </p:submenu>
                                 <f:facet name="options">
                                     <p:outputPanel style="padding: 2px;background: antiquewhite; font-size: 16px !important; font-weight: bold;">
-                                        <p:outputLabel value="Welcome: Eliab Natumanya   "/>
+                                        <p:outputLabel value="Welcome: #{loginBean.user_detail.first_name} #{loginBean.user_detail.second_name}     "/>
                                         <p:commandButton value="Logout" icon="ui-icon-extlink" action="#{loginBean.logout()}" update="@all" ajax="false" />
                                     </p:outputPanel>
                                 </f:facet>

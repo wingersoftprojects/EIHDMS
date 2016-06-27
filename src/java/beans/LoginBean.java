@@ -5,12 +5,20 @@
  */
 package beans;
 
+import eihdms.Group_right;
+import eihdms.User_detail;
 import java.io.Serializable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.orm.PersistentException;
+import utilities.GeneralUtilities;
+import utilities.Security;
 
 /**
  *
@@ -23,8 +31,13 @@ public class LoginBean implements Serializable {
     private String username;
     private String password;
     private boolean isloggedin = false;
-
     private String action = "login";
+    private String messageString = "";
+    private User_detail user_detail;
+    private List<Group_right> group_rights;
+
+    public LoginBean() {
+    }
 
     public String getAction() {
         return action;
@@ -58,49 +71,52 @@ public class LoginBean implements Serializable {
         this.password = password;
     }
 
-    public LoginBean() {
-
-    }
-
     public String login() {
+        user_detail = null;
+        setIsloggedin(false);
+        try {
+            user_detail = User_detail.loadUser_detailByQuery("is_deleted=0 and is_active=1 and user_name='" + username + "'", null);
+        } catch (PersistentException ex) {
+            Logger.getLogger(NavigationBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (user_detail != null) {
+            if (Security.Decrypt(user_detail.getUser_password()).equals(password)) {
+                setIsloggedin(true);
+            } else {
+                setIsloggedin(false);
+            }
+        } else {
+            setIsloggedin(false);
+        }
+        
+        //get group_rights for this User
+        try {
+            this.setGroup_rights(new Group_rightBean().getActiveGroup_rightListByUser(user_detail));
+        } catch (NullPointerException npe) {
+            this.setGroup_rights(null);
+        }
 
-        //get grouprights for this User
-            setIsloggedin(true);
         if (isloggedin) {
             setIsloggedin(true);
             messageString = "";
-            return "upload?faces-redirect=true";
+            return "home?faces-redirect=true";
         } else {
             messageString = "Invalid Login Details Submitted!";
-            FacesContext.getCurrentInstance().addMessage("List", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Login Details", "Invalid Login Details"));
-            return "upload?faces-redirect=true";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("EIHDMS Login Failure",messageString));
+            return "#";
         }
     }
-
-    private String newpassword;
-    private String retypenewpassword;
-
-    public String getNewpassword() {
-        return newpassword;
+    
+    public boolean IsAllowed(int form_id, String role) {
+        try {
+            return new Group_rightBean().IsUserGroupsFormAccessAllowed(this.getUser_detail(), this.getGroup_rights(), form_id, role) != 0;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
-
-    public void setNewpassword(String newpassword) {
-        this.newpassword = newpassword;
-    }
-
-    public String getRetypenewpassword() {
-        return retypenewpassword;
-    }
-
-    public void setRetypenewpassword(String retypenewpassword) {
-        this.retypenewpassword = retypenewpassword;
-    }
-
-    public String changepassword() {
-            return "login?faces-redirect=true";
-    }
-
-    private String messageString = "";
 
     public String getMessageString() {
         return messageString;
@@ -138,6 +154,34 @@ public class LoginBean implements Serializable {
     public void saveMessage() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage("Completed successfully", "Completed successfully"));
+    }
+
+    /**
+     * @return the user_detail
+     */
+    public User_detail getUser_detail() {
+        return user_detail;
+    }
+
+    /**
+     * @param user_detail the user_detail to set
+     */
+    public void setUser_detail(User_detail user_detail) {
+        this.user_detail = user_detail;
+    }
+
+    /**
+     * @return the group_rights
+     */
+    public List<Group_right> getGroup_rights() {
+        return group_rights;
+    }
+
+    /**
+     * @param group_rights the group_rights to set
+     */
+    public void setGroup_rights(List<Group_right> group_rights) {
+        this.group_rights = group_rights;
     }
 
 }

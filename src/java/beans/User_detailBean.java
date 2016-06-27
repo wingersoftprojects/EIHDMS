@@ -10,6 +10,7 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import utilities.Security;
 
 /**
  *
@@ -35,6 +36,12 @@ public class User_detailBean extends AbstractBean<User_detail> implements Serial
     }
     @ManagedProperty("#{loginBean}")
     private LoginBean loginBean;
+    
+    public void doEncrypt(User_detail aUser_Detail){
+        if(aUser_Detail!=null){
+            aUser_Detail.setUser_password(Security.Encrypt(aUser_Detail.getUser_password()));
+        }
+    }
 
     public LoginBean getLoginBean() {
         return loginBean;

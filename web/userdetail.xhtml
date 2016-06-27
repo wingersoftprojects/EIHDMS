@@ -68,7 +68,7 @@
                         <p:inputText id="user_name" value="#{user_detailBean.selected.user_name}" required="true" requiredMessage=" is required"/>
                         <p:outputLabel value="Override password?:" for="override_password" rendered="#{user_detailBean.selected.user_detail_id>0}"/>
                         <p:selectBooleanCheckbox id="override_password" value="#{user_detailBean.overridePassword}" rendered="#{user_detailBean.selected.user_detail_id>0}" required="true" requiredMessage="Override password field is needed">
-                            <p:ajax process="@this,user_detail" update="@form"/>
+                            <p:ajax process="@this" update="@form"/>
                         </p:selectBooleanCheckbox>
                         <p:outputLabel value="Password:" id="label_password" for="password" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
                         <p:password id="password" value="#{user_detailBean.selected.user_password}" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
@@ -92,8 +92,8 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" action="#{user_detailBean.save(1)}" icon="ui-icon-disk" process="user_detail" update="@form"/>
-                        <p:commandButton value="CLEAR" action="#{user_detailBean.cancel()}" icon="ui-icon-cancel" process="user_detail" update="user_detail"/>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{user_detailBean.save(1)}" update="user_detail"/>
+                        <p:commandButton value="CLEAR" action="#{user_detailBean.cancel()}" icon="ui-icon-cancel" process="@this" update="user_detail"/>
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="user_detail_table" value="#{user_detailBean.ts}" var="item">

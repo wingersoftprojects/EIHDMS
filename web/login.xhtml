@@ -21,7 +21,7 @@
             <div style="width: 30%; margin:0 auto;opacity: 0.95;padding-top: 60px;">
                 <f:view>
                     <h:form>
-                        <p:growl/>
+                        <p:growl id="messages" showDetail="true"/>
                         <p:panel>
                             <center>
                                 <h:panelGrid style="border-style: none;">
@@ -32,9 +32,8 @@
                                     <p:inputText id="username" value="#{loginBean.username}" title="Username" required="true" requiredMessage="The Username field is required."/>
                                     <p:outputLabel value="Password:" for="password" />
                                     <p:password id="password" value="#{loginBean.password}" title="Password" required="true" requiredMessage="The Password field is required."/>
-                                    <p:commandButton value="Login" icon="ui-icon-key" action="#{loginBean.login}" update="@form"/>
-                                    <p:commandButton value="Change Password" update="@form" process="@this" icon="ui-icon-shuffle"></p:commandButton>
                                 </p:panelGrid>
+                                <p:commandButton value="Login" icon="ui-icon-key" action="#{loginBean.login}" update="@form"/>
                             </center>
                         </p:panel>
                     </h:form>

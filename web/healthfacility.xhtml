@@ -12,7 +12,7 @@
         </f:metadata>
     </ui:define>
     <ui:define name="content">
-        <h:form>
+        <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="1">
                 <p:fieldset legend="Health Facilitys" id="data_element">
