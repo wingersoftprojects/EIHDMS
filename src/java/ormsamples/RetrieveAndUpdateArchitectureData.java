@@ -87,6 +87,12 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Application_configuration leihdmsApplication_configuration = eihdms.Application_configuration.loadApplication_configurationByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsApplication_configuration.save();
+			eihdms.Temp_data_element leihdmsTemp_data_element = eihdms.Temp_data_element.loadTemp_data_elementByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsTemp_data_element.save();
+			eihdms.Temp_health_facility leihdmsTemp_health_facility = eihdms.Temp_health_facility.loadTemp_health_facilityByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsTemp_health_facility.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -251,6 +257,18 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsApplication_configurationCriteria.application_configuration_id.eq();
 		System.out.println(leihdmsApplication_configurationCriteria.uniqueApplication_configuration());
+		
+		System.out.println("Retrieving Temp_data_element by Temp_data_elementCriteria");
+		eihdms.Temp_data_elementCriteria leihdmsTemp_data_elementCriteria = new eihdms.Temp_data_elementCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsTemp_data_elementCriteria.temp_data_element_id.eq();
+		System.out.println(leihdmsTemp_data_elementCriteria.uniqueTemp_data_element());
+		
+		System.out.println("Retrieving Temp_health_facility by Temp_health_facilityCriteria");
+		eihdms.Temp_health_facilityCriteria leihdmsTemp_health_facilityCriteria = new eihdms.Temp_health_facilityCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsTemp_health_facilityCriteria.temp_health_facility_id.eq();
+		System.out.println(leihdmsTemp_health_facilityCriteria.uniqueTemp_health_facility());
 		
 	}
 	

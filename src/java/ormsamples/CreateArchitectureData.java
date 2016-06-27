@@ -87,6 +87,12 @@ public class CreateArchitectureData {
 			eihdms.Application_configuration leihdmsApplication_configuration = eihdms.Application_configuration.createApplication_configuration();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, parameter_value, parameter_name
 			leihdmsApplication_configuration.save();
+			eihdms.Temp_data_element leihdmsTemp_data_element = eihdms.Temp_data_element.createTemp_data_element();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : sub_section_name, section_name, report_form_name
+			leihdmsTemp_data_element.save();
+			eihdms.Temp_health_facility leihdmsTemp_health_facility = eihdms.Temp_health_facility.createTemp_health_facility();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : facility_level_name, parish_name, sub_county_name, county_name, sub_district_name, district_name, region_name, health_facility_name
+			leihdmsTemp_health_facility.save();
 			t.commit();
 		}
 		catch (Exception e) {

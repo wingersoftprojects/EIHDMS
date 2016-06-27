@@ -61,6 +61,10 @@ public class DeleteArchitectureData {
 			leihdmsReport_form_group.delete();
 			eihdms.Application_configuration leihdmsApplication_configuration = eihdms.Application_configuration.loadApplication_configurationByQuery(null, null);
 			leihdmsApplication_configuration.delete();
+			eihdms.Temp_data_element leihdmsTemp_data_element = eihdms.Temp_data_element.loadTemp_data_elementByQuery(null, null);
+			leihdmsTemp_data_element.delete();
+			eihdms.Temp_health_facility leihdmsTemp_health_facility = eihdms.Temp_health_facility.loadTemp_health_facilityByQuery(null, null);
+			leihdmsTemp_health_facility.delete();
 			t.commit();
 		}
 		catch (Exception e) {

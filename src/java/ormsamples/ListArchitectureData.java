@@ -217,6 +217,22 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Temp_data_element...");
+		eihdms.Temp_data_element[] eihdmsTemp_data_elements = eihdms.Temp_data_element.listTemp_data_elementByQuery(null, null);
+		length = Math.min(eihdmsTemp_data_elements.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsTemp_data_elements[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Temp_health_facility...");
+		eihdms.Temp_health_facility[] eihdmsTemp_health_facilitys = eihdms.Temp_health_facility.listTemp_health_facilityByQuery(null, null);
+		length = Math.min(eihdmsTemp_health_facilitys.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsTemp_health_facilitys[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -531,6 +547,30 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsApplication_configurations[i]);
 		}
 		System.out.println(length + " Application_configuration record(s) retrieved."); 
+		
+		System.out.println("Listing Temp_data_element by Criteria...");
+		eihdms.Temp_data_elementCriteria leihdmsTemp_data_elementCriteria = new eihdms.Temp_data_elementCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsTemp_data_elementCriteria.temp_data_element_id.eq();
+		leihdmsTemp_data_elementCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Temp_data_element[] eihdmsTemp_data_elements = leihdmsTemp_data_elementCriteria.listTemp_data_element();
+		length =eihdmsTemp_data_elements== null ? 0 : Math.min(eihdmsTemp_data_elements.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsTemp_data_elements[i]);
+		}
+		System.out.println(length + " Temp_data_element record(s) retrieved."); 
+		
+		System.out.println("Listing Temp_health_facility by Criteria...");
+		eihdms.Temp_health_facilityCriteria leihdmsTemp_health_facilityCriteria = new eihdms.Temp_health_facilityCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsTemp_health_facilityCriteria.temp_health_facility_id.eq();
+		leihdmsTemp_health_facilityCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Temp_health_facility[] eihdmsTemp_health_facilitys = leihdmsTemp_health_facilityCriteria.listTemp_health_facility();
+		length =eihdmsTemp_health_facilitys== null ? 0 : Math.min(eihdmsTemp_health_facilitys.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsTemp_health_facilitys[i]);
+		}
+		System.out.println(length + " Temp_health_facility record(s) retrieved."); 
 		
 	}
 	
