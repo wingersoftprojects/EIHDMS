@@ -25,7 +25,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{facility_levelBean.save(1)}" update="@form"/>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{facility_levelBean.save(loginBean.user_detail.user_detail_id)}" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{facility_levelBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>

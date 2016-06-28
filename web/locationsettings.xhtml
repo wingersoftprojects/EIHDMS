@@ -35,7 +35,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" action="#{regionBean.save(1)}" process="@this,region_name,is_active" icon="ui-icon-disk" update="@form"/>
+                        <p:commandButton value="SAVE" action="#{regionBean.save(loginBean.user_detail.user_detail_id)}" process="@this,region_name,is_active" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{districtBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
@@ -79,7 +79,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" process="district_name,is_active2,region,@this" action="#{districtBean.save(1)}" icon="ui-icon-disk" update="@form"/>
+                        <p:commandButton value="SAVE" process="district_name,is_active2,region,@this" action="#{districtBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{districtBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
@@ -126,7 +126,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" process="sub_district_name,is_active6,district3,@this" action="#{sub_districtBean.save(1)}" icon="ui-icon-disk" update="@form"/>
+                        <p:commandButton value="SAVE" process="sub_district_name,is_active6,district3,@this" action="#{sub_districtBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sub_districtBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
@@ -176,7 +176,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" process="county_name,is_active3,district,@this" action="#{countyBean.save(1)}" icon="ui-icon-disk" update="@form"/>
+                        <p:commandButton value="SAVE" process="county_name,is_active3,district,@this" action="#{countyBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{countyBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
@@ -232,7 +232,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" process="sub_county_name,is_active4,county,@this" action="#{sub_countyBean.save(1)}" icon="ui-icon-disk" update="@form"/>
+                        <p:commandButton value="SAVE" process="sub_county_name,is_active4,county,@this" action="#{sub_countyBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sub_countyBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
@@ -297,7 +297,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" process="parish_name,is_active5,sub_county,@this" action="#{parishBean.save(1)}" icon="ui-icon-disk" update="@form"/>
+                        <p:commandButton value="SAVE" process="parish_name,is_active5,sub_county,@this" action="#{parishBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{parishBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>

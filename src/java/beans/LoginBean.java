@@ -71,7 +71,7 @@ public class LoginBean implements Serializable {
         this.password = password;
     }
 
-    public String login() {
+    public void login() {
         user_detail = null;
         setIsloggedin(false);
         try {
@@ -101,11 +101,14 @@ public class LoginBean implements Serializable {
         if (isloggedin) {
             setIsloggedin(true);
             messageString = "";
-            return "home?faces-redirect=true";
+            //return "home?faces-redirect=true";
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+            nav.performNavigation("home?faces-redirect=true");
         } else {
             messageString = "Invalid Login Details Submitted!";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("EIHDMS Login Failure",messageString));
-            return "#";
+            //return "login?faces-redirect=true";
         }
     }
     
