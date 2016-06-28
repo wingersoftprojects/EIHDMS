@@ -70,10 +70,13 @@
                         <p:selectBooleanCheckbox id="override_password" value="#{user_detailBean.overridePassword}" rendered="#{user_detailBean.selected.user_detail_id>0}" required="true" requiredMessage="Override password field is needed">
                             <p:ajax process="@this" update="@form"/>
                         </p:selectBooleanCheckbox>
+                        
                         <p:outputLabel value="Password:" id="label_password" for="password" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
                         <p:password id="password" value="#{user_detailBean.selected.user_password}" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
+                        
                         <p:outputLabel value="Confirm Password:" id="label_confirm_password" for="confirm_password" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
-                        <p:password id="confirm_password" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Confirm password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
+                        <p:password id="confirm_password" value="#{user_detailBean.confirmPassword}" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Confirm password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
+                        
                         <p:outputLabel value="First Name:" for="first_name"/>
                         <p:inputText id="first_name" value="#{user_detailBean.selected.first_name}" required="true" requiredMessage="First Name is required"/>
                         <p:outputLabel value="Second Name:" for="second_name"/>

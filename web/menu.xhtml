@@ -43,7 +43,7 @@
                                         </p:menuitem> 
                                         <p:menuitem value="User Category"/> 
                                     </p:submenu>
-                                    <p:menuitem value="Application Configurations" action="applicationconfiguration?faces-redirect=true"/> 
+                                    <p:menuitem value="Configurations" action="applicationconfiguration?faces-redirect=true" icon="ui-icon-gear"/> 
                                 </p:submenu>
 
                                 <p:submenu label="Tools" icon="ui-icon-wrench">
@@ -78,10 +78,12 @@
                                     <p:menuitem value="About" url="#" />
                                 </p:submenu>
                                 <f:facet name="options">
-                                    <p:outputPanel style="padding: 2px;background: antiquewhite; font-size: 16px !important; font-weight: bold;">
-                                        <p:outputLabel value="Welcome: #{loginBean.user_detail.first_name} #{loginBean.user_detail.second_name}     "/>
-                                        <p:commandButton value="Logout" icon="ui-icon-extlink" action="#{loginBean.logout()}" update="@all" ajax="false" />
-                                    </p:outputPanel>
+                                    <p:menubar>
+                                        <p:submenu label="#{loginBean.user_detail.first_name}" icon="ui-icon-person">
+                                            <p:menuitem value="Details" action="currentuserdetail?faces-redirect=true" icon="ui-icon-contact" />
+                                            <p:menuitem value="Logout" action="#{loginBean.logout()}" update="@all" ajax="false" icon="ui-icon-extlink"/>
+                                        </p:submenu>
+                                    </p:menubar>
                                 </f:facet>
 
                             </p:menubar></div>
