@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:growl/>
+            <p:panelGrid columns="2">
+                <p:outputLabel for="table_string" value="Table:" />
+                <p:inputText id="table_string" value="#{uploadBean.table_string}" style="width:125px" required="true" requiredMessage="Table field is Required"/>
+                <p:outputLabel value="Upload"/>
+                <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUploadgenerate_insertstring}" mode="advanced"
+                              auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="table_string" />
+                <p:outputLabel for="insert_string" value="Insert String:" />
+                <p:inputTextarea rows="6" cols="33" value="#{uploadBean.insert_string}" id="insert_string" />
+            </p:panelGrid>
+
+        </h:form>
+    </h:body>
+</html>
+

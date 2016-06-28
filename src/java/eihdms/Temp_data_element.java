@@ -387,7 +387,7 @@ public class Temp_data_element implements Serializable {
 	@Column(name="group_column_number", nullable=true, length=10)	
 	private Integer group_column_number;
 	
-	@Column(name="data_element_name", nullable=true, length=200)	
+	@Column(name="data_element_name", nullable=true)	
 	private String data_element_name;
 	
 	@Column(name="data_type", nullable=true, length=100)	
@@ -408,7 +408,7 @@ public class Temp_data_element implements Serializable {
 	@Column(name="technical_area_name", nullable=true)	
 	private String technical_area_name;
 	
-	@Column(name="description", nullable=true, length=200)	
+	@Column(name="description", nullable=true)	
 	private String description;
 	
 	@Column(name="data_element_code", nullable=true, length=50)	

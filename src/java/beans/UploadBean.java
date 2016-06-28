@@ -44,6 +44,30 @@ public class UploadBean implements Serializable {
 
     private int reportformid;
     private JSONArray jSONArray;
+    private List<String> rowdatas;
+    private Report_form_group report_form_group;
+    private Report_form report_form;
+    private List<Report_form_group> report_form_groups;
+    private List<Report_form> report_forms;
+
+    private String insert_string;
+    private String table_string;
+
+    public String getInsert_string() {
+        return insert_string;
+    }
+
+    public void setInsert_string(String insert_string) {
+        this.insert_string = insert_string;
+    }
+
+    public String getTable_string() {
+        return table_string;
+    }
+
+    public void setTable_string(String table_string) {
+        this.table_string = table_string;
+    }
 
     public JSONArray getjSONArray() {
         JSONArray jArray = new JSONArray();
@@ -80,7 +104,6 @@ public class UploadBean implements Serializable {
     public void setReportformid(int reportformid) {
         this.reportformid = reportformid;
     }
-    private Report_form_group report_form_group;
 
     public Report_form_group getReport_form_group() {
         return report_form_group;
@@ -89,7 +112,6 @@ public class UploadBean implements Serializable {
     public void setReport_form_group(Report_form_group report_form_group) {
         this.report_form_group = report_form_group;
     }
-    private Report_form report_form;
 
     public Report_form getReport_form() {
         return report_form;
@@ -98,8 +120,6 @@ public class UploadBean implements Serializable {
     public void setReport_form(Report_form report_form) {
         this.report_form = report_form;
     }
-
-    private List<Report_form_group> report_form_groups;
 
     public List<Report_form_group> getReport_form_groups() {
         try {
@@ -117,7 +137,6 @@ public class UploadBean implements Serializable {
     public void setReport_form_groups(List<Report_form_group> report_form_groups) {
         this.report_form_groups = report_form_groups;
     }
-    private List<Report_form> report_forms;
 
     public List<Report_form> getReport_forms() {
         try {
@@ -131,8 +150,6 @@ public class UploadBean implements Serializable {
     public void setReport_forms(List<Report_form> report_forms) {
         this.report_forms = report_forms;
     }
-
-    private List<String> rowdatas;
 
     public List<String> getRowdatas() {
         return rowdatas;
@@ -161,12 +178,21 @@ public class UploadBean implements Serializable {
         }
     }
 
-    public void load_interface(){
-        if(!interface_datas.isEmpty()){
-            
+    public void handleFileUploadgenerate_insertstring(FileUploadEvent event) {
+        try {
+            InputStream inputStream = event.getFile().getInputstream();
+            generate_insertstring(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-    
+
+    public void load_interface() {
+        if (!interface_datas.isEmpty()) {
+
+        }
+    }
+
     public void uploadexcel(InputStream inputStream) {
         //FileInputStream fis = null;
         try {
@@ -265,6 +291,99 @@ public class UploadBean implements Serializable {
         } catch (InvalidFormatException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void generate_insertstring(InputStream inputStream) {
+        //FileInputStream fis = null;
+        try {
+            // Using XSSF for xlsx format, for xls use HSSF
+            //Workbook workbook = new XSSFWorkbook(fis);
+            org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(inputStream);
+
+            //int numberOfSheets = workbook.getNumberOfSheets();
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+
+            Iterator<Row> rowIterator = sheet.iterator();
+            int x = 0;
+            //iterating over each row
+            rowdatas = new ArrayList<>();
+            interface_datas = new ArrayList<>();
+            String column_headers = "";
+            String data_values = "";
+            insert_string = "";
+            int counter = 0;
+            while (rowIterator.hasNext()) {
+                if (x > 0) {
+                    Row row = rowIterator.next();
+                    if (row.getRowNum() == 0) {
+                        Iterator<Cell> cellIterator = row.cellIterator();
+                        counter = 0;
+                        while (cellIterator.hasNext()) {
+                            Cell cell = cellIterator.next();
+                            if (counter == 0) {
+                                if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
+                                    column_headers += (cell.getStringCellValue());
+                                } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
+                                    column_headers += (cell.getNumericCellValue());
+                                }
+                            }
+                            if (counter > 0) {
+                                if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
+                                    column_headers += ("," + cell.getStringCellValue());
+                                } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
+                                    column_headers += ("," + cell.getNumericCellValue());
+                                }
+                            }
+                            counter++;
+                        }
+                    }
+                    //Iterating over each cell (column wise)  in a particular row.
+                    Iterator<Cell> cellIterator2 = row.cellIterator();
+                    counter = 0;
+                    data_values = "";
+                    while (cellIterator2.hasNext()) {
+                        Cell cell = cellIterator2.next();
+                        //System.out.println(cell.getCellType());
+                        if (row.getRowNum() > 0) {
+                            //Cell cell = cellIterator2.next();
+                            if (counter == 0) {
+                                if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                                    data_values += ("'" + cell.getStringCellValue() + "'");
+                                } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                                    data_values += (cell.getNumericCellValue());
+                                } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK || cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+                                    data_values += ("NULL");
+                                }
+                            }
+                            if (counter > 0) {
+                                if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                                    data_values += (",'" + cell.getStringCellValue() + "'");
+                                } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                                    data_values += ("," + cell.getNumericCellValue());
+                                } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK || cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+                                    data_values += (",NULL");
+                                }
+                            }
+                        }
+                        counter++;
+                    }
+                    if (row.getRowNum() > 0) {
+                        insert_string += "insert into " + table_string + " (" + column_headers + ") values(" + data_values + ");\n";
+                    }
+                    //System.out.println(insert_string);
+                    //System.out.println(row.getRowNum());
+                }
+                x++;
+            }
+            //}
+            //fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
