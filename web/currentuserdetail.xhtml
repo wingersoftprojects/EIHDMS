@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{user_categoryBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_detailBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_detailBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{user_categoryBean.initializelist()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="main_form">
+            <p:growl id="messages" showDetail="true" />
+            <p:fieldset legend="Your current user details">
+                <p:panelGrid columns="2" id="user_detail">
+                    <p:outputLabel value="User Category:"/>
+                    <p:outputLabel value="#{loginBean.user_detail.user_category.user_category_name}" />
+                    <p:outputLabel value="Username:"/>
+                    <p:outputLabel value="#{loginBean.user_detail.user_name}" />
+                    <p:outputLabel value="User Names:"/>
+                    <p:outputLabel value="#{loginBean.user_detail.first_name} #{loginBean.user_detail.second_name} #{loginBean.user_detail.third_name}" />
+                    <p:outputLabel value="Is General Admin?:"/>
+                    <p:outputLabel value="#{generalUtilities.convertYesNo(loginBean.user_detail.is_user_gen_admin)}" />
+                    <p:outputLabel value="Override password?:" for="override_password" rendered="#{loginBean.user_detail.user_detail_id>0}"/>
+                    <p:selectBooleanCheckbox id="override_password" value="#{user_detailBean.overridePassword}" rendered="#{loginBean.user_detail.user_detail_id>0}" required="true" requiredMessage="Override password field is needed">
+                        <p:ajax process="@this" update="@form"/>
+                    </p:selectBooleanCheckbox>
+                    <p:outputLabel value="Current Password:" id="label_current_password" for="current_password" rendered="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}"/>
+                    <p:password id="current_password" value="#{user_detailBean.currentPassword}" required="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}" requiredMessage="Current password is required" rendered="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}"/>
+
+                    <p:outputLabel value="New Password:" id="label_new_password" for="new_password" rendered="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}"/>
+                    <p:password id="new_password" value="#{user_detailBean.newPassword}" required="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}" requiredMessage="New password is required" rendered="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}"/>
+
+                    <p:outputLabel value="Confirm Password:" id="label_confirm_password" for="confirm_password" rendered="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}"/>
+                    <p:password id="confirm_password" value="#{user_detailBean.confirmPassword}" required="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}" requiredMessage="Confirm password is required" rendered="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}"/>
+                    
+                    <p:outputLabel value=""/>
+                    <p:commandButton value="CHANGE" icon="ui-icon-disk" action="#{user_detailBean.changeUserPassword(loginBean.user_detail)}" process="user_detail" update="@form" rendered="#{loginBean.user_detail.user_detail_id>0 and user_detailBean.overridePassword}"/>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:dataTable id="grop_right_table" value="#{group_rightBean.getActiveGroup_rightListByUser(loginBean.user_detail)}" var="item">
+                <p:column headerText="Group">
+                    #{item.group_detail.group_name}
+                </p:column>
+                <p:column headerText="Report Form">
+                    #{item.report_form.report_form_name}
+                </p:column>
+                <p:column headerText="View">
+                    #{generalUtilities.convertYesNo(item.allow_view)}
+                </p:column>
+                <p:column headerText="Add">
+                    #{generalUtilities.convertYesNo(item.allow_add)}
+                </p:column>
+                <p:column headerText="Edit">
+                    #{generalUtilities.convertYesNo(item.allow_edit)}
+                </p:column>
+                <p:column headerText="Delete">
+                    #{generalUtilities.convertYesNo(item.allow_delete)}
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
