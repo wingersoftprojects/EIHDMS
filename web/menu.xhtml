@@ -19,7 +19,7 @@
                         <div class="ui-grid-col-10" style="padding-top: 7px;">
                             <p:menubar>
                                 <p:submenu label="Data" icon="ui-icon-circle-plus">
-                                    <p:menuitem value="Data Upload" icon="ui-icon-circle-arrow-n" update="messages"/>
+                                    <p:menuitem value="Data Upload"  action="upload?faces-redirect=true" icon="ui-icon-pencil" />
                                     <p:menuitem value="Data Entry" icon="ui-icon-pencil" update="messages"/>
                                 </p:submenu>
                                 <p:submenu label="Settings" icon="ui-icon-gear">
@@ -35,6 +35,7 @@
                                         <p:menuitem value="Data Elements" action="dataelement?faces-redirect=true" />
                                         <p:menuitem value="Standard Rules" action="standardrule?faces-redirect=true"  />
                                         <p:menuitem value="Validation Rules" action="validationrule?faces-redirect=true" />
+                                        <p:menuitem value="Financial Year" action="financialyear?faces-redirect=true" />
                                     </p:submenu>
                                     <p:submenu label="User Settings" icon="ui-icon-person">
                                         <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true">

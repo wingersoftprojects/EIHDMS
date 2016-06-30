@@ -233,6 +233,14 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Financial_year...");
+		eihdms.Financial_year[] eihdmsFinancial_years = eihdms.Financial_year.listFinancial_yearByQuery(null, null);
+		length = Math.min(eihdmsFinancial_years.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsFinancial_years[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -571,6 +579,18 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsTemp_health_facilitys[i]);
 		}
 		System.out.println(length + " Temp_health_facility record(s) retrieved."); 
+		
+		System.out.println("Listing Financial_year by Criteria...");
+		eihdms.Financial_yearCriteria leihdmsFinancial_yearCriteria = new eihdms.Financial_yearCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsFinancial_yearCriteria.financial_year_id.eq();
+		leihdmsFinancial_yearCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Financial_year[] eihdmsFinancial_years = leihdmsFinancial_yearCriteria.listFinancial_year();
+		length =eihdmsFinancial_years== null ? 0 : Math.min(eihdmsFinancial_years.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsFinancial_years[i]);
+		}
+		System.out.println(length + " Financial_year record(s) retrieved."); 
 		
 	}
 	

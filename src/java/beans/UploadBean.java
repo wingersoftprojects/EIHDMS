@@ -7,6 +7,7 @@ package beans;
 
 import eihdms.Data_element;
 import eihdms.EIHDMSPersistentManager;
+import eihdms.Financial_year;
 import eihdms.Interface_data;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -49,9 +51,63 @@ public class UploadBean implements Serializable {
     private Report_form report_form;
     private List<Report_form_group> report_form_groups;
     private List<Report_form> report_forms;
+    private Date report_period_from_date;
+    private Date report_period_to_date;
+    private Financial_year financial_year;
+    private int report_period_quarter;
+    private String report_period_name;
+
+    public Date getReport_period_from_date() {
+        return report_period_from_date;
+    }
+
+    public void setReport_period_from_date(Date report_period_from_date) {
+        this.report_period_from_date = report_period_from_date;
+    }
+
+    public Date getReport_period_to_date() {
+        return report_period_to_date;
+    }
+
+    public void setReport_period_to_date(Date report_period_to_date) {
+        this.report_period_to_date = report_period_to_date;
+    }
+
+    public Financial_year getFinancial_year() {
+        return financial_year;
+    }
+
+    public void setFinancial_year(Financial_year financial_year) {
+        this.financial_year = financial_year;
+    }
+
+    public int getReport_period_quarter() {
+        return report_period_quarter;
+    }
+
+    public void setReport_period_quarter(int report_period_quarter) {
+        this.report_period_quarter = report_period_quarter;
+    }
+
+    public String getReport_period_name() {
+        return report_period_name;
+    }
+
+    public void setReport_period_name(String report_period_name) {
+        this.report_period_name = report_period_name;
+    }
 
     private String insert_string;
     private String table_string;
+    private String database_type;
+
+    public String getDatabase_type() {
+        return database_type;
+    }
+
+    public void setDatabase_type(String database_type) {
+        this.database_type = database_type;
+    }
 
     public String getInsert_string() {
         return insert_string;
@@ -298,6 +354,16 @@ public class UploadBean implements Serializable {
     public void generate_insertstring(InputStream inputStream) {
         //FileInputStream fis = null;
         try {
+            if (table_string == null || database_type == null) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Please specify the database type and table name", "Please specify the database type and table name"));
+                return;
+            }
+            if (table_string.isEmpty() || database_type.isEmpty()) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Please specify the database type and table name", "Please specify the database type and table name"));
+                return;
+            }
             // Using XSSF for xlsx format, for xls use HSSF
             //Workbook workbook = new XSSFWorkbook(fis);
             org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(inputStream);
@@ -324,16 +390,32 @@ public class UploadBean implements Serializable {
                             Cell cell = cellIterator.next();
                             if (counter == 0) {
                                 if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
-                                    column_headers += (cell.getStringCellValue());
+                                    if (database_type.equals("MY SQL")) {
+                                        column_headers += ("`" + cell.getStringCellValue() + "`");
+                                    } else if (database_type.equals("SQL SERVER")) {
+                                        column_headers += ("[" + cell.getStringCellValue() + "]");
+                                    }
                                 } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
-                                    column_headers += (cell.getNumericCellValue());
+                                    if (database_type.equals("MY SQL")) {
+                                        column_headers += ("`" + cell.getNumericCellValue() + "`");
+                                    } else if (database_type.equals("SQL SERVER")) {
+                                        column_headers += ("[" + cell.getNumericCellValue() + "]");
+                                    }
                                 }
                             }
                             if (counter > 0) {
                                 if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
-                                    column_headers += ("," + cell.getStringCellValue());
+                                    if (database_type.equals("MY SQL")) {
+                                        column_headers += ("," + "`" + cell.getStringCellValue() + "`");
+                                    } else if (database_type.equals("SQL SERVER")) {
+                                        column_headers += ("," + "[" + cell.getStringCellValue() + "]");
+                                    }
                                 } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
-                                    column_headers += ("," + cell.getNumericCellValue());
+                                    if (database_type.equals("MY SQL")) {
+                                        column_headers += ("," + "`" + cell.getNumericCellValue() + "`");
+                                    } else if (database_type.equals("SQL SERVER")) {
+                                        column_headers += ("," + "[" + cell.getNumericCellValue() + "]");
+                                    }
                                 }
                             }
                             counter++;

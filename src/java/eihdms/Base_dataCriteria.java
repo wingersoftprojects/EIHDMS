@@ -29,6 +29,9 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	public final AssociationExpression parish;
 	public final IntegerExpression districtId;
 	public final AssociationExpression district;
+	public final IntegerExpression financial_yearId;
+	public final AssociationExpression financial_year;
+	public final IntegerExpression report_period_quarter;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
 	public final StringExpression report_period_name;
@@ -51,6 +54,9 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 		parish = new AssociationExpression("parish", this);
 		districtId = new IntegerExpression("district.district_id", this);
 		district = new AssociationExpression("district", this);
+		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this);
+		financial_year = new AssociationExpression("financial_year", this);
+		report_period_quarter = new IntegerExpression("report_period_quarter", this);
 		report_period_from_date = new DateExpression("report_period_from_date", this);
 		report_period_to_date = new DateExpression("report_period_to_date", this);
 		report_period_name = new StringExpression("report_period_name", this);
@@ -84,6 +90,10 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	
 	public DistrictCriteria createDistrictCriteria() {
 		return new DistrictCriteria(createCriteria("district"));
+	}
+	
+	public Financial_yearCriteria createFinancial_yearCriteria() {
+		return new Financial_yearCriteria(createCriteria("financial_year"));
 	}
 	
 	public Base_data uniqueBase_data() {

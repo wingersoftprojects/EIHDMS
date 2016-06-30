@@ -65,6 +65,8 @@ public class DeleteArchitectureData {
 			leihdmsTemp_data_element.delete();
 			eihdms.Temp_health_facility leihdmsTemp_health_facility = eihdms.Temp_health_facility.loadTemp_health_facilityByQuery(null, null);
 			leihdmsTemp_health_facility.delete();
+			eihdms.Financial_year leihdmsFinancial_year = eihdms.Financial_year.loadFinancial_yearByQuery(null, null);
+			leihdmsFinancial_year.delete();
 			t.commit();
 		}
 		catch (Exception e) {

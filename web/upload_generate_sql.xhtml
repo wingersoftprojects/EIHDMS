@@ -2,22 +2,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
 
-        <h:form>
+        <h:form id="form">
             <p:growl/>
             <p:panelGrid columns="2">
                 <p:outputLabel for="table_string" value="Table:" />
-                <p:inputText id="table_string" value="#{uploadBean.table_string}" style="width:125px" required="true" requiredMessage="Table field is Required"/>
+                <p:inputText id="table_string" value="#{uploadBean.table_string}" style="width:125px" required="true" requiredMessage="Table field is Required">
+                    <p:ajax process="@this" event="change"/>
+                    <p:ajax process="@this" event="blur"/>
+                </p:inputText>
+                <p:outputLabel value="Database Type:" for="database_type"/>
+                <p:selectOneMenu id="database_type" value="#{uploadBean.database_type}" required="true" requiredMessage="Database Type field is required">
+                    <f:selectItem itemLabel="Select One" itemValue="" />
+                    <f:selectItem itemLabel="SQL SERVER" itemValue="SQL SERVER" />
+                    <f:selectItem itemLabel="MY SQL" itemValue="MY SQL" />
+                    <p:ajax process="@this"/>
+                </p:selectOneMenu>
                 <p:outputLabel value="Upload"/>
                 <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUploadgenerate_insertstring}" mode="advanced"
-                              auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="table_string" />
+                              auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process=":form:table_string,:form:database_type" />
                 <p:outputLabel for="insert_string" value="Insert String:" />
-                <p:inputTextarea rows="6" cols="33" value="#{uploadBean.insert_string}" id="insert_string" />
+                <p:inputTextarea rows="6" cols="200" value="#{uploadBean.insert_string}" id="insert_string" />
             </p:panelGrid>
 
         </h:form>

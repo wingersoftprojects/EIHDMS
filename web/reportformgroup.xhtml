@@ -42,9 +42,9 @@
 
                 <p:fieldset legend="Report Form Groups" id="report_form_groups">
                     <p:dataTable id="report_form_group_table" value="#{report_form_groupBean.ts}" var="item" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,30,50,100">
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,30,50,100">
                         <p:column headerText="Report Form Name">
                             <h:outputText value="#{item.report_form.report_form_name}"/>
                         </p:column>
@@ -69,7 +69,6 @@
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                             </p:confirmDialog>
                         </p:column>
-                    </p:dataTable>
                     </p:dataTable>
                 </p:fieldset>
             </p:panelGrid>

@@ -3,22 +3,86 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./layout.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
+
         <h:form>
-            <p:growl id="messages" showDetail="true" />
-            <p:fieldset legend="Upload Excel Report">
-                <p:panelGrid columns="2">
-                    <p:outputLabel value="Date"/>
-                    <p:calendar/>
-                    <p:outputLabel value="Regions"/>
-                    <p:selectOneMenu></p:selectOneMenu>
-                    <p:outputLabel value="Choose Template To Upload"/>
-                    <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
-                    <p:outputLabel/>
-                    <p:commandButton value="Submit"/>
+            <p:growl/>
+            <p:fieldset legend="Upload" id="data_element">
+                <p:panelGrid columns="8" id="upload_panel_grid">
+                    <p:outputLabel for="report_form" value="Report Form:" />
+                    <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="report_form_group"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="report_form_group" value="Report Form Group:" />
+                    <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="financial_year" value="Financial Year:" />
+                    <p:selectOneMenu id="financial_year" value="#{uploadBean.financial_year}" style="width:125px" required="true" requiredMessage="Financial Year is Required" converter="financial_yearConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{financial_yearBean.tsActive}" var="item" itemLabel="#{item.financial_year_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Report Period Quarter:" for="report_period_quarter"/>
+                    <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" required="true" requiredMessage="Technical area is active field is required">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="1" itemValue="1" />
+                        <f:selectItem itemLabel="2" itemValue="2" />
+                        <f:selectItem itemLabel="3" itemValue="3" />
+                        <f:selectItem itemLabel="4" itemValue="4" />
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Report Period Start date:" for="report_period_from_date" />
+                    <p:calendar id="report_period_from_date" value="#{uploadBean.report_period_from_date}" title="startdate" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">
+                        <p:ajax event="dateSelect" process="@this"/>
+                        <p:ajax event="blur" process="@this"/>
+                    </p:calendar>
+                    <p:outputLabel value="Report Period End Date:" for="report_period_to_date" />
+                    <p:calendar id="report_period_to_date" value="#{uploadBean.report_period_to_date}" title="enddate"  pattern="#{customerBean.customer.dateformat}" navigator="true" size="11" required="true" requiredMessage="End Date field is required">
+                        <p:ajax event="dateSelect" process="@this"/>
+                        <p:ajax event="blur" process="@this"/>
+                    </p:calendar>
+                    <p:outputLabel value="Report Period Name:" for="report_period_name"/>
+                    <p:inputText id="report_period_name" value="#{uploadBean.report_period_name}"/>
+                    <p:outputLabel value="Upload"/>
+                    <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
+                                  auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="upload_panel_grid" />
+                    <p:commandButton value="Load Interface" rendered="#{uploadBean.interface_datas.size()>0}"/>
                 </p:panelGrid>
+                <!-- 1. Create a DIV container to insert the component -->
+                <div id="pivotContainer"></div>
+
+                <h:outputScript name="./component/flexmonster/flexmonster.js"/>
+                <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
+                <script type="text/javascript">
+                    var jsonData = #{uploadBean.getjSONArray()};
+
+                    var report = {
+                        dataSourceType: "json",
+                        data: jsonData,
+                        rows: [
+                            {uniqueName: "Facility"}
+                        ],
+                        columns: [
+                            {uniqueName: "DataElement"}
+                        ],
+                        measures: [
+                            {uniqueName: "DataElementValue", aggregation: "sum"}
+                        ],
+                        licenseKey: "Z53H-7B1PX3-3H16-3D01-1O36-0E0Q-3933-0G02-1U2W-08"
+                    };
+
+                    flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+
+                </script>
             </p:fieldset>
         </h:form>
     </ui:define>

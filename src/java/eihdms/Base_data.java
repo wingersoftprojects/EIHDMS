@@ -381,6 +381,10 @@ public class Base_data implements Serializable {
 				getDistrict().getBase_data().remove(this);
 			}
 			
+			if(getFinancial_year() != null) {
+				getFinancial_year().getBase_data().remove(this);
+			}
+			
 			return delete();
 		}
 		catch(Exception e) {
@@ -405,6 +409,10 @@ public class Base_data implements Serializable {
 			
 			if(getDistrict() != null) {
 				getDistrict().getBase_data().remove(this);
+			}
+			
+			if(getFinancial_year() != null) {
+				getFinancial_year().getBase_data().remove(this);
 			}
 			
 			try {
@@ -448,6 +456,14 @@ public class Base_data implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="district_id", referencedColumnName="district_id") })	
 	private eihdms.District district;
+	
+	@ManyToOne(targetEntity=eihdms.Financial_year.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="financial_year_id", referencedColumnName="financial_year_id") })	
+	private eihdms.Financial_year financial_year;
+	
+	@Column(name="report_period_quarter", nullable=true, length=11)	
+	private Integer report_period_quarter;
 	
 	@Column(name="report_period_from_date", nullable=false)	
 	@Temporal(TemporalType.DATE)	
@@ -578,6 +594,18 @@ public class Base_data implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setReport_period_quarter(int value) {
+		setReport_period_quarter(new Integer(value));
+	}
+	
+	public void setReport_period_quarter(Integer value) {
+		this.report_period_quarter = value;
+	}
+	
+	public Integer getReport_period_quarter() {
+		return report_period_quarter;
+	}
+	
 	public void setData_element(eihdms.Data_element value) {
 		this.data_element = value;
 	}
@@ -608,6 +636,14 @@ public class Base_data implements Serializable {
 	
 	public eihdms.District getDistrict() {
 		return district;
+	}
+	
+	public void setFinancial_year(eihdms.Financial_year value) {
+		this.financial_year = value;
+	}
+	
+	public eihdms.Financial_year getFinancial_year() {
+		return financial_year;
 	}
 	
 	@Override	

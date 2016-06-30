@@ -29,6 +29,9 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final AssociationExpression parish;
 	public final IntegerExpression districtId;
 	public final AssociationExpression district;
+	public final IntegerExpression financial_yearId;
+	public final AssociationExpression financial_year;
+	public final IntegerExpression report_period_quarter;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
 	public final StringExpression report_period_name;
@@ -51,6 +54,9 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		parish = new AssociationExpression("parish", this.getDetachedCriteria());
 		districtId = new IntegerExpression("district.district_id", this.getDetachedCriteria());
 		district = new AssociationExpression("district", this.getDetachedCriteria());
+		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
+		financial_year = new AssociationExpression("financial_year", this.getDetachedCriteria());
+		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());
 		report_period_name = new StringExpression("report_period_name", this.getDetachedCriteria());
@@ -74,6 +80,9 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		parish = new AssociationExpression("parish", this.getDetachedCriteria());
 		districtId = new IntegerExpression("district.district_id", this.getDetachedCriteria());
 		district = new AssociationExpression("district", this.getDetachedCriteria());
+		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
+		financial_year = new AssociationExpression("financial_year", this.getDetachedCriteria());
+		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());
 		report_period_name = new StringExpression("report_period_name", this.getDetachedCriteria());
@@ -99,6 +108,10 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public DistrictDetachedCriteria createDistrictCriteria() {
 		return new DistrictDetachedCriteria(createCriteria("district"));
+	}
+	
+	public Financial_yearDetachedCriteria createFinancial_yearCriteria() {
+		return new Financial_yearDetachedCriteria(createCriteria("financial_year"));
 	}
 	
 	public Base_data uniqueBase_data(PersistentSession session) {

@@ -26,6 +26,9 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final StringExpression health_facility_name;
 	public final StringExpression parish_name;
 	public final StringExpression district_name;
+	public final IntegerExpression financial_yearId;
+	public final AssociationExpression financial_year;
+	public final IntegerExpression report_period_quarter;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
 	public final StringExpression report_period_name;
@@ -47,6 +50,9 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		health_facility_name = new StringExpression("health_facility_name", this);
 		parish_name = new StringExpression("parish_name", this);
 		district_name = new StringExpression("district_name", this);
+		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this);
+		financial_year = new AssociationExpression("financial_year", this);
+		report_period_quarter = new IntegerExpression("report_period_quarter", this);
 		report_period_from_date = new DateExpression("report_period_from_date", this);
 		report_period_to_date = new DateExpression("report_period_to_date", this);
 		report_period_name = new StringExpression("report_period_name", this);
@@ -70,6 +76,10 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	
 	public Data_elementCriteria createData_elementCriteria() {
 		return new Data_elementCriteria(createCriteria("data_element"));
+	}
+	
+	public Financial_yearCriteria createFinancial_yearCriteria() {
+		return new Financial_yearCriteria(createCriteria("financial_year"));
 	}
 	
 	public Interface_data uniqueInterface_data() {

@@ -64,6 +64,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Application_configuration.class);
 		configuration.addAnnotatedClass(eihdms.Temp_data_element.class);
 		configuration.addAnnotatedClass(eihdms.Temp_health_facility.class);
+		configuration.addAnnotatedClass(eihdms.Financial_year.class);
 		configuration.buildMappings();
 		return configuration;
 	}

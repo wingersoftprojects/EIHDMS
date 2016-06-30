@@ -9,8 +9,18 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link href="resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <h:outputStylesheet name="./assets/css/style.css"/>
         <h:outputStylesheet name="./css/default.css"/>
         <h:outputStylesheet name="./css/cssLayout.css"/>
+        <style>
+            .fm-header {
+                white-space: pre-wrap !important;
+            }
+
+            .fm-grid-column {
+                width: 100px !important;
+            }
+        </style>
         <title>EIHDMS</title>
     </h:head>
     <f:event listener="#{loginBean.redirectifnotloggedin()}" type="preRenderView" />

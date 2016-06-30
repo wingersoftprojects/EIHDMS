@@ -93,6 +93,9 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Temp_health_facility leihdmsTemp_health_facility = eihdms.Temp_health_facility.loadTemp_health_facilityByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsTemp_health_facility.save();
+			eihdms.Financial_year leihdmsFinancial_year = eihdms.Financial_year.loadFinancial_yearByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsFinancial_year.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -269,6 +272,12 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsTemp_health_facilityCriteria.temp_health_facility_id.eq();
 		System.out.println(leihdmsTemp_health_facilityCriteria.uniqueTemp_health_facility());
+		
+		System.out.println("Retrieving Financial_year by Financial_yearCriteria");
+		eihdms.Financial_yearCriteria leihdmsFinancial_yearCriteria = new eihdms.Financial_yearCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsFinancial_yearCriteria.financial_year_id.eq();
+		System.out.println(leihdmsFinancial_yearCriteria.uniqueFinancial_year());
 		
 	}
 	
