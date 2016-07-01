@@ -315,8 +315,8 @@ public class UploadBean implements Serializable {
                                         interface_data.setHealth_facility_name(facility);
                                         interface_data.setData_element((Data_element) pair.getValue());
                                         if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
-                                            //rowdata += "|Col"+cell.getColumnIndex()+"- Value=" + cell.getStringCellValue();
-                                            interface_data.setData_element_value(cell.getStringCellValue());
+                                            //rowdata += "|Col"+cell.getColumnIndex()+"- Value=" + cell.getStringCellValue().replace("'", "''");
+                                            interface_data.setData_element_value(cell.getStringCellValue().replace("'", "''"));
                                         } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
                                             //rowdata += "|Col"+cell.getColumnIndex()+"- Value="+ cell.getNumericCellValue();
                                             interface_data.setData_element_value(String.valueOf(cell.getNumericCellValue()));
@@ -391,9 +391,9 @@ public class UploadBean implements Serializable {
                             if (counter == 0) {
                                 if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
                                     if (database_type.equals("MY SQL")) {
-                                        column_headers += ("`" + cell.getStringCellValue() + "`");
+                                        column_headers += ("`" + cell.getStringCellValue().replace("'", "''") + "`");
                                     } else if (database_type.equals("SQL SERVER")) {
-                                        column_headers += ("[" + cell.getStringCellValue() + "]");
+                                        column_headers += ("[" + cell.getStringCellValue().replace("'", "''") + "]");
                                     }
                                 } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
                                     if (database_type.equals("MY SQL")) {
@@ -406,9 +406,9 @@ public class UploadBean implements Serializable {
                             if (counter > 0) {
                                 if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
                                     if (database_type.equals("MY SQL")) {
-                                        column_headers += ("," + "`" + cell.getStringCellValue() + "`");
+                                        column_headers += ("," + "`" + cell.getStringCellValue().replace("'", "''") + "`");
                                     } else if (database_type.equals("SQL SERVER")) {
-                                        column_headers += ("," + "[" + cell.getStringCellValue() + "]");
+                                        column_headers += ("," + "[" + cell.getStringCellValue().replace("'", "''") + "]");
                                     }
                                 } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
                                     if (database_type.equals("MY SQL")) {
@@ -432,24 +432,44 @@ public class UploadBean implements Serializable {
                             //Cell cell = cellIterator2.next();
                             if (counter == 0) {
                                 if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-                                    data_values += ("'" + cell.getStringCellValue() + "'");
+                                    data_values += ("'" + cell.getStringCellValue().replace("'", "''") + "'");
                                 } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
                                     data_values += (cell.getNumericCellValue());
                                 } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK || cell.getCellType() == Cell.CELL_TYPE_ERROR) {
                                     data_values += ("NULL");
-                                } else {
-                                    data_values += ("NULL");
+                                } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+                                    switch (cell.getCachedFormulaResultType()) {
+                                        case Cell.CELL_TYPE_NUMERIC:
+                                            //System.out.println("Last evaluated as: " + cell.getNumericCellValue());
+                                            data_values += (cell.getNumericCellValue());
+                                            break;
+                                        case Cell.CELL_TYPE_STRING:
+                                            //System.out.println("Last evaluated as \"" + cell.getRichStringCellValue() + "\"");
+                                            data_values += ("'" + cell.getRichStringCellValue() + "'");
+                                            break;
+                                    }
+
                                 }
                             }
                             if (counter > 0) {
                                 if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-                                    data_values += (",'" + cell.getStringCellValue() + "'");
+                                    data_values += (",'" + cell.getStringCellValue().replace("'", "''") + "'");
                                 } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
                                     data_values += ("," + cell.getNumericCellValue());
                                 } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK || cell.getCellType() == Cell.CELL_TYPE_ERROR) {
                                     data_values += (",NULL");
-                                } else {
-                                    data_values += (",NULL");
+                                } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+                                    switch (cell.getCachedFormulaResultType()) {
+                                        case Cell.CELL_TYPE_NUMERIC:
+                                            //System.out.println("Last evaluated as: " + cell.getNumericCellValue());
+                                            data_values += ("," + cell.getNumericCellValue());
+                                            break;
+                                        case Cell.CELL_TYPE_STRING:
+                                            //System.out.println("Last evaluated as \"" + cell.getRichStringCellValue() + "\"");
+                                            //data_values += (cell.getRichStringCellValue());
+                                            data_values += (",'" + cell.getRichStringCellValue() + "'");
+                                            break;
+                                    }
                                 }
                             }
                         }

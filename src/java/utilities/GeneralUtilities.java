@@ -9,6 +9,7 @@ import eihdms.County;
 import eihdms.Data_element;
 import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
+import eihdms.Facility_level;
 import eihdms.Health_facility;
 import eihdms.Parish;
 import eihdms.Region;
@@ -214,46 +215,41 @@ public class GeneralUtilities implements Serializable {
              * Data Element
              */
             if (report_form != null) {
-                List<Section> sections = Section.querySection("report_form_id=" + report_form.getReport_form_id(), null);
-                for (Section section : sections) {
-                    List<Sub_section> sub_sections = Sub_section.querySub_section("section_id=" + section.getSection_id(), null);
-                    for (Sub_section sub_section : sub_sections) {
-                        List<Object[]> data_element_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT report_form_group_name,technical_area_name,section_column_number,group_column_number,data_element_name,data_type,data_size,age_category,sex_category,other_category,description,data_element_code from temp_data_element where report_form_name='" + report_form.getReport_form_name() + "' order by temp_data_element_id asc").list();
-                        for (Object[] data_element_name : data_element_nameList) {
-                            t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-                            if (data_element_name[4] != null) {
-                                if (!data_element_name[4].toString().isEmpty()) {
-                                    Data_element data_element = Data_element.loadData_elementByQuery("data_element_name='" + data_element_name[4].toString() + "' AND sub_section_id=" + sub_section.getSub_section_id() + " AND section_id=" + section.getSection_id(), null);
-                                    if (data_element == null) {
-                                        data_element = Data_element.createData_element();
-                                        data_element.setReport_form_group(Report_form_group.loadReport_form_groupByQuery("report_form_group_name='" + data_element_name[0] + "' AND report_form_id=" + report_form.getReport_form_id(), null));
-                                        data_element.setTechnical_area(Technical_area.loadTechnical_areaByQuery("technical_area_name='" + data_element_name[1] + "'", null));
-                                        data_element.setSection_column_number(data_element_name[2] != null ? Integer.parseInt(data_element_name[2].toString()) : null);
-                                        data_element.setGroup_column_number(data_element_name[3] != null ? Integer.parseInt(data_element_name[3].toString()) : null);
-                                        data_element.setData_element_name(data_element_name[4] != null ? data_element_name[4].toString() : null);
-                                        data_element.setData_type(data_element_name[5] != null ? data_element_name[5].toString() : null);
-                                        data_element.setData_size(data_element_name[6] != null ? Integer.parseInt(data_element_name[6].toString()) : null);
-                                        data_element.setAge_category(data_element_name[7] != null ? data_element_name[7].toString() : null);
-                                        data_element.setSex_category(data_element_name[8] != null ? data_element_name[8].toString() : null);
-                                        data_element.setOther_category(data_element_name[9] != null ? data_element_name[9].toString() : null);
-                                        data_element.setOther_category(data_element_name[10] != null ? data_element_name[10].toString() : null);
-                                        data_element.setData_element_code(data_element_name[11] != null ? data_element_name[11].toString() : null);
-                                        data_element.setReport_form(report_form);
-                                        data_element.setSection(section);
-                                        data_element.setSub_section(sub_section);
-                                        data_element.setIs_active(1);
-                                        data_element.setIs_deleted(0);
-                                        data_element.setAdd_by(1);
-                                        data_element.setAdd_date(new Timestamp(new Date().getTime()));
-                                        data_element.save();
-                                    }
-                                }
+                List<Object[]> data_element_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT report_form_group_name,technical_area_name,section_column_number,group_column_number,data_element_name,data_type,data_size,age_category,sex_category,other_category,description,data_element_code,section_name,sub_section_name from temp_data_element where report_form_name='" + report_form.getReport_form_name() + "' order by temp_data_element_id asc").list();
+                for (Object[] data_element_name : data_element_nameList) {
+                    t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                    if (data_element_name[4] != null) {
+                        if (!data_element_name[4].toString().isEmpty()) {
+                            Section section = Section.loadSectionByQuery("section_name='" + data_element_name[12] + "'", null);
+                            Sub_section sub_section = Sub_section.loadSub_sectionByQuery("sub_section_name='" + data_element_name[13] + "'", null);
+                            Data_element data_element = Data_element.loadData_elementByQuery("data_element_name='" + data_element_name[4].toString() + "' AND section_id=" + (section != null ? section.getSection_id() : 0) + " AND sub_section_id=" + (sub_section != null ? sub_section.getSub_section_id() : 0) + " AND report_form_id=" + report_form.getReport_form_id(), null);
+                            if (data_element == null) {
+                                data_element = Data_element.createData_element();
+                                data_element.setReport_form_group(Report_form_group.loadReport_form_groupByQuery("report_form_group_name='" + data_element_name[0] + "' AND report_form_id=" + report_form.getReport_form_id(), null));
+                                data_element.setTechnical_area(Technical_area.loadTechnical_areaByQuery("technical_area_name='" + data_element_name[1] + "'", null));
+                                data_element.setSection_column_number(data_element_name[2] != null ? Integer.parseInt(data_element_name[2].toString()) : null);
+                                data_element.setGroup_column_number(data_element_name[3] != null ? Integer.parseInt(data_element_name[3].toString()) : null);
+                                data_element.setData_element_name(data_element_name[4] != null ? data_element_name[4].toString() : null);
+                                data_element.setData_type(data_element_name[5] != null ? data_element_name[5].toString() : null);
+                                data_element.setData_size(data_element_name[6] != null ? Integer.parseInt(data_element_name[6].toString()) : null);
+                                data_element.setAge_category(data_element_name[7] != null ? data_element_name[7].toString() : null);
+                                data_element.setSex_category(data_element_name[8] != null ? data_element_name[8].toString() : null);
+                                data_element.setOther_category(data_element_name[9] != null ? data_element_name[9].toString() : null);
+                                data_element.setOther_category(data_element_name[10] != null ? data_element_name[10].toString() : null);
+                                data_element.setData_element_code(data_element_name[11] != null ? data_element_name[11].toString() : null);
+                                data_element.setReport_form(report_form);
+                                data_element.setSection(section);
+                                data_element.setSub_section(sub_section);
+                                data_element.setIs_active(1);
+                                data_element.setIs_deleted(0);
+                                data_element.setAdd_by(1);
+                                data_element.setAdd_date(new Timestamp(new Date().getTime()));
+                                data_element.save();
                             }
-                            t.commit();
-                            EIHDMSPersistentManager.instance().getSession().flush();
-                            EIHDMSPersistentManager.instance().getSession().clear();
                         }
                     }
+                    t.commit();
+
                 }
             }
         } catch (PersistentException ex) {
@@ -374,37 +370,6 @@ public class GeneralUtilities implements Serializable {
                                                                                     parish.setAdd_by(1);
                                                                                     parish.setAdd_date(new Timestamp(new Date().getTime()));
                                                                                     parish.save();
-
-                                                                                    /**
-                                                                                     * Health
-                                                                                     * Facility
-                                                                                     */
-                                                                                    List<Object[]> health_facility_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT health_facility_name,sub_district_name,xcoordinate,ycoordinate,zcoordinate from temp_health_facility where parish_name='" + parish_name + "' AND sub_county_name='" + sub_county_name + "' AND county_name='" + county_name + "' AND district_name='" + district_name + "' order by temp_health_facility_id asc").list();
-                                                                                    for (Object[] health_facility_name : health_facility_nameList) {
-                                                                                        if (health_facility_name[4] != null) {
-                                                                                            if (!health_facility_name[4].toString().isEmpty()) {
-                                                                                                Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + health_facility_name[4] + "' AND parish_id=" + parish.getParish_id(), null);
-                                                                                                if (health_facility == null) {
-                                                                                                    health_facility = Health_facility.createHealth_facility();
-                                                                                                    health_facility.setSub_district(Sub_district.loadSub_districtByQuery("sub_dstrict_name='" + health_facility_name[1] + "'", null));
-                                                                                                    health_facility.setRegion(region);
-                                                                                                    health_facility.setDistrict(district);
-                                                                                                    health_facility.setCounty(county);
-                                                                                                    health_facility.setSub_county(sub_county);
-                                                                                                    health_facility.setParish(parish);
-                                                                                                    health_facility.setHealth_facility_name(health_facility_name[0] != null ? (String) health_facility_name[0] : null);
-                                                                                                    health_facility.setXcoordinate(health_facility_name[2] != null ? (String) health_facility_name[2] : null);
-                                                                                                    health_facility.setYcoordinate(health_facility_name[3] != null ? (String) health_facility_name[3] : null);
-                                                                                                    health_facility.setZcoordinate(health_facility_name[4] != null ? (String) health_facility_name[4] : null);
-                                                                                                    health_facility.setIs_active(1);
-                                                                                                    health_facility.setIs_deleted(0);
-                                                                                                    health_facility.setAdd_by(1);
-                                                                                                    health_facility.setAdd_date(new Timestamp(new Date().getTime()));
-                                                                                                    health_facility.save();
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
                                                                                 }
                                                                             }
                                                                         }
@@ -422,7 +387,65 @@ public class GeneralUtilities implements Serializable {
                         }
                     }
                 }
+                /**
+                 * Facility Level
+                 */
+                List<Object[]> facility_level_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT distinct facility_level_name from temp_health_facility order by temp_health_facility_id asc").list();
+                for (Object facility_level_name : facility_level_nameList) {
+                    if (facility_level_name != null) {
+                        if (!facility_level_name.toString().isEmpty()) {
+                            Facility_level facility_level = Facility_level.loadFacility_levelByQuery("facility_level_name='" + facility_level_name + "'", null);
+                            if (facility_level == null) {
+                                facility_level = Facility_level.createFacility_level();
+                                facility_level.setFacility_level_name(facility_level_name.toString());
+                                facility_level.setIs_active(1);
+                                facility_level.setIs_deleted(0);
+                                facility_level.setAdd_by(1);
+                                facility_level.setAdd_date(new Timestamp(new Date().getTime()));
+                                facility_level.save();
+                            }
+                        }
+                    }
+                }
                 t.commit();
+
+                /**
+                 * Health Facility
+                 */
+                List<Object[]> health_facility_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT health_facility_name,sub_district_name,xcoordinate,ycoordinate,zcoordinate,district_name,county_name,sub_county_name,parish_name,facility_level_name from temp_health_facility order by temp_health_facility_id asc").list();
+                for (Object[] health_facility_name : health_facility_nameList) {
+                    t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                    if (health_facility_name[0] != null) {
+                        if (!health_facility_name[0].toString().isEmpty()) {
+                            District district = District.loadDistrictByQuery("district_name='" + health_facility_name[5].toString() + "'", null);
+                            County county = County.loadCountyByQuery("county_name='" + health_facility_name[6].toString() + "' AND district_id=" + (district != null ? district.getDistrict_id() : 0), null);
+                            Sub_county sub_county = Sub_county.loadSub_countyByQuery("sub_county_name='" + health_facility_name[7].toString() + "' AND county_id=" + (county != null ? county.getCounty_id() : 0), null);
+                            Parish parish = Parish.loadParishByQuery("parish_name='" + health_facility_name[8].toString() + "' AND sub_county_id=" + (sub_county != null ? sub_county.getSub_county_id() : 0), null);
+                            Facility_level facility_level = Facility_level.loadFacility_levelByQuery("facility_level_name='" + health_facility_name[9].toString() + "'", null);
+                            Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + health_facility_name[0] + "' AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
+                            if (health_facility == null) {
+                                health_facility = Health_facility.createHealth_facility();
+                                health_facility.setSub_district(Sub_district.loadSub_districtByQuery("sub_district_name='" + health_facility_name[1] + "'", null));
+                                health_facility.setRegion(district.getRegion());
+                                health_facility.setDistrict(district);
+                                health_facility.setCounty(county);
+                                health_facility.setSub_county(sub_county);
+                                health_facility.setParish(parish);
+                                health_facility.setFacility_level(facility_level);
+                                health_facility.setHealth_facility_name(health_facility_name[0] != null ? ((String) health_facility_name[0]).replace("'", "''") : null);
+                                health_facility.setXcoordinate(health_facility_name[2] != null ? (String) health_facility_name[2] : null);
+                                health_facility.setYcoordinate(health_facility_name[3] != null ? (String) health_facility_name[3] : null);
+                                health_facility.setZcoordinate(health_facility_name[4] != null ? (String) health_facility_name[4] : null);
+                                health_facility.setIs_active(1);
+                                health_facility.setIs_deleted(0);
+                                health_facility.setAdd_by(1);
+                                health_facility.setAdd_date(new Timestamp(new Date().getTime()));
+                                health_facility.save();
+                                t.commit();
+                            }
+                        }
+                    }
+                }
 
             }
         } catch (PersistentException ex) {
