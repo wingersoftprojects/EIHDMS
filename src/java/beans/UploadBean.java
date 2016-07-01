@@ -437,6 +437,8 @@ public class UploadBean implements Serializable {
                                     data_values += (cell.getNumericCellValue());
                                 } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK || cell.getCellType() == Cell.CELL_TYPE_ERROR) {
                                     data_values += ("NULL");
+                                } else {
+                                    data_values += ("NULL");
                                 }
                             }
                             if (counter > 0) {
@@ -445,6 +447,8 @@ public class UploadBean implements Serializable {
                                 } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
                                     data_values += ("," + cell.getNumericCellValue());
                                 } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK || cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+                                    data_values += (",NULL");
+                                } else {
                                     data_values += (",NULL");
                                 }
                             }

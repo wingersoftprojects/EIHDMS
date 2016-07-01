@@ -492,7 +492,7 @@ public class Data_element implements Serializable {
 	@Column(name="group_column_number", nullable=true, length=10)	
 	private Integer group_column_number;
 	
-	@Column(name="data_element_name", nullable=true, length=200)	
+	@Column(name="data_element_name", nullable=true)	
 	private String data_element_name;
 	
 	@Column(name="data_type", nullable=true, length=100)	
@@ -515,7 +515,7 @@ public class Data_element implements Serializable {
 	@JoinColumns({ @JoinColumn(name="technical_area_id", referencedColumnName="technical_area_id") })	
 	private eihdms.Technical_area technical_area;
 	
-	@Column(name="description", nullable=true, length=200)	
+	@Column(name="description", nullable=true)	
 	private String description;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	
@@ -536,7 +536,7 @@ public class Data_element implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
-	@Column(name="data_element_code", nullable=true, length=50)	
+	@Column(name="data_element_code", nullable=true, length=100)	
 	private String data_element_code;
 	
 	@OneToMany(mappedBy="data_element", targetEntity=eihdms.Validation_rule.class)	
