@@ -412,21 +412,25 @@ public class GeneralUtilities implements Serializable {
                 /**
                  * Health Facility
                  */
-                List<Object[]> health_facility_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT health_facility_name,sub_district_name,xcoordinate,ycoordinate,zcoordinate,district_name,county_name,sub_county_name,parish_name,facility_level_name from temp_health_facility order by temp_health_facility_id asc").list();
+                List<Object[]> health_facility_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT health_facility_name,sub_district_name,xcoordinate,ycoordinate,zcoordinate,district_name,county_name,sub_county_name,parish_name,facility_level_name,region_name from temp_health_facility order by temp_health_facility_id asc").list();
                 for (Object[] health_facility_name : health_facility_nameList) {
                     t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                     if (health_facility_name[0] != null) {
                         if (!health_facility_name[0].toString().isEmpty()) {
-                            District district = District.loadDistrictByQuery("district_name='" + health_facility_name[5].toString() + "'", null);
+                            Region region = Region.loadRegionByQuery("region_name='" + health_facility_name[10].toString() + "'", null);
+                            District district = District.loadDistrictByQuery("district_name='" + health_facility_name[5].toString() + "' AND region_id=" + (region != null ? region.getRegion_id(): 0), null);
                             County county = County.loadCountyByQuery("county_name='" + health_facility_name[6].toString() + "' AND district_id=" + (district != null ? district.getDistrict_id() : 0), null);
+                            if(county==null){
+                                System.out.println(health_facility_name[6].toString());
+                            }
                             Sub_county sub_county = Sub_county.loadSub_countyByQuery("sub_county_name='" + health_facility_name[7].toString() + "' AND county_id=" + (county != null ? county.getCounty_id() : 0), null);
                             Parish parish = Parish.loadParishByQuery("parish_name='" + health_facility_name[8].toString() + "' AND sub_county_id=" + (sub_county != null ? sub_county.getSub_county_id() : 0), null);
                             Facility_level facility_level = Facility_level.loadFacility_levelByQuery("facility_level_name='" + health_facility_name[9].toString() + "'", null);
-                            Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + health_facility_name[0] + "' AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
+                            Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + health_facility_name[0].toString().replace("'", "''") + "' AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
                             if (health_facility == null) {
                                 health_facility = Health_facility.createHealth_facility();
                                 health_facility.setSub_district(Sub_district.loadSub_districtByQuery("sub_district_name='" + health_facility_name[1] + "'", null));
-                                health_facility.setRegion(district.getRegion());
+                                health_facility.setRegion(region);
                                 health_facility.setDistrict(district);
                                 health_facility.setCounty(county);
                                 health_facility.setSub_county(sub_county);
@@ -441,10 +445,10 @@ public class GeneralUtilities implements Serializable {
                                 health_facility.setAdd_by(1);
                                 health_facility.setAdd_date(new Timestamp(new Date().getTime()));
                                 health_facility.save();
-                                t.commit();
                             }
                         }
                     }
+                    t.commit();
                 }
 
             }

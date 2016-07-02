@@ -7,6 +7,7 @@ package beans;
 
 import eihdms.Health_facility;
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -39,4 +40,5 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
+
 }

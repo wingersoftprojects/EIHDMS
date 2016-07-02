@@ -46,6 +46,7 @@ public abstract class AbstractBean<T> {
     private List<T> tsDeleted;
     private List<T> tsAll;
     private List<T> tsActive;
+    private List<T> filteredTs;
 
     public AbstractBean() {
     }
@@ -93,6 +94,14 @@ public abstract class AbstractBean<T> {
 
     public void setEntityClass(Class<T> entityClass) {
         this.entityClass = entityClass;
+    }
+
+    public List<T> getFilteredTs() {
+        return filteredTs;
+    }
+
+    public void setFilteredTs(List<T> filteredTs) {
+        this.filteredTs = filteredTs;
     }
 
     public List<T> getTsDeleted() {
