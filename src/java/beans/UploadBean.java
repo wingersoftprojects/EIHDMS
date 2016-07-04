@@ -314,23 +314,31 @@ public class UploadBean implements Serializable {
                                     if (cellindex > 0 && (int) pair.getKey() == cellindex) {
                                         interface_data.setHealth_facility_name(facility);
                                         interface_data.setData_element((Data_element) pair.getValue());
-                                        if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
-                                            //rowdata += "|Col"+cell.getColumnIndex()+"- Value=" + cell.getStringCellValue().replace("'", "''");
-                                            interface_data.setData_element_value(cell.getStringCellValue().replace("'", "''"));
-                                        } else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
-                                            //rowdata += "|Col"+cell.getColumnIndex()+"- Value="+ cell.getNumericCellValue();
-                                            interface_data.setData_element_value(String.valueOf(cell.getNumericCellValue()));
+                                        switch (cell.getCellType()) {
+                                            case Cell.CELL_TYPE_STRING:
+                                                interface_data.setData_element_value(cell.getStringCellValue().replace("'", "''"));
+                                                break;
+                                            case Cell.CELL_TYPE_NUMERIC:
+                                                interface_data.setData_element_value(String.valueOf(cell.getNumericCellValue()));
+                                                break;
+                                            case Cell.CELL_TYPE_FORMULA:
+                                                switch (cell.getCachedFormulaResultType()) {
+                                                    case Cell.CELL_TYPE_NUMERIC:
+                                                        interface_data.setData_element_value(String.valueOf(cell.getNumericCellValue()));
+                                                        break;
+                                                    case Cell.CELL_TYPE_STRING:
+                                                        interface_data.setData_element_value(cell.getStringCellValue().replace("'", "''"));
+                                                        break;
+                                                }   break;
+                                            case Cell.CELL_TYPE_BLANK:
+                                                interface_data.setData_element_value("NULL");
+                                                break;
+                                            default:
+                                                break;
                                         }
-                                        Cell c = row.getCell(cellindex);
-                                        if (c == null || c.getCellType() == Cell.CELL_TYPE_BLANK) {
-                                            interface_data.setData_element_value("NULL");
-                                        }
-
+//                                        Cell c = row.getCell(cellindex);
                                         interface_datas.add(interface_data);
-                                        //break;
                                     }
-                                    //System.out.println(pair.getKey() + " = " + pair.getValue());
-                                    //it.remove(); // avoids a ConcurrentModificationException
                                 }
                             }
                         }
