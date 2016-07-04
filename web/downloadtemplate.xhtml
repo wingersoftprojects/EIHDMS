@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Download Excel Template for Uploading Data">
+                <p:panelGrid columns="8" id="download_panel_grid">
+                    <p:outputLabel for="report_form" value="Report Form:" />
+                    <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="report_form_group"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="report_form_group" value="Report Form Group:" />
+                    <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Download Excel Template" action="#{data_elementBean.retrieveReportFormOrderedDataElements(uploadBean.report_form,uploadBean.report_form_group)}" process="@this" update="@form"/>
+                </p:panelGrid>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
