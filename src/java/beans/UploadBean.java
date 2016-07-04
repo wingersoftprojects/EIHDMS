@@ -5,12 +5,19 @@
  */
 package beans;
 
+import eihdms.Base_data;
+import eihdms.County;
 import eihdms.Data_element;
+import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Financial_year;
+import eihdms.Health_facility;
 import eihdms.Interface_data;
+import eihdms.Parish;
+import eihdms.Region;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
+import eihdms.Sub_county;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -56,6 +64,81 @@ public class UploadBean implements Serializable {
     private Financial_year financial_year;
     private int report_period_quarter;
     private String report_period_name;
+    @ManagedProperty("#{interface_dataBean}")
+    private Interface_dataBean interface_dataBean;
+    @ManagedProperty("#{base_dataBean}")
+    private Base_dataBean base_dataBean;
+    @ManagedProperty("#{loginBean}")
+    private LoginBean loginBean;
+    private Region region;
+    private District district;
+    private County county;
+    private Sub_county sub_county;
+    private Parish parish;
+
+    public Interface_dataBean getInterface_dataBean() {
+        return interface_dataBean;
+    }
+
+    public void setInterface_dataBean(Interface_dataBean interface_dataBean) {
+        this.interface_dataBean = interface_dataBean;
+    }
+
+    public Base_dataBean getBase_dataBean() {
+        return base_dataBean;
+    }
+
+    public void setBase_dataBean(Base_dataBean base_dataBean) {
+        this.base_dataBean = base_dataBean;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+
+    public County getCounty() {
+        return county;
+    }
+
+    public void setCounty(County county) {
+        this.county = county;
+    }
+
+    public Sub_county getSub_county() {
+        return sub_county;
+    }
+
+    public void setSub_county(Sub_county sub_county) {
+        this.sub_county = sub_county;
+    }
+
+    public Parish getParish() {
+        return parish;
+    }
+
+    public void setParish(Parish parish) {
+        this.parish = parish;
+    }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
 
     public Date getReport_period_from_date() {
         return report_period_from_date;
@@ -142,7 +225,11 @@ public class UploadBean implements Serializable {
             jObj = new JSONObject();
             jObj.put("DataElement", interface_data.getData_element().getData_element_name());
             jObj.put("Facility", interface_data.getHealth_facility_name());
-            jObj.put("DataElementValue", (int) Float.parseFloat(interface_data.getData_element_value()));
+            if (interface_data.getData_element_value() == null) {
+                jObj.put("DataElementValue", 0);
+            } else {
+                jObj.put("DataElementValue", (int) Float.parseFloat(interface_data.getData_element_value()));
+            }
             jArray.put(jObj);
         }
         jSONArray = jArray;
@@ -245,7 +332,52 @@ public class UploadBean implements Serializable {
 
     public void load_interface() {
         if (!interface_datas.isEmpty()) {
-
+            /**
+             * Load Interface Data
+             */
+            for (Interface_data i : interface_datas) {
+                interface_dataBean.setSelected(i);
+                interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+            }
+            /**
+             * Load Base Data
+             */
+            try {
+                List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Not Moved' AND i.data_element.report_form=" + report_form.getReport_form_id()).list();
+                for (Interface_data i : interface_datas_tobase) {
+                    Base_data base_data = Base_data.createBase_data();
+                    base_data.setData_element(i.getData_element());
+                    base_data.setData_element_value(i.getData_element_value());
+                    base_data.setData_element_value(i.getData_element_value());
+                    District d = District.loadDistrictByQuery("district_name='" + i.getDistrict_name() + "'", null);
+                    Parish p = Parish.loadParishByQuery("parish_name='" + i.getParish_name() + "'", null);
+                    Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + i.getHealth_facility_name() + "' AND district_id=" + (district != null ? district.getDistrict_id() : 0) + " AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
+                    base_data.setHealth_facility(health_facility);
+                    base_data.setDistrict(d);
+                    base_data.setParish(p);
+                    base_data.setFinancial_year(i.getFinancial_year());
+                    base_data.setReport_period_quarter(i.getReport_period_quarter());
+                    base_data.setReport_period_from_date(i.getReport_period_from_date());
+                    base_data.setReport_period_to_date(i.getReport_period_to_date());
+                    base_data.setReport_period_name(i.getReport_period_name());
+                    /**
+                     * Save Base Data
+                     */
+                    base_data.save();
+                    base_dataBean.setSelected(base_data);
+                    base_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                    /**
+                     * Modify Interface Data
+                     */
+                    i.setStatus("Moved");
+                    i.setStatus_desc("Moved to base");
+                    interface_dataBean.setSelected(i);
+                    interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                }
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            interface_datas = new ArrayList<>();
         }
     }
 
@@ -314,6 +446,19 @@ public class UploadBean implements Serializable {
                                     if (cellindex > 0 && (int) pair.getKey() == cellindex) {
                                         interface_data.setHealth_facility_name(facility);
                                         interface_data.setData_element((Data_element) pair.getValue());
+                                        interface_data.setReport_period_from_date(report_period_from_date);
+                                        interface_data.setReport_period_to_date(report_period_to_date);
+                                        interface_data.setFinancial_year(financial_year);
+                                        interface_data.setReport_period_quarter(report_period_quarter);
+                                        interface_data.setReport_period_name(report_period_name);
+                                        if (district != null) {
+                                            interface_data.setDistrict_name(district.getDistrict_name());
+                                        }
+                                        if (parish != null) {
+                                            interface_data.setParish_name(parish.getParish_name());
+                                        }
+                                        interface_data.setStatus("Not Moved");
+                                        interface_data.setStatus_desc("Not yet moved to base data");
                                         switch (cell.getCellType()) {
                                             case Cell.CELL_TYPE_STRING:
                                                 interface_data.setData_element_value(cell.getStringCellValue().replace("'", "''"));
@@ -329,7 +474,8 @@ public class UploadBean implements Serializable {
                                                     case Cell.CELL_TYPE_STRING:
                                                         interface_data.setData_element_value(cell.getStringCellValue().replace("'", "''"));
                                                         break;
-                                                }   break;
+                                                }
+                                                break;
                                             case Cell.CELL_TYPE_BLANK:
                                                 interface_data.setData_element_value("NULL");
                                                 break;

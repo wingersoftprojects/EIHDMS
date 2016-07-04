@@ -23,6 +23,36 @@
             <p:growl/>
             <p:fieldset legend="Upload" id="data_element">
                 <p:panelGrid columns="8" id="upload_panel_grid">
+                    <p:outputLabel for="region" value="Region:" />
+                    <p:selectOneMenu id="region" value="#{uploadBean.region}" style="width:125px" required="true" requiredMessage="Region field is Required" converter="regionConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{regionBean.tsActive}" var="item" itemLabel="#{item.region_name}" itemValue="#{item}"/>
+                        <p:ajax event="change" process="@this" update="district,county,sub_county,parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="district" value="District:" />
+                    <p:selectOneMenu id="district" value="#{uploadBean.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{districtBean.getts(uploadBean.region)}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="county,sub_county,parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="county" value="County:" />
+                    <p:selectOneMenu id="county" value="#{uploadBean.county}" style="width:125px" required="true" requiredMessage="County field is Required" converter="countyConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{countyBean.getts(uploadBean.district)}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="sub_county,parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="sub_county" value="Sub County:" />
+                    <p:selectOneMenu id="sub_county" value="#{uploadBean.sub_county}" style="width:125px" required="true" requiredMessage="Sub_county field is Required" converter="sub_countyConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{sub_countyBean.getts(uploadBean.county)}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="parish" value="Parish:" />
+                    <p:selectOneMenu id="parish" value="#{uploadBean.parish}" style="width:125px" required="true" requiredMessage="Parish field is Required" converter="parishConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{parishBean.getts(uploadBean.sub_county)}" var="item" itemLabel="#{item.parish_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
                     <p:outputLabel for="report_form" value="Report Form:" />
                     <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                         <f:selectItem itemLabel="" />
@@ -65,7 +95,7 @@
                     <p:outputLabel value="Upload"/>
                     <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
                                   auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="upload_panel_grid" />
-                    <p:commandButton value="Load Interface" rendered="#{uploadBean.interface_datas.size()>0}"/>
+                    <p:commandButton value="Load Data" rendered="#{uploadBean.interface_datas.size()>0}" action="#{uploadBean.load_interface()}" update="@form"/>
                 </p:panelGrid>
                 <!-- 1. Create a DIV container to insert the component -->
                 <div id="pivotContainer"></div>
