@@ -11,8 +11,6 @@ import eihdms.Report_form;
 import eihdms.Report_form_group;
 import eihdms.Section;
 import eihdms.Sub_section;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,7 +30,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.orm.PersistentException;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
@@ -166,7 +163,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                 sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
                 data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
                 if (data_elements.size() > 0) {
-                    this.DownloadExcelTemplate(data_elements);
+                    this.DownloadExcelTemplate(data_elements,"TMP_" + report_form.getReport_form_code() + "_" + report_form_group.getReport_form_group_name(),report_form_group.getReport_form_group_name());
                 }
             }
         } catch (Exception ex) {
@@ -174,7 +171,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
     }
 
-    public void DownloadExcelTemplate(List<Data_element> des) {
+    public void DownloadExcelTemplate(List<Data_element> des,String filename,String sheetname) {
         XSSFWorkbook workbook = null;
         int rowIndex = 0;
         int colIndex = 0;
@@ -183,7 +180,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
             //Create Blank workbook
             workbook = new XSSFWorkbook();
             //Create a blank spreadsheet
-            XSSFSheet spreadsheet = workbook.createSheet("template");
+            XSSFSheet spreadsheet = workbook.createSheet(sheetname);
 
             //set the margins
             double leftMarginInches = spreadsheet.getMargin(spreadsheet.LeftMargin);
@@ -240,7 +237,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
              */
             HttpServletResponse res = HttpJSFUtil.getResponse();
             res.setContentType("application/vnd.ms-excel");
-            res.setHeader("Content-disposition", "attachment; filename=test.xls");
+            res.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
             try {
                 ServletOutputStream sout=res.getOutputStream();
                 workbook.write(sout);
