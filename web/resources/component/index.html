@@ -17,200 +17,35 @@
 
 	<!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
     <script type="text/javascript">
-		var jsonData = [
-		  {
-			"Color":{"type": "string"},
-			"M":{"type": "month", "caption":"Month"},
-			"W":{"type": "weekday", "caption":"Week Day"},
-			"country":{"type":"level", "hierarchy": "Geography", "level":"Country"},
-			"state":{"type":"level", "hierarchy": "Geography", "level":"State", "parent": "Country"},
-			"city":{"type":"level", "hierarchy": "Geography", "parent": "State"},
-			"Price":{"type": "number"},
-			"Quantity":{"type": "number"}
-		  },
-		  {
-			"Color":"green",
-			"M":"September",
-			"W":"Wed",
-			"country" : "Canada",
-			"state" : "Ontario",
-			"city" : "Toronto",
-			"Price":174,
-			"Quantity":22
-		  },
-		  {
-			"Color":"red",
-			"M":"March",
-			"W":"Mon",
-			"country" : "USA",
-			"state" : "California",
-			"city" : "Los Angeles",
-			"Price":1664,
-			"Quantity":19
-		  },
-		  {
-			"Color":"red",
-			"M":"January",
-			"W":"Mon",
-			"country" : "Canada",
-			"state" : "Quebec",
-			"city" : "Montreal",
-			"Price":1190,
-			"Quantity":292
-		  },
-		  {
-			"Color":"green",
-			"D":"04/08/2014",
-			"M":"August",
-			"W":"Fri",
-			"country" : "USA",
-			"state" : "California",
-			"city" : "Los Angeles",
-			"Price":1222,
-			"Quantity":730
-		  },
-		  {
-			"Color":"white",
-			"M":"March",
-			"W":"Wed",
-			"country" : "USA",
-			"state" : "California",
-			"city" : "Los Angeles",
-			"Price":7941,
-			"Quantity":73
-		  },
-		  {
-			"Color":"red",
-			"M":"August",
-			"W":"Wed",
-			"country" : "Canada",
-			"state" : "Ontario",
-			"city" : "Toronto",
-			"Price":6829,
-			"Quantity":19
-		  },
-		  {
-			"Color":"green",
-			"M":"January",
-			"W":"Wed",
-			"country" : "Canada",
-			"state" : "Quebec",
-			"city" : "Montreal",
-			"Price":2995,
-			"Quantity":98
-		  },
-		  {
-			"Color":"white",
-			"M":"February",
-			"W":"Mon",
-			"country" : "USA",
-			"state" : "California",
-			"city" : "Los Angeles",
-			"Price":2471,
-			"Quantity":93
-		  },
-		  {
-			"Color":"yellow",
-			"M":"March",
-			"W":"Fri",
-			"country" : "Canada",
-			"state" : "Ontario",
-			"city" : "Toronto",
-			"Price":6650,
-			"Quantity":40
-		  },
-		  {
-			"Color":"blue",
-			"M":"February",
-			"W":"Wed",
-			"country" : "Canada",
-			"state" : "Ontario",
-			"city" : "Toronto",
-			"Price":865,
-			"Quantity":45
-		  },
-		  {
-			"Color":"purple",
-			"M":"August",
-			"W":"Wed",
-			"country" : "Canada",
-			"state" : "Quebec",
-			"city" : "Montreal",
-			"Price":511,
-			"Quantity":46
-		  },
-		  {
-			"Color":"blue",
-			"M":"September",
-			"W":"Mon",
-			"country" : "Canada",
-			"state" : "Quebec",
-			"city" : "Montreal",
-			"Price":981,
-			"Quantity":18
-		  },
-		  {
-			"Color":"blue",
-			"M":"September",
-			"W":"Fri",
-			"country" : "Canada",
-			"state" : "Ontario",
-			"city" : "Toronto",
-			"Price":284,
-			"Quantity":24
-		  }
-		];
-		
-		var report = {
-			dataSourceType: "json",
-			data: jsonData,
-			
-			//slice with filters, calculated measures, sorting on values
-			pages: [{ uniqueName: "Color", filter: { members: ["Color.[blue]"], negation: true } }],
-			rows: [
-					{ uniqueName: "M" },
-					{ uniqueName: "[Measures]" }
-				],
-			columns: [
-				{ uniqueName: "Geography" }
-			],
-			measures: [
-				{ uniqueName: "Price", aggregation: "sum", format: "currency"}, 
-				{ uniqueName: "Quantity", aggregation: "average"}, 
-				{ uniqueName: "Calculated Price per Item", caption: "Calculated Price per Item", calculated: true, formula: "sum('Price') / sum('Quantity')", format: "currency"}
-			],
+		flexmonster.embedPivotComponent(
+		    "flexmonster/", "pivotContainer", "100%", "500", 
+		    { 
+		        dataSourceType: "csv",
+		        
+		        filename: "http://www.flexmonster.com/download/data.csv",
+		        /* filename: "http://my_host/my_script_returns_data_in.csv_format", */
 
-			//numbers formatting
-			formats: [
-				{ name: "", nullValue: "blank" },
-				{ name: "currency", decimalPlaces: 2, currencySymbol: "$", nullValue: "-" }
-			],
-			
-			//conditional formatting
-			conditions: [
-				{ formula: "if(AND(#value >= 0, #value < 2000), 'trueStyle')",
-					measure: "Price",
-					trueStyle: { backgroundColor: "#ff9966", color: "#ffffff", fontFamily: "Tahoma"},
-					isTotal: -1
-				},
-				{ formula: "if(AND(#value >= 0, #value < 2000), 'trueStyle', 'falseStyle')",
-					measure: "Price",
-					trueStyle: { backgroundColor: "#ff0000", color: "#ffffff", fontFamily: "Tahoma", fontSize: 12 },
-					falseStyle: { fontSize: 12 },
-					isTotal: 1
-				}
-			],
-			
-			licenseKey: "Z52P-1O1OW2-2M17-2S2W-1K0P-1M07-3K2E-0J0O-2W06-0X"
-		};
-		
-		flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-		
+		        licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+		    }, true
+		);
 	</script>
+
+	<!-- 
+		NOTE:
+		To show HTML5 Pivot component demo on the local computer from the folder where it is downloaded, we used remote report in configUrl and set licenseKey inline. 
+		
+		When you put Pivot component on your web server, you will be able to replace configUrl with relative URL and licenseKey could be removed from here - it will be taken from flexmonsterpivottablekey.txt.
+		
+		Please see below the commented flexmonster.embedPivotComponent() which works on web server:
+		
+		flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "535", { 
+			configUrl: "report.xml" 
+		}, true); 
+	-->
 
 	<div class="links-area">
 		<a href="./" id="openFolder" target="_blank"><span>Open source folder</span></a>
-		<a href="http://www.flexmonster.com/docs/#page=js_api.html" id="docs" target="_blank"><span>See documentation</span></a>
+		<a href="http://www.flexmonster.com/api/?section=api" id="docs" target="_blank"><span>See documentation</span></a>
 	</div>
 </body>
 </html>
