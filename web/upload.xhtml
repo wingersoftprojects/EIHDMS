@@ -46,11 +46,11 @@
                     </p:calendar>
                     <p:outputLabel value="Report Period End Date:" for="report_period_to_date" />
                     <p:calendar id="report_period_to_date" value="#{uploadBean.report_period_to_date}" title="report_period_to_date" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="End Date field is required">
-                        <p:ajax event="blur" process="@this"/>
+                        <p:ajax process="@this"/>
                     </p:calendar>
                     <p:outputLabel value="Report Period Name:" for="report_period_name"/>
                     <p:inputText id="report_period_name" value="#{uploadBean.report_period_name}">
-                        <p:ajax event="blur" process="@this"/>
+                        <p:ajax process="@this"/>
                     </p:inputText>
                     <p:outputLabel value="Upload"/>
                     <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
@@ -85,7 +85,7 @@
                 </script>
             </p:fieldset>
         </h:form>
-                <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
             <f:facet name="default">
                 <h:outputText value="Status: StandBy" />
             </f:facet>
