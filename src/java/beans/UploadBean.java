@@ -215,6 +215,7 @@ public class UploadBean implements Serializable {
 
         JSONObject jObj = new JSONObject();
         JSONObject jObj2 = new JSONObject();
+        jObj.put("ColumnNumber", jObj2.put("type", "string"));
         jObj.put("DataElement", jObj2.put("type", "string"));
         jObj.put("Facility", jObj2.put("type", "string"));
         jObj.put("DataElementValue", jObj2.put("type", "number"));
@@ -225,7 +226,8 @@ public class UploadBean implements Serializable {
         }
         for (Interface_data interface_data : interface_datas) {
             jObj = new JSONObject();
-            jObj.put("DataElement", interface_data.getData_element().getData_element_name());
+            jObj.put("ColumnNumber", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()));
+            jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + "_" + interface_data.getData_element().getData_element_name());
             jObj.put("Facility", interface_data.getHealth_facility_name());
             if (interface_data.getData_element_value() == null) {
                 jObj.put("DataElementValue", 0);
@@ -355,45 +357,63 @@ public class UploadBean implements Serializable {
                 transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                 List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Not Moved' AND i.data_element.report_form=" + report_form.getReport_form_id()).list();
                 for (Interface_data i : interface_datas_tobase) {
-                    Base_data base_data = Base_data.createBase_data();
-                    base_data.setData_element(i.getData_element());
-                    base_data.setData_element_value(i.getData_element_value());
-                    base_data.setData_element_value(i.getData_element_value());
-                    District d = District.loadDistrictByQuery("district_name='" + i.getDistrict_name() + "'", null);
-                    Parish p = Parish.loadParishByQuery("parish_name='" + i.getParish_name() + "'", null);
-                    Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + i.getHealth_facility_name() + "' AND district_id=" + (district != null ? district.getDistrict_id() : 0) + " AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
-                    base_data.setHealth_facility(health_facility);
-                    base_data.setDistrict(d);
-                    base_data.setParish(p);
-                    base_data.setFinancial_year(i.getFinancial_year());
-                    base_data.setReport_period_quarter(i.getReport_period_quarter());
-                    base_data.setReport_period_from_date(i.getReport_period_from_date());
-                    base_data.setReport_period_to_date(i.getReport_period_to_date());
-                    base_data.setReport_period_name(i.getReport_period_name());
-                    base_data.setIs_active(1);
-                    base_data.setAdd_date(new Timestamp(new Date().getTime()));
-                    base_data.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
-                    base_data.setIs_deleted(0);
-                    /**
-                     * Save Base Data
-                     */
-                    base_data.save();
-                    //base_dataBean.setSelected(base_data);
-                    //base_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
-                    /**
-                     * Modify Interface Data
-                     */
-                    i.setStatus("Moved");
-                    i.setStatus_desc("Moved to base");
-                    i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                    i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                    EIHDMSPersistentManager.instance().getSession().merge(i);
-                    //i.setIs_deleted(0);
-                    //interface_dataBean.setSelected(i);
-                    //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                    List<Health_facility> health_facilitiesList = Health_facility.queryHealth_facility("health_facility_name='" + i.getHealth_facility_name() + "'", null);
+                    if (health_facilitiesList.size() == 1) {
+                        Base_data base_data = Base_data.createBase_data();
+                        base_data.setData_element(i.getData_element());
+                        base_data.setData_element_value(i.getData_element_value());
+                        base_data.setData_element_value(i.getData_element_value());
+                        //District d = District.loadDistrictByQuery("district_name='" + i.getDistrict_name() + "'", null);
+                        //Parish p = Parish.loadParishByQuery("parish_name='" + i.getParish_name() + "'", null);
+                        Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + i.getHealth_facility_name() + "'", null);// AND district_id=" + (district != null ? district.getDistrict_id() : 0) + " AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
+                        base_data.setHealth_facility(health_facility);
+                        base_data.setDistrict(health_facility.getDistrict());
+                        base_data.setParish(health_facility.getParish());
+                        base_data.setFinancial_year(i.getFinancial_year());
+                        base_data.setReport_period_quarter(i.getReport_period_quarter());
+                        base_data.setReport_period_from_date(i.getReport_period_from_date());
+                        base_data.setReport_period_to_date(i.getReport_period_to_date());
+                        base_data.setReport_period_name(i.getReport_period_name());
+                        base_data.setIs_active(1);
+                        base_data.setAdd_date(new Timestamp(new Date().getTime()));
+                        base_data.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                        base_data.setIs_deleted(0);
+                        /**
+                         * Save Base Data
+                         */
+                        base_data.save();
+                        //base_dataBean.setSelected(base_data);
+                        //base_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                        /**
+                         * Modify Interface Data
+                         */
+                        i.setStatus("Moved");
+                        i.setStatus_desc("Moved to base successfuly");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                        //i.setIs_deleted(0);
+                        //interface_dataBean.setSelected(i);
+                        //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                    }
+
+                    if (health_facilitiesList.isEmpty()) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("No corresponding health facility found");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    if (health_facilitiesList.size() > 1) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("More than one health facility corresponding to this one found!");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    transaction.commit();
+                    loginBean.saveMessage();
                 }
-                transaction.commit();
-                loginBean.saveMessage();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }

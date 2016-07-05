@@ -153,7 +153,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	dataProvider.push({ title: Labels.GRID, id: "fm-tab-grid", handler: "gridHandler" });
 
 	// Charts tab
-	dataProvider.push({ title: Labels.CHARTS, id: "fm-tab-charts",
+	dataProvider.push({ title: Labels.CHARTS, id: "fm-tab-charts", onShowHandler: "checkChartMultipleMeasures",
 		menu: [
 			{ title: Labels.CHARTS_BAR, id: "fm-tab-charts-bar", handler: "chartsHandler", args: "bar" },
 			{ title: Labels.CHARTS_LINE, id: "fm-tab-charts-line", handler: "chartsHandler", args: "line" },
@@ -276,6 +276,11 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 		multiple ? self.addClass(node, "fm-selected") : self.removeClass(node, "fm-selected");
 		self.pivot.showCharts(type, multiple);
 	}
+	self.checkChartMultipleMeasures = function() {
+		var multiple = self.pivot.getOptions()['chartMultipleMeasures'];
+		var node = document.getElementById("fm-tab-charts-multiple");
+		multiple ? self.addClass(node, "fm-selected") : self.removeClass(node, "fm-selected");
+	}
 
 	// Format tab
 	self.formatCellsHandler = function() {
@@ -297,7 +302,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 
 	// Export tab
 	self.printHandler = function() {
-		self.pivot.print();
+		(isFlash) ? self.showPrintingDialog() : self.pivot.print();
 	}
 	self.exportHandler = function(type) {
 		(type == "pdf") ? self.showExportPdfDialog() : self.pivot.exportTo(type);
@@ -1374,6 +1379,58 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         PopUpManager.addPopUp(dialog.content);
 	}
 
+	// Printing
+	self.showPrintingDialog = function() {
+		var applyHandler = function() {
+			var orientation = 'PORTRAIT';
+			if (landscapeRadio.checked) {
+				orientation = 'LANDSCAPE';
+			}
+			self.pivot.print({orientation: orientation,shrinkToPage: false});
+		}
+        var dialog = new PopUpWindow();
+		dialog.setTitle(Labels.CHOOSE_PAGE_ORIENTATION);
+		dialog.setToolbar([
+			{ label: Labels.APPLY, handler: applyHandler, isPositive: true }, 
+			{ label: Labels.CANCEL }
+		]);
+
+		var content = document.createElement("table");
+		content.className = "fm-form";
+
+		var portraitRadio = document.createElement("input");
+		portraitRadio.id = "fm-portrait-radio";
+		portraitRadio.type = "radio";
+		portraitRadio.name = "pdfOrientation";
+		portraitRadio.checked = true;
+		var label = document.createElement("label");
+		label.setAttribute("for", "fm-portrait-radio");
+		self.setText(label, Labels.PORTRAIT);
+		var tr = document.createElement("tr");
+		var td = document.createElement("td");
+		td.appendChild(portraitRadio);
+		td.appendChild(label);
+		tr.appendChild(td);
+		content.appendChild(tr);
+
+		var landscapeRadio = document.createElement("input");
+		landscapeRadio.id = "fm-landscape-radio";
+		landscapeRadio.type = "radio";
+		landscapeRadio.name = "pdfOrientation";
+		var label = document.createElement("label");
+		label.setAttribute("for", "fm-landscape-radio");
+		self.setText(label, Labels.LANDSCAPE);
+		var tr = document.createElement("tr");
+		var td = document.createElement("td");
+		td.appendChild(landscapeRadio);
+		td.appendChild(label);
+		tr.appendChild(td);
+		content.appendChild(tr);
+
+        dialog.setContent(content);
+        PopUpManager.addPopUp(dialog.content);
+	}
+
 	// Fullscreen
 	self.toggleFullscreen = function () {
         self.isFullscreen() ? self.exitFullscreen() : self.enterFullscreen(self.container);
@@ -1558,6 +1615,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 						handler.call(self, args);
 					}
 				} (self[data.handler], data.args);
+		}
+		if (!self.nullOrUndefined(self[data.onShowHandler])) {
+			tabLink.onmouseover = 
+				function (handler) {
+					return function() {
+						handler.call(self);
+					}
+				} (self[data.onShowHandler]);
 		}
 		tab.onmouseover = self.showDropdown;
 		tab.onmouseout = self.hideDropdown;
