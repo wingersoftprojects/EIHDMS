@@ -25,13 +25,15 @@
     </h:head>
     <f:event listener="#{loginBean.redirectifnotloggedin()}" type="preRenderView" />
     <h:body>
-        <div id="top" class="top" style="height: 85px;text-align: center;padding-top: 8px;">
+        <div id="top" class="top" style="height: 85px;text-align: center;padding-top: 7px;">
             <p:outputLabel value="EGPAF INTEGRATED HEALTH DATA MANAGEMENT SYSTEM (EIHDMS)" style="font-family:Arial, Helvetica, sans-serif;font-size: 16px;color: white;"/>
             <ui:insert name="top">
                 <ui:include src="menu.xhtml"/>
             </ui:insert>
         </div>
+        
         <div>
+            
             <div id="left">
                 <ui:insert name="left">
                     <h:form>
@@ -47,10 +49,13 @@
                     </h:form>
                 </ui:insert>
             </div>
+            
             <div id="content" class="left_content">
                 <ui:insert name="content">Content</ui:insert>
             </div>
+            
         </div>
+            
         <h:form>
             <p:idleMonitor timeout="960000">
                 <p:ajax event="idle" listener="#{loginBean.redirectifnotloggedin()}" update="@all" oncomplete="logout()"/>
