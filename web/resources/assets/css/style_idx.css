@@ -1,0 +1,154 @@
+@charset "utf-8";
+/* CSS Document */
+
+html,body {
+	margin:0;
+	padding:0;
+	height:100%; /* needed for container min-height */
+	font-family: Trebuchet MS;
+	color: #252525;
+	font-size: 16px;
+	background: transparent url(../img/main-bg.gif) repeat-x scroll left top;
+}
+
+#header {
+	height: 80px;
+	border-bottom: solid 1px #cccccc;
+	text-align: center;
+	background: transparent url(../img/tv-bg.gif) 98% top no-repeat;
+}
+#header.NoBg {
+	background: none;
+}
+	#logo {
+		float: left;
+		padding: 12px 0px 0px 15px; 
+		background: url(../img/logo.gif) bottom left no-repeat;
+		width: 215px;
+		height: 51px;
+	}
+	
+div.Clear {
+	clear: both;
+}
+.Left {
+	float: left;
+}
+.Right {
+	float: right;
+}
+p, div, ol, li, ul, td, th {
+	text-align: left;
+}
+div.MainArea {
+	width: 680px;
+	margin-left: auto;
+	margin-right: auto;
+}
+div.TopBg {
+	background: url(../img/tv-bg.gif) top right no-repeat;
+	height: 80px;
+}
+div.ContentArea {
+	text-align: center;
+}
+div.MainWideArea {
+	width: 780px;
+	margin-left: auto;
+	margin-right: auto;
+}
+div.Title {
+	color: #333333;
+	font-weight: bold;
+	font-size: 32px;
+	text-align: center;
+	line-height: 36px;
+	margin: 25px;
+}
+div.Subtitle {
+	color: #7f7766;
+	text-align: center;
+	padding: 0px 0px 21px 0px;
+}
+div.sample {
+	background: #ffffff; 
+	overflow:auto;
+	width:auto;
+	border:solid gray;
+	border-width: 1px 1px 1px 8px;
+	margin: 10px 0px 10px 0px;
+	padding: 5px;
+}
+div.sample pre {
+	margin: 0; 
+	line-height: 125%;
+}
+div.sample span.value {
+	color: #a31515;
+}
+div.sample span.comment {
+	color: #008000;
+}
+p, li {
+	color: #595959;
+	line-height: 150%;
+	margin: 0px;
+}
+code {
+	line-height: 100%;
+	font-size: 17px;
+}
+p {
+	text-align: justify;
+	text-indent: 40px;
+	width: 100%;
+	padding: 0px 0px 8px 0px;
+}
+ul {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+ul li{
+	width: 95%;
+}
+ol {
+	width: 100%;
+	padding: 0px 0px 0px 20px;
+	margin: 0px 0px 0px 0px;
+}
+ol li {
+	padding: 0px 0px 7px 0px;
+}
+table.BottomLinks {
+	border-collapse: collapse;
+	width: 100%;
+}
+table.BottomLinks td {
+	width: 33%;
+	text-align: center;
+	padding: 13px 0px 13px 0px;
+}
+table.BottomLinks td a {
+	color: #000000;
+	font-size: 16px;
+}
+a.DemoBtn {
+	display: inline-block;
+	background: #ff774a;
+	background-image: -webkit-linear-gradient(top, #ff774a, #DF3800);
+	background-image: -moz-linear-gradient(top, #ff774a, #DF3800);
+	background-image: -ms-linear-gradient(top, #ff774a, #DF3800);
+	background-image: -o-linear-gradient(top, #ff774a, #DF3800);
+	background-image: linear-gradient(to bottom, #ff774a, #DF3800);
+	-webkit-border-radius: 28;
+	-moz-border-radius: 28;
+	border-radius: 28px;
+	color: #ffffff;
+	font-size: 20px;
+	padding: 10px 40px 10px 40px;
+	text-decoration: none;
+}
+a.DemoBtn:hover {
+  background: #DF3800;
+  text-decoration: none;
+}

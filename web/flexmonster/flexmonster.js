@@ -1,7 +1,7 @@
 /* 
- * Flexmonster Pivot Table HTML5 v2.215 
+ * Flexmonster Pivot Table HTML5 v2.213 
  * http://flexmonster.com/ 
- * Date: 2016-06-21 10:30 
+ * Date: 2016-05-23 12:56 
  */ 
 var flexmonster = new FlexMonster();
 function FlexMonster() {
@@ -92,7 +92,7 @@ function FlexMonster() {
 	this.wheel=function(event,obj){var delta=0;if(!event){event = window.event;}if(event.wheelDelta){delta=event.wheelDelta/120;}else if(event.detail){delta=-event.detail/3;}if(delta)obj.handle(delta);if (event.preventDefault){event.preventDefault();}event.returnValue=false;};
 	this.replaceHierarchyCaption=function(params){this.componentObject.replaceHierarchyCaption(params)}
 	this.showAlerts = true;
-	this.version = "2.215";
+	this.version = "2.213";
 }
 
 flexmonster.embedPivotComponent = function(path, containerId, _width, _height, params, withToolbar_or_type, toolbarLabels_or_withToolbar, _toolbarLabels) {
@@ -192,7 +192,6 @@ var FlexmonsterLoader = (function() {
 		//	"html5-assets/js/jquery.min.js", 
 		//	"html5-assets/js/jqueryui.min.js", 
 		//	"html5-assets/js/jqueryhelpers.min.js"
-			"html5-assets/js/sha1.min.js",
 			"html5-assets/js/pivot.min.js?" + flexmonster.version,
 			"html5-assets/js/file.min.js",
 		//	"html5-assets/js/d3.min.js",
@@ -201,6 +200,7 @@ var FlexmonsterLoader = (function() {
 			"html5-assets/js/jspdf.min.js",
 			"html5-assets/js/html2canvas.min.js",
 			"html5-assets/js/canvg.min.js",
+			"html5-assets/js/sha1.min.js"
 		];
 
 		var insertBefore = function (arr, insertItem, insertBeforeThisItem) {

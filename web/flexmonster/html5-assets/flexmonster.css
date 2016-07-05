@@ -2987,8 +2987,6 @@ textarea.fm-ui-text-area.fm-editing-cell {
 /* PRELOADER VIEW */
 #fm-preloader-view {
     z-index: 11;
-    width: 302px;
-    position: absolute;
 }
 
     #fm-preloader-view > .fm-ui-panel {

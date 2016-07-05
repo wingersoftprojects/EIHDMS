@@ -13,6 +13,36 @@
             <p:growl/>
             <p:fieldset legend="Upload" id="data_element">
                 <p:panelGrid columns="8" id="upload_panel_grid">
+                    <p:outputLabel for="region" value="Region:" />
+                    <p:selectOneMenu id="region" value="#{uploadBean.region}" style="width:125px" required="true" requiredMessage="Region field is Required" converter="regionConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{regionBean.tsActive}" var="item" itemLabel="#{item.region_name}" itemValue="#{item}"/>
+                        <p:ajax event="change" process="@this" update="district,county,sub_county,parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="district" value="District:" />
+                    <p:selectOneMenu id="district" value="#{uploadBean.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{districtBean.getts(uploadBean.region)}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="county,sub_county,parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="county" value="County:" />
+                    <p:selectOneMenu id="county" value="#{uploadBean.county}" style="width:125px" required="true" requiredMessage="County field is Required" converter="countyConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{countyBean.getts(uploadBean.district)}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="sub_county,parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="sub_county" value="Sub County:" />
+                    <p:selectOneMenu id="sub_county" value="#{uploadBean.sub_county}" style="width:125px" required="true" requiredMessage="Sub_county field is Required" converter="sub_countyConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{sub_countyBean.getts(uploadBean.county)}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="parish"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="parish" value="Parish:" />
+                    <p:selectOneMenu id="parish" value="#{uploadBean.parish}" style="width:125px" required="true" requiredMessage="Parish field is Required" converter="parishConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{parishBean.getts(uploadBean.sub_county)}" var="item" itemLabel="#{item.parish_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
                     <p:outputLabel for="report_form" value="Report Form:" />
                     <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                         <f:selectItem itemLabel="" />
@@ -31,10 +61,6 @@
                         <f:selectItems value="#{financial_yearBean.tsActive}" var="item" itemLabel="#{item.financial_year_name}" itemValue="#{item}"/>
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Report Period Name:" for="report_period_name"/>
-                    <p:inputText id="report_period_name" value="#{uploadBean.report_period_name}">
-                        <p:ajax process="@this" event="blur"/>
-                    </p:inputText>
                     <p:outputLabel value="Report Period Quarter:" for="report_period_quarter"/>
                     <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" required="true" requiredMessage="Technical area is active field is required">
                         <f:selectItem itemLabel="Select One" itemValue="" />
@@ -46,12 +72,18 @@
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Start date:" for="report_period_from_date" />
                     <p:calendar id="report_period_from_date" value="#{uploadBean.report_period_from_date}" title="startdate" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">
-                        <p:ajax process="@this"/>
+                        <p:ajax event="dateSelect" process="@this"/>
+                        <p:ajax event="blur" process="@this"/>
                     </p:calendar>
                     <p:outputLabel value="Report Period End Date:" for="report_period_to_date" />
                     <p:calendar id="report_period_to_date" value="#{uploadBean.report_period_to_date}" title="report_period_to_date" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="End Date field is required">
-                        <p:ajax process="@this"/>
+                        <p:ajax event="dateSelect" process="@this"/>
+                        <p:ajax event="blur" process="@this"/>
                     </p:calendar>
+                    <p:outputLabel value="Report Period Name:" for="report_period_name"/>
+                    <p:inputText id="report_period_name" value="#{uploadBean.report_period_name}">
+                        <p:ajax event="blur" process="@this"/>
+                    </p:inputText>
                     <p:outputLabel value="Upload"/>
                     <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
                                   auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="upload_panel_grid" />
@@ -72,12 +104,12 @@
                             {uniqueName: "Facility"}
                         ],
                         columns: [
-                            {uniqueName: "DataElement", sortName: "asc"}
+                            {uniqueName: "DataElement"}
                         ],
                         measures: [
                             {uniqueName: "DataElementValue", aggregation: "sum"}
                         ],
-                        licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+                        licenseKey: "Z53H-7B1PX3-3H16-3D01-1O36-0E0Q-3933-0G02-1U2W-08"
                     };
 
                     flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
@@ -85,7 +117,7 @@
                 </script>
             </p:fieldset>
         </h:form>
-        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
             <f:facet name="default">
                 <h:outputText value="Status: StandBy" />
             </f:facet>
