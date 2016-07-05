@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.orm.PersistentException;
+import org.orm.PersistentTransaction;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
@@ -332,17 +334,25 @@ public class UploadBean implements Serializable {
 
     public void load_interface() {
         if (!interface_datas.isEmpty()) {
-            /**
-             * Load Interface Data
-             */
-            for (Interface_data i : interface_datas) {
-                interface_dataBean.setSelected(i);
-                interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
-            }
-            /**
-             * Load Base Data
-             */
             try {
+                /**
+                 * Load Interface Data
+                 */
+                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                for (Interface_data i : interface_datas) {
+                    //interface_dataBean.setSelected(i);
+                    i.setIs_active(1);
+                    i.setAdd_date(new Timestamp(new Date().getTime()));
+                    i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                    i.setIs_deleted(0);
+                    i.save();
+                    //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                }
+                transaction.commit();
+                /**
+                 * Load Base Data
+                 */
+                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                 List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Not Moved' AND i.data_element.report_form=" + report_form.getReport_form_id()).list();
                 for (Interface_data i : interface_datas_tobase) {
                     Base_data base_data = Base_data.createBase_data();
@@ -360,20 +370,30 @@ public class UploadBean implements Serializable {
                     base_data.setReport_period_from_date(i.getReport_period_from_date());
                     base_data.setReport_period_to_date(i.getReport_period_to_date());
                     base_data.setReport_period_name(i.getReport_period_name());
+                    base_data.setIs_active(1);
+                    base_data.setAdd_date(new Timestamp(new Date().getTime()));
+                    base_data.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                    base_data.setIs_deleted(0);
                     /**
                      * Save Base Data
                      */
                     base_data.save();
-                    base_dataBean.setSelected(base_data);
-                    base_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                    //base_dataBean.setSelected(base_data);
+                    //base_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
                     /**
                      * Modify Interface Data
                      */
                     i.setStatus("Moved");
                     i.setStatus_desc("Moved to base");
-                    interface_dataBean.setSelected(i);
-                    interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                    i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                    i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                    EIHDMSPersistentManager.instance().getSession().merge(i);
+                    //i.setIs_deleted(0);
+                    //interface_dataBean.setSelected(i);
+                    //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
                 }
+                transaction.commit();
+                loginBean.saveMessage();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
