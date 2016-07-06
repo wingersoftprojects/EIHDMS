@@ -54,8 +54,7 @@ import org.primefaces.json.JSONObject;
 @SessionScoped
 public class UploadBean implements Serializable {
 
-    private int reportformid;
-    private JSONArray jSONArray;
+     private JSONArray jSONArray;
     private List<String> rowdatas;
     private Report_form_group report_form_group;
     private Report_form report_form;
@@ -240,14 +239,6 @@ public class UploadBean implements Serializable {
 
     public void setjSONArray(JSONArray jSONArray) {
         this.jSONArray = jSONArray;
-    }
-
-    public int getReportformid() {
-        return reportformid;
-    }
-
-    public void setReportformid(int reportformid) {
-        this.reportformid = reportformid;
     }
 
     public Report_form_group getReport_form_group() {
