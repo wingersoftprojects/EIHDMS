@@ -76,6 +76,8 @@ public class UploadBean implements Serializable {
     private County county;
     private Sub_county sub_county;
     private Parish parish;
+    private List<Data_element> data_elements;
+    private Health_facility health_facility;
 
     public Interface_dataBean getInterface_dataBean() {
         return interface_dataBean;
@@ -674,6 +676,199 @@ public class UploadBean implements Serializable {
             e.printStackTrace();
         } catch (InvalidFormatException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * @return the data_elements
+     */
+    public List<Data_element> getData_elements() {
+        return data_elements;
+    }
+
+    /**
+     * @param data_elements the data_elements to set
+     */
+    public void setData_elements(List<Data_element> data_elements) {
+        this.data_elements = data_elements;
+    }
+
+    public void refreshData_elements(Report_form report_form, Report_form_group report_form_group) {
+        String sql = "";
+        data_elements = new ArrayList<Data_element>();
+        try {
+            if (report_form != null && report_form_group != null) {
+                sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
+                data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
+                this.createInterface_datas(data_elements);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void createInterface_datas(List<Data_element> aData_elements) {
+        Interface_data interface_data;
+        if (null != aData_elements) {
+            interface_datas = new ArrayList<Interface_data>();
+            for (Data_element data_element : aData_elements) {
+                interface_data = new Interface_data();
+                interface_data.setData_element(data_element);
+                interface_data.setData_element_value("");
+                try {
+                    interface_data.setHealth_facility_name(this.getHealth_facility().getHealth_facility_name());
+                } catch (NullPointerException npe) {
+                    interface_data.setHealth_facility_name(null);
+                }
+                try {
+                    interface_data.setDistrict_name(this.getDistrict().getDistrict_name());
+                } catch (NullPointerException npe) {
+                    interface_data.setDistrict_name(null);
+                }
+                try {
+                    interface_data.setParish_name(this.getParish().getParish_name());
+                } catch (NullPointerException npe) {
+                    interface_data.setParish_name(null);
+                }
+                interface_data.setFinancial_year(this.getFinancial_year());
+                interface_data.setReport_period_quarter(this.getReport_period_quarter());
+                interface_data.setReport_period_from_date(this.getReport_period_from_date());
+                interface_data.setReport_period_to_date(this.getReport_period_to_date());
+                interface_data.setReport_period_name(this.getReport_period_name());
+                interface_data.setIs_deleted(0);
+                interface_data.setIs_active(1);
+                interface_data.setStatus("Not Moved");
+                interface_datas.add(interface_data);
+            }
+        }
+    }
+
+    /**
+     * @return the health_facility
+     */
+    public Health_facility getHealth_facility() {
+        return health_facility;
+    }
+
+    /**
+     * @param health_facility the health_facility to set
+     */
+    public void setHealth_facility(Health_facility health_facility) {
+        this.health_facility = health_facility;
+    }
+
+    public List<Health_facility> completeHealth_facility(String query) {
+        List<Health_facility> filteredHealth_facilities = new ArrayList<>();
+        try {
+            filteredHealth_facilities = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select hf FROM Health_facility  hf where hf.is_deleted<>1 AND hf.is_active<>0 AND hf.health_facility_name like '%" + query + "%'").list();
+        } catch (PersistentException ex) {
+            Logger.getLogger(Health_facilityBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return filteredHealth_facilities;
+    }
+
+    public List<Parish> completeParish(String query) {
+        List<Parish> filteredParishes = new ArrayList<>();
+        try {
+            filteredParishes = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select p FROM Parish  p where p.is_deleted<>1 AND p.is_active<>0 AND p.parish_name like '%" + query + "%'").list();
+        } catch (PersistentException ex) {
+            Logger.getLogger(ParishBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return filteredParishes;
+    }
+
+    public List<District> completeDistrict(String query) {
+        List<District> filteredDistricts = new ArrayList<>();
+        try {
+            filteredDistricts = (List<District>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM District  d where d.is_deleted<>1 AND d.is_active<>0 AND d.district_name like '%" + query + "%'").list();
+        } catch (PersistentException ex) {
+            Logger.getLogger(DistrictBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return filteredDistricts;
+    }
+
+    public void dataentry_load_interface() {
+        if (!interface_datas.isEmpty()) {
+            try {
+                /**
+                 * Load Interface Data
+                 */
+                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                for (Interface_data i : interface_datas) {
+                    i.setIs_active(1);
+                    i.setAdd_date(new Timestamp(new Date().getTime()));
+                    i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                    i.setIs_deleted(0);
+                    i.save();
+                }
+                transaction.commit();
+                /**
+                 * Load Base Data
+                 */
+                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Not Moved' AND i.data_element.report_form=" + report_form.getReport_form_id()).list();
+                for (Interface_data i : interface_datas_tobase) {
+                    List<Health_facility> health_facilityList = Health_facility.queryHealth_facility("health_facility_name='" + i.getHealth_facility_name() + "'", null);
+                    if (health_facilityList.size() == 1) {
+                        Base_data base_data = Base_data.createBase_data();
+                        base_data.setData_element(i.getData_element());
+                        base_data.setData_element_value(i.getData_element_value());
+                        base_data.setData_element_value(i.getData_element_value());
+//                    District d = District.loadDistrictByQuery("district_name='" + i.getDistrict_name() + "'", null);
+//                    Parish p = Parish.loadParishByQuery("parish_name='" + i.getParish_name() + "'", null);
+                        Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + i.getHealth_facility_name() + "'", null); //AND district_id=" + (district != null ? district.getDistrict_id() : 0) + " AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
+                        base_data.setHealth_facility(health_facility);
+                        base_data.setDistrict(health_facility.getDistrict());
+                        base_data.setParish(health_facility.getParish());
+                        base_data.setFinancial_year(i.getFinancial_year());
+                        base_data.setReport_period_quarter(i.getReport_period_quarter());
+                        base_data.setReport_period_from_date(i.getReport_period_from_date());
+                        base_data.setReport_period_to_date(i.getReport_period_to_date());
+                        base_data.setReport_period_name(i.getReport_period_name());
+                        base_data.setIs_active(1);
+                        base_data.setAdd_date(new Timestamp(new Date().getTime()));
+                        base_data.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                        base_data.setIs_deleted(0);
+                        /**
+                         * Save Base Data
+                         */
+                        base_data.save();
+                        /**
+                         * Modify Interface Data
+                         */
+                        i.setStatus("Moved");
+                        i.setStatus_desc("Moved to base successfully");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    if (health_facilityList.size() > 1) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because more than one facility found in facilities table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    if (health_facilityList.isEmpty()) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because facility not found in facilities table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    //base_dataBean.setSelected(base_data);
+                    //base_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+
+                    //i.setIs_deleted(0);
+                    //interface_dataBean.setSelected(i);
+                    //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                }
+                transaction.commit();
+                loginBean.saveMessage();
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            interface_datas = new ArrayList<>();
         }
     }
 
