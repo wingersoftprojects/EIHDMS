@@ -54,7 +54,7 @@ import org.primefaces.json.JSONObject;
 @SessionScoped
 public class UploadBean implements Serializable {
 
-     private JSONArray jSONArray;
+    private JSONArray jSONArray;
     private List<String> rowdatas;
     private Report_form_group report_form_group;
     private Report_form report_form;

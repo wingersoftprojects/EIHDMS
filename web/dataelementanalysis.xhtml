@@ -64,12 +64,12 @@
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
-                                {uniqueName: "District"},
-                                {uniqueName: "Parish"},
+                                //{uniqueName: "District"},
+                                //{uniqueName: "Parish"},
                                 {uniqueName: "Facility"}
                             ],
                             columns: [
-                                {uniqueName: "DataElement"}
+                                {uniqueName: "DataElement", sortName: "asc"}
                             ],
                             measures: [
                                 {uniqueName: "DataElementValue", aggregation: "sum"}
