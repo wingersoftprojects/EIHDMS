@@ -169,15 +169,14 @@ public class Data_element_AnalysisBean {
     private void load_jSON() {
         JSONArray jArray = new JSONArray();
         JSONObject jObj = new JSONObject();
-        JSONObject jObj2 = new JSONObject();
-        jObj.put("AgeCategory", jObj2.put("type", "string"));
-        jObj.put("SexCategory", jObj2.put("type", "string"));
-        jObj.put("OtherCategory", jObj2.put("type", "string"));
-        jObj.put("District", jObj2.put("type", "level").put("hierarchy", "Location"));
-        jObj.put("Parish", jObj2.put("type", "level").put("hierarchy", "Location").put("parent", "District"));
-        jObj.put("DataElement", jObj2.put("type", "string"));
-        jObj.put("Facility", jObj2.put("type", "string"));
-        jObj.put("DataElementValue", jObj2.put("type", "number"));
+        jObj.put("AgeCategory", new JSONObject().put("type", "string"));
+        jObj.put("SexCategory", new JSONObject().put("type", "string"));
+        jObj.put("OtherCategory", new JSONObject().put("type", "string"));
+        jObj.put("District", new JSONObject().put("type", "level").accumulate("hierarchy", "Location"));
+        jObj.put("Parish", new JSONObject().put("type", "level").accumulate("hierarchy", "Location").accumulate("parent", "District"));
+        jObj.put("DataElement", new JSONObject().put("type", "string"));
+        jObj.put("Facility", new JSONObject().put("type", "string"));
+        jObj.put("DataElementValue", new JSONObject().put("type", "number"));
         jArray.put(jObj);
 
         if (base_dataList == null) {
@@ -207,7 +206,7 @@ public class Data_element_AnalysisBean {
             if (base_data.getData_element_value() == null) {
                 jObj.put("DataElementValue", 0);
             } else {
-                jObj.put("DataElementValue", (int) Float.parseFloat(base_data.getData_element_value()));
+                jObj.put("DataElementValue", Float.parseFloat(base_data.getData_element_value()));
             }
             jArray.put(jObj);
         }

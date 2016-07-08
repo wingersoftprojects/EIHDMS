@@ -215,10 +215,9 @@ public class UploadBean implements Serializable {
         JSONArray jArray = new JSONArray();
 
         JSONObject jObj = new JSONObject();
-        JSONObject jObj2 = new JSONObject();
-        jObj.put("DataElement", jObj2.put("type", "string"));
-        jObj.put("Facility", jObj2.put("type", "string"));
-        jObj.put("DataElementValue", jObj2.put("type", "number"));
+        jObj.put("DataElement", new JSONObject().put("type", "string"));
+        jObj.put("Facility", new JSONObject().put("type", "string"));
+        jObj.put("DataElementValue", new JSONObject().put("type", "number"));
         jArray.put(jObj);
 
         if (interface_datas == null) {
@@ -231,7 +230,7 @@ public class UploadBean implements Serializable {
             if (interface_data.getData_element_value() == null) {
                 jObj.put("DataElementValue", 0);
             } else {
-                jObj.put("DataElementValue", (int) Float.parseFloat(interface_data.getData_element_value()));
+                jObj.put("DataElementValue", Float.parseFloat(interface_data.getData_element_value()));
             }
             jArray.put(jObj);
         }
