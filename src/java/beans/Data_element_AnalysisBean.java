@@ -172,10 +172,12 @@ public class Data_element_AnalysisBean {
         jObj.put("AgeCategory", new JSONObject().put("type", "string"));
         jObj.put("SexCategory", new JSONObject().put("type", "string"));
         jObj.put("OtherCategory", new JSONObject().put("type", "string"));
-        jObj.put("District", new JSONObject().put("type", "level").accumulate("hierarchy", "Location"));
-        jObj.put("Parish", new JSONObject().put("type", "level").accumulate("hierarchy", "Location").accumulate("parent", "District"));
-        jObj.put("DataElement", new JSONObject().put("type", "string"));
-        jObj.put("Facility", new JSONObject().put("type", "string"));
+        jObj.put("District", new JSONObject().put("hierarchy", "Location").accumulate("type", "level"));
+        jObj.put("Parish", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
+        jObj.put("Section", new JSONObject().put("type", "level").accumulate("hierarchy", "Section"));
+        jObj.put("SubSection", new JSONObject().put("type", "level").accumulate("hierarchy", "Section").accumulate("parent", "Section"));
+        jObj.put("DataElement", new JSONObject().put("type", "level").accumulate("hierarchy", "Section").accumulate("parent", "SubSection"));
+        jObj.put("Facility", new JSONObject().put("hierarchy", "Location").accumulate("type", "level").accumulate("parent", "Parish"));
         jObj.put("DataElementValue", new JSONObject().put("type", "number"));
         jArray.put(jObj);
 
@@ -201,6 +203,8 @@ public class Data_element_AnalysisBean {
             }
             jObj.put("District", base_data.getDistrict().getDistrict_name());
             jObj.put("Parish", base_data.getParish().getParish_name());
+            jObj.put("Section", base_data.getData_element().getSection().getSection_order() + base_data.getData_element().getSection().getSection_name());
+            jObj.put("SubSection",base_data.getData_element().getSub_section().getSub_section_order() + base_data.getData_element().getSub_section().getSub_section_name());
             jObj.put("DataElement", String.format("%1$03d", base_data.getData_element().getGroup_column_number()) + base_data.getData_element().getData_element_name());
             jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
             if (base_data.getData_element_value() == null) {
