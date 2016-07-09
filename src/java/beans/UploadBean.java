@@ -428,7 +428,7 @@ public class UploadBean implements Serializable {
                 //looping over each workbook sheet
 //            for (int i = 0; i < numberOfSheets; i++) {
 //                Sheet sheet = workbook.getSheetAt(i);
-                List<Data_element> data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de from Data_element de INNER JOIN de.report_form_group fg order by fg.group_order,de.group_column_number ASC").list();
+                List<Data_element> data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form.getReport_form_id() + " order by fg.group_order,de.group_column_number ASC").list();
                 Map demap = new HashMap();
                 int tempcounter = 1;
                 for (Data_element de : data_elements) {
@@ -456,7 +456,7 @@ public class UploadBean implements Serializable {
 
                         if ((counter - 1) != data_elements.size()) {
                             FacesContext context = FacesContext.getCurrentInstance();
-                            context.addMessage(null, new FacesMessage("Invalid Upload dues to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
+                            context.addMessage(null, new FacesMessage("Invalid Upload due to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
                             return;
                         }
 
