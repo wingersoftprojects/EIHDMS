@@ -225,7 +225,7 @@ public class UploadBean implements Serializable {
         }
         for (Interface_data interface_data : interface_datas) {
             jObj = new JSONObject();
-            jObj.put("DataElement", interface_data.getData_element().getData_element_name());
+            jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) +interface_data.getData_element().getData_element_name());
             jObj.put("Facility", interface_data.getHealth_facility_name());
             if (interface_data.getData_element_value() == null) {
                 jObj.put("DataElementValue", 0);

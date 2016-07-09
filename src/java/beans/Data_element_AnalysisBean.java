@@ -203,9 +203,9 @@ public class Data_element_AnalysisBean {
             }
             jObj.put("District", base_data.getDistrict().getDistrict_name());
             jObj.put("Parish", base_data.getParish().getParish_name());
-            jObj.put("Section", base_data.getData_element().getSection().getSection_order() + base_data.getData_element().getSection().getSection_name());
-            jObj.put("SubSection",base_data.getData_element().getSub_section().getSub_section_order() + base_data.getData_element().getSub_section().getSub_section_name());
-            jObj.put("DataElement", String.format("%1$03d", base_data.getData_element().getGroup_column_number()) + base_data.getData_element().getData_element_name());
+            jObj.put("Section", base_data.getData_element().getSection().getSection_name());
+            jObj.put("SubSection", base_data.getData_element().getSub_section().getSub_section_name());
+            jObj.put("DataElement", base_data.getData_element().getData_element_name());
             jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
             if (base_data.getData_element_value() == null) {
                 jObj.put("DataElementValue", 0);
