@@ -163,7 +163,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                 sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
                 data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
                 if (data_elements.size() > 0) {
-                    this.DownloadExcelTemplate(data_elements,"TMP_" + report_form.getReport_form_code() + "_" + report_form_group.getReport_form_group_name(),report_form_group.getReport_form_group_name());
+                    this.DownloadExcelTemplate(data_elements, "TMP_" + report_form.getReport_form_code() + "_" + report_form_group.getReport_form_group_name(), report_form_group.getReport_form_group_name());
                 }
             }
         } catch (Exception ex) {
@@ -171,7 +171,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
     }
 
-    public void DownloadExcelTemplate(List<Data_element> des,String filename,String sheetname) {
+    public void DownloadExcelTemplate(List<Data_element> des, String filename, String sheetname) {
         XSSFWorkbook workbook = null;
         int rowIndex = 0;
         int colIndex = 0;
@@ -239,7 +239,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
             res.setContentType("application/vnd.ms-excel");
             res.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
             try {
-                ServletOutputStream sout=res.getOutputStream();
+                ServletOutputStream sout = res.getOutputStream();
                 workbook.write(sout);
                 sout.flush();
                 sout.close();
@@ -254,6 +254,47 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
             e.printStackTrace();
         }
     }
-    
+
+    private TreeNode TreeNode;
+
+    public void getTreeNode(Report_form report_form) {
+        TreeNode = new DefaultTreeNode("TreeNode", null);
+        TreeNode formNode = new DefaultTreeNode(null);
+        TreeNode sectionNode = new DefaultTreeNode(null);
+        TreeNode subsectionNode = new DefaultTreeNode(null);
+        TreeNode elementNode = new DefaultTreeNode(null);
+        if (null != report_form) {
+            formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNode);
+            for (Section section : sectionBean.getTsActive()) {
+                if (section.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
+                    sectionNode = new DefaultTreeNode(section.getSection_name(), formNode);
+                }
+                for (Sub_section sub_section : sub_sectionBean.getTsActive()) {
+                    if (sub_section.getSection().getSection_id() == section.getSection_id()) {
+                        subsectionNode = new DefaultTreeNode(sub_section.getSub_section_name(), sectionNode);
+                        for (Data_element data_element : this.getTsActive()) {
+                            if (data_element.getSub_section().getSub_section_id() == sub_section.getSub_section_id()) {
+                                elementNode = new DefaultTreeNode(data_element.getData_element_name(), subsectionNode);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @return the TreeNode
+     */
+    public TreeNode getTreeNode() {
+        return TreeNode;
+    }
+
+    /**
+     * @param TreeNode the TreeNode to set
+     */
+    public void setTreeNode(TreeNode TreeNode) {
+        this.TreeNode = TreeNode;
+    }
 
 }
