@@ -107,7 +107,7 @@
                     </p:panel>
                     <p:commandButton value="Retrieve Entry Form" action="#{uploadBean.refreshData_elements(uploadBean.report_form,uploadBean.report_form_group)}" update="@form"/>
                 </p:panelGrid>
-                <p:panelGrid id="detail_panel_grid" columns="8">
+                <p:panelGrid id="detail_panel_grid" columns="2">
                     <c:forEach var="var" items="#{uploadBean.interface_datas}" >
                         <p:outputLabel value="#{var.data_element.data_element_name}"/>
                         <p:inputText value="#{var.data_element_value}"/>

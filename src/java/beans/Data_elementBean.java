@@ -44,6 +44,16 @@ import utilities.HttpJSFUtil;
 public class Data_elementBean extends AbstractBean<Data_element> implements Serializable {
 
     StreamedContent file;
+    private TreeNode TreeNodeByNone;
+    private TreeNode TreeNodeByGroup;
+    @ManagedProperty("#{report_formBean}")
+    private Report_formBean report_formBean;
+    @ManagedProperty("#{sectionBean}")
+    private SectionBean sectionBean;
+    @ManagedProperty("#{sub_sectionBean}")
+    private Sub_sectionBean sub_sectionBean;
+    @ManagedProperty("#{report_form_groupBean}")
+    private Report_form_groupBean report_form_groupBean;
 
     /**
      * Creates a new instance of Data_elementBean
@@ -78,13 +88,6 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
         return filteredData_elements;
     }
-
-    @ManagedProperty("#{report_formBean}")
-    private Report_formBean report_formBean;
-    @ManagedProperty("#{sectionBean}")
-    private SectionBean sectionBean;
-    @ManagedProperty("#{sub_sectionBean}")
-    private Sub_sectionBean sub_sectionBean;
 
     public Report_formBean getReport_formBean() {
         return report_formBean;
@@ -255,16 +258,14 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
     }
 
-    private TreeNode TreeNode;
-
-    public void getTreeNode(Report_form report_form) {
-        TreeNode = new DefaultTreeNode("TreeNode", null);
+    public void getTreeNodeByNone(Report_form report_form) {
+        TreeNodeByNone = new DefaultTreeNode("TreeNodeByNone", null);
         TreeNode formNode = new DefaultTreeNode(null);
         TreeNode sectionNode = new DefaultTreeNode(null);
         TreeNode subsectionNode = new DefaultTreeNode(null);
         TreeNode elementNode = new DefaultTreeNode(null);
         if (null != report_form) {
-            formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNode);
+            formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNodeByNone);
             for (Section section : sectionBean.getTsActive()) {
                 if (section.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
                     sectionNode = new DefaultTreeNode(section.getSection_name(), formNode);
@@ -283,18 +284,74 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
     }
 
-    /**
-     * @return the TreeNode
-     */
-    public TreeNode getTreeNode() {
-        return TreeNode;
+    public void getTreeNodeByGroup(Report_form report_form) {
+        TreeNodeByGroup = new DefaultTreeNode("TreeNodeByGroup", null);
+        TreeNode formNode = new DefaultTreeNode(null);
+        TreeNode groupNode = new DefaultTreeNode(null);
+        TreeNode sectionNode = new DefaultTreeNode(null);
+        TreeNode subsectionNode = new DefaultTreeNode(null);
+        TreeNode elementNode = new DefaultTreeNode(null);
+        if (null != report_form) {
+            formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNodeByGroup);
+
+            for (Report_form_group report_form_group : report_form_groupBean.getTsActive()) {
+                if (report_form_group.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
+                    groupNode = new DefaultTreeNode(report_form_group.getReport_form_group_name(), formNode);
+                }
+                for (Data_element data_element : this.getTsActive()) {
+                    if (data_element.getReport_form_group().getReport_form_group_id() == report_form_group.getReport_form_group_id()) {
+                        elementNode = new DefaultTreeNode(data_element.getData_element_name(), groupNode);
+                    }
+                }
+            }
+        }
+    }
+    
+    public void getTreeNodes(Report_form report_form) {
+        this.getTreeNodeByNone(report_form);
+        this.getTreeNodeByGroup(report_form);
     }
 
     /**
-     * @param TreeNode the TreeNode to set
+     * @return the TreeNodeByNone
      */
-    public void setTreeNode(TreeNode TreeNode) {
-        this.TreeNode = TreeNode;
+    public TreeNode getTreeNodeByNone() {
+        return TreeNodeByNone;
+    }
+
+    /**
+     * @param TreeNodeByNone the TreeNodeByNone to set
+     */
+    public void setTreeNodeByNone(TreeNode TreeNodeByNone) {
+        this.TreeNodeByNone = TreeNodeByNone;
+    }
+
+    /**
+     * @return the TreeNodeByGroup
+     */
+    public TreeNode getTreeNodeByGroup() {
+        return TreeNodeByGroup;
+    }
+
+    /**
+     * @param TreeNodeByGroup the TreeNodeByGroup to set
+     */
+    public void setTreeNodeByGroup(TreeNode TreeNodeByGroup) {
+        this.TreeNodeByGroup = TreeNodeByGroup;
+    }
+
+    /**
+     * @return the report_form_groupBean
+     */
+    public Report_form_groupBean getReport_form_groupBean() {
+        return report_form_groupBean;
+    }
+
+    /**
+     * @param report_form_groupBean the report_form_groupBean to set
+     */
+    public void setReport_form_groupBean(Report_form_groupBean report_form_groupBean) {
+        this.report_form_groupBean = report_form_groupBean;
     }
 
 }
