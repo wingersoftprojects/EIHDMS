@@ -225,7 +225,7 @@ public class UploadBean implements Serializable {
         }
         for (Interface_data interface_data : interface_datas) {
             jObj = new JSONObject();
-            jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) +interface_data.getData_element().getData_element_name());
+            jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
             jObj.put("Facility", interface_data.getHealth_facility_name());
             if (interface_data.getData_element_value() == null) {
                 jObj.put("DataElementValue", 0);
@@ -453,11 +453,12 @@ public class UploadBean implements Serializable {
                             Cell cell = cellIterator1.next();
                             counter++;
                         }
-
-                        if ((counter - 1) != data_elements.size()) {
-                            FacesContext context = FacesContext.getCurrentInstance();
-                            context.addMessage(null, new FacesMessage("Invalid Upload due to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
-                            return;
+                        if (row.getRowNum() == 0) {
+                            if ((counter - 1) != data_elements.size()) {
+                                FacesContext context = FacesContext.getCurrentInstance();
+                                context.addMessage(null, new FacesMessage("Invalid Upload due to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
+                                return;
+                            }
                         }
 
                         Iterator<Cell> cellIterator2 = row.cellIterator();
