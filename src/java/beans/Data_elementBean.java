@@ -113,49 +113,49 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         this.sub_sectionBean = sub_sectionBean;
     }
 
-    public TreeNode dataelementtreenode;
+    private TreeNode dataelementtreenode;
 
-    public TreeNode getDataelementtreenode() {
-        Data_element d0 = new Data_element();
-        d0.setData_element_name("Root");
-        d0.setData_type("-");
-        dataelementtreenode = new DefaultTreeNode(d0, null);
-        TreeNode level2 = new DefaultTreeNode(null);
-        TreeNode level3 = new DefaultTreeNode(null);
-        TreeNode level1 = new DefaultTreeNode(null);
-        TreeNode level4 = new DefaultTreeNode(null);
-        for (Report_form report_form : report_formBean.getTsActive()) {
-            Data_element d1 = new Data_element();
-            d1.setData_element_name(report_form.getReport_form_name());
-            d1.setData_type("-");
-            level1 = new DefaultTreeNode(d1, dataelementtreenode);
-            for (Section section : sectionBean.getTsActive()) {
-                if (section.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
-                    Data_element d2 = new Data_element();
-                    d2.setData_element_name(section.getSection_name());
-                    d2.setData_type("-");
-                    level2 = new DefaultTreeNode(d2, level1);
-                }
-                for (Sub_section sub_section : sub_sectionBean.getTsActive()) {
-                    if (sub_section.getSection().getSection_id() == section.getSection_id()) {
-                        Data_element d3 = new Data_element();
-                        d3.setData_element_name(sub_section.getSub_section_name());
-                        d3.setData_type("-");
-                        level3 = new DefaultTreeNode(d3, level2);
-                        for (Data_element data_element : this.getTsActive()) {
-                            if (data_element.getSub_section().getSub_section_id() == sub_section.getSub_section_id()) {
-                                level4 = new DefaultTreeNode("dataelement", data_element, level3);
+    public void getDataelementtreenode(Report_form report_form) {
+        try {
+            Data_element d0 = new Data_element();
+            d0.setData_element_name("Root");
+            d0.setData_type("-");
+            setDataelementtreenode(new DefaultTreeNode(d0, null));
+            TreeNode level2 = new DefaultTreeNode(null);
+            TreeNode level3 = new DefaultTreeNode(null);
+            TreeNode level1 = new DefaultTreeNode(null);
+            TreeNode level4 = new DefaultTreeNode(null);
+
+            if (null != report_form) {
+                Data_element d1 = new Data_element();
+                d1.setData_element_name(report_form.getReport_form_name());
+                d1.setData_type("-");
+                level1 = new DefaultTreeNode(d1, getDataelementtreenode());
+                for (Section section : sectionBean.getTsActive()) {
+                    if (section.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
+                        Data_element d2 = new Data_element();
+                        d2.setData_element_name(section.getSection_name());
+                        d2.setData_type("-");
+                        level2 = new DefaultTreeNode(d2, level1);
+                    }
+                    for (Sub_section sub_section : sub_sectionBean.getTsActive()) {
+                        if (sub_section.getSection().getSection_id() == section.getSection_id()) {
+                            Data_element d3 = new Data_element();
+                            d3.setData_element_name(sub_section.getSub_section_name());
+                            d3.setData_type("-");
+                            level3 = new DefaultTreeNode(d3, level2);
+                            for (Data_element data_element : this.getTsActive()) {
+                                if (data_element.getSub_section().getSub_section_id() == sub_section.getSub_section_id()) {
+                                    level4 = new DefaultTreeNode("dataelement", data_element, level3);
+                                }
                             }
                         }
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return dataelementtreenode;
-    }
-
-    public void setDataelementtreenode(TreeNode dataelementtreenode) {
-        this.dataelementtreenode = dataelementtreenode;
     }
 
     public void retrieveReportFormOrderedDataElements(Report_form report_form, Report_form_group report_form_group) {
@@ -166,7 +166,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                 sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
                 data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
                 if (data_elements.size() > 0) {
-                    this.DownloadExcelTemplate(data_elements, "TMP_" + report_form.getReport_form_code() + "_" + report_form_group.getReport_form_group_name(), report_form_group.getReport_form_group_name());
+                    this.DownloadExcelTemplate(data_elements, "TMP_" + report_form.getReport_form_code() + "_" + report_form_group.getReport_form_group_name(), report_form_group.getReport_form_group_name(), report_form.getLowest_report_form_level());
                 }
             }
         } catch (Exception ex) {
@@ -174,7 +174,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
     }
 
-    public void DownloadExcelTemplate(List<Data_element> des, String filename, String sheetname) {
+    public void DownloadExcelTemplate(List<Data_element> des, String filename, String sheetname, String lowestreportformlevel) {
         XSSFWorkbook workbook = null;
         int rowIndex = 0;
         int colIndex = 0;
@@ -221,8 +221,26 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                 if (colIndex == 0) {
                     cell = (XSSFCell) row.createCell(colIndex);
                     cell.setCellStyle(cs);
-                    cell.setCellValue(de.getReport_form().getLowest_report_form_level());
+                    cell.setCellValue("District");
                     colIndex += 1;
+                    if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
+                        cell = (XSSFCell) row.createCell(colIndex);
+                        cell.setCellStyle(cs);
+                        cell.setCellValue("Sub County");
+                        colIndex += 1;
+                    }
+                    if (lowestreportformlevel.equals("Parish")) {
+                        cell = (XSSFCell) row.createCell(colIndex);
+                        cell.setCellStyle(cs);
+                        cell.setCellValue("Parish");
+                        colIndex += 1;
+                    }
+                    if (lowestreportformlevel.equals("Facility")) {
+                        cell = (XSSFCell) row.createCell(colIndex);
+                        cell.setCellStyle(cs);
+                        cell.setCellValue("Facility");
+                        colIndex += 1;
+                    }
                 }
                 cell = (XSSFCell) row.createCell(colIndex);
                 cell.setCellStyle(cs);
@@ -306,7 +324,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
             }
         }
     }
-    
+
     public void getTreeNodes(Report_form report_form) {
         this.getTreeNodeByNone(report_form);
         this.getTreeNodeByGroup(report_form);
@@ -352,6 +370,23 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
      */
     public void setReport_form_groupBean(Report_form_groupBean report_form_groupBean) {
         this.report_form_groupBean = report_form_groupBean;
+    }
+
+    /**
+     * @return the dataelementtreenode
+     */
+    public TreeNode getDataelementtreenode() {
+        if(null==dataelementtreenode){
+            dataelementtreenode=new DefaultTreeNode();
+        }
+        return dataelementtreenode;
+    }
+
+    /**
+     * @param dataelementtreenode the dataelementtreenode to set
+     */
+    public void setDataelementtreenode(TreeNode dataelementtreenode) {
+        this.dataelementtreenode = dataelementtreenode;
     }
 
 }

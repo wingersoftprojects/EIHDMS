@@ -12,20 +12,17 @@
         </f:metadata>
     </ui:define>
     <ui:define name="content">
-        <h:form id="form">
+        <h:form id="form" rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl id="messages" showDetail="true" />
-            <p:panelGrid columns="8" id="download_panel_grid">
-                <p:outputLabel for="report_form_id" value="Choose Report Form:" />
-                <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
-                    <f:selectItem itemLabel="" />
-                    <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                    <p:ajax process="@this"/>
+            <p:panelGrid columns="1">
+                <p:outputLabel value="View Data Element Tree By:" for="data_element_tree_menu"/>
+                <p:selectOneMenu id="data_element_tree_menu">
+                    <f:selectItem itemLabel="Default" itemValue="Default"/>
+                    <f:selectItem itemLabel="Group" itemValue="Group"/>
+                    <f:selectItem itemLabel="Technical Area" itemValue="Technical Area"/>
                 </p:selectOneMenu>
-                <h:commandButton value="USE CHOSEN REPORT FORM" action="#{data_elementBean.getDataelementtreenode(uploadBean.report_form)}">
-                    <f:ajax execute="download_panel_grid" render="data_element_tree"/>
-                </h:commandButton>
             </p:panelGrid>
-            <p:panelGrid id="report_form_grid" columns="1">
+            <p:panelGrid columns="1">
                 <p:fieldset legend="Data Element Detail" id="data_element">
                     <p:panelGrid columns="8">
                         <p:outputLabel value="Report Form:" for="report_form"/>
