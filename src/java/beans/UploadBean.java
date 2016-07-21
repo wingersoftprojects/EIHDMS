@@ -213,52 +213,53 @@ public class UploadBean implements Serializable {
 
     public JSONArray getjSONArray() {
         JSONArray jArray = new JSONArray();
-
-        JSONObject jObj = new JSONObject();
-        jObj.put("DataElement", new JSONObject().put("type", "string"));
-        if (report_form.getLowest_report_form_level().equals("Facility")) {
-            jObj.put("District", new JSONObject().put("type", "string"));
-            jObj.put("Parish", new JSONObject().put("type", "string"));
-            jObj.put("Facility", new JSONObject().put("type", "string"));
-        }
-        if (report_form.getLowest_report_form_level().equals("Parish")) {
-            jObj.put("District", new JSONObject().put("type", "string"));
-            jObj.put("Subcounty", new JSONObject().put("type", "string"));
-            jObj.put("Parish", new JSONObject().put("type", "string"));
-        }
-        if (report_form.getLowest_report_form_level().equals("District")) {
-            jObj.put("District", new JSONObject().put("type", "string"));
-        }
-        jObj.put("DataElementValue", new JSONObject().put("type", "number"));
-        jArray.put(jObj);
-
-        if (interface_datas == null) {
-            interface_datas = new ArrayList<>();
-        }
-        for (Interface_data interface_data : interface_datas) {
-            jObj = new JSONObject();
-            jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
+        if (report_form != null) {
+            JSONObject jObj = new JSONObject();
+            jObj.put("DataElement", new JSONObject().put("type", "string"));
             if (report_form.getLowest_report_form_level().equals("Facility")) {
-                jObj.put("District", interface_data.getDistrict_name());
-                jObj.put("Parish", interface_data.getParish_name());
-                jObj.put("Facility", interface_data.getHealth_facility_name());
+                jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("Parish", new JSONObject().put("type", "string"));
+                jObj.put("Facility", new JSONObject().put("type", "string"));
             }
             if (report_form.getLowest_report_form_level().equals("Parish")) {
-                jObj.put("District", interface_data.getDistrict_name());
-                jObj.put("Subcounty", interface_data.getSub_county_name());
-                jObj.put("Parish", interface_data.getParish_name());
+                jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("Subcounty", new JSONObject().put("type", "string"));
+                jObj.put("Parish", new JSONObject().put("type", "string"));
             }
             if (report_form.getLowest_report_form_level().equals("District")) {
-                jObj.put("District", interface_data.getDistrict_name());
+                jObj.put("District", new JSONObject().put("type", "string"));
             }
-            if (interface_data.getData_element_value() == null) {
-                jObj.put("DataElementValue", 0);
-            } else {
-                jObj.put("DataElementValue", Float.parseFloat(interface_data.getData_element_value()));
-            }
+            jObj.put("DataElementValue", new JSONObject().put("type", "number"));
             jArray.put(jObj);
+
+            if (interface_datas == null) {
+                interface_datas = new ArrayList<>();
+            }
+            for (Interface_data interface_data : interface_datas) {
+                jObj = new JSONObject();
+                jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
+                if (report_form.getLowest_report_form_level().equals("Facility")) {
+                    jObj.put("District", interface_data.getDistrict_name());
+                    jObj.put("Parish", interface_data.getParish_name());
+                    jObj.put("Facility", interface_data.getHealth_facility_name());
+                }
+                if (report_form.getLowest_report_form_level().equals("Parish")) {
+                    jObj.put("District", interface_data.getDistrict_name());
+                    jObj.put("Subcounty", interface_data.getSub_county_name());
+                    jObj.put("Parish", interface_data.getParish_name());
+                }
+                if (report_form.getLowest_report_form_level().equals("District")) {
+                    jObj.put("District", interface_data.getDistrict_name());
+                }
+                if (interface_data.getData_element_value() == null) {
+                    jObj.put("DataElementValue", 0);
+                } else {
+                    jObj.put("DataElementValue", Float.parseFloat(interface_data.getData_element_value()));
+                }
+                jArray.put(jObj);
+            }
+            jSONArray = jArray;
         }
-        jSONArray = jArray;
         return jSONArray;
     }
 

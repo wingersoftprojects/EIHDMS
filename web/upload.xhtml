@@ -62,7 +62,7 @@
                 <div id="pivotContainer"></div>
                 <h:outputScript name="./component/flexmonster/flexmonster.js"/>
                 <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
-                <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.report_form_name.lowest_report_form_level=='Facility'}">
+                <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
                     <script type="text/javascript">
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
@@ -85,12 +85,14 @@
                                     decimalPlaces: 3
                                 }
                             ],
+                            expandAll: true,
                             licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
                         };
+                        //flexmonster.expandAllData();
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
                     </script>
                 </c:if>
-                <c:if  test="#{uploadBean.report_form.report_form_name.lowest_report_form_level=='Parish'}">
+                <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
                     <script type="text/javascript">
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
@@ -113,12 +115,14 @@
                                     decimalPlaces: 3
                                 }
                             ],
+                            expandAll: true,
                             licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
                         };
+                        //flexmonster.expandAllData();
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
                     </script>
                 </c:if>
-                <c:if  test="#{uploadBean.report_form.report_form_name.lowest_report_form_level=='District'}">
+                <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
                     <script type="text/javascript">
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
@@ -139,8 +143,10 @@
                                     decimalPlaces: 3
                                 }
                             ],
+                            expandAll: true,
                             licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
                         };
+                        //flexmonster.expandAllData();
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
                     </script>
                 </c:if>
