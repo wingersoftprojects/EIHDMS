@@ -30,7 +30,7 @@
                     <p:panelGrid columns="8">
                         <p:outputLabel value="Report Form:" for="report_form"/>
                         <p:selectOneMenu id="report_form" value="#{data_elementBean.selected.report_form}" style="width:125px" converter="report_formConverter" required="true" requiredMessage="Report Form field is required!">
-                            <f:selectItem itemLabel="" />
+                            
                             <f:selectItems value="#{report_formBean.getReport_forms(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
                             <p:ajax process="@this" update="report_form_group"/>
                         </p:selectOneMenu>
@@ -108,9 +108,9 @@
                             <h:outputText value="#{node.data_type}" />
                         </p:column>
                         <p:column headerText="">
-                            <p:commandButton value="Edit" action="#{data_elementBean.edit(node)}" process="@this" update=":form:data_element" icon="ui-icon-search" title="View">
+                            <p:commandButton value="Edit" action="#{data_elementBean.edit(data_elementBean.getData_element(node.data_element_id))}" process="@this" update=":form:data_element" icon="ui-icon-search" title="View" rendered="#{node.data_element_id>0}">
                             </p:commandButton>
-                            <p:commandButton value="Delete" actionListener="#{data_elementBean.delete(node)}" update="@form" process="@this">
+                            <p:commandButton value="Delete" actionListener="#{data_elementBean.delete(data_elementBean.getData_element(node.data_element_id))}" update="@form" process="@this" rendered="#{node.data_element_id>0}">
                                 <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
                             </p:commandButton>
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
