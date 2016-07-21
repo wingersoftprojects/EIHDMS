@@ -329,6 +329,16 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         this.getTreeNodeByNone(report_form);
         this.getTreeNodeByGroup(report_form);
     }
+    
+    public Data_element getData_element(int data_element_id) {
+        Data_element aData_element = new Data_element();
+        try {
+            aData_element = Data_element.getData_elementByORMID(data_element_id);
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return aData_element;
+    }
 
     /**
      * @return the TreeNodeByNone
