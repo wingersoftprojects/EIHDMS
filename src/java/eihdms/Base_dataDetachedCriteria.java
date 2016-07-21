@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Kiyingi Simon Peter
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -27,6 +27,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final AssociationExpression health_facility;
 	public final IntegerExpression parishId;
 	public final AssociationExpression parish;
+	public final IntegerExpression sub_countyId;
+	public final AssociationExpression sub_county;
 	public final IntegerExpression districtId;
 	public final AssociationExpression district;
 	public final IntegerExpression financial_yearId;
@@ -52,6 +54,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		health_facility = new AssociationExpression("health_facility", this.getDetachedCriteria());
 		parishId = new IntegerExpression("parish.parish_id", this.getDetachedCriteria());
 		parish = new AssociationExpression("parish", this.getDetachedCriteria());
+		sub_countyId = new IntegerExpression("sub_county.sub_county_id", this.getDetachedCriteria());
+		sub_county = new AssociationExpression("sub_county", this.getDetachedCriteria());
 		districtId = new IntegerExpression("district.district_id", this.getDetachedCriteria());
 		district = new AssociationExpression("district", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
@@ -78,6 +82,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		health_facility = new AssociationExpression("health_facility", this.getDetachedCriteria());
 		parishId = new IntegerExpression("parish.parish_id", this.getDetachedCriteria());
 		parish = new AssociationExpression("parish", this.getDetachedCriteria());
+		sub_countyId = new IntegerExpression("sub_county.sub_county_id", this.getDetachedCriteria());
+		sub_county = new AssociationExpression("sub_county", this.getDetachedCriteria());
 		districtId = new IntegerExpression("district.district_id", this.getDetachedCriteria());
 		district = new AssociationExpression("district", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
@@ -104,6 +110,10 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public ParishDetachedCriteria createParishCriteria() {
 		return new ParishDetachedCriteria(createCriteria("parish"));
+	}
+	
+	public Sub_countyDetachedCriteria createSub_countyCriteria() {
+		return new Sub_countyDetachedCriteria(createCriteria("sub_county"));
 	}
 	
 	public DistrictDetachedCriteria createDistrictCriteria() {

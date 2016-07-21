@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Kiyingi Simon Peter
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -424,6 +424,9 @@ public class Interface_data implements Serializable {
 	@Column(name="parish_name", nullable=true, length=100)	
 	private String parish_name;
 	
+	@Column(name="sub_county_name", nullable=true, length=100)	
+	private String sub_county_name;
+	
 	@Column(name="district_name", nullable=true, length=100)	
 	private String district_name;
 	
@@ -620,6 +623,14 @@ public class Interface_data implements Serializable {
 	
 	public Integer getReport_period_quarter() {
 		return report_period_quarter;
+	}
+	
+	public void setSub_county_name(String value) {
+		this.sub_county_name = value;
+	}
+	
+	public String getSub_county_name() {
+		return sub_county_name;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

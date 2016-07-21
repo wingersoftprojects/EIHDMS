@@ -286,21 +286,6 @@
     <ServerName></ServerName>
     <SelectedForm>true</SelectedForm>
   </Setting>
-  <Setting type="2">
-    <Driver>MySQL (Connector/J Driver)</Driver>
-    <DriverFiles>D:\WENCE.BENDA\MY.PROJECT\WD\wBMS\jar_files\mysql-connector-java-5.1.7-bin.jar</DriverFiles>
-    <Dialect>org.hibernate.dialect.MySQLInnoDBDialect</Dialect>
-    <DriverClass>com.mysql.jdbc.Driver</DriverClass>
-    <URL>jdbc:mysql://localhost/eihdms</URL>
-    <UserName>root</UserName>
-    <Password>WTLura456</Password>
-    <HostName>localhost</HostName>
-    <PortNO></PortNO>
-    <DBName>eihdms</DBName>
-    <ServiceName></ServiceName>
-    <ServerName></ServerName>
-    <SelectedForm>true</SelectedForm>
-  </Setting>
   <Setting type="16777216">
     <Driver></Driver>
     <DriverFiles></DriverFiles>
@@ -312,6 +297,21 @@
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
+    <ServiceName></ServiceName>
+    <ServerName></ServerName>
+    <SelectedForm>true</SelectedForm>
+  </Setting>
+  <Setting type="2">
+    <Driver>MySQL (Connector/J Driver)</Driver>
+    <DriverFiles>D:\WENCE.BENDA\MY.PROJECT\WD\wBMS\jar_files\mysql-connector-java-5.1.7-bin.jar</DriverFiles>
+    <Dialect>org.hibernate.dialect.MySQLInnoDBDialect</Dialect>
+    <DriverClass>com.mysql.jdbc.Driver</DriverClass>
+    <URL>jdbc:mysql://localhost/eihdms</URL>
+    <UserName>root</UserName>
+    <Password>WTLura456</Password>
+    <HostName>localhost</HostName>
+    <PortNO></PortNO>
+    <DBName>eihdms</DBName>
     <ServiceName></ServiceName>
     <ServerName></ServerName>
     <SelectedForm>true</SelectedForm>

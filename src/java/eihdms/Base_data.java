@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Kiyingi Simon Peter
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -377,6 +377,10 @@ public class Base_data implements Serializable {
 				getParish().getBase_data().remove(this);
 			}
 			
+			if(getSub_county() != null) {
+				getSub_county().getBase_data().remove(this);
+			}
+			
 			if(getDistrict() != null) {
 				getDistrict().getBase_data().remove(this);
 			}
@@ -405,6 +409,10 @@ public class Base_data implements Serializable {
 			
 			if(getParish() != null) {
 				getParish().getBase_data().remove(this);
+			}
+			
+			if(getSub_county() != null) {
+				getSub_county().getBase_data().remove(this);
 			}
 			
 			if(getDistrict() != null) {
@@ -451,6 +459,11 @@ public class Base_data implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="parish_id", referencedColumnName="parish_id") })	
 	private eihdms.Parish parish;
+	
+	@ManyToOne(targetEntity=eihdms.Sub_county.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id") })	
+	private eihdms.Sub_county sub_county;
 	
 	@ManyToOne(targetEntity=eihdms.District.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
@@ -644,6 +657,14 @@ public class Base_data implements Serializable {
 	
 	public eihdms.Financial_year getFinancial_year() {
 		return financial_year;
+	}
+	
+	public void setSub_county(eihdms.Sub_county value) {
+		this.sub_county = value;
+	}
+	
+	public eihdms.Sub_county getSub_county() {
+		return sub_county;
 	}
 	
 	@Override	

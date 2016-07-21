@@ -5,7 +5,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
 
@@ -59,36 +60,90 @@
                 </p:panelGrid>
                 <!-- 1. Create a DIV container to insert the component -->
                 <div id="pivotContainer"></div>
-
                 <h:outputScript name="./component/flexmonster/flexmonster.js"/>
                 <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
-                <script type="text/javascript">
-                    var jsonData = #{uploadBean.getjSONArray()};
-
-                    var report = {
-                        dataSourceType: "json",
-                        data: jsonData,
-                        rows: [
-                            {uniqueName: "Facility"}
-                        ],
-                        columns: [
-                            {uniqueName: "DataElement", sortName: "asc"}
-                        ],
-                        measures: [
-                            {uniqueName: "DataElementValue",format: "decimal"}
-                        ],
-                        formats: [
-                            {
-                                name: "decimal",
-                                decimalPlaces: 3
-                            }
-                        ],
-                        licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
-                    };
-
-                    flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-
-                </script>
+                <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.report_form_name.lowest_report_form_level=='Facility'}">
+                    <script type="text/javascript">
+                        var jsonData = #{uploadBean.getjSONArray()};
+                        var report = {
+                            dataSourceType: "json",
+                            data: jsonData,
+                            rows: [
+                                {uniqueName: "District"},
+                                {uniqueName: "Parish"},
+                                {uniqueName: "Facility"}
+                            ],
+                            columns: [
+                                {uniqueName: "DataElement", sortName: "asc"}
+                            ],
+                            measures: [
+                                {uniqueName: "DataElementValue", format: "decimal"}
+                            ],
+                            formats: [
+                                {
+                                    name: "decimal",
+                                    decimalPlaces: 3
+                                }
+                            ],
+                            licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+                        };
+                        flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                    </script>
+                </c:if>
+                <c:if  test="#{uploadBean.report_form.report_form_name.lowest_report_form_level=='Parish'}">
+                    <script type="text/javascript">
+                        var jsonData = #{uploadBean.getjSONArray()};
+                        var report = {
+                            dataSourceType: "json",
+                            data: jsonData,
+                            rows: [
+                                {uniqueName: "District"},
+                                {uniqueName: "Subcounty"},
+                                {uniqueName: "Parish"}
+                            ],
+                            columns: [
+                                {uniqueName: "DataElement", sortName: "asc"}
+                            ],
+                            measures: [
+                                {uniqueName: "DataElementValue", format: "decimal"}
+                            ],
+                            formats: [
+                                {
+                                    name: "decimal",
+                                    decimalPlaces: 3
+                                }
+                            ],
+                            licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+                        };
+                        flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                    </script>
+                </c:if>
+                <c:if  test="#{uploadBean.report_form.report_form_name.lowest_report_form_level=='District'}">
+                    <script type="text/javascript">
+                        var jsonData = #{uploadBean.getjSONArray()};
+                        var report = {
+                            dataSourceType: "json",
+                            data: jsonData,
+                            rows: [
+                                {uniqueName: "District"}
+                            ],
+                            columns: [
+                                {uniqueName: "DataElement", sortName: "asc"}
+                            ],
+                            measures: [
+                                {uniqueName: "DataElementValue", format: "decimal"}
+                            ],
+                            formats: [
+                                {
+                                    name: "decimal",
+                                    decimalPlaces: 3
+                                }
+                            ],
+                            licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+                        };
+                        flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                    </script>
+                </c:if>
             </p:fieldset>
         </h:form>
         <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">

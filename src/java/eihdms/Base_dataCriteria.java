@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Kiyingi Simon Peter
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -27,6 +27,8 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	public final AssociationExpression health_facility;
 	public final IntegerExpression parishId;
 	public final AssociationExpression parish;
+	public final IntegerExpression sub_countyId;
+	public final AssociationExpression sub_county;
 	public final IntegerExpression districtId;
 	public final AssociationExpression district;
 	public final IntegerExpression financial_yearId;
@@ -52,6 +54,8 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 		health_facility = new AssociationExpression("health_facility", this);
 		parishId = new IntegerExpression("parish.parish_id", this);
 		parish = new AssociationExpression("parish", this);
+		sub_countyId = new IntegerExpression("sub_county.sub_county_id", this);
+		sub_county = new AssociationExpression("sub_county", this);
 		districtId = new IntegerExpression("district.district_id", this);
 		district = new AssociationExpression("district", this);
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this);
@@ -86,6 +90,10 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	
 	public ParishCriteria createParishCriteria() {
 		return new ParishCriteria(createCriteria("parish"));
+	}
+	
+	public Sub_countyCriteria createSub_countyCriteria() {
+		return new Sub_countyCriteria(createCriteria("sub_county"));
 	}
 	
 	public DistrictCriteria createDistrictCriteria() {

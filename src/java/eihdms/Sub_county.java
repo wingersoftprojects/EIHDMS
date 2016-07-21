@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Kiyingi Simon Peter
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -377,6 +377,10 @@ public class Sub_county implements Serializable {
 			for(int i = 0; i < lHealth_facilitys.length; i++) {
 				lHealth_facilitys[i].setSub_county(null);
 			}
+			eihdms.Base_data[] lBase_datas = (eihdms.Base_data[])getBase_data().toArray(new eihdms.Base_data[getBase_data().size()]);
+			for(int i = 0; i < lBase_datas.length; i++) {
+				lBase_datas[i].setSub_county(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -398,6 +402,10 @@ public class Sub_county implements Serializable {
 			eihdms.Health_facility[] lHealth_facilitys = (eihdms.Health_facility[])getHealth_facility().toArray(new eihdms.Health_facility[getHealth_facility().size()]);
 			for(int i = 0; i < lHealth_facilitys.length; i++) {
 				lHealth_facilitys[i].setSub_county(null);
+			}
+			eihdms.Base_data[] lBase_datas = (eihdms.Base_data[])getBase_data().toArray(new eihdms.Base_data[getBase_data().size()]);
+			for(int i = 0; i < lBase_datas.length; i++) {
+				lBase_datas[i].setSub_county(null);
 			}
 			try {
 				session.delete(this);
@@ -453,6 +461,11 @@ public class Sub_county implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set health_facility = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="sub_county", targetEntity=eihdms.Base_data.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set base_data = new java.util.HashSet();
 	
 	private void setSub_county_id(int value) {
 		this.sub_county_id = value;
@@ -561,6 +574,15 @@ public class Sub_county implements Serializable {
 	
 	public java.util.Set getHealth_facility() {
 		return health_facility;
+	}
+	
+	
+	public void setBase_data(java.util.Set value) {
+		this.base_data = value;
+	}
+	
+	public java.util.Set getBase_data() {
+		return base_data;
 	}
 	
 	

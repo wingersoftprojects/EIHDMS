@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Kiyingi Simon Peter
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -25,6 +25,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final StringExpression data_element_value;
 	public final StringExpression health_facility_name;
 	public final StringExpression parish_name;
+	public final StringExpression sub_county_name;
 	public final StringExpression district_name;
 	public final IntegerExpression financial_yearId;
 	public final AssociationExpression financial_year;
@@ -49,6 +50,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		data_element_value = new StringExpression("data_element_value", this);
 		health_facility_name = new StringExpression("health_facility_name", this);
 		parish_name = new StringExpression("parish_name", this);
+		sub_county_name = new StringExpression("sub_county_name", this);
 		district_name = new StringExpression("district_name", this);
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this);
 		financial_year = new AssociationExpression("financial_year", this);

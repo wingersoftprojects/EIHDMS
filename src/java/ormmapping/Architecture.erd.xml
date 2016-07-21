@@ -1202,6 +1202,17 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="sub_county_name">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>100</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
     <Column name="district_name">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -1658,6 +1669,18 @@
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
       <ReferencedColumn>parish.parish_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="sub_county_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>sub_county.sub_county_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
       <Nullable>true</Nullable>
@@ -4000,6 +4023,16 @@
     </Columns>
     <RefColumns>
       <Column>financial_year_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKbase_data756626">
+    <ReferenceTable>base_data</ReferenceTable>
+    <ReferencedTable>sub_county</ReferencedTable>
+    <Columns>
+      <Column>sub_county_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>sub_county_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>

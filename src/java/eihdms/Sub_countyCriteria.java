@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Kiyingi Simon Peter
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -31,6 +31,7 @@ public class Sub_countyCriteria extends AbstractORMCriteria {
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression parish;
 	public final CollectionExpression health_facility;
+	public final CollectionExpression base_data;
 	
 	public Sub_countyCriteria(Criteria criteria) {
 		super(criteria);
@@ -46,6 +47,7 @@ public class Sub_countyCriteria extends AbstractORMCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		parish = new CollectionExpression("parish", this);
 		health_facility = new CollectionExpression("health_facility", this);
+		base_data = new CollectionExpression("base_data", this);
 	}
 	
 	public Sub_countyCriteria(PersistentSession session) {
@@ -66,6 +68,10 @@ public class Sub_countyCriteria extends AbstractORMCriteria {
 	
 	public Health_facilityCriteria createHealth_facilityCriteria() {
 		return new Health_facilityCriteria(createCriteria("health_facility"));
+	}
+	
+	public Base_dataCriteria createBase_dataCriteria() {
+		return new Base_dataCriteria(createCriteria("base_data"));
 	}
 	
 	public Sub_county uniqueSub_county() {
