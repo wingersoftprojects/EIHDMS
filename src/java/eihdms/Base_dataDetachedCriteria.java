@@ -20,6 +20,8 @@ import org.orm.criteria.*;
 
 public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression base_data_id;
+	public final IntegerExpression batchId;
+	public final AssociationExpression batch;
 	public final IntegerExpression data_elementId;
 	public final AssociationExpression data_element;
 	public final StringExpression data_element_value;
@@ -47,6 +49,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public Base_dataDetachedCriteria() {
 		super(eihdms.Base_data.class, eihdms.Base_dataCriteria.class);
 		base_data_id = new IntegerExpression("base_data_id", this.getDetachedCriteria());
+		batchId = new IntegerExpression("batch.batch_id", this.getDetachedCriteria());
+		batch = new AssociationExpression("batch", this.getDetachedCriteria());
 		data_elementId = new IntegerExpression("data_element.data_element_id", this.getDetachedCriteria());
 		data_element = new AssociationExpression("data_element", this.getDetachedCriteria());
 		data_element_value = new StringExpression("data_element_value", this.getDetachedCriteria());
@@ -75,6 +79,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public Base_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
 		super(aDetachedCriteria, eihdms.Base_dataCriteria.class);
 		base_data_id = new IntegerExpression("base_data_id", this.getDetachedCriteria());
+		batchId = new IntegerExpression("batch.batch_id", this.getDetachedCriteria());
+		batch = new AssociationExpression("batch", this.getDetachedCriteria());
 		data_elementId = new IntegerExpression("data_element.data_element_id", this.getDetachedCriteria());
 		data_element = new AssociationExpression("data_element", this.getDetachedCriteria());
 		data_element_value = new StringExpression("data_element_value", this.getDetachedCriteria());
@@ -98,6 +104,10 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+	}
+	
+	public BatchDetachedCriteria createBatchCriteria() {
+		return new BatchDetachedCriteria(createCriteria("batch"));
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {

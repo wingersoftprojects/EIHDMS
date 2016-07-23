@@ -20,6 +20,8 @@ import org.orm.criteria.*;
 
 public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression interface_data_id;
+	public final IntegerExpression batchId;
+	public final AssociationExpression batch;
 	public final IntegerExpression data_elementId;
 	public final AssociationExpression data_element;
 	public final StringExpression data_element_value;
@@ -45,6 +47,8 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public Interface_dataCriteria(Criteria criteria) {
 		super(criteria);
 		interface_data_id = new IntegerExpression("interface_data_id", this);
+		batchId = new IntegerExpression("batch.batch_id", this);
+		batch = new AssociationExpression("batch", this);
 		data_elementId = new IntegerExpression("data_element.data_element_id", this);
 		data_element = new AssociationExpression("data_element", this);
 		data_element_value = new StringExpression("data_element_value", this);
@@ -74,6 +78,10 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	
 	public Interface_dataCriteria() throws PersistentException {
 		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+	}
+	
+	public BatchCriteria createBatchCriteria() {
+		return new BatchCriteria(createCriteria("batch"));
 	}
 	
 	public Data_elementCriteria createData_elementCriteria() {

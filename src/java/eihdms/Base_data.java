@@ -365,6 +365,10 @@ public class Base_data implements Serializable {
 	
 	public boolean deleteAndDissociate()throws PersistentException {
 		try {
+			if(getBatch() != null) {
+				getBatch().getBase_data().remove(this);
+			}
+			
 			if(getData_element() != null) {
 				getData_element().getBase_data().remove(this);
 			}
@@ -399,6 +403,10 @@ public class Base_data implements Serializable {
 	
 	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
 		try {
+			if(getBatch() != null) {
+				getBatch().getBase_data().remove(this);
+			}
+			
 			if(getData_element() != null) {
 				getData_element().getBase_data().remove(this);
 			}
@@ -441,6 +449,11 @@ public class Base_data implements Serializable {
 	@GeneratedValue(generator="EIHDMS_BASE_DATA_BASE_DATA_ID_GENERATOR")	
 	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_BASE_DATA_BASE_DATA_ID_GENERATOR", strategy="native")	
 	private int base_data_id;
+	
+	@ManyToOne(targetEntity=eihdms.Batch.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="batch_id", referencedColumnName="batch_id") })	
+	private eihdms.Batch batch;
 	
 	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
@@ -665,6 +678,14 @@ public class Base_data implements Serializable {
 	
 	public eihdms.Sub_county getSub_county() {
 		return sub_county;
+	}
+	
+	public void setBatch(eihdms.Batch value) {
+		this.batch = value;
+	}
+	
+	public eihdms.Batch getBatch() {
+		return batch;
 	}
 	
 	@Override	

@@ -241,6 +241,14 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Batch...");
+		eihdms.Batch[] eihdmsBatchs = eihdms.Batch.listBatchByQuery(null, null);
+		length = Math.min(eihdmsBatchs.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsBatchs[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -591,6 +599,18 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsFinancial_years[i]);
 		}
 		System.out.println(length + " Financial_year record(s) retrieved."); 
+		
+		System.out.println("Listing Batch by Criteria...");
+		eihdms.BatchCriteria leihdmsBatchCriteria = new eihdms.BatchCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsBatchCriteria.batch_id.eq();
+		leihdmsBatchCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Batch[] eihdmsBatchs = leihdmsBatchCriteria.listBatch();
+		length =eihdmsBatchs== null ? 0 : Math.min(eihdmsBatchs.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsBatchs[i]);
+		}
+		System.out.println(length + " Batch record(s) retrieved."); 
 		
 	}
 	

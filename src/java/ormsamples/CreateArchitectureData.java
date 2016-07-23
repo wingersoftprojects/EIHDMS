@@ -96,6 +96,9 @@ public class CreateArchitectureData {
 			eihdms.Financial_year leihdmsFinancial_year = eihdms.Financial_year.createFinancial_year();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, financial_year_name
 			leihdmsFinancial_year.save();
+			eihdms.Batch leihdmsBatch = eihdms.Batch.createBatch();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
+			leihdmsBatch.save();
 			t.commit();
 		}
 		catch (Exception e) {

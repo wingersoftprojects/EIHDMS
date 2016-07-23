@@ -365,6 +365,10 @@ public class Interface_data implements Serializable {
 	
 	public boolean deleteAndDissociate()throws PersistentException {
 		try {
+			if(getBatch() != null) {
+				getBatch().getInterface_data().remove(this);
+			}
+			
 			if(getData_element() != null) {
 				getData_element().getInterface_data().remove(this);
 			}
@@ -383,6 +387,10 @@ public class Interface_data implements Serializable {
 	
 	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
 		try {
+			if(getBatch() != null) {
+				getBatch().getInterface_data().remove(this);
+			}
+			
 			if(getData_element() != null) {
 				getData_element().getInterface_data().remove(this);
 			}
@@ -409,6 +417,11 @@ public class Interface_data implements Serializable {
 	@GeneratedValue(generator="EIHDMS_INTERFACE_DATA_INTERFACE_DATA_ID_GENERATOR")	
 	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_INTERFACE_DATA_INTERFACE_DATA_ID_GENERATOR", strategy="native")	
 	private int interface_data_id;
+	
+	@ManyToOne(targetEntity=eihdms.Batch.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="batch_id", referencedColumnName="batch_id") })	
+	private eihdms.Batch batch;
 	
 	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
@@ -647,6 +660,14 @@ public class Interface_data implements Serializable {
 	
 	public eihdms.Financial_year getFinancial_year() {
 		return financial_year;
+	}
+	
+	public void setBatch(eihdms.Batch value) {
+		this.batch = value;
+	}
+	
+	public eihdms.Batch getBatch() {
+		return batch;
 	}
 	
 	@Override	

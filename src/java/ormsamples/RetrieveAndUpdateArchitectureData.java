@@ -96,6 +96,9 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Financial_year leihdmsFinancial_year = eihdms.Financial_year.loadFinancial_yearByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsFinancial_year.save();
+			eihdms.Batch leihdmsBatch = eihdms.Batch.loadBatchByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsBatch.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -278,6 +281,12 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsFinancial_yearCriteria.financial_year_id.eq();
 		System.out.println(leihdmsFinancial_yearCriteria.uniqueFinancial_year());
+		
+		System.out.println("Retrieving Batch by BatchCriteria");
+		eihdms.BatchCriteria leihdmsBatchCriteria = new eihdms.BatchCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsBatchCriteria.batch_id.eq();
+		System.out.println(leihdmsBatchCriteria.uniqueBatch());
 		
 	}
 	
