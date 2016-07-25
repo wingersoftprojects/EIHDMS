@@ -61,7 +61,7 @@ public class Sub_sectionBean extends AbstractBean<Sub_section> implements Serial
     public List<Sub_section> getts(Section section) {
         List<Sub_section> temp = new ArrayList<>();
         try {
-            if (this.getEntityClass() != null && report_form != null) {
+            if (this.getEntityClass() != null && section != null) {
                 temp = (List<Sub_section>) EIHDMSPersistentManager.instance().getSession().createQuery("select ss FROM Sub_section  ss where ss.is_deleted<>1 AND ss.section=" + section.getSection_id()).list();
             } else {
                 temp = new ArrayList<>();
