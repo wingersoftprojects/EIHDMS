@@ -452,6 +452,15 @@ public class Validation_rule implements Serializable {
 	@JoinColumns({ @JoinColumn(name="report_form_group_id", referencedColumnName="report_form_group_id", nullable=false) })	
 	private eihdms.Report_form_group report_form_group;
 	
+	@Column(name="validation_rule_name", nullable=false, length=100)	
+	private String validation_rule_name;
+	
+	@Column(name="validation_rule_formula", nullable=false, length=100)	
+	private String validation_rule_formula;
+	
+	@Column(name="validation_rule_text", nullable=true, length=100)	
+	private String validation_rule_text;
+	
 	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="a", referencedColumnName="data_element_id", nullable=false) })	
@@ -471,15 +480,6 @@ public class Validation_rule implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="d", referencedColumnName="data_element_id") })	
 	private eihdms.Data_element d;
-	
-	@Column(name="validation_rule_name", nullable=false, length=100)	
-	private String validation_rule_name;
-	
-	@Column(name="validation_rule_formula", nullable=false, length=100)	
-	private String validation_rule_formula;
-	
-	@Column(name="validation_rule_text", nullable=true, length=100)	
-	private String validation_rule_text;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
@@ -591,6 +591,22 @@ public class Validation_rule implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setReport_form_group(eihdms.Report_form_group value) {
+		this.report_form_group = value;
+	}
+	
+	public eihdms.Report_form_group getReport_form_group() {
+		return report_form_group;
+	}
+	
+	public void setReport_form(eihdms.Report_form value) {
+		this.report_form = value;
+	}
+	
+	public eihdms.Report_form getReport_form() {
+		return report_form;
+	}
+	
 	public void setA(eihdms.Data_element value) {
 		this.a = value;
 	}
@@ -621,22 +637,6 @@ public class Validation_rule implements Serializable {
 	
 	public eihdms.Data_element getD() {
 		return d;
-	}
-	
-	public void setReport_form(eihdms.Report_form value) {
-		this.report_form = value;
-	}
-	
-	public eihdms.Report_form getReport_form() {
-		return report_form;
-	}
-	
-	public void setReport_form_group(eihdms.Report_form_group value) {
-		this.report_form_group = value;
-	}
-	
-	public eihdms.Report_form_group getReport_form_group() {
-		return report_form_group;
 	}
 	
 	@Override	

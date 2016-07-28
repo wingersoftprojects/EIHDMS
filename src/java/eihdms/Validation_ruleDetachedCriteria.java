@@ -24,6 +24,9 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 	public final AssociationExpression report_form;
 	public final IntegerExpression report_form_groupId;
 	public final AssociationExpression report_form_group;
+	public final StringExpression validation_rule_name;
+	public final StringExpression validation_rule_formula;
+	public final StringExpression validation_rule_text;
 	public final IntegerExpression aId;
 	public final AssociationExpression a;
 	public final IntegerExpression bId;
@@ -32,9 +35,6 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 	public final AssociationExpression c;
 	public final IntegerExpression dId;
 	public final AssociationExpression d;
-	public final StringExpression validation_rule_name;
-	public final StringExpression validation_rule_formula;
-	public final StringExpression validation_rule_text;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
 	public final TimestampExpression add_date;
@@ -49,6 +49,9 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_groupId = new IntegerExpression("report_form_group.report_form_group_id", this.getDetachedCriteria());
 		report_form_group = new AssociationExpression("report_form_group", this.getDetachedCriteria());
+		validation_rule_name = new StringExpression("validation_rule_name", this.getDetachedCriteria());
+		validation_rule_formula = new StringExpression("validation_rule_formula", this.getDetachedCriteria());
+		validation_rule_text = new StringExpression("validation_rule_text", this.getDetachedCriteria());
 		aId = new IntegerExpression("a.data_element_id", this.getDetachedCriteria());
 		a = new AssociationExpression("a", this.getDetachedCriteria());
 		bId = new IntegerExpression("b.data_element_id", this.getDetachedCriteria());
@@ -57,9 +60,6 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 		c = new AssociationExpression("c", this.getDetachedCriteria());
 		dId = new IntegerExpression("d.data_element_id", this.getDetachedCriteria());
 		d = new AssociationExpression("d", this.getDetachedCriteria());
-		validation_rule_name = new StringExpression("validation_rule_name", this.getDetachedCriteria());
-		validation_rule_formula = new StringExpression("validation_rule_formula", this.getDetachedCriteria());
-		validation_rule_text = new StringExpression("validation_rule_text", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
@@ -75,6 +75,9 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_groupId = new IntegerExpression("report_form_group.report_form_group_id", this.getDetachedCriteria());
 		report_form_group = new AssociationExpression("report_form_group", this.getDetachedCriteria());
+		validation_rule_name = new StringExpression("validation_rule_name", this.getDetachedCriteria());
+		validation_rule_formula = new StringExpression("validation_rule_formula", this.getDetachedCriteria());
+		validation_rule_text = new StringExpression("validation_rule_text", this.getDetachedCriteria());
 		aId = new IntegerExpression("a.data_element_id", this.getDetachedCriteria());
 		a = new AssociationExpression("a", this.getDetachedCriteria());
 		bId = new IntegerExpression("b.data_element_id", this.getDetachedCriteria());
@@ -83,9 +86,6 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 		c = new AssociationExpression("c", this.getDetachedCriteria());
 		dId = new IntegerExpression("d.data_element_id", this.getDetachedCriteria());
 		d = new AssociationExpression("d", this.getDetachedCriteria());
-		validation_rule_name = new StringExpression("validation_rule_name", this.getDetachedCriteria());
-		validation_rule_formula = new StringExpression("validation_rule_formula", this.getDetachedCriteria());
-		validation_rule_text = new StringExpression("validation_rule_text", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
