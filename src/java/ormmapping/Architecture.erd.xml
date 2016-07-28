@@ -1860,13 +1860,73 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="data_element_id">
+    <Column name="report_form_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>report_form.report_form_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="report_form_group_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>report_form_group.report_form_group_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="a">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
       <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
       <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="b">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="c">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="d">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
       <IDGenerator>assigned</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -3758,6 +3818,179 @@
       <UserTypes/>
     </Column>
   </Entity>
+  <Entity name="validation_temp" PKClustered="0">
+    <Column name="validation_temp_id">
+      <PrimaryKey>true</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="report_form_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>report_form.report_form_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="report_form_group_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>report_form_group.report_form_group_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="validation_temp_name">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>100</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="formula">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>100</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="a">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="b">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="c">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="d">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="is_deleted">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>1</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="is_active">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>1</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="add_date">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>20</Type>
+      <Length>0</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="add_by">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>10</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="last_edit_date">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>20</Type>
+      <Length>0</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="last_edit_by">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>10</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+  </Entity>
   <ForeignKey name="FKdistrict138403">
     <ReferenceTable>district</ReferenceTable>
     <ReferencedTable>region</ReferencedTable>
@@ -3896,16 +4129,6 @@
     </Columns>
     <RefColumns>
       <Column>section_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation930955">
-    <ReferenceTable>validation_rule</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>data_element_id</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="FKinterface_210970">
@@ -4156,6 +4379,126 @@
     </Columns>
     <RefColumns>
       <Column>batch_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation208388">
+    <ReferenceTable>validation_temp</ReferenceTable>
+    <ReferencedTable>report_form</ReferencedTable>
+    <Columns>
+      <Column>report_form_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>report_form_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation273448">
+    <ReferenceTable>validation_temp</ReferenceTable>
+    <ReferencedTable>report_form_group</ReferencedTable>
+    <Columns>
+      <Column>report_form_group_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>report_form_group_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation29068">
+    <ReferenceTable>validation_temp</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>a</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation29067">
+    <ReferenceTable>validation_temp</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>b</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation29066">
+    <ReferenceTable>validation_temp</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>c</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation29065">
+    <ReferenceTable>validation_temp</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>d</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation73316">
+    <ReferenceTable>validation_rule</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>a</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation73315">
+    <ReferenceTable>validation_rule</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>b</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation73314">
+    <ReferenceTable>validation_rule</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>c</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation73313">
+    <ReferenceTable>validation_rule</ReferenceTable>
+    <ReferencedTable>data_element</ReferencedTable>
+    <Columns>
+      <Column>d</Column>
+    </Columns>
+    <RefColumns>
+      <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation252636">
+    <ReferenceTable>validation_rule</ReferenceTable>
+    <ReferencedTable>report_form</ReferencedTable>
+    <Columns>
+      <Column>report_form_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>report_form_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKvalidation229200">
+    <ReferenceTable>validation_rule</ReferenceTable>
+    <ReferencedTable>report_form_group</ReferencedTable>
+    <Columns>
+      <Column>report_form_group_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>report_form_group_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>

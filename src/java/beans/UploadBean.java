@@ -19,6 +19,7 @@ import eihdms.Region;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
 import eihdms.Sub_county;
+import eihdms.Validation_rule;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,9 +28,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -349,10 +352,194 @@ public class UploadBean implements Serializable {
             e.printStackTrace();
         }
     }
+    private String validationtext;
+
+    public String getValidationtext() {
+        return validationtext;
+    }
+
+    public void setValidationtext(String validationtext) {
+        this.validationtext = validationtext;
+    }
+
+    public void validate_upload(Report_form_group report_form_group) {
+        switch (report_form_group.getReport_form().getLowest_report_form_level()) {
+            case "Facility":
+                Set<String> facility_hierarchyset = new HashSet();
+                for (Interface_data interface_data : interface_datas) {
+                    facility_hierarchyset.add(interface_data.getDistrict_name() + ":" + interface_data.getParish_name() + ":" + interface_data.getHealth_facility_name());
+                }
+                for (String facilityhierarchy : facility_hierarchyset) {
+                    validationtext = validate(report_form_group, facilityhierarchy);
+                    for (Interface_data interface_data : interface_datas) {
+                        if (facilityhierarchy.equals(interface_data.getDistrict_name() + ":" + interface_data.getParish_name() + ":" + interface_data.getHealth_facility_name())) {
+                            if (!validationtext.isEmpty()) {
+                                interface_data.setStatus("Invalid");
+                                interface_data.setStatus_desc("Not Passed Validation because: " + validationtext);
+                            } else {
+                                interface_data.setStatus("Validated");
+                                interface_data.setStatus_desc("Validated and ready for moving");
+                            }
+                        }
+                    }
+                }
+                break;
+            case "Parish":
+                Set<String> parish_hierarchyset = new HashSet();
+                for (Interface_data interface_data : interface_datas) {
+                    parish_hierarchyset.add(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name());
+                }
+                for (String parish_hierarchy : parish_hierarchyset) {
+                    validationtext = validate(report_form_group, parish_hierarchy);
+                    for (Interface_data interface_data : interface_datas) {
+                        if (parish_hierarchy.equals(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name())) {
+                            if (!validationtext.isEmpty()) {
+                                interface_data.setStatus("Invalid");
+                                interface_data.setStatus_desc("Not Passed Validation because: " + validationtext);
+                            } else {
+                                interface_data.setStatus("Validated");
+                                interface_data.setStatus_desc("Validated and ready for moving");
+                            }
+                        }
+                    }
+                }
+                break;
+            case "District":
+                Set<String> district_hierarchyset = new HashSet();
+                for (Interface_data interface_data : interface_datas) {
+                    district_hierarchyset.add(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name());
+                }
+                for (String district_hierarchy : district_hierarchyset) {
+                    validationtext = validate(report_form_group, district_hierarchy);
+                    for (Interface_data interface_data : interface_datas) {
+                        if (district_hierarchy.equals(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name())) {
+                            if (!validationtext.isEmpty()) {
+                                interface_data.setStatus("Invalid");
+                                interface_data.setStatus_desc("Not Passed Validation because: " + validationtext);
+                            } else {
+                                interface_data.setStatus("Validated");
+                                interface_data.setStatus_desc("Validated and ready for moving");
+                            }
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public String validate(Report_form_group report_form_group, String locationarray) {
+        String[] splitlocation = locationarray.split(":");
+        String val_district = "";
+        String val_parish = "";
+        String val_facility = "";
+        String val_sub_county = "";
+        if (report_form_group.getReport_form().getLowest_report_form_level().equals("Facility")) {
+            val_district = splitlocation[0];
+            val_parish = splitlocation[1];
+            val_facility = splitlocation[2];
+        }
+        if (report_form_group.getReport_form().getLowest_report_form_level().equals("Parish")) {
+            val_district = splitlocation[0];
+            val_sub_county = splitlocation[1];
+            val_parish = splitlocation[2];
+        }
+        if (report_form_group.getReport_form().getLowest_report_form_level().equals("District")) {
+            val_district = splitlocation[0];
+        }
+        validationtext = "";
+        try {
+            List<Validation_rule> validation_temps = Validation_rule.queryValidation_rule("is_active=1 AND report_form_group=" + report_form_group.getReport_form_group_id(), null);
+            for (Validation_rule v : validation_temps) {
+                Interface_data a = null;
+                Interface_data b = null;
+                Interface_data c = null;
+                Interface_data d = null;
+                for (Interface_data interface_data : interface_datas) {
+                    if (report_form_group.getReport_form().getLowest_report_form_level().equals("Facility") && interface_data.getDistrict_name().equals(val_district) && interface_data.getParish_name().equals(val_parish) && interface_data.getHealth_facility_name().equals(val_facility)) {
+                        if (v.getA() != null && interface_data.getData_element().getData_element_id() == v.getA().getData_element_id()) {
+                            a = interface_data;
+                        }
+                        if (v.getB() != null && interface_data.getData_element().getData_element_id() == v.getB().getData_element_id()) {
+                            b = interface_data;
+                        }
+                        if (v.getC() != null && interface_data.getData_element().getData_element_id() == v.getC().getData_element_id()) {
+                            c = interface_data;
+                        }
+                        if (v.getD() != null && interface_data.getData_element().getData_element_id() == v.getD().getData_element_id()) {
+                            d = interface_data;
+                        }
+                    } else if (report_form_group.getReport_form().getLowest_report_form_level().equals("Parish") && interface_data.getDistrict_name().equals(val_district) && interface_data.getSub_county_name().equals(val_sub_county) && interface_data.getParish_name().equals(val_parish)) {
+                        if (v.getA() != null && interface_data.getData_element().getData_element_id() == v.getA().getData_element_id()) {
+                            a = interface_data;
+                        }
+                        if (v.getB() != null && interface_data.getData_element().getData_element_id() == v.getB().getData_element_id()) {
+                            b = interface_data;
+                        }
+                        if (v.getC() != null && interface_data.getData_element().getData_element_id() == v.getC().getData_element_id()) {
+                            c = interface_data;
+                        }
+                        if (v.getD() != null && interface_data.getData_element().getData_element_id() == v.getD().getData_element_id()) {
+                            d = interface_data;
+                        }
+                    } else if (report_form_group.getReport_form().getLowest_report_form_level().equals("District") && interface_data.getDistrict_name().equals(val_district)) {
+                        if (v.getA() != null && interface_data.getData_element().getData_element_id() == v.getA().getData_element_id()) {
+                            a = interface_data;
+                        }
+                        if (v.getB() != null && interface_data.getData_element().getData_element_id() == v.getB().getData_element_id()) {
+                            b = interface_data;
+                        }
+                        if (v.getC() != null && interface_data.getData_element().getData_element_id() == v.getC().getData_element_id()) {
+                            c = interface_data;
+                        }
+                        if (v.getD() != null && interface_data.getData_element().getData_element_id() == v.getD().getData_element_id()) {
+                            d = interface_data;
+                        }
+                    }
+                }
+                switch (v.getValidation_rule_formula()) {
+                    case "a+b=c":
+                        if (a != null && b != null && c != null) {
+                            if ((Float.parseFloat(a.getData_element_value()) + Float.parseFloat(b.getData_element_value())) != Float.parseFloat(c.getData_element_value())) {
+                                validationtext += ":" + v.getValidation_rule_name();
+                            }
+                        }
+                        break;
+                    case "a Greater Than b":
+                        if (a != null && b != null) {
+                            if (Float.parseFloat(a.getData_element_value()) <= Float.parseFloat(b.getData_element_value())) {
+                                validationtext += ":" + v.getValidation_rule_name();
+                            }
+                        }
+                        break;
+                    case "a Less Than b":
+                        if (a != null && b != null) {
+                            if (Float.parseFloat(a.getData_element_value()) >= Float.parseFloat(b.getData_element_value())) {
+                                validationtext += ":" + v.getValidation_rule_name();
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return validationtext;
+    }
 
     public void load_interface() {
         if (!interface_datas.isEmpty()) {
             try {
+                /**
+                 * Validate Data
+                 */
+                validate_upload(report_form_group);
+                /**
+                 * End Validate Data
+                 */
                 /**
                  * Load Interface Data
                  */
@@ -383,7 +570,7 @@ public class UploadBean implements Serializable {
                  * Load Base Data
                  */
                 transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-                List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Not Moved' AND i.data_element.report_form=" + report_form.getReport_form_id()).list();
+                List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Validated' AND batch= " + batch.getBatch_id() + " AND i.data_element.report_form=" + report_form.getReport_form_id() + " AND i.data_element.report_form_group=" + report_form_group.getReport_form_group_id()).list();
                 for (Interface_data i : interface_datas_tobase) {
                     District d = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
                     Sub_county s = Sub_county.loadSub_countyByQuery("is_active=1 AND sub_county_name='" + i.getSub_county_name() + "' AND county.district=" + (d != null ? d.getDistrict_id() : 0), null);

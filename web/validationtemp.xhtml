@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{validation_tempBean.init()}" type="preRenderView" />
+            <f:event listener="#{validation_tempBean.initializelist()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="2">
+                <p:fieldset legend="Validation Rule">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Report Form:" for="report_form"/>
+                        <p:selectOneMenu id="report_form" value="#{validation_tempBean.selected.report_form}" style="width:125px" required="true" requiredMessage="Report Form field is Required" converter="report_formConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this" update="report_form_group"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="report_form_group" value="Report Form Group:" />
+                        <p:selectOneMenu id="report_form_group" value="#{validation_tempBean.selected.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_form_groupBean.getts(validation_tempBean.selected.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Data Element (A):" for="a"/>
+                        <p:autoComplete id="a" value="#{validation_tempBean.selected.a}"
+                                        completeMethod="#{validation_tempBean.completeData_element}"
+                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
+                                        converter="data_elementConverter" forceSelection="true"
+                                        minQueryLength="3" dropdown="true" required="true" requiredMessage="Data Element Field is required" >
+                            <p:column headerText="Data Element Name" style="text-align: left">
+                                <h:outputText value="#{data_element.data_element_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Report Form" style="text-align: left">
+                                <h:outputText value="#{data_element.report_form.report_form_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Section" style="text-align: left">
+                                <h:outputText value="#{data_element.section.section_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub Section" style="text-align: left">
+                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:outputLabel value="Data Element (B):" for="b"/>
+                        <p:autoComplete id="b" value="#{validation_tempBean.selected.b}"
+                                        completeMethod="#{validation_tempBean.completeData_element}"
+                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
+                                        converter="data_elementConverter" forceSelection="true"
+                                        minQueryLength="3" dropdown="true" required="true" requiredMessage="Data Element Field is required" >
+                            <p:column headerText="Data Element Name" style="text-align: left">
+                                <h:outputText value="#{data_element.data_element_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Report Form" style="text-align: left">
+                                <h:outputText value="#{data_element.report_form.report_form_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Section" style="text-align: left">
+                                <h:outputText value="#{data_element.section.section_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub Section" style="text-align: left">
+                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:outputLabel value="Data Element (C):" for="c"/>
+                        <p:autoComplete id="c" value="#{validation_tempBean.selected.c}"
+                                        completeMethod="#{validation_tempBean.completeData_element}"
+                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
+                                        converter="data_elementConverter" forceSelection="true"
+                                        minQueryLength="3" dropdown="true">
+                            <p:column headerText="Data Element Name" style="text-align: left">
+                                <h:outputText value="#{data_element.data_element_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Report Form" style="text-align: left">
+                                <h:outputText value="#{data_element.report_form.report_form_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Section" style="text-align: left">
+                                <h:outputText value="#{data_element.section.section_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub Section" style="text-align: left">
+                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:outputLabel value="Data Element (D):" for="d"/>
+                        <p:autoComplete id="d" value="#{validation_tempBean.selected.d}"
+                                        completeMethod="#{validation_tempBean.completeData_element}"
+                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
+                                        converter="data_elementConverter" forceSelection="true"
+                                        minQueryLength="3" dropdown="true">
+                            <p:column headerText="Data Element Name" style="text-align: left">
+                                <h:outputText value="#{data_element.data_element_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Report Form" style="text-align: left">
+                                <h:outputText value="#{data_element.report_form.report_form_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Section" style="text-align: left">
+                                <h:outputText value="#{data_element.section.section_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub Section" style="text-align: left">
+                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:outputLabel value="Validation Rule Name:" for="validation_temp_name"/>
+                        <p:inputText id="validation_temp_name" value="#{validation_tempBean.selected.validation_temp_name}" required="true" requiredMessage="Validation Rule Name field is Required"/>
+                        <p:outputLabel value="Validation Rule Formula:" for="formula"/>
+                        <p:selectOneMenu id="formula" value="#{validation_tempBean.selected.formula}" required="true" requiredMessage="Formula field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="a+b=c" itemValue="a+b=c" />
+                            <f:selectItem itemLabel="a Greater Than b" itemValue="a Greater Than b" />
+                            <f:selectItem itemLabel="a Less Than b" itemValue="a Less Than b" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectOneMenu id="is_active" value="#{validation_tempBean.selected.is_active}" required="true" requiredMessage="Section is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{validation_tempBean.save(loginBean.user_detail.user_detail_id)}" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{validation_tempBean.cancel()}" update="@form" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Report Form Groups" id="report_form_groups">
+                    <p:dataTable id="report_form_group_table" value="#{validation_tempBean.ts}" var="item" rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,30,50,100">
+                        <p:column headerText="Report Form Name">
+                            <h:outputText value="#{item.report_form.report_form_name}"/>
+                        </p:column>
+                        <p:column headerText="Report Form Group">
+                            <h:outputText value="#{item.report_form_group.report_form_group_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (A)">
+                            <h:outputText value="#{item.a.data_element_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (B)">
+                            <h:outputText value="#{item.b.data_element_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (C)">
+                            <h:outputText value="#{item.c.data_element_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (D)">
+                            <h:outputText value="#{item.d.data_element_name}"/>
+                        </p:column>
+                        <p:column headerText="Validation Rule Name">
+                            <h:outputText value="#{item.validation_temp_name}"/>
+                        </p:column>
+                        <p:column headerText="Validation Rule Formula">
+                            <h:outputText value="#{item.formula}"/>
+                        </p:column>
+                        <p:column headerText="Active?">
+                            <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
+                        </p:column>
+                        <p:column headerText="">
+                            <p:commandButton value="Edit" action="#{validation_tempBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                            </p:commandButton>
+                            <p:commandButton value="Delete" actionListener="#{validation_tempBean.delete(item)}" update="@form" process="@this">
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

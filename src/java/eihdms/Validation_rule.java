@@ -365,8 +365,28 @@ public class Validation_rule implements Serializable {
 	
 	public boolean deleteAndDissociate()throws PersistentException {
 		try {
-			if(getData_element() != null) {
-				getData_element().getValidation_rule().remove(this);
+			if(getReport_form() != null) {
+				getReport_form().getValidation_rule().remove(this);
+			}
+			
+			if(getReport_form_group() != null) {
+				getReport_form_group().getValidation_rule().remove(this);
+			}
+			
+			if(getA() != null) {
+				getA().getValidation_rule().remove(this);
+			}
+			
+			if(getB() != null) {
+				getB().getValidation_rule1().remove(this);
+			}
+			
+			if(getC() != null) {
+				getC().getValidation_rule2().remove(this);
+			}
+			
+			if(getD() != null) {
+				getD().getValidation_rule3().remove(this);
 			}
 			
 			return delete();
@@ -379,8 +399,28 @@ public class Validation_rule implements Serializable {
 	
 	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
 		try {
-			if(getData_element() != null) {
-				getData_element().getValidation_rule().remove(this);
+			if(getReport_form() != null) {
+				getReport_form().getValidation_rule().remove(this);
+			}
+			
+			if(getReport_form_group() != null) {
+				getReport_form_group().getValidation_rule().remove(this);
+			}
+			
+			if(getA() != null) {
+				getA().getValidation_rule().remove(this);
+			}
+			
+			if(getB() != null) {
+				getB().getValidation_rule1().remove(this);
+			}
+			
+			if(getC() != null) {
+				getC().getValidation_rule2().remove(this);
+			}
+			
+			if(getD() != null) {
+				getD().getValidation_rule3().remove(this);
 			}
 			
 			try {
@@ -402,10 +442,35 @@ public class Validation_rule implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_VALIDATION_RULE_VALIDATION_RULE_ID_GENERATOR", strategy="native")	
 	private int validation_rule_id;
 	
+	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) })	
+	private eihdms.Report_form report_form;
+	
+	@ManyToOne(targetEntity=eihdms.Report_form_group.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="report_form_group_id", referencedColumnName="report_form_group_id", nullable=false) })	
+	private eihdms.Report_form_group report_form_group;
+	
 	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="data_element_id", referencedColumnName="data_element_id", nullable=false) })	
-	private eihdms.Data_element data_element;
+	@JoinColumns({ @JoinColumn(name="a", referencedColumnName="data_element_id", nullable=false) })	
+	private eihdms.Data_element a;
+	
+	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="b", referencedColumnName="data_element_id", nullable=false) })	
+	private eihdms.Data_element b;
+	
+	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="c", referencedColumnName="data_element_id") })	
+	private eihdms.Data_element c;
+	
+	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="d", referencedColumnName="data_element_id") })	
+	private eihdms.Data_element d;
 	
 	@Column(name="validation_rule_name", nullable=false, length=100)	
 	private String validation_rule_name;
@@ -526,12 +591,52 @@ public class Validation_rule implements Serializable {
 		return last_edit_by;
 	}
 	
-	public void setData_element(eihdms.Data_element value) {
-		this.data_element = value;
+	public void setA(eihdms.Data_element value) {
+		this.a = value;
 	}
 	
-	public eihdms.Data_element getData_element() {
-		return data_element;
+	public eihdms.Data_element getA() {
+		return a;
+	}
+	
+	public void setB(eihdms.Data_element value) {
+		this.b = value;
+	}
+	
+	public eihdms.Data_element getB() {
+		return b;
+	}
+	
+	public void setC(eihdms.Data_element value) {
+		this.c = value;
+	}
+	
+	public eihdms.Data_element getC() {
+		return c;
+	}
+	
+	public void setD(eihdms.Data_element value) {
+		this.d = value;
+	}
+	
+	public eihdms.Data_element getD() {
+		return d;
+	}
+	
+	public void setReport_form(eihdms.Report_form value) {
+		this.report_form = value;
+	}
+	
+	public eihdms.Report_form getReport_form() {
+		return report_form;
+	}
+	
+	public void setReport_form_group(eihdms.Report_form_group value) {
+		this.report_form_group = value;
+	}
+	
+	public eihdms.Report_form_group getReport_form_group() {
+		return report_form_group;
 	}
 	
 	@Override	

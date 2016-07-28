@@ -46,10 +46,17 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final StringExpression data_element_code;
-	public final CollectionExpression validation_rule;
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
+	public final CollectionExpression validation_temp;
+	public final CollectionExpression validation_temp1;
+	public final CollectionExpression validation_temp2;
+	public final CollectionExpression validation_temp3;
+	public final CollectionExpression validation_rule;
+	public final CollectionExpression validation_rule1;
+	public final CollectionExpression validation_rule2;
+	public final CollectionExpression validation_rule3;
 	
 	public Data_elementCriteria(Criteria criteria) {
 		super(criteria);
@@ -80,10 +87,17 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		data_element_code = new StringExpression("data_element_code", this);
-		validation_rule = new CollectionExpression("validation_rule", this);
 		interface_data = new CollectionExpression("interface_data", this);
 		base_data = new CollectionExpression("base_data", this);
 		standard_rule = new CollectionExpression("standard_rule", this);
+		validation_temp = new CollectionExpression("validation_temp", this);
+		validation_temp1 = new CollectionExpression("validation_temp1", this);
+		validation_temp2 = new CollectionExpression("validation_temp2", this);
+		validation_temp3 = new CollectionExpression("validation_temp3", this);
+		validation_rule = new CollectionExpression("validation_rule", this);
+		validation_rule1 = new CollectionExpression("validation_rule1", this);
+		validation_rule2 = new CollectionExpression("validation_rule2", this);
+		validation_rule3 = new CollectionExpression("validation_rule3", this);
 	}
 	
 	public Data_elementCriteria(PersistentSession session) {
@@ -114,10 +128,6 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		return new Technical_areaCriteria(createCriteria("technical_area"));
 	}
 	
-	public Validation_ruleCriteria createValidation_ruleCriteria() {
-		return new Validation_ruleCriteria(createCriteria("validation_rule"));
-	}
-	
 	public Interface_dataCriteria createInterface_dataCriteria() {
 		return new Interface_dataCriteria(createCriteria("interface_data"));
 	}
@@ -128,6 +138,38 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	
 	public Standard_ruleCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleCriteria(createCriteria("standard_rule"));
+	}
+	
+	public Validation_tempCriteria createValidation_tempCriteria() {
+		return new Validation_tempCriteria(createCriteria("validation_temp"));
+	}
+	
+	public Validation_tempCriteria createValidation_temp1Criteria() {
+		return new Validation_tempCriteria(createCriteria("validation_temp1"));
+	}
+	
+	public Validation_tempCriteria createValidation_temp2Criteria() {
+		return new Validation_tempCriteria(createCriteria("validation_temp2"));
+	}
+	
+	public Validation_tempCriteria createValidation_temp3Criteria() {
+		return new Validation_tempCriteria(createCriteria("validation_temp3"));
+	}
+	
+	public Validation_ruleCriteria createValidation_ruleCriteria() {
+		return new Validation_ruleCriteria(createCriteria("validation_rule"));
+	}
+	
+	public Validation_ruleCriteria createValidation_rule1Criteria() {
+		return new Validation_ruleCriteria(createCriteria("validation_rule1"));
+	}
+	
+	public Validation_ruleCriteria createValidation_rule2Criteria() {
+		return new Validation_ruleCriteria(createCriteria("validation_rule2"));
+	}
+	
+	public Validation_ruleCriteria createValidation_rule3Criteria() {
+		return new Validation_ruleCriteria(createCriteria("validation_rule3"));
 	}
 	
 	public Data_element uniqueData_element() {

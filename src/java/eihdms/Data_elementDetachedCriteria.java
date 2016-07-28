@@ -46,10 +46,17 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final StringExpression data_element_code;
-	public final CollectionExpression validation_rule;
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
+	public final CollectionExpression validation_temp;
+	public final CollectionExpression validation_temp1;
+	public final CollectionExpression validation_temp2;
+	public final CollectionExpression validation_temp3;
+	public final CollectionExpression validation_rule;
+	public final CollectionExpression validation_rule1;
+	public final CollectionExpression validation_rule2;
+	public final CollectionExpression validation_rule3;
 	
 	public Data_elementDetachedCriteria() {
 		super(eihdms.Data_element.class, eihdms.Data_elementCriteria.class);
@@ -80,10 +87,17 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element_code = new StringExpression("data_element_code", this.getDetachedCriteria());
-		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
+		validation_temp = new CollectionExpression("validation_temp", this.getDetachedCriteria());
+		validation_temp1 = new CollectionExpression("validation_temp1", this.getDetachedCriteria());
+		validation_temp2 = new CollectionExpression("validation_temp2", this.getDetachedCriteria());
+		validation_temp3 = new CollectionExpression("validation_temp3", this.getDetachedCriteria());
+		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
+		validation_rule1 = new CollectionExpression("validation_rule1", this.getDetachedCriteria());
+		validation_rule2 = new CollectionExpression("validation_rule2", this.getDetachedCriteria());
+		validation_rule3 = new CollectionExpression("validation_rule3", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -115,10 +129,17 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element_code = new StringExpression("data_element_code", this.getDetachedCriteria());
-		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
+		validation_temp = new CollectionExpression("validation_temp", this.getDetachedCriteria());
+		validation_temp1 = new CollectionExpression("validation_temp1", this.getDetachedCriteria());
+		validation_temp2 = new CollectionExpression("validation_temp2", this.getDetachedCriteria());
+		validation_temp3 = new CollectionExpression("validation_temp3", this.getDetachedCriteria());
+		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
+		validation_rule1 = new CollectionExpression("validation_rule1", this.getDetachedCriteria());
+		validation_rule2 = new CollectionExpression("validation_rule2", this.getDetachedCriteria());
+		validation_rule3 = new CollectionExpression("validation_rule3", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {
@@ -141,10 +162,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		return new Technical_areaDetachedCriteria(createCriteria("technical_area"));
 	}
 	
-	public Validation_ruleDetachedCriteria createValidation_ruleCriteria() {
-		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule"));
-	}
-	
 	public Interface_dataDetachedCriteria createInterface_dataCriteria() {
 		return new Interface_dataDetachedCriteria(createCriteria("interface_data"));
 	}
@@ -155,6 +172,38 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Standard_ruleDetachedCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleDetachedCriteria(createCriteria("standard_rule"));
+	}
+	
+	public Validation_tempDetachedCriteria createValidation_tempCriteria() {
+		return new Validation_tempDetachedCriteria(createCriteria("validation_temp"));
+	}
+	
+	public Validation_tempDetachedCriteria createValidation_temp1Criteria() {
+		return new Validation_tempDetachedCriteria(createCriteria("validation_temp1"));
+	}
+	
+	public Validation_tempDetachedCriteria createValidation_temp2Criteria() {
+		return new Validation_tempDetachedCriteria(createCriteria("validation_temp2"));
+	}
+	
+	public Validation_tempDetachedCriteria createValidation_temp3Criteria() {
+		return new Validation_tempDetachedCriteria(createCriteria("validation_temp3"));
+	}
+	
+	public Validation_ruleDetachedCriteria createValidation_ruleCriteria() {
+		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule"));
+	}
+	
+	public Validation_ruleDetachedCriteria createValidation_rule1Criteria() {
+		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule1"));
+	}
+	
+	public Validation_ruleDetachedCriteria createValidation_rule2Criteria() {
+		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule2"));
+	}
+	
+	public Validation_ruleDetachedCriteria createValidation_rule3Criteria() {
+		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule3"));
 	}
 	
 	public Data_element uniqueData_element(PersistentSession session) {

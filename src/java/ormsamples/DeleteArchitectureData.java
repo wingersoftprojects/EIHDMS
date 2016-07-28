@@ -69,6 +69,8 @@ public class DeleteArchitectureData {
 			leihdmsFinancial_year.delete();
 			eihdms.Batch leihdmsBatch = eihdms.Batch.loadBatchByQuery(null, null);
 			leihdmsBatch.delete();
+			eihdms.Validation_temp leihdmsValidation_temp = eihdms.Validation_temp.loadValidation_tempByQuery(null, null);
+			leihdmsValidation_temp.delete();
 			t.commit();
 		}
 		catch (Exception e) {

@@ -385,10 +385,6 @@ public class Data_element implements Serializable {
 				getTechnical_area().getData_element().remove(this);
 			}
 			
-			eihdms.Validation_rule[] lValidation_rules = (eihdms.Validation_rule[])getValidation_rule().toArray(new eihdms.Validation_rule[getValidation_rule().size()]);
-			for(int i = 0; i < lValidation_rules.length; i++) {
-				lValidation_rules[i].setData_element(null);
-			}
 			eihdms.Interface_data[] lInterface_datas = (eihdms.Interface_data[])getInterface_data().toArray(new eihdms.Interface_data[getInterface_data().size()]);
 			for(int i = 0; i < lInterface_datas.length; i++) {
 				lInterface_datas[i].setData_element(null);
@@ -400,6 +396,38 @@ public class Data_element implements Serializable {
 			eihdms.Standard_rule[] lStandard_rules = (eihdms.Standard_rule[])getStandard_rule().toArray(new eihdms.Standard_rule[getStandard_rule().size()]);
 			for(int i = 0; i < lStandard_rules.length; i++) {
 				lStandard_rules[i].setData_element(null);
+			}
+			eihdms.Validation_temp[] lValidation_temps = (eihdms.Validation_temp[])getValidation_temp().toArray(new eihdms.Validation_temp[getValidation_temp().size()]);
+			for(int i = 0; i < lValidation_temps.length; i++) {
+				lValidation_temps[i].setA(null);
+			}
+			eihdms.Validation_temp[] lValidation_temp1s = (eihdms.Validation_temp[])getValidation_temp1().toArray(new eihdms.Validation_temp[getValidation_temp1().size()]);
+			for(int i = 0; i < lValidation_temp1s.length; i++) {
+				lValidation_temp1s[i].setB(null);
+			}
+			eihdms.Validation_temp[] lValidation_temp2s = (eihdms.Validation_temp[])getValidation_temp2().toArray(new eihdms.Validation_temp[getValidation_temp2().size()]);
+			for(int i = 0; i < lValidation_temp2s.length; i++) {
+				lValidation_temp2s[i].setC(null);
+			}
+			eihdms.Validation_temp[] lValidation_temp3s = (eihdms.Validation_temp[])getValidation_temp3().toArray(new eihdms.Validation_temp[getValidation_temp3().size()]);
+			for(int i = 0; i < lValidation_temp3s.length; i++) {
+				lValidation_temp3s[i].setD(null);
+			}
+			eihdms.Validation_rule[] lValidation_rules = (eihdms.Validation_rule[])getValidation_rule().toArray(new eihdms.Validation_rule[getValidation_rule().size()]);
+			for(int i = 0; i < lValidation_rules.length; i++) {
+				lValidation_rules[i].setA(null);
+			}
+			eihdms.Validation_rule[] lValidation_rule1s = (eihdms.Validation_rule[])getValidation_rule1().toArray(new eihdms.Validation_rule[getValidation_rule1().size()]);
+			for(int i = 0; i < lValidation_rule1s.length; i++) {
+				lValidation_rule1s[i].setB(null);
+			}
+			eihdms.Validation_rule[] lValidation_rule2s = (eihdms.Validation_rule[])getValidation_rule2().toArray(new eihdms.Validation_rule[getValidation_rule2().size()]);
+			for(int i = 0; i < lValidation_rule2s.length; i++) {
+				lValidation_rule2s[i].setC(null);
+			}
+			eihdms.Validation_rule[] lValidation_rule3s = (eihdms.Validation_rule[])getValidation_rule3().toArray(new eihdms.Validation_rule[getValidation_rule3().size()]);
+			for(int i = 0; i < lValidation_rule3s.length; i++) {
+				lValidation_rule3s[i].setD(null);
 			}
 			return delete();
 		}
@@ -431,10 +459,6 @@ public class Data_element implements Serializable {
 				getTechnical_area().getData_element().remove(this);
 			}
 			
-			eihdms.Validation_rule[] lValidation_rules = (eihdms.Validation_rule[])getValidation_rule().toArray(new eihdms.Validation_rule[getValidation_rule().size()]);
-			for(int i = 0; i < lValidation_rules.length; i++) {
-				lValidation_rules[i].setData_element(null);
-			}
 			eihdms.Interface_data[] lInterface_datas = (eihdms.Interface_data[])getInterface_data().toArray(new eihdms.Interface_data[getInterface_data().size()]);
 			for(int i = 0; i < lInterface_datas.length; i++) {
 				lInterface_datas[i].setData_element(null);
@@ -446,6 +470,38 @@ public class Data_element implements Serializable {
 			eihdms.Standard_rule[] lStandard_rules = (eihdms.Standard_rule[])getStandard_rule().toArray(new eihdms.Standard_rule[getStandard_rule().size()]);
 			for(int i = 0; i < lStandard_rules.length; i++) {
 				lStandard_rules[i].setData_element(null);
+			}
+			eihdms.Validation_temp[] lValidation_temps = (eihdms.Validation_temp[])getValidation_temp().toArray(new eihdms.Validation_temp[getValidation_temp().size()]);
+			for(int i = 0; i < lValidation_temps.length; i++) {
+				lValidation_temps[i].setA(null);
+			}
+			eihdms.Validation_temp[] lValidation_temp1s = (eihdms.Validation_temp[])getValidation_temp1().toArray(new eihdms.Validation_temp[getValidation_temp1().size()]);
+			for(int i = 0; i < lValidation_temp1s.length; i++) {
+				lValidation_temp1s[i].setB(null);
+			}
+			eihdms.Validation_temp[] lValidation_temp2s = (eihdms.Validation_temp[])getValidation_temp2().toArray(new eihdms.Validation_temp[getValidation_temp2().size()]);
+			for(int i = 0; i < lValidation_temp2s.length; i++) {
+				lValidation_temp2s[i].setC(null);
+			}
+			eihdms.Validation_temp[] lValidation_temp3s = (eihdms.Validation_temp[])getValidation_temp3().toArray(new eihdms.Validation_temp[getValidation_temp3().size()]);
+			for(int i = 0; i < lValidation_temp3s.length; i++) {
+				lValidation_temp3s[i].setD(null);
+			}
+			eihdms.Validation_rule[] lValidation_rules = (eihdms.Validation_rule[])getValidation_rule().toArray(new eihdms.Validation_rule[getValidation_rule().size()]);
+			for(int i = 0; i < lValidation_rules.length; i++) {
+				lValidation_rules[i].setA(null);
+			}
+			eihdms.Validation_rule[] lValidation_rule1s = (eihdms.Validation_rule[])getValidation_rule1().toArray(new eihdms.Validation_rule[getValidation_rule1().size()]);
+			for(int i = 0; i < lValidation_rule1s.length; i++) {
+				lValidation_rule1s[i].setB(null);
+			}
+			eihdms.Validation_rule[] lValidation_rule2s = (eihdms.Validation_rule[])getValidation_rule2().toArray(new eihdms.Validation_rule[getValidation_rule2().size()]);
+			for(int i = 0; i < lValidation_rule2s.length; i++) {
+				lValidation_rule2s[i].setC(null);
+			}
+			eihdms.Validation_rule[] lValidation_rule3s = (eihdms.Validation_rule[])getValidation_rule3().toArray(new eihdms.Validation_rule[getValidation_rule3().size()]);
+			for(int i = 0; i < lValidation_rule3s.length; i++) {
+				lValidation_rule3s[i].setD(null);
 			}
 			try {
 				session.delete(this);
@@ -539,11 +595,6 @@ public class Data_element implements Serializable {
 	@Column(name="data_element_code", nullable=true, length=100)	
 	private String data_element_code;
 	
-	@OneToMany(mappedBy="data_element", targetEntity=eihdms.Validation_rule.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
-	private java.util.Set validation_rule = new java.util.HashSet();
-	
 	@OneToMany(mappedBy="data_element", targetEntity=eihdms.Interface_data.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
@@ -558,6 +609,46 @@ public class Data_element implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set standard_rule = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="a", targetEntity=eihdms.Validation_temp.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_temp = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="b", targetEntity=eihdms.Validation_temp.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_temp1 = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="c", targetEntity=eihdms.Validation_temp.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_temp2 = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="d", targetEntity=eihdms.Validation_temp.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_temp3 = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="a", targetEntity=eihdms.Validation_rule.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_rule = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="b", targetEntity=eihdms.Validation_rule.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_rule1 = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="c", targetEntity=eihdms.Validation_rule.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_rule2 = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="d", targetEntity=eihdms.Validation_rule.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set validation_rule3 = new java.util.HashSet();
 	
 	private void setData_element_id(int value) {
 		this.data_element_id = value;
@@ -759,15 +850,6 @@ public class Data_element implements Serializable {
 		return report_form_group;
 	}
 	
-	public void setValidation_rule(java.util.Set value) {
-		this.validation_rule = value;
-	}
-	
-	public java.util.Set getValidation_rule() {
-		return validation_rule;
-	}
-	
-	
 	public void setInterface_data(java.util.Set value) {
 		this.interface_data = value;
 	}
@@ -792,6 +874,78 @@ public class Data_element implements Serializable {
 	
 	public java.util.Set getStandard_rule() {
 		return standard_rule;
+	}
+	
+	
+	public void setValidation_temp(java.util.Set value) {
+		this.validation_temp = value;
+	}
+	
+	public java.util.Set getValidation_temp() {
+		return validation_temp;
+	}
+	
+	
+	public void setValidation_temp1(java.util.Set value) {
+		this.validation_temp1 = value;
+	}
+	
+	public java.util.Set getValidation_temp1() {
+		return validation_temp1;
+	}
+	
+	
+	public void setValidation_temp2(java.util.Set value) {
+		this.validation_temp2 = value;
+	}
+	
+	public java.util.Set getValidation_temp2() {
+		return validation_temp2;
+	}
+	
+	
+	public void setValidation_temp3(java.util.Set value) {
+		this.validation_temp3 = value;
+	}
+	
+	public java.util.Set getValidation_temp3() {
+		return validation_temp3;
+	}
+	
+	
+	public void setValidation_rule(java.util.Set value) {
+		this.validation_rule = value;
+	}
+	
+	public java.util.Set getValidation_rule() {
+		return validation_rule;
+	}
+	
+	
+	public void setValidation_rule1(java.util.Set value) {
+		this.validation_rule1 = value;
+	}
+	
+	public java.util.Set getValidation_rule1() {
+		return validation_rule1;
+	}
+	
+	
+	public void setValidation_rule2(java.util.Set value) {
+		this.validation_rule2 = value;
+	}
+	
+	public java.util.Set getValidation_rule2() {
+		return validation_rule2;
+	}
+	
+	
+	public void setValidation_rule3(java.util.Set value) {
+		this.validation_rule3 = value;
+	}
+	
+	public java.util.Set getValidation_rule3() {
+		return validation_rule3;
 	}
 	
 	

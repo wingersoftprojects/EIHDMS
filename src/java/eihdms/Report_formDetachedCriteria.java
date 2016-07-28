@@ -36,6 +36,8 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression group_right;
 	public final CollectionExpression user_action;
 	public final CollectionExpression report_form_group;
+	public final CollectionExpression validation_temp;
+	public final CollectionExpression validation_rule;
 	
 	public Report_formDetachedCriteria() {
 		super(eihdms.Report_form.class, eihdms.Report_formCriteria.class);
@@ -56,6 +58,8 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
 		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
+		validation_temp = new CollectionExpression("validation_temp", this.getDetachedCriteria());
+		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -77,6 +81,8 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
 		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
+		validation_temp = new CollectionExpression("validation_temp", this.getDetachedCriteria());
+		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
@@ -97,6 +103,14 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Report_form_groupDetachedCriteria createReport_form_groupCriteria() {
 		return new Report_form_groupDetachedCriteria(createCriteria("report_form_group"));
+	}
+	
+	public Validation_tempDetachedCriteria createValidation_tempCriteria() {
+		return new Validation_tempDetachedCriteria(createCriteria("validation_temp"));
+	}
+	
+	public Validation_ruleDetachedCriteria createValidation_ruleCriteria() {
+		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule"));
 	}
 	
 	public Report_form uniqueReport_form(PersistentSession session) {

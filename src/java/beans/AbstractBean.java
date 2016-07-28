@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.hibernate.CacheMode;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 import org.orm.PersistentException;

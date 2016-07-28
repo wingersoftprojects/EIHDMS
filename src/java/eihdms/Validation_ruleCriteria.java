@@ -20,8 +20,18 @@ import org.orm.criteria.*;
 
 public class Validation_ruleCriteria extends AbstractORMCriteria {
 	public final IntegerExpression validation_rule_id;
-	public final IntegerExpression data_elementId;
-	public final AssociationExpression data_element;
+	public final IntegerExpression report_formId;
+	public final AssociationExpression report_form;
+	public final IntegerExpression report_form_groupId;
+	public final AssociationExpression report_form_group;
+	public final IntegerExpression aId;
+	public final AssociationExpression a;
+	public final IntegerExpression bId;
+	public final AssociationExpression b;
+	public final IntegerExpression cId;
+	public final AssociationExpression c;
+	public final IntegerExpression dId;
+	public final AssociationExpression d;
 	public final StringExpression validation_rule_name;
 	public final StringExpression validation_rule_formula;
 	public final StringExpression validation_rule_text;
@@ -35,8 +45,18 @@ public class Validation_ruleCriteria extends AbstractORMCriteria {
 	public Validation_ruleCriteria(Criteria criteria) {
 		super(criteria);
 		validation_rule_id = new IntegerExpression("validation_rule_id", this);
-		data_elementId = new IntegerExpression("data_element.data_element_id", this);
-		data_element = new AssociationExpression("data_element", this);
+		report_formId = new IntegerExpression("report_form.report_form_id", this);
+		report_form = new AssociationExpression("report_form", this);
+		report_form_groupId = new IntegerExpression("report_form_group.report_form_group_id", this);
+		report_form_group = new AssociationExpression("report_form_group", this);
+		aId = new IntegerExpression("a.data_element_id", this);
+		a = new AssociationExpression("a", this);
+		bId = new IntegerExpression("b.data_element_id", this);
+		b = new AssociationExpression("b", this);
+		cId = new IntegerExpression("c.data_element_id", this);
+		c = new AssociationExpression("c", this);
+		dId = new IntegerExpression("d.data_element_id", this);
+		d = new AssociationExpression("d", this);
 		validation_rule_name = new StringExpression("validation_rule_name", this);
 		validation_rule_formula = new StringExpression("validation_rule_formula", this);
 		validation_rule_text = new StringExpression("validation_rule_text", this);
@@ -56,8 +76,28 @@ public class Validation_ruleCriteria extends AbstractORMCriteria {
 		this(eihdms.EIHDMSPersistentManager.instance().getSession());
 	}
 	
-	public Data_elementCriteria createData_elementCriteria() {
-		return new Data_elementCriteria(createCriteria("data_element"));
+	public Report_formCriteria createReport_formCriteria() {
+		return new Report_formCriteria(createCriteria("report_form"));
+	}
+	
+	public Report_form_groupCriteria createReport_form_groupCriteria() {
+		return new Report_form_groupCriteria(createCriteria("report_form_group"));
+	}
+	
+	public Data_elementCriteria createACriteria() {
+		return new Data_elementCriteria(createCriteria("a"));
+	}
+	
+	public Data_elementCriteria createBCriteria() {
+		return new Data_elementCriteria(createCriteria("b"));
+	}
+	
+	public Data_elementCriteria createCCriteria() {
+		return new Data_elementCriteria(createCriteria("c"));
+	}
+	
+	public Data_elementCriteria createDCriteria() {
+		return new Data_elementCriteria(createCriteria("d"));
 	}
 	
 	public Validation_rule uniqueValidation_rule() {

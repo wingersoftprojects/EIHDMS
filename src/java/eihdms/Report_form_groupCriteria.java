@@ -32,6 +32,8 @@ public class Report_form_groupCriteria extends AbstractORMCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression data_element;
+	public final CollectionExpression validation_temp;
+	public final CollectionExpression validation_rule;
 	
 	public Report_form_groupCriteria(Criteria criteria) {
 		super(criteria);
@@ -48,6 +50,8 @@ public class Report_form_groupCriteria extends AbstractORMCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		data_element = new CollectionExpression("data_element", this);
+		validation_temp = new CollectionExpression("validation_temp", this);
+		validation_rule = new CollectionExpression("validation_rule", this);
 	}
 	
 	public Report_form_groupCriteria(PersistentSession session) {
@@ -64,6 +68,14 @@ public class Report_form_groupCriteria extends AbstractORMCriteria {
 	
 	public Data_elementCriteria createData_elementCriteria() {
 		return new Data_elementCriteria(createCriteria("data_element"));
+	}
+	
+	public Validation_tempCriteria createValidation_tempCriteria() {
+		return new Validation_tempCriteria(createCriteria("validation_temp"));
+	}
+	
+	public Validation_ruleCriteria createValidation_ruleCriteria() {
+		return new Validation_ruleCriteria(createCriteria("validation_rule"));
 	}
 	
 	public Report_form_group uniqueReport_form_group() {

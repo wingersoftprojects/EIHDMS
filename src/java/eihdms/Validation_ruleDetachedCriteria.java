@@ -20,8 +20,18 @@ import org.orm.criteria.*;
 
 public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression validation_rule_id;
-	public final IntegerExpression data_elementId;
-	public final AssociationExpression data_element;
+	public final IntegerExpression report_formId;
+	public final AssociationExpression report_form;
+	public final IntegerExpression report_form_groupId;
+	public final AssociationExpression report_form_group;
+	public final IntegerExpression aId;
+	public final AssociationExpression a;
+	public final IntegerExpression bId;
+	public final AssociationExpression b;
+	public final IntegerExpression cId;
+	public final AssociationExpression c;
+	public final IntegerExpression dId;
+	public final AssociationExpression d;
 	public final StringExpression validation_rule_name;
 	public final StringExpression validation_rule_formula;
 	public final StringExpression validation_rule_text;
@@ -35,8 +45,18 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 	public Validation_ruleDetachedCriteria() {
 		super(eihdms.Validation_rule.class, eihdms.Validation_ruleCriteria.class);
 		validation_rule_id = new IntegerExpression("validation_rule_id", this.getDetachedCriteria());
-		data_elementId = new IntegerExpression("data_element.data_element_id", this.getDetachedCriteria());
-		data_element = new AssociationExpression("data_element", this.getDetachedCriteria());
+		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
+		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
+		report_form_groupId = new IntegerExpression("report_form_group.report_form_group_id", this.getDetachedCriteria());
+		report_form_group = new AssociationExpression("report_form_group", this.getDetachedCriteria());
+		aId = new IntegerExpression("a.data_element_id", this.getDetachedCriteria());
+		a = new AssociationExpression("a", this.getDetachedCriteria());
+		bId = new IntegerExpression("b.data_element_id", this.getDetachedCriteria());
+		b = new AssociationExpression("b", this.getDetachedCriteria());
+		cId = new IntegerExpression("c.data_element_id", this.getDetachedCriteria());
+		c = new AssociationExpression("c", this.getDetachedCriteria());
+		dId = new IntegerExpression("d.data_element_id", this.getDetachedCriteria());
+		d = new AssociationExpression("d", this.getDetachedCriteria());
 		validation_rule_name = new StringExpression("validation_rule_name", this.getDetachedCriteria());
 		validation_rule_formula = new StringExpression("validation_rule_formula", this.getDetachedCriteria());
 		validation_rule_text = new StringExpression("validation_rule_text", this.getDetachedCriteria());
@@ -51,8 +71,18 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 	public Validation_ruleDetachedCriteria(DetachedCriteria aDetachedCriteria) {
 		super(aDetachedCriteria, eihdms.Validation_ruleCriteria.class);
 		validation_rule_id = new IntegerExpression("validation_rule_id", this.getDetachedCriteria());
-		data_elementId = new IntegerExpression("data_element.data_element_id", this.getDetachedCriteria());
-		data_element = new AssociationExpression("data_element", this.getDetachedCriteria());
+		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
+		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
+		report_form_groupId = new IntegerExpression("report_form_group.report_form_group_id", this.getDetachedCriteria());
+		report_form_group = new AssociationExpression("report_form_group", this.getDetachedCriteria());
+		aId = new IntegerExpression("a.data_element_id", this.getDetachedCriteria());
+		a = new AssociationExpression("a", this.getDetachedCriteria());
+		bId = new IntegerExpression("b.data_element_id", this.getDetachedCriteria());
+		b = new AssociationExpression("b", this.getDetachedCriteria());
+		cId = new IntegerExpression("c.data_element_id", this.getDetachedCriteria());
+		c = new AssociationExpression("c", this.getDetachedCriteria());
+		dId = new IntegerExpression("d.data_element_id", this.getDetachedCriteria());
+		d = new AssociationExpression("d", this.getDetachedCriteria());
 		validation_rule_name = new StringExpression("validation_rule_name", this.getDetachedCriteria());
 		validation_rule_formula = new StringExpression("validation_rule_formula", this.getDetachedCriteria());
 		validation_rule_text = new StringExpression("validation_rule_text", this.getDetachedCriteria());
@@ -64,8 +94,28 @@ public class Validation_ruleDetachedCriteria extends AbstractORMDetachedCriteria
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 	}
 	
-	public Data_elementDetachedCriteria createData_elementCriteria() {
-		return new Data_elementDetachedCriteria(createCriteria("data_element"));
+	public Report_formDetachedCriteria createReport_formCriteria() {
+		return new Report_formDetachedCriteria(createCriteria("report_form"));
+	}
+	
+	public Report_form_groupDetachedCriteria createReport_form_groupCriteria() {
+		return new Report_form_groupDetachedCriteria(createCriteria("report_form_group"));
+	}
+	
+	public Data_elementDetachedCriteria createACriteria() {
+		return new Data_elementDetachedCriteria(createCriteria("a"));
+	}
+	
+	public Data_elementDetachedCriteria createBCriteria() {
+		return new Data_elementDetachedCriteria(createCriteria("b"));
+	}
+	
+	public Data_elementDetachedCriteria createCCriteria() {
+		return new Data_elementDetachedCriteria(createCriteria("c"));
+	}
+	
+	public Data_elementDetachedCriteria createDCriteria() {
+		return new Data_elementDetachedCriteria(createCriteria("d"));
 	}
 	
 	public Validation_rule uniqueValidation_rule(PersistentSession session) {

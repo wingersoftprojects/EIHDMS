@@ -249,6 +249,14 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Validation_temp...");
+		eihdms.Validation_temp[] eihdmsValidation_temps = eihdms.Validation_temp.listValidation_tempByQuery(null, null);
+		length = Math.min(eihdmsValidation_temps.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsValidation_temps[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -611,6 +619,18 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsBatchs[i]);
 		}
 		System.out.println(length + " Batch record(s) retrieved."); 
+		
+		System.out.println("Listing Validation_temp by Criteria...");
+		eihdms.Validation_tempCriteria leihdmsValidation_tempCriteria = new eihdms.Validation_tempCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsValidation_tempCriteria.validation_temp_id.eq();
+		leihdmsValidation_tempCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Validation_temp[] eihdmsValidation_temps = leihdmsValidation_tempCriteria.listValidation_temp();
+		length =eihdmsValidation_temps== null ? 0 : Math.min(eihdmsValidation_temps.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsValidation_temps[i]);
+		}
+		System.out.println(length + " Validation_temp record(s) retrieved."); 
 		
 	}
 	

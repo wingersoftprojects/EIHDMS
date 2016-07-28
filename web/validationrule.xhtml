@@ -17,14 +17,20 @@
             <p:panelGrid columns="2">
                 <p:fieldset legend="Validation Rule">
                     <p:panelGrid columns="2">
-                        <p:outputLabel value="Report Form:" for="report_form_name"/>
-                        <p:selectOneMenu id="report_form_name" value="#{validation_ruleBean.report_form}" style="width:125px" converter="report_formConverter">
+                        <p:outputLabel value="Report Form:" for="report_form"/>
+                        <p:selectOneMenu id="report_form" value="#{validation_ruleBean.selected.report_form}" style="width:125px" required="true" requiredMessage="Report Form field is Required" converter="report_formConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this" update="report_form_group"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="report_form_group" value="Report Form Group:" />
+                        <p:selectOneMenu id="report_form_group" value="#{validation_ruleBean.selected.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_form_groupBean.getts(validation_ruleBean.selected.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Data Element:" for="data_element"/>
-                        <p:autoComplete id="data_element" value="#{validation_ruleBean.selected.data_element}"
+                        <p:outputLabel value="Data Element (A):" for="a"/>
+                        <p:autoComplete id="a" value="#{validation_ruleBean.selected.a}"
                                         completeMethod="#{validation_ruleBean.completeData_element}"
                                         var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
                                         converter="data_elementConverter" forceSelection="true"
@@ -46,10 +52,84 @@
                                 </h:outputText>
                             </p:column>
                         </p:autoComplete>
+                        <p:outputLabel value="Data Element (B):" for="b"/>
+                        <p:autoComplete id="b" value="#{validation_ruleBean.selected.b}"
+                                        completeMethod="#{validation_ruleBean.completeData_element}"
+                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
+                                        converter="data_elementConverter" forceSelection="true"
+                                        minQueryLength="3" dropdown="true" required="true" requiredMessage="Data Element Field is required" >
+                            <p:column headerText="Data Element Name" style="text-align: left">
+                                <h:outputText value="#{data_element.data_element_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Report Form" style="text-align: left">
+                                <h:outputText value="#{data_element.report_form.report_form_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Section" style="text-align: left">
+                                <h:outputText value="#{data_element.section.section_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub Section" style="text-align: left">
+                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:outputLabel value="Data Element (C):" for="c"/>
+                        <p:autoComplete id="c" value="#{validation_ruleBean.selected.c}"
+                                        completeMethod="#{validation_ruleBean.completeData_element}"
+                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
+                                        converter="data_elementConverter" forceSelection="true"
+                                        minQueryLength="3" dropdown="true">
+                            <p:column headerText="Data Element Name" style="text-align: left">
+                                <h:outputText value="#{data_element.data_element_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Report Form" style="text-align: left">
+                                <h:outputText value="#{data_element.report_form.report_form_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Section" style="text-align: left">
+                                <h:outputText value="#{data_element.section.section_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub Section" style="text-align: left">
+                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:outputLabel value="Data Element (D):" for="d"/>
+                        <p:autoComplete id="d" value="#{validation_ruleBean.selected.d}"
+                                        completeMethod="#{validation_ruleBean.completeData_element}"
+                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
+                                        converter="data_elementConverter" forceSelection="true"
+                                        minQueryLength="3" dropdown="true">
+                            <p:column headerText="Data Element Name" style="text-align: left">
+                                <h:outputText value="#{data_element.data_element_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Report Form" style="text-align: left">
+                                <h:outputText value="#{data_element.report_form.report_form_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Section" style="text-align: left">
+                                <h:outputText value="#{data_element.section.section_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub Section" style="text-align: left">
+                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
                         <p:outputLabel value="Validation Rule Name:" for="validation_rule_name"/>
                         <p:inputText id="validation_rule_name" value="#{validation_ruleBean.selected.validation_rule_name}" required="true" requiredMessage="Validation Rule Name field is Required"/>
                         <p:outputLabel value="Validation Rule Formula:" for="validation_rule_formula"/>
-                        <p:inputText id="validation_rule_formula" value="#{validation_ruleBean.selected.validation_rule_formula}" required="true" requiredMessage="Validation Rule Formula field is Required"/>
+                        <p:selectOneMenu id="validation_rule_formula" value="#{validation_ruleBean.selected.validation_rule_formula}" required="true" requiredMessage="Formula field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="a+b=c" itemValue="a+b=c" />
+                            <f:selectItem itemLabel="a Greater Than b" itemValue="a Greater Than b" />
+                            <f:selectItem itemLabel="a Less Than b" itemValue="a Less Than b" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="Validation Rule Text:" for="validation_rule_text"/>
                         <p:inputText id="validation_rule_text" value="#{validation_ruleBean.selected.validation_rule_text}" required="true" requiredMessage="Validation Rule Text field is Required"/>
                         <p:outputLabel value="Is Active?:" for="is_active"/>
@@ -65,14 +145,26 @@
 
                 <p:fieldset legend="Report Form Groups" id="report_form_groups">
                     <p:dataTable id="report_form_group_table" value="#{validation_ruleBean.ts}" var="item" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,30,50,100">
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,30,50,100">
                         <p:column headerText="Report Form Name">
-                            <h:outputText value="#{item.data_element.report_form.report_form_name}"/>
+                            <h:outputText value="#{item.report_form.report_form_name}"/>
                         </p:column>
-                        <p:column headerText="Data Element">
-                            <h:outputText value="#{item.data_element.data_element_name}"/>
+                        <p:column headerText="Report Form Group">
+                            <h:outputText value="#{item.report_form_group.report_form_group_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (A)">
+                            <h:outputText value="#{item.a.data_element_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (B)">
+                            <h:outputText value="#{item.b.data_element_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (C)">
+                            <h:outputText value="#{item.c.data_element_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element (D)">
+                            <h:outputText value="#{item.d.data_element_name}"/>
                         </p:column>
                         <p:column headerText="Validation Rule Name">
                             <h:outputText value="#{item.validation_rule_name}"/>
