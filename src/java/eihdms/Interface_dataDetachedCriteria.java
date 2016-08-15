@@ -43,6 +43,12 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final IntegerExpression last_edit_by;
 	public final StringExpression status;
 	public final StringExpression status_desc;
+	public final StringExpression status_u;
+	public final StringExpression status_u_desc;
+	public final StringExpression status_v;
+	public final StringExpression status_v_desc;
+	public final StringExpression status_m;
+	public final StringExpression status_m_desc;
 	
 	public Interface_dataDetachedCriteria() {
 		super(eihdms.Interface_data.class, eihdms.Interface_dataCriteria.class);
@@ -70,6 +76,12 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		status = new StringExpression("status", this.getDetachedCriteria());
 		status_desc = new StringExpression("status_desc", this.getDetachedCriteria());
+		status_u = new StringExpression("status_u", this.getDetachedCriteria());
+		status_u_desc = new StringExpression("status_u_desc", this.getDetachedCriteria());
+		status_v = new StringExpression("status_v", this.getDetachedCriteria());
+		status_v_desc = new StringExpression("status_v_desc", this.getDetachedCriteria());
+		status_m = new StringExpression("status_m", this.getDetachedCriteria());
+		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
 	}
 	
 	public Interface_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -98,6 +110,12 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		status = new StringExpression("status", this.getDetachedCriteria());
 		status_desc = new StringExpression("status_desc", this.getDetachedCriteria());
+		status_u = new StringExpression("status_u", this.getDetachedCriteria());
+		status_u_desc = new StringExpression("status_u_desc", this.getDetachedCriteria());
+		status_v = new StringExpression("status_v", this.getDetachedCriteria());
+		status_v_desc = new StringExpression("status_v_desc", this.getDetachedCriteria());
+		status_m = new StringExpression("status_m", this.getDetachedCriteria());
+		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {

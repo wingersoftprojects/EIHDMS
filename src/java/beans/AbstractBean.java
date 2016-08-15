@@ -60,11 +60,11 @@ public abstract class AbstractBean<T> {
     public void initializelist() {
         try {
             if (entityClass != null) {
-                tsAll = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).list();
+                ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.ne("is_deleted", 1)).list();
             } else {
                 ts = new ArrayList<>();
             }
-        } catch (PersistentException ex) {
+        } catch (PersistentException | HibernateException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -74,6 +74,7 @@ public abstract class AbstractBean<T> {
             EIHDMSPersistentManager.instance().getSession().evict(t);
             EIHDMSPersistentManager.instance().getSession().flush();
             EIHDMSPersistentManager.instance().getSession().clear();
+            //EIHDMSPersistentManager.instance().getSession().close();
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -119,6 +120,16 @@ public abstract class AbstractBean<T> {
     }
 
     public List<T> getTsAll() {
+        try {
+            if (entityClass != null) {
+                tsAll = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).list();
+            } else {
+                tsAll = new ArrayList<>();
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return tsAll;
     }
 
@@ -127,15 +138,6 @@ public abstract class AbstractBean<T> {
     }
 
     public List<T> getTs() {
-        try {
-            if (entityClass != null) {
-                ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.ne("is_deleted", 1)).list();
-            } else {
-                ts = new ArrayList<>();
-            }
-        } catch (PersistentException | HibernateException ex) {
-            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return ts;
     }
 
@@ -308,11 +310,16 @@ public abstract class AbstractBean<T> {
             Method method = selected.getClass().getMethod("get" + entityClass.getSimpleName() + "_id", noparams);
             int id = (int) method.invoke(selected);
             if (id > 0) {
-                EIHDMSPersistentManager.instance().getSession().merge(selected);
+                EIHDMSPersistentManager.instance().getSession().clear();
+                EIHDMSPersistentManager.instance().getSession().update(selected);
+                //Method methodsave = selected.getClass().getMethod("save", noparams);
+                //methodsave.invoke(selected);
             } else {
                 Method methodsave = selected.getClass().getMethod("save", noparams);
                 methodsave.invoke(selected);
             }
+            EIHDMSPersistentManager.instance().getSession().flush();
+            EIHDMSPersistentManager.instance().getSession().clear();
             transaction.commit();
             clearCache(selected);
             formstate = "view";

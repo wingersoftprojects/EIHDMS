@@ -43,6 +43,12 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression last_edit_by;
 	public final StringExpression status;
 	public final StringExpression status_desc;
+	public final StringExpression status_u;
+	public final StringExpression status_u_desc;
+	public final StringExpression status_v;
+	public final StringExpression status_v_desc;
+	public final StringExpression status_m;
+	public final StringExpression status_m_desc;
 	
 	public Interface_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -70,6 +76,12 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		status = new StringExpression("status", this);
 		status_desc = new StringExpression("status_desc", this);
+		status_u = new StringExpression("status_u", this);
+		status_u_desc = new StringExpression("status_u_desc", this);
+		status_v = new StringExpression("status_v", this);
+		status_v_desc = new StringExpression("status_v_desc", this);
+		status_m = new StringExpression("status_m", this);
+		status_m_desc = new StringExpression("status_m_desc", this);
 	}
 	
 	public Interface_dataCriteria(PersistentSession session) {

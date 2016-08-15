@@ -5,6 +5,7 @@
  */
 package beans;
 
+import connections.DBConnection;
 import eihdms.Base_data;
 import eihdms.Batch;
 import eihdms.County;
@@ -20,10 +21,16 @@ import eihdms.Report_form;
 import eihdms.Report_form_group;
 import eihdms.Sub_county;
 import eihdms.Validation_rule;
+import eihdms.Validation_temp;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -362,6 +369,37 @@ public class UploadBean implements Serializable {
         this.validationtext = validationtext;
     }
 
+    public String validate_upload_procedure(int batch_id, String reporting_level_name, String reporting_name) {
+        String validation_rule_name = "";
+        try {
+            List<Validation_temp> validation_temps = Validation_temp.queryValidation_temp("is_active=1 AND report_form_group=" + report_form_group.getReport_form_group_id(), null);
+            String sql = "{call sp_validation_formula(?,?,?,?)}";
+            ResultSet rs = null;
+            for (Validation_temp v : validation_temps) {
+                try {
+
+                    Connection conn = DBConnection.getMySQLConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql);
+                    ps.setInt(1, batch_id);
+                    ps.setString(2, reporting_level_name);
+                    ps.setString(3, v.getValifation_temp_formula());
+                    ps.setString(4, reporting_name);
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        validation_rule_name = "";
+                    } else {
+                        validation_rule_name += "\n" + v.getValidation_temp_name();
+                    }
+                } catch (SQLException se) {
+                    System.err.println(se.getMessage());
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return validation_rule_name;
+    }
+
     public void validate_upload(Report_form_group report_form_group) {
         switch (report_form_group.getReport_form().getLowest_report_form_level()) {
             case "Facility":
@@ -536,7 +574,7 @@ public class UploadBean implements Serializable {
                 /**
                  * Validate Data
                  */
-                validate_upload(report_form_group);
+                //validate_upload(report_form_group);
                 /**
                  * End Validate Data
                  */
@@ -569,112 +607,165 @@ public class UploadBean implements Serializable {
                 /**
                  * Load Base Data
                  */
+
+                /**
+                 * Validate Data
+                 */
                 transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-                List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Validated' AND batch= " + batch.getBatch_id() + " AND i.data_element.report_form=" + report_form.getReport_form_id() + " AND i.data_element.report_form_group=" + report_form_group.getReport_form_group_id()).list();
-                for (Interface_data i : interface_datas_tobase) {
-                    District d = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
-                    Sub_county s = Sub_county.loadSub_countyByQuery("is_active=1 AND sub_county_name='" + i.getSub_county_name() + "' AND county.district=" + (d != null ? d.getDistrict_id() : 0), null);
-                    Parish p = null;
-                    if (report_form.getLowest_report_form_level().equals("Facility")) {
-                        p = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0), null);
-                    }
-                    if (report_form.getLowest_report_form_level().equals("Parish")) {
-                        p = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county_id=" + (s != null ? s.getSub_county_id() : 0), null);
-                    }
+                List<Interface_data> interface_datas_tovalidate = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where batch= " + batch.getBatch_id() + " AND i.data_element.report_form=" + report_form.getReport_form_id() + " AND i.data_element.report_form_group=" + report_form_group.getReport_form_group_id()).list();
 
-                    List<Health_facility> health_facilityList = Health_facility.queryHealth_facility("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND parish.sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND parish=" + (p != null ? p.getParish_id() : 0), null);
-                    List<Parish> parishList = EIHDMSPersistentManager.instance().getSession().createQuery("SELECT p from Parish p where p.is_active=1 AND p.sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND p.sub_county=" + (s != null ? s.getSub_county_id() : 0) + " AND p.parish_name='" + i.getParish_name() + "'").list();// Parish.queryParish("is_active=1 AND parish_name='" + i.getParish_name() + "' AND district_id=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county_id=" + (s != null ? s.getSub_county_id() : 0), null);
-                    List<District> districtList = District.queryDistrict("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
-                    if (report_form.getLowest_report_form_level().equals("Facility")) {
-                        if (health_facilityList.size() == 1) {
-                            Base_data base_data = Base_data.createBase_data();
-                            health_facility = Health_facility.loadHealth_facilityByQuery("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND parish.sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND parish=" + (p != null ? p.getParish_id() : 0), null);
-                            base_data.setHealth_facility(health_facility);
-                            base_data.setDistrict(health_facility.getDistrict());
-                            base_data.setParish(health_facility.getParish());
-                            /**
-                             * Save to base data
-                             */
-                            save_basa_data(base_data, i);
-                        }
-                        if (health_facilityList.size() > 1) {
-                            i.setStatus("Not Moved");
-                            i.setStatus_desc("Not moved to base because more than one facility found in facilities table");
-                            i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                            i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                            EIHDMSPersistentManager.instance().getSession().merge(i);
-                        }
-                        if (health_facilityList.isEmpty()) {
-                            i.setStatus("Not Moved");
-                            i.setStatus_desc("Not moved to base because facility not found in facilities table");
-                            i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                            i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                            EIHDMSPersistentManager.instance().getSession().merge(i);
-                        }
+                if (report_form.getLowest_report_form_level().equals("Facility")) {
+                    Set<String> facility_hierarchyset = new HashSet();
+                    for (Interface_data interface_data : interface_datas_tovalidate) {
+                        facility_hierarchyset.add(interface_data.getDistrict_name() + interface_data.getParish_name() + interface_data.getHealth_facility_name());
                     }
-                    if (report_form.getLowest_report_form_level().equals("Parish")) {
-                        if (parishList.size() == 1) {
-                            Base_data base_data = Base_data.createBase_data();
-                            parish = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id() : 0), null);
-                            base_data.setParish(parish);
-                            if (parish != null) {
-                                base_data.setDistrict(d);
-                                base_data.setSub_county(parish.getSub_county());
+                    for (String facilityhierarchy : facility_hierarchyset) {
+                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,parish_name,health_facility_name)", facilityhierarchy);
+                        for (Interface_data interface_data : interface_datas) {
+                            if (facilityhierarchy.equals(interface_data.getDistrict_name() + interface_data.getParish_name() +  interface_data.getHealth_facility_name())) {
+                                if (!validationtext.isEmpty()) {
+                                    interface_data.setStatus("Invalid");
+                                    interface_data.setStatus_desc("Not Passed Validation because: " + validationtext);
+                                } else {
+                                    interface_data.setStatus("Validated");
+                                    interface_data.setStatus_desc("Validated and ready for moving");
+                                }
                             }
-
-                            /**
-                             * Save to base data
-                             */
-                            save_basa_data(base_data, i);
-                        }
-                        if (parishList.size() > 1) {
-                            i.setStatus("Not Moved");
-                            i.setStatus_desc("Not moved to base because more than one parish found in parishes table");
-                            i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                            i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                            EIHDMSPersistentManager.instance().getSession().merge(i);
-                        }
-                        if (parishList.isEmpty()) {
-                            i.setStatus("Not Moved");
-                            i.setStatus_desc("Not moved to base because parish not found in parishes table");
-                            i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                            i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                            EIHDMSPersistentManager.instance().getSession().merge(i);
-                        }
-                    }
-                    if (report_form.getLowest_report_form_level().equals("District")) {
-                        if (districtList.size() == 1) {
-                            Base_data base_data = Base_data.createBase_data();
-                            district = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
-                            base_data.setDistrict(district);
-
-                            /**
-                             * Save to base data
-                             */
-                            save_basa_data(base_data, i);
-                        }
-                        if (districtList.size() > 1) {
-                            i.setStatus("Not Moved");
-                            i.setStatus_desc("Not moved to base because more than one district found in districts table");
-                            i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                            i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                            EIHDMSPersistentManager.instance().getSession().merge(i);
-                        }
-                        if (districtList.isEmpty()) {
-                            i.setStatus("Not Moved");
-                            i.setStatus_desc("Not moved to base because district not found in districts table");
-                            i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                            i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                            EIHDMSPersistentManager.instance().getSession().merge(i);
+                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
                         }
                     }
                 }
+                if (report_form.getLowest_report_form_level().equals("Parish")) {
+
+                }
+                if (report_form.getLowest_report_form_level().equals("District")) {
+
+                }
+                transaction.commit();
+
+                /**
+                 * End Validate Data
+                 */
+                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                /**
+                 * Move data to base
+                 */
+                move_data_to_base(batch);
+                /**
+                 * End move data to base
+                 */
                 transaction.commit();
                 loginBean.saveMessage();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
             interface_datas = new ArrayList<>();
+        }
+    }
+
+    private void move_data_to_base(Batch batch) {
+        try {
+            List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status='Validated' AND batch= " + batch.getBatch_id()).list();
+            for (Interface_data i : interface_datas_tobase) {
+                District d = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
+                Sub_county s = Sub_county.loadSub_countyByQuery("is_active=1 AND sub_county_name='" + i.getSub_county_name() + "' AND county.district=" + (d != null ? d.getDistrict_id() : 0), null);
+                Parish p = null;
+                if (report_form.getLowest_report_form_level().equals("Facility")) {
+                    p = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0), null);
+                }
+                if (report_form.getLowest_report_form_level().equals("Parish")) {
+                    p = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county_id=" + (s != null ? s.getSub_county_id() : 0), null);
+                }
+
+                List<Health_facility> health_facilityList = Health_facility.queryHealth_facility("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND parish.sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND parish=" + (p != null ? p.getParish_id() : 0), null);
+                List<Parish> parishList = EIHDMSPersistentManager.instance().getSession().createQuery("SELECT p from Parish p where p.is_active=1 AND p.sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND p.sub_county=" + (s != null ? s.getSub_county_id() : 0) + " AND p.parish_name='" + i.getParish_name() + "'").list();// Parish.queryParish("is_active=1 AND parish_name='" + i.getParish_name() + "' AND district_id=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county_id=" + (s != null ? s.getSub_county_id() : 0), null);
+                List<District> districtList = District.queryDistrict("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
+                if (report_form.getLowest_report_form_level().equals("Facility")) {
+                    if (health_facilityList.size() == 1) {
+                        Base_data base_data = Base_data.createBase_data();
+                        health_facility = Health_facility.loadHealth_facilityByQuery("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND parish.sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND parish=" + (p != null ? p.getParish_id() : 0), null);
+                        base_data.setHealth_facility(health_facility);
+                        base_data.setDistrict(health_facility.getDistrict());
+                        base_data.setParish(health_facility.getParish());
+                        /**
+                         * Save to base data
+                         */
+                        save_basa_data(base_data, i);
+                    }
+                    if (health_facilityList.size() > 1) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because more than one facility found in facilities table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    if (health_facilityList.isEmpty()) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because facility not found in facilities table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                }
+                if (report_form.getLowest_report_form_level().equals("Parish")) {
+                    if (parishList.size() == 1) {
+                        Base_data base_data = Base_data.createBase_data();
+                        parish = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id() : 0), null);
+                        base_data.setParish(parish);
+                        if (parish != null) {
+                            base_data.setDistrict(d);
+                            base_data.setSub_county(parish.getSub_county());
+                        }
+
+                        /**
+                         * Save to base data
+                         */
+                        save_basa_data(base_data, i);
+                    }
+                    if (parishList.size() > 1) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because more than one parish found in parishes table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    if (parishList.isEmpty()) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because parish not found in parishes table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                }
+                if (report_form.getLowest_report_form_level().equals("District")) {
+                    if (districtList.size() == 1) {
+                        Base_data base_data = Base_data.createBase_data();
+                        district = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
+                        base_data.setDistrict(district);
+
+                        /**
+                         * Save to base data
+                         */
+                        save_basa_data(base_data, i);
+                    }
+                    if (districtList.size() > 1) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because more than one district found in districts table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                    if (districtList.isEmpty()) {
+                        i.setStatus("Not Moved");
+                        i.setStatus_desc("Not moved to base because district not found in districts table");
+                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                        EIHDMSPersistentManager.instance().getSession().merge(i);
+                    }
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

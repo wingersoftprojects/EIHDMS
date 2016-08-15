@@ -25,15 +25,8 @@ public class Validation_tempDetachedCriteria extends AbstractORMDetachedCriteria
 	public final IntegerExpression report_form_groupId;
 	public final AssociationExpression report_form_group;
 	public final StringExpression validation_temp_name;
-	public final StringExpression formula;
-	public final IntegerExpression aId;
-	public final AssociationExpression a;
-	public final IntegerExpression bId;
-	public final AssociationExpression b;
-	public final IntegerExpression cId;
-	public final AssociationExpression c;
-	public final IntegerExpression dId;
-	public final AssociationExpression d;
+	public final StringExpression valifation_temp_formula;
+	public final StringExpression data_elements_involved;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
 	public final TimestampExpression add_date;
@@ -49,15 +42,8 @@ public class Validation_tempDetachedCriteria extends AbstractORMDetachedCriteria
 		report_form_groupId = new IntegerExpression("report_form_group.report_form_group_id", this.getDetachedCriteria());
 		report_form_group = new AssociationExpression("report_form_group", this.getDetachedCriteria());
 		validation_temp_name = new StringExpression("validation_temp_name", this.getDetachedCriteria());
-		formula = new StringExpression("formula", this.getDetachedCriteria());
-		aId = new IntegerExpression("a.data_element_id", this.getDetachedCriteria());
-		a = new AssociationExpression("a", this.getDetachedCriteria());
-		bId = new IntegerExpression("b.data_element_id", this.getDetachedCriteria());
-		b = new AssociationExpression("b", this.getDetachedCriteria());
-		cId = new IntegerExpression("c.data_element_id", this.getDetachedCriteria());
-		c = new AssociationExpression("c", this.getDetachedCriteria());
-		dId = new IntegerExpression("d.data_element_id", this.getDetachedCriteria());
-		d = new AssociationExpression("d", this.getDetachedCriteria());
+		valifation_temp_formula = new StringExpression("valifation_temp_formula", this.getDetachedCriteria());
+		data_elements_involved = new StringExpression("data_elements_involved", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
@@ -74,15 +60,8 @@ public class Validation_tempDetachedCriteria extends AbstractORMDetachedCriteria
 		report_form_groupId = new IntegerExpression("report_form_group.report_form_group_id", this.getDetachedCriteria());
 		report_form_group = new AssociationExpression("report_form_group", this.getDetachedCriteria());
 		validation_temp_name = new StringExpression("validation_temp_name", this.getDetachedCriteria());
-		formula = new StringExpression("formula", this.getDetachedCriteria());
-		aId = new IntegerExpression("a.data_element_id", this.getDetachedCriteria());
-		a = new AssociationExpression("a", this.getDetachedCriteria());
-		bId = new IntegerExpression("b.data_element_id", this.getDetachedCriteria());
-		b = new AssociationExpression("b", this.getDetachedCriteria());
-		cId = new IntegerExpression("c.data_element_id", this.getDetachedCriteria());
-		c = new AssociationExpression("c", this.getDetachedCriteria());
-		dId = new IntegerExpression("d.data_element_id", this.getDetachedCriteria());
-		d = new AssociationExpression("d", this.getDetachedCriteria());
+		valifation_temp_formula = new StringExpression("valifation_temp_formula", this.getDetachedCriteria());
+		data_elements_involved = new StringExpression("data_elements_involved", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
@@ -97,22 +76,6 @@ public class Validation_tempDetachedCriteria extends AbstractORMDetachedCriteria
 	
 	public Report_form_groupDetachedCriteria createReport_form_groupCriteria() {
 		return new Report_form_groupDetachedCriteria(createCriteria("report_form_group"));
-	}
-	
-	public Data_elementDetachedCriteria createACriteria() {
-		return new Data_elementDetachedCriteria(createCriteria("a"));
-	}
-	
-	public Data_elementDetachedCriteria createBCriteria() {
-		return new Data_elementDetachedCriteria(createCriteria("b"));
-	}
-	
-	public Data_elementDetachedCriteria createCCriteria() {
-		return new Data_elementDetachedCriteria(createCriteria("c"));
-	}
-	
-	public Data_elementDetachedCriteria createDCriteria() {
-		return new Data_elementDetachedCriteria(createCriteria("d"));
 	}
 	
 	public Validation_temp uniqueValidation_temp(PersistentSession session) {

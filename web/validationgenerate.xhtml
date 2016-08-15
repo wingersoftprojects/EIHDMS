@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <f:view>
+            <h:form>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Report Form:" for="report_form"/>
+                    <p:selectOneMenu id="report_form" value="#{validation_ruleBean.selected.report_form}" style="width:125px" required="true" requiredMessage="Report Form field is Required" converter="report_formConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="report_form_group"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="report_form_group" value="Report Form Group:" />
+                    <p:selectOneMenu id="report_form_group" value="#{validation_ruleBean.selected.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_form_groupBean.getts(validation_ruleBean.selected.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Data Element:" for="dataelement"/>
+                    <p:autoComplete id="dataelement" value="#{generateValidationBean.data_element}"
+                                    completeMethod="#{validation_ruleBean.completeData_element}"
+                                    var="data_element" itemLabel="#{data_element.data_element_name} (Col#{data_element.data_element_id})" itemValue="#{data_element}" 
+                                    converter="data_elementConverter" forceSelection="true"
+                                    minQueryLength="3" dropdown="true" required="true" requiredMessage="Data Element Field is required" >
+                        <p:column headerText="Data Element Name" style="text-align: left">
+                            <h:outputText value="#{data_element.data_element_name} (Col#{data_element.data_element_id})">
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Report Form" style="text-align: left">
+                            <h:outputText value="#{data_element.report_form.report_form_name}">
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Section" style="text-align: left">
+                            <h:outputText value="#{data_element.section.section_name}">
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Sub Section" style="text-align: left">
+                            <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                            </h:outputText>
+                        </p:column>
+                        <p:ajax event="itemSelect" listener="#{generateValidationBean.append_data_element()}" process="@this" update="@form"></p:ajax>
+                        <p:ajax event="change" listener="#{generateValidationBean.append_data_element()}" process="@this" update="@form"></p:ajax>
+                    </p:autoComplete>
+                    <p:outputLabel value="Valudation Formula:" for="formula"/>
+                    <p:inputTextarea cols="60" rows="10" value="#{generateValidationBean.validation_formula}" id="formula">
+                        <p:ajax event="blur"/>
+                    </p:inputTextarea>
+                    <p:outputPanel>
+                        <p:commandButton value="AND" action="#{generateValidationBean.append_operand('AND')}" process="@this" update="@form"/>
+                        <p:commandButton value="OR" action="#{generateValidationBean.append_operand('OR')}" process="@this" update="@form"/>
+                        <p:commandButton value="(" action="#{generateValidationBean.append_operand('(')}" process="@this" update="@form"/>
+                        <p:commandButton value=")" action="#{generateValidationBean.append_operand(')')}" process="@this" update="@form"/>
+                        <p:commandButton value="+" action="#{generateValidationBean.append_operand('+')}" process="@this" update="@form"/>
+                        <p:commandButton value="-" action="#{generateValidationBean.append_operand('-')}" process="@this" update="@form"/>
+                        <p:commandButton value=">" action="#{generateValidationBean.append_operand('>')}" process="@this" update="@form"/>
+                        <p:commandButton value="Less Than" action="#{generateValidationBean.append_operand('lt')}" process="@this" update="@form"/>
+                        <p:commandButton value=">=" action="#{generateValidationBean.append_operand('>=')}" process="@this" update="@form"/>
+                        <p:commandButton value="Less Or Equal" action="#{generateValidationBean.append_operand('le')}" process="@this" update="@form"/>
+                    </p:outputPanel>
+                </p:panelGrid>
+            </h:form>
+        </f:view>
+
+    </ui:define>
+
+</ui:composition>

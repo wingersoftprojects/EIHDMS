@@ -480,11 +480,29 @@ public class Interface_data implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
-	@Column(name="status", nullable=false, length=100)	
+	@Column(name="status", nullable=true, length=100)	
 	private String status;
 	
 	@Column(name="status_desc", nullable=true, length=100)	
 	private String status_desc;
+	
+	@Column(name="status_u", nullable=true, length=50)	
+	private String status_u;
+	
+	@Column(name="status_u_desc", nullable=true)	
+	private String status_u_desc;
+	
+	@Column(name="status_v", nullable=true, length=50)	
+	private String status_v;
+	
+	@Column(name="status_v_desc", nullable=true)	
+	private String status_v_desc;
+	
+	@Column(name="status_m", nullable=true, length=50)	
+	private String status_m;
+	
+	@Column(name="status_m_desc", nullable=true)	
+	private String status_m_desc;
 	
 	private void setInterface_data_id(int value) {
 		this.interface_data_id = value;
@@ -644,6 +662,54 @@ public class Interface_data implements Serializable {
 	
 	public String getSub_county_name() {
 		return sub_county_name;
+	}
+	
+	public void setStatus_u(String value) {
+		this.status_u = value;
+	}
+	
+	public String getStatus_u() {
+		return status_u;
+	}
+	
+	public void setStatus_u_desc(String value) {
+		this.status_u_desc = value;
+	}
+	
+	public String getStatus_u_desc() {
+		return status_u_desc;
+	}
+	
+	public void setStatus_v(String value) {
+		this.status_v = value;
+	}
+	
+	public String getStatus_v() {
+		return status_v;
+	}
+	
+	public void setStatus_v_desc(String value) {
+		this.status_v_desc = value;
+	}
+	
+	public String getStatus_v_desc() {
+		return status_v_desc;
+	}
+	
+	public void setStatus_m(String value) {
+		this.status_m = value;
+	}
+	
+	public String getStatus_m() {
+		return status_m;
+	}
+	
+	public void setStatus_m_desc(String value) {
+		this.status_m_desc = value;
+	}
+	
+	public String getStatus_m_desc() {
+		return status_m_desc;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

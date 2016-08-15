@@ -373,22 +373,6 @@ public class Validation_temp implements Serializable {
 				getReport_form_group().getValidation_temp().remove(this);
 			}
 			
-			if(getA() != null) {
-				getA().getValidation_temp().remove(this);
-			}
-			
-			if(getB() != null) {
-				getB().getValidation_temp1().remove(this);
-			}
-			
-			if(getC() != null) {
-				getC().getValidation_temp2().remove(this);
-			}
-			
-			if(getD() != null) {
-				getD().getValidation_temp3().remove(this);
-			}
-			
 			return delete();
 		}
 		catch(Exception e) {
@@ -405,22 +389,6 @@ public class Validation_temp implements Serializable {
 			
 			if(getReport_form_group() != null) {
 				getReport_form_group().getValidation_temp().remove(this);
-			}
-			
-			if(getA() != null) {
-				getA().getValidation_temp().remove(this);
-			}
-			
-			if(getB() != null) {
-				getB().getValidation_temp1().remove(this);
-			}
-			
-			if(getC() != null) {
-				getC().getValidation_temp2().remove(this);
-			}
-			
-			if(getD() != null) {
-				getD().getValidation_temp3().remove(this);
 			}
 			
 			try {
@@ -455,28 +423,11 @@ public class Validation_temp implements Serializable {
 	@Column(name="validation_temp_name", nullable=false, length=100)	
 	private String validation_temp_name;
 	
-	@Column(name="formula", nullable=false, length=100)	
-	private String formula;
+	@Column(name="valifation_temp_formula", nullable=false, length=200)	
+	private String valifation_temp_formula;
 	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="a", referencedColumnName="data_element_id", nullable=false) })	
-	private eihdms.Data_element a;
-	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="b", referencedColumnName="data_element_id", nullable=false) })	
-	private eihdms.Data_element b;
-	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="c", referencedColumnName="data_element_id") })	
-	private eihdms.Data_element c;
-	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="d", referencedColumnName="data_element_id") })	
-	private eihdms.Data_element d;
+	@Column(name="data_elements_involved", nullable=true)	
+	private String data_elements_involved;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
@@ -516,12 +467,12 @@ public class Validation_temp implements Serializable {
 		return validation_temp_name;
 	}
 	
-	public void setFormula(String value) {
-		this.formula = value;
+	public void setValifation_temp_formula(String value) {
+		this.valifation_temp_formula = value;
 	}
 	
-	public String getFormula() {
-		return formula;
+	public String getValifation_temp_formula() {
+		return valifation_temp_formula;
 	}
 	
 	public void setIs_deleted(int value) {
@@ -580,6 +531,14 @@ public class Validation_temp implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setData_elements_involved(String value) {
+		this.data_elements_involved = value;
+	}
+	
+	public String getData_elements_involved() {
+		return data_elements_involved;
+	}
+	
 	public void setReport_form(eihdms.Report_form value) {
 		this.report_form = value;
 	}
@@ -594,38 +553,6 @@ public class Validation_temp implements Serializable {
 	
 	public eihdms.Report_form_group getReport_form_group() {
 		return report_form_group;
-	}
-	
-	public void setA(eihdms.Data_element value) {
-		this.a = value;
-	}
-	
-	public eihdms.Data_element getA() {
-		return a;
-	}
-	
-	public void setB(eihdms.Data_element value) {
-		this.b = value;
-	}
-	
-	public eihdms.Data_element getB() {
-		return b;
-	}
-	
-	public void setC(eihdms.Data_element value) {
-		this.c = value;
-	}
-	
-	public eihdms.Data_element getC() {
-		return c;
-	}
-	
-	public void setD(eihdms.Data_element value) {
-		this.d = value;
-	}
-	
-	public eihdms.Data_element getD() {
-		return d;
 	}
 	
 	public String toString() {

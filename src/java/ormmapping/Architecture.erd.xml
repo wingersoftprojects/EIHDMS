@@ -1363,7 +1363,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>100</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -1374,6 +1374,72 @@
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
       <Length>100</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="status_u">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>50</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="status_u_desc">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>34</Type>
+      <Length>0</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="status_v">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>50</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="status_v_desc">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>34</Type>
+      <Length>0</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="status_m">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>50</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="status_m_desc">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>34</Type>
+      <Length>0</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
@@ -3865,61 +3931,24 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="formula">
+    <Column name="valifation_temp_formula">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
       <Type>27</Type>
-      <Length>100</Length>
+      <Length>200</Length>
       <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="a">
+    <Column name="data_elements_involved">
       <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>false</Nullable>
-      <IDGenerator>assigned</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="b">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>false</Nullable>
-      <IDGenerator>assigned</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="c">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
+      <ForeignKey>false</ForeignKey>
+      <Type>34</Type>
+      <Length>0</Length>
       <Nullable>true</Nullable>
-      <IDGenerator>assigned</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="d">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>true</Nullable>
-      <IDGenerator>assigned</IDGenerator>
+      <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
       <UserTypes/>
@@ -4399,46 +4428,6 @@
     </Columns>
     <RefColumns>
       <Column>report_form_group_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation29068">
-    <ReferenceTable>validation_temp</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>a</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation29067">
-    <ReferenceTable>validation_temp</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>b</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation29066">
-    <ReferenceTable>validation_temp</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>c</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation29065">
-    <ReferenceTable>validation_temp</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>d</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
     </RefColumns>
   </ForeignKey>
   <ForeignKey name="FKvalidation229200">
