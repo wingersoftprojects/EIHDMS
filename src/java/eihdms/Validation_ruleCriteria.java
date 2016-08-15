@@ -26,15 +26,7 @@ public class Validation_ruleCriteria extends AbstractORMCriteria {
 	public final AssociationExpression report_form_group;
 	public final StringExpression validation_rule_name;
 	public final StringExpression validation_rule_formula;
-	public final StringExpression validation_rule_text;
-	public final IntegerExpression aId;
-	public final AssociationExpression a;
-	public final IntegerExpression bId;
-	public final AssociationExpression b;
-	public final IntegerExpression cId;
-	public final AssociationExpression c;
-	public final IntegerExpression dId;
-	public final AssociationExpression d;
+	public final StringExpression data_elements_involved;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
 	public final TimestampExpression add_date;
@@ -51,15 +43,7 @@ public class Validation_ruleCriteria extends AbstractORMCriteria {
 		report_form_group = new AssociationExpression("report_form_group", this);
 		validation_rule_name = new StringExpression("validation_rule_name", this);
 		validation_rule_formula = new StringExpression("validation_rule_formula", this);
-		validation_rule_text = new StringExpression("validation_rule_text", this);
-		aId = new IntegerExpression("a.data_element_id", this);
-		a = new AssociationExpression("a", this);
-		bId = new IntegerExpression("b.data_element_id", this);
-		b = new AssociationExpression("b", this);
-		cId = new IntegerExpression("c.data_element_id", this);
-		c = new AssociationExpression("c", this);
-		dId = new IntegerExpression("d.data_element_id", this);
-		d = new AssociationExpression("d", this);
+		data_elements_involved = new StringExpression("data_elements_involved", this);
 		is_deleted = new IntegerExpression("is_deleted", this);
 		is_active = new IntegerExpression("is_active", this);
 		add_date = new TimestampExpression("add_date", this);
@@ -82,22 +66,6 @@ public class Validation_ruleCriteria extends AbstractORMCriteria {
 	
 	public Report_form_groupCriteria createReport_form_groupCriteria() {
 		return new Report_form_groupCriteria(createCriteria("report_form_group"));
-	}
-	
-	public Data_elementCriteria createACriteria() {
-		return new Data_elementCriteria(createCriteria("a"));
-	}
-	
-	public Data_elementCriteria createBCriteria() {
-		return new Data_elementCriteria(createCriteria("b"));
-	}
-	
-	public Data_elementCriteria createCCriteria() {
-		return new Data_elementCriteria(createCriteria("c"));
-	}
-	
-	public Data_elementCriteria createDCriteria() {
-		return new Data_elementCriteria(createCriteria("d"));
 	}
 	
 	public Validation_rule uniqueValidation_rule() {

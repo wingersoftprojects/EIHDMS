@@ -49,10 +49,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
-	public final CollectionExpression validation_rule;
-	public final CollectionExpression validation_rule1;
-	public final CollectionExpression validation_rule2;
-	public final CollectionExpression validation_rule3;
 	
 	public Data_elementDetachedCriteria() {
 		super(eihdms.Data_element.class, eihdms.Data_elementCriteria.class);
@@ -86,10 +82,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
-		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
-		validation_rule1 = new CollectionExpression("validation_rule1", this.getDetachedCriteria());
-		validation_rule2 = new CollectionExpression("validation_rule2", this.getDetachedCriteria());
-		validation_rule3 = new CollectionExpression("validation_rule3", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -124,10 +116,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
-		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
-		validation_rule1 = new CollectionExpression("validation_rule1", this.getDetachedCriteria());
-		validation_rule2 = new CollectionExpression("validation_rule2", this.getDetachedCriteria());
-		validation_rule3 = new CollectionExpression("validation_rule3", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {
@@ -160,22 +148,6 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Standard_ruleDetachedCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleDetachedCriteria(createCriteria("standard_rule"));
-	}
-	
-	public Validation_ruleDetachedCriteria createValidation_ruleCriteria() {
-		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule"));
-	}
-	
-	public Validation_ruleDetachedCriteria createValidation_rule1Criteria() {
-		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule1"));
-	}
-	
-	public Validation_ruleDetachedCriteria createValidation_rule2Criteria() {
-		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule2"));
-	}
-	
-	public Validation_ruleDetachedCriteria createValidation_rule3Criteria() {
-		return new Validation_ruleDetachedCriteria(createCriteria("validation_rule3"));
 	}
 	
 	public Data_element uniqueData_element(PersistentSession session) {

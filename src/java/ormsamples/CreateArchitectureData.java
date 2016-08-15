@@ -43,13 +43,13 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_name, report_period_to_date, report_period_from_date, data_element_value, data_element
 			leihdmsInterface_data.save();
 			eihdms.Data_element leihdmsData_element = eihdms.Data_element.createData_element();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : validation_rule1, validation_rule, standard_rule, base_data, interface_data, is_active, is_deleted, sub_section, section, report_form
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : standard_rule, base_data, interface_data, is_active, is_deleted, sub_section, section, report_form
 			leihdmsData_element.save();
 			eihdms.Base_data leihdmsBase_data = eihdms.Base_data.createBase_data();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_name, report_period_to_date, report_period_from_date, data_element_value, data_element
 			leihdmsBase_data.save();
 			eihdms.Validation_rule leihdmsValidation_rule = eihdms.Validation_rule.createValidation_rule();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, b, a, validation_rule_formula, validation_rule_name, report_form_group, report_form
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, validation_rule_formula, validation_rule_name, report_form_group, report_form
 			leihdmsValidation_rule.save();
 			eihdms.Standard_rule leihdmsStandard_rule = eihdms.Standard_rule.createStandard_rule();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, data_element, standard_rule_name

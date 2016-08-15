@@ -373,22 +373,6 @@ public class Validation_rule implements Serializable {
 				getReport_form_group().getValidation_rule().remove(this);
 			}
 			
-			if(getA() != null) {
-				getA().getValidation_rule().remove(this);
-			}
-			
-			if(getB() != null) {
-				getB().getValidation_rule1().remove(this);
-			}
-			
-			if(getC() != null) {
-				getC().getValidation_rule2().remove(this);
-			}
-			
-			if(getD() != null) {
-				getD().getValidation_rule3().remove(this);
-			}
-			
 			return delete();
 		}
 		catch(Exception e) {
@@ -405,22 +389,6 @@ public class Validation_rule implements Serializable {
 			
 			if(getReport_form_group() != null) {
 				getReport_form_group().getValidation_rule().remove(this);
-			}
-			
-			if(getA() != null) {
-				getA().getValidation_rule().remove(this);
-			}
-			
-			if(getB() != null) {
-				getB().getValidation_rule1().remove(this);
-			}
-			
-			if(getC() != null) {
-				getC().getValidation_rule2().remove(this);
-			}
-			
-			if(getD() != null) {
-				getD().getValidation_rule3().remove(this);
 			}
 			
 			try {
@@ -458,28 +426,8 @@ public class Validation_rule implements Serializable {
 	@Column(name="validation_rule_formula", nullable=false, length=100)	
 	private String validation_rule_formula;
 	
-	@Column(name="validation_rule_text", nullable=true, length=100)	
-	private String validation_rule_text;
-	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="a", referencedColumnName="data_element_id", nullable=false) })	
-	private eihdms.Data_element a;
-	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="b", referencedColumnName="data_element_id", nullable=false) })	
-	private eihdms.Data_element b;
-	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="c", referencedColumnName="data_element_id") })	
-	private eihdms.Data_element c;
-	
-	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="d", referencedColumnName="data_element_id") })	
-	private eihdms.Data_element d;
+	@Column(name="data_elements_involved", nullable=true)	
+	private String data_elements_involved;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
@@ -525,14 +473,6 @@ public class Validation_rule implements Serializable {
 	
 	public String getValidation_rule_formula() {
 		return validation_rule_formula;
-	}
-	
-	public void setValidation_rule_text(String value) {
-		this.validation_rule_text = value;
-	}
-	
-	public String getValidation_rule_text() {
-		return validation_rule_text;
 	}
 	
 	public void setIs_deleted(int value) {
@@ -591,6 +531,14 @@ public class Validation_rule implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setData_elements_involved(String value) {
+		this.data_elements_involved = value;
+	}
+	
+	public String getData_elements_involved() {
+		return data_elements_involved;
+	}
+	
 	public void setReport_form_group(eihdms.Report_form_group value) {
 		this.report_form_group = value;
 	}
@@ -605,38 +553,6 @@ public class Validation_rule implements Serializable {
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
-	}
-	
-	public void setA(eihdms.Data_element value) {
-		this.a = value;
-	}
-	
-	public eihdms.Data_element getA() {
-		return a;
-	}
-	
-	public void setB(eihdms.Data_element value) {
-		this.b = value;
-	}
-	
-	public eihdms.Data_element getB() {
-		return b;
-	}
-	
-	public void setC(eihdms.Data_element value) {
-		this.c = value;
-	}
-	
-	public eihdms.Data_element getC() {
-		return c;
-	}
-	
-	public void setD(eihdms.Data_element value) {
-		this.d = value;
-	}
-	
-	public eihdms.Data_element getD() {
-		return d;
 	}
 	
 	@Override	

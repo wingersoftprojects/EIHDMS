@@ -5,11 +5,16 @@
  */
 package beans;
 
+import connections.DBConnection;
 import eihdms.Data_element;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Report_form;
 import eihdms.Validation_rule;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,6 +33,10 @@ import org.orm.PersistentException;
 @ManagedBean
 @SessionScoped
 public class Validation_ruleBean extends AbstractBean<Validation_rule> implements Serializable {
+
+    private String validation_formula = "";
+
+    private Data_element data_element;
 
     /**
      * Creates a new instance of Validation_ruleBean
@@ -65,9 +74,18 @@ public class Validation_ruleBean extends AbstractBean<Validation_rule> implement
 
     @Override
     public void save(int aUserDetailId) {
-        if (this.getSelected().getValidation_rule_formula().equals("a+b=c") && this.getSelected().getC() == null) {
+        String sql = "{call sp_validate_formula(?)}";
+        ResultSet rs = null;
+        try {
+
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, this.getSelected().getValidation_rule_formula());
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("Please enter Data_Element C", "Please enter Data_Element C"));
+            context.addMessage(null, new FacesMessage("Invalid Formula!", "Invalid Formula!"));
+            System.err.println(se.getMessage());
             return;
         }
         super.save(aUserDetailId); //To change body of generated methods, choose Tools | Templates.
@@ -91,4 +109,42 @@ public class Validation_ruleBean extends AbstractBean<Validation_rule> implement
         return filteredData_elements;
     }
 
+    public Data_element getData_element() {
+        return data_element;
+    }
+
+    public void setData_element(Data_element data_element) {
+        this.data_element = data_element;
+    }
+
+    public String getValidation_formula() {
+        return validation_formula;
+    }
+
+    public void setValidation_formula(String validation_formula) {
+        this.validation_formula = validation_formula;
+    }
+
+    public void append_operand(String operand) {
+        if (operand.equals("le")) {
+            operand = "<=";
+        }
+        if (operand.equals("lt")) {
+            operand = "<";
+        }
+        this.getSelected().setValidation_rule_formula(this.getSelected().getValidation_rule_formula() + " " + operand);;
+    }
+
+    public void append_data_element() {
+        validation_formula = this.getSelected().getValidation_rule_formula();
+        if (validation_formula == null) {
+            validation_formula = "";
+        }
+        this.getSelected().setValidation_rule_formula(validation_formula + " Col" + data_element.getData_element_id());;
+        String data_elements_involved = this.getSelected().getData_elements_involved();
+        if (data_elements_involved == null) {
+            data_elements_involved = "";
+        }
+        this.getSelected().setData_elements_involved(data_elements_involved + "\n" + " Col" + data_element.getData_element_id() + "=>" + data_element.getData_element_name());
+    }
 }

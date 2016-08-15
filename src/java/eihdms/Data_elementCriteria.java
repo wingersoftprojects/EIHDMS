@@ -49,10 +49,6 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
-	public final CollectionExpression validation_rule;
-	public final CollectionExpression validation_rule1;
-	public final CollectionExpression validation_rule2;
-	public final CollectionExpression validation_rule3;
 	
 	public Data_elementCriteria(Criteria criteria) {
 		super(criteria);
@@ -86,10 +82,6 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		interface_data = new CollectionExpression("interface_data", this);
 		base_data = new CollectionExpression("base_data", this);
 		standard_rule = new CollectionExpression("standard_rule", this);
-		validation_rule = new CollectionExpression("validation_rule", this);
-		validation_rule1 = new CollectionExpression("validation_rule1", this);
-		validation_rule2 = new CollectionExpression("validation_rule2", this);
-		validation_rule3 = new CollectionExpression("validation_rule3", this);
 	}
 	
 	public Data_elementCriteria(PersistentSession session) {
@@ -130,22 +122,6 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	
 	public Standard_ruleCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleCriteria(createCriteria("standard_rule"));
-	}
-	
-	public Validation_ruleCriteria createValidation_ruleCriteria() {
-		return new Validation_ruleCriteria(createCriteria("validation_rule"));
-	}
-	
-	public Validation_ruleCriteria createValidation_rule1Criteria() {
-		return new Validation_ruleCriteria(createCriteria("validation_rule1"));
-	}
-	
-	public Validation_ruleCriteria createValidation_rule2Criteria() {
-		return new Validation_ruleCriteria(createCriteria("validation_rule2"));
-	}
-	
-	public Validation_ruleCriteria createValidation_rule3Criteria() {
-		return new Validation_ruleCriteria(createCriteria("validation_rule3"));
 	}
 	
 	public Data_element uniqueData_element() {

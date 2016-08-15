@@ -1972,61 +1972,13 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="validation_rule_text">
+    <Column name="data_elements_involved">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
-      <Type>27</Type>
-      <Length>100</Length>
+      <Type>34</Type>
+      <Length>0</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="a">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>false</Nullable>
-      <IDGenerator>assigned</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="b">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>false</Nullable>
-      <IDGenerator>assigned</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="c">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>true</Nullable>
-      <IDGenerator>assigned</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="d">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>data_element.data_element_id</ReferencedColumn>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>true</Nullable>
-      <IDGenerator>assigned</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
       <UserTypes/>
@@ -4448,46 +4400,6 @@
     </Columns>
     <RefColumns>
       <Column>report_form_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation73316">
-    <ReferenceTable>validation_rule</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>a</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation73315">
-    <ReferenceTable>validation_rule</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>b</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation73314">
-    <ReferenceTable>validation_rule</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>c</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
-    </RefColumns>
-  </ForeignKey>
-  <ForeignKey name="FKvalidation73313">
-    <ReferenceTable>validation_rule</ReferenceTable>
-    <ReferencedTable>data_element</ReferencedTable>
-    <Columns>
-      <Column>d</Column>
-    </Columns>
-    <RefColumns>
-      <Column>data_element_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>
