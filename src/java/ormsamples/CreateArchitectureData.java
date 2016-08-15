@@ -34,7 +34,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : health_facility
 			leihdmsFacility_level.save();
 			eihdms.Report_form leihdmsReport_form = eihdms.Report_form.createReport_form();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : validation_rule, validation_temp, report_form_group, user_action, group_right, section, data_element, is_active, is_deleted, lowest_report_form_level, report_form_frequency, report_form_name, report_form_code
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : validation_rule, report_form_group, user_action, group_right, section, data_element, is_active, is_deleted, lowest_report_form_level, report_form_frequency, report_form_name, report_form_code
 			leihdmsReport_form.save();
 			eihdms.Section leihdmsSection = eihdms.Section.createSection();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : sub_section, data_element, is_active, is_deleted, report_form, section_order, section_name
@@ -82,7 +82,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : data_element, is_active, is_deleted, section, sub_section_order, sub_section_name
 			leihdmsSub_section.save();
 			eihdms.Report_form_group leihdmsReport_form_group = eihdms.Report_form_group.createReport_form_group();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : validation_rule, validation_temp, group_order, is_active, is_deleted, report_form, description, report_form_group_name
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : validation_rule, group_order, is_active, is_deleted, report_form, description, report_form_group_name
 			leihdmsReport_form_group.save();
 			eihdms.Application_configuration leihdmsApplication_configuration = eihdms.Application_configuration.createApplication_configuration();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, parameter_value, parameter_name
@@ -99,9 +99,6 @@ public class CreateArchitectureData {
 			eihdms.Batch leihdmsBatch = eihdms.Batch.createBatch();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
 			leihdmsBatch.save();
-			eihdms.Validation_temp leihdmsValidation_temp = eihdms.Validation_temp.createValidation_temp();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, valifation_temp_formula, validation_temp_name, report_form_group, report_form
-			leihdmsValidation_temp.save();
 			t.commit();
 		}
 		catch (Exception e) {

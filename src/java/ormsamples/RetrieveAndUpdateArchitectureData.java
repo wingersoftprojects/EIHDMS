@@ -99,9 +99,6 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Batch leihdmsBatch = eihdms.Batch.loadBatchByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsBatch.save();
-			eihdms.Validation_temp leihdmsValidation_temp = eihdms.Validation_temp.loadValidation_tempByQuery(null, null);
-			// Update the properties of the persistent object
-			leihdmsValidation_temp.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -290,12 +287,6 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsBatchCriteria.batch_id.eq();
 		System.out.println(leihdmsBatchCriteria.uniqueBatch());
-		
-		System.out.println("Retrieving Validation_temp by Validation_tempCriteria");
-		eihdms.Validation_tempCriteria leihdmsValidation_tempCriteria = new eihdms.Validation_tempCriteria();
-		// Please uncomment the follow line and fill in parameter(s)
-		//leihdmsValidation_tempCriteria.validation_temp_id.eq();
-		System.out.println(leihdmsValidation_tempCriteria.uniqueValidation_temp());
 		
 	}
 	

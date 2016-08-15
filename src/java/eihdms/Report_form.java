@@ -385,10 +385,6 @@ public class Report_form implements Serializable {
 			for(int i = 0; i < lReport_form_groups.length; i++) {
 				lReport_form_groups[i].setReport_form(null);
 			}
-			eihdms.Validation_temp[] lValidation_temps = (eihdms.Validation_temp[])getValidation_temp().toArray(new eihdms.Validation_temp[getValidation_temp().size()]);
-			for(int i = 0; i < lValidation_temps.length; i++) {
-				lValidation_temps[i].setReport_form(null);
-			}
 			eihdms.Validation_rule[] lValidation_rules = (eihdms.Validation_rule[])getValidation_rule().toArray(new eihdms.Validation_rule[getValidation_rule().size()]);
 			for(int i = 0; i < lValidation_rules.length; i++) {
 				lValidation_rules[i].setReport_form(null);
@@ -422,10 +418,6 @@ public class Report_form implements Serializable {
 			eihdms.Report_form_group[] lReport_form_groups = (eihdms.Report_form_group[])getReport_form_group().toArray(new eihdms.Report_form_group[getReport_form_group().size()]);
 			for(int i = 0; i < lReport_form_groups.length; i++) {
 				lReport_form_groups[i].setReport_form(null);
-			}
-			eihdms.Validation_temp[] lValidation_temps = (eihdms.Validation_temp[])getValidation_temp().toArray(new eihdms.Validation_temp[getValidation_temp().size()]);
-			for(int i = 0; i < lValidation_temps.length; i++) {
-				lValidation_temps[i].setReport_form(null);
 			}
 			eihdms.Validation_rule[] lValidation_rules = (eihdms.Validation_rule[])getValidation_rule().toArray(new eihdms.Validation_rule[getValidation_rule().size()]);
 			for(int i = 0; i < lValidation_rules.length; i++) {
@@ -507,11 +499,6 @@ public class Report_form implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set report_form_group = new java.util.HashSet();
-	
-	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Validation_temp.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
-	private java.util.Set validation_temp = new java.util.HashSet();
 	
 	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Validation_rule.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
@@ -668,15 +655,6 @@ public class Report_form implements Serializable {
 	
 	public java.util.Set getReport_form_group() {
 		return report_form_group;
-	}
-	
-	
-	public void setValidation_temp(java.util.Set value) {
-		this.validation_temp = value;
-	}
-	
-	public java.util.Set getValidation_temp() {
-		return validation_temp;
 	}
 	
 	

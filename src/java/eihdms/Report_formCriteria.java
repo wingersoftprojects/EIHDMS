@@ -36,7 +36,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression group_right;
 	public final CollectionExpression user_action;
 	public final CollectionExpression report_form_group;
-	public final CollectionExpression validation_temp;
 	public final CollectionExpression validation_rule;
 	
 	public Report_formCriteria(Criteria criteria) {
@@ -58,7 +57,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		group_right = new CollectionExpression("group_right", this);
 		user_action = new CollectionExpression("user_action", this);
 		report_form_group = new CollectionExpression("report_form_group", this);
-		validation_temp = new CollectionExpression("validation_temp", this);
 		validation_rule = new CollectionExpression("validation_rule", this);
 	}
 	
@@ -88,10 +86,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public Report_form_groupCriteria createReport_form_groupCriteria() {
 		return new Report_form_groupCriteria(createCriteria("report_form_group"));
-	}
-	
-	public Validation_tempCriteria createValidation_tempCriteria() {
-		return new Validation_tempCriteria(createCriteria("validation_temp"));
 	}
 	
 	public Validation_ruleCriteria createValidation_ruleCriteria() {
