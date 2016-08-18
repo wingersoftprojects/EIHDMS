@@ -41,8 +41,6 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
-	public final StringExpression status;
-	public final StringExpression status_desc;
 	public final StringExpression status_u;
 	public final StringExpression status_u_desc;
 	public final StringExpression status_v;
@@ -74,8 +72,6 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
-		status = new StringExpression("status", this);
-		status_desc = new StringExpression("status_desc", this);
 		status_u = new StringExpression("status_u", this);
 		status_u_desc = new StringExpression("status_u_desc", this);
 		status_v = new StringExpression("status_v", this);

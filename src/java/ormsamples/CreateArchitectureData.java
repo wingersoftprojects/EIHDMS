@@ -43,7 +43,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_name, report_period_to_date, report_period_from_date, data_element_value, data_element
 			leihdmsInterface_data.save();
 			eihdms.Data_element leihdmsData_element = eihdms.Data_element.createData_element();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : standard_rule, base_data, interface_data, is_active, is_deleted, sub_section, section, report_form
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : kpi_data_element, standard_rule, base_data, interface_data, is_active, is_deleted, sub_section, section, report_form
 			leihdmsData_element.save();
 			eihdms.Base_data leihdmsBase_data = eihdms.Base_data.createBase_data();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_name, report_period_to_date, report_period_from_date, data_element_value, data_element
@@ -99,6 +99,12 @@ public class CreateArchitectureData {
 			eihdms.Batch leihdmsBatch = eihdms.Batch.createBatch();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
 			leihdmsBatch.save();
+			eihdms.Kpi leihdmsKpi = eihdms.Kpi.createKpi();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : kpi_data_element, is_active, is_deleted
+			leihdmsKpi.save();
+			eihdms.Kpi_data_element leihdmsKpi_data_element = eihdms.Kpi_data_element.createKpi_data_element();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, data_element, kpi
+			leihdmsKpi_data_element.save();
 			t.commit();
 		}
 		catch (Exception e) {

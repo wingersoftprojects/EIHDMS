@@ -69,6 +69,10 @@ public class DeleteArchitectureData {
 			leihdmsFinancial_year.delete();
 			eihdms.Batch leihdmsBatch = eihdms.Batch.loadBatchByQuery(null, null);
 			leihdmsBatch.delete();
+			eihdms.Kpi leihdmsKpi = eihdms.Kpi.loadKpiByQuery(null, null);
+			leihdmsKpi.delete();
+			eihdms.Kpi_data_element leihdmsKpi_data_element = eihdms.Kpi_data_element.loadKpi_data_elementByQuery(null, null);
+			leihdmsKpi_data_element.delete();
 			t.commit();
 		}
 		catch (Exception e) {

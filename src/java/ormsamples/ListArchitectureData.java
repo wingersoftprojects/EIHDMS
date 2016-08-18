@@ -249,6 +249,22 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Kpi...");
+		eihdms.Kpi[] eihdmsKpis = eihdms.Kpi.listKpiByQuery(null, null);
+		length = Math.min(eihdmsKpis.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsKpis[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Kpi_data_element...");
+		eihdms.Kpi_data_element[] eihdmsKpi_data_elements = eihdms.Kpi_data_element.listKpi_data_elementByQuery(null, null);
+		length = Math.min(eihdmsKpi_data_elements.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsKpi_data_elements[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -611,6 +627,30 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsBatchs[i]);
 		}
 		System.out.println(length + " Batch record(s) retrieved."); 
+		
+		System.out.println("Listing Kpi by Criteria...");
+		eihdms.KpiCriteria leihdmsKpiCriteria = new eihdms.KpiCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsKpiCriteria.kpi_id.eq();
+		leihdmsKpiCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Kpi[] eihdmsKpis = leihdmsKpiCriteria.listKpi();
+		length =eihdmsKpis== null ? 0 : Math.min(eihdmsKpis.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsKpis[i]);
+		}
+		System.out.println(length + " Kpi record(s) retrieved."); 
+		
+		System.out.println("Listing Kpi_data_element by Criteria...");
+		eihdms.Kpi_data_elementCriteria leihdmsKpi_data_elementCriteria = new eihdms.Kpi_data_elementCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsKpi_data_elementCriteria.kpi_data_element_id.eq();
+		leihdmsKpi_data_elementCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Kpi_data_element[] eihdmsKpi_data_elements = leihdmsKpi_data_elementCriteria.listKpi_data_element();
+		length =eihdmsKpi_data_elements== null ? 0 : Math.min(eihdmsKpi_data_elements.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsKpi_data_elements[i]);
+		}
+		System.out.println(length + " Kpi_data_element record(s) retrieved."); 
 		
 	}
 	

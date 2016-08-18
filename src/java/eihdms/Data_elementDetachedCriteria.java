@@ -31,6 +31,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression section_column_number;
 	public final IntegerExpression group_column_number;
 	public final StringExpression data_element_name;
+	public final StringExpression data_element_context;
 	public final StringExpression data_type;
 	public final IntegerExpression data_size;
 	public final StringExpression age_category;
@@ -49,6 +50,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
+	public final CollectionExpression kpi_data_element;
 	
 	public Data_elementDetachedCriteria() {
 		super(eihdms.Data_element.class, eihdms.Data_elementCriteria.class);
@@ -64,6 +66,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		section_column_number = new IntegerExpression("section_column_number", this.getDetachedCriteria());
 		group_column_number = new IntegerExpression("group_column_number", this.getDetachedCriteria());
 		data_element_name = new StringExpression("data_element_name", this.getDetachedCriteria());
+		data_element_context = new StringExpression("data_element_context", this.getDetachedCriteria());
 		data_type = new StringExpression("data_type", this.getDetachedCriteria());
 		data_size = new IntegerExpression("data_size", this.getDetachedCriteria());
 		age_category = new StringExpression("age_category", this.getDetachedCriteria());
@@ -82,6 +85,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
+		kpi_data_element = new CollectionExpression("kpi_data_element", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -98,6 +102,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		section_column_number = new IntegerExpression("section_column_number", this.getDetachedCriteria());
 		group_column_number = new IntegerExpression("group_column_number", this.getDetachedCriteria());
 		data_element_name = new StringExpression("data_element_name", this.getDetachedCriteria());
+		data_element_context = new StringExpression("data_element_context", this.getDetachedCriteria());
 		data_type = new StringExpression("data_type", this.getDetachedCriteria());
 		data_size = new IntegerExpression("data_size", this.getDetachedCriteria());
 		age_category = new StringExpression("age_category", this.getDetachedCriteria());
@@ -116,6 +121,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
+		kpi_data_element = new CollectionExpression("kpi_data_element", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {
@@ -148,6 +154,10 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Standard_ruleDetachedCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleDetachedCriteria(createCriteria("standard_rule"));
+	}
+	
+	public Kpi_data_elementDetachedCriteria createKpi_data_elementCriteria() {
+		return new Kpi_data_elementDetachedCriteria(createCriteria("kpi_data_element"));
 	}
 	
 	public Data_element uniqueData_element(PersistentSession session) {

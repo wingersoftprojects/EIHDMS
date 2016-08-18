@@ -31,6 +31,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	public final IntegerExpression section_column_number;
 	public final IntegerExpression group_column_number;
 	public final StringExpression data_element_name;
+	public final StringExpression data_element_context;
 	public final StringExpression data_type;
 	public final IntegerExpression data_size;
 	public final StringExpression age_category;
@@ -49,6 +50,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
+	public final CollectionExpression kpi_data_element;
 	
 	public Data_elementCriteria(Criteria criteria) {
 		super(criteria);
@@ -64,6 +66,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		section_column_number = new IntegerExpression("section_column_number", this);
 		group_column_number = new IntegerExpression("group_column_number", this);
 		data_element_name = new StringExpression("data_element_name", this);
+		data_element_context = new StringExpression("data_element_context", this);
 		data_type = new StringExpression("data_type", this);
 		data_size = new IntegerExpression("data_size", this);
 		age_category = new StringExpression("age_category", this);
@@ -82,6 +85,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		interface_data = new CollectionExpression("interface_data", this);
 		base_data = new CollectionExpression("base_data", this);
 		standard_rule = new CollectionExpression("standard_rule", this);
+		kpi_data_element = new CollectionExpression("kpi_data_element", this);
 	}
 	
 	public Data_elementCriteria(PersistentSession session) {
@@ -122,6 +126,10 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	
 	public Standard_ruleCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleCriteria(createCriteria("standard_rule"));
+	}
+	
+	public Kpi_data_elementCriteria createKpi_data_elementCriteria() {
+		return new Kpi_data_elementCriteria(createCriteria("kpi_data_element"));
 	}
 	
 	public Data_element uniqueData_element() {

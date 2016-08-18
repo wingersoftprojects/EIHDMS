@@ -41,8 +41,6 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
-	public final StringExpression status;
-	public final StringExpression status_desc;
 	public final StringExpression status_u;
 	public final StringExpression status_u_desc;
 	public final StringExpression status_v;
@@ -74,8 +72,6 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
-		status = new StringExpression("status", this.getDetachedCriteria());
-		status_desc = new StringExpression("status_desc", this.getDetachedCriteria());
 		status_u = new StringExpression("status_u", this.getDetachedCriteria());
 		status_u_desc = new StringExpression("status_u_desc", this.getDetachedCriteria());
 		status_v = new StringExpression("status_v", this.getDetachedCriteria());
@@ -108,8 +104,6 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
-		status = new StringExpression("status", this.getDetachedCriteria());
-		status_desc = new StringExpression("status_desc", this.getDetachedCriteria());
 		status_u = new StringExpression("status_u", this.getDetachedCriteria());
 		status_u_desc = new StringExpression("status_u_desc", this.getDetachedCriteria());
 		status_v = new StringExpression("status_v", this.getDetachedCriteria());

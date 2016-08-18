@@ -60,6 +60,7 @@ public abstract class AbstractBean<T> {
     public void initializelist() {
         try {
             if (entityClass != null) {
+                clearCache(selected);
                 ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.ne("is_deleted", 1)).list();
             } else {
                 ts = new ArrayList<>();
@@ -74,6 +75,8 @@ public abstract class AbstractBean<T> {
             EIHDMSPersistentManager.instance().getSession().evict(t);
             EIHDMSPersistentManager.instance().getSession().flush();
             EIHDMSPersistentManager.instance().getSession().clear();
+            EIHDMSPersistentManager.instance().getSession().getSessionFactory().getCache().evictDefaultQueryRegion();
+            EIHDMSPersistentManager.instance().getSession().getSessionFactory().getCache().evictQueryRegions();
             //EIHDMSPersistentManager.instance().getSession().close();
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,7 +149,7 @@ public abstract class AbstractBean<T> {
             if (entityClass != null) {
                 tsActive = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.eq("is_active", 1)).add(Restrictions.ne("is_deleted", 1)).list();
             } else {
-                ts = new ArrayList<>();
+                tsActive = new ArrayList<>();
             }
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -310,21 +313,18 @@ public abstract class AbstractBean<T> {
             Method method = selected.getClass().getMethod("get" + entityClass.getSimpleName() + "_id", noparams);
             int id = (int) method.invoke(selected);
             if (id > 0) {
-                EIHDMSPersistentManager.instance().getSession().clear();
-                EIHDMSPersistentManager.instance().getSession().update(selected);
-                //Method methodsave = selected.getClass().getMethod("save", noparams);
-                //methodsave.invoke(selected);
+                EIHDMSPersistentManager.instance().getSession().merge(selected);
             } else {
                 Method methodsave = selected.getClass().getMethod("save", noparams);
                 methodsave.invoke(selected);
             }
-            EIHDMSPersistentManager.instance().getSession().flush();
-            EIHDMSPersistentManager.instance().getSession().clear();
+//            EIHDMSPersistentManager.instance().getSession().flush();
+//            EIHDMSPersistentManager.instance().getSession().clear();
             transaction.commit();
             clearCache(selected);
             formstate = "view";
             add();
-            initializelist();
+            //initializelist();
             saveMessage();
         } catch (PersistentException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             GeneralUtilities.clearsession();

@@ -99,6 +99,12 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Batch leihdmsBatch = eihdms.Batch.loadBatchByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsBatch.save();
+			eihdms.Kpi leihdmsKpi = eihdms.Kpi.loadKpiByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsKpi.save();
+			eihdms.Kpi_data_element leihdmsKpi_data_element = eihdms.Kpi_data_element.loadKpi_data_elementByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsKpi_data_element.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -287,6 +293,18 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsBatchCriteria.batch_id.eq();
 		System.out.println(leihdmsBatchCriteria.uniqueBatch());
+		
+		System.out.println("Retrieving Kpi by KpiCriteria");
+		eihdms.KpiCriteria leihdmsKpiCriteria = new eihdms.KpiCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsKpiCriteria.kpi_id.eq();
+		System.out.println(leihdmsKpiCriteria.uniqueKpi());
+		
+		System.out.println("Retrieving Kpi_data_element by Kpi_data_elementCriteria");
+		eihdms.Kpi_data_elementCriteria leihdmsKpi_data_elementCriteria = new eihdms.Kpi_data_elementCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsKpi_data_elementCriteria.kpi_data_element_id.eq();
+		System.out.println(leihdmsKpi_data_elementCriteria.uniqueKpi_data_element());
 		
 	}
 	

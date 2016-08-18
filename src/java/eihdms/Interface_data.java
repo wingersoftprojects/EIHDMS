@@ -480,12 +480,6 @@ public class Interface_data implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
-	@Column(name="status", nullable=true, length=100)	
-	private String status;
-	
-	@Column(name="status_desc", nullable=true, length=100)	
-	private String status_desc;
-	
 	@Column(name="status_u", nullable=true, length=50)	
 	private String status_u;
 	
@@ -626,22 +620,6 @@ public class Interface_data implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
-	}
-	
-	public void setStatus(String value) {
-		this.status = value;
-	}
-	
-	public String getStatus() {
-		return status;
-	}
-	
-	public void setStatus_desc(String value) {
-		this.status_desc = value;
-	}
-	
-	public String getStatus_desc() {
-		return status_desc;
 	}
 	
 	public void setReport_period_quarter(int value) {
