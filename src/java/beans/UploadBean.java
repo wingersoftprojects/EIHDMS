@@ -249,7 +249,7 @@ public class UploadBean implements Serializable {
                 jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
                 if (report_form.getLowest_report_form_level().equals("Facility")) {
                     jObj.put("District", interface_data.getDistrict_name());
-                    jObj.put("Parish", interface_data.getParish_name());
+                    jObj.put("Subcounty", interface_data.getSub_county_name());
                     jObj.put("Facility", interface_data.getHealth_facility_name());
                 }
                 if (report_form.getLowest_report_form_level().equals("Parish")) {
@@ -706,10 +706,10 @@ public class UploadBean implements Serializable {
                 if (report_form.getLowest_report_form_level().equals("Facility")) {
                     if (health_facilityList.size() == 1) {
                         Base_data base_data = Base_data.createBase_data();
-                        health_facility = Health_facility.loadHealth_facilityByQuery("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND parish=" + (p != null ? p.getParish_id() : 0), null);
+                        health_facility = Health_facility.loadHealth_facilityByQuery("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id(): 0), null);
                         base_data.setHealth_facility(health_facility);
                         base_data.setDistrict(health_facility.getDistrict());
-                        base_data.setParish(health_facility.getParish());
+                        base_data.setSub_county(health_facility.getSub_county());
                         /**
                          * Save to base data
                          */
