@@ -227,7 +227,7 @@ public class UploadBean implements Serializable {
             jObj.put("DataElement", new JSONObject().put("type", "string"));
             if (report_form.getLowest_report_form_level().equals("Facility")) {
                 jObj.put("District", new JSONObject().put("type", "string"));
-                jObj.put("Parish", new JSONObject().put("type", "string"));
+                jObj.put("Subcounty", new JSONObject().put("type", "string"));
                 jObj.put("Facility", new JSONObject().put("type", "string"));
             }
             if (report_form.getLowest_report_form_level().equals("Parish")) {
@@ -566,10 +566,10 @@ public class UploadBean implements Serializable {
 //    }
     private void set_Status_V(Interface_data interface_data) {
         if (!validationtext.isEmpty()) {
-            interface_data.setStatus_v("Invalid");
+            interface_data.setStatus_v("Fail");
             interface_data.setStatus_v_desc("Not Passed Validation because: " + validationtext);
         } else {
-            interface_data.setStatus_v("Validated");
+            interface_data.setStatus_v("Pass");
             interface_data.setStatus_v_desc("Validated and ready for moving");
         }
     }
@@ -606,7 +606,7 @@ public class UploadBean implements Serializable {
                     i.setAdd_date(new Timestamp(new Date().getTime()));
                     i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
                     i.setIs_deleted(0);
-                    i.setStatus_u("Uploaded");
+                    i.setStatus_u("Pass");
                     i.setStatus_u_desc("Uploaded To interface pending validation");
                     i.save();
                     //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
@@ -706,7 +706,7 @@ public class UploadBean implements Serializable {
                 if (report_form.getLowest_report_form_level().equals("Facility")) {
                     if (health_facilityList.size() == 1) {
                         Base_data base_data = Base_data.createBase_data();
-                        health_facility = Health_facility.loadHealth_facilityByQuery("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id(): 0), null);
+                        health_facility = Health_facility.loadHealth_facilityByQuery("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id() : 0), null);
                         base_data.setHealth_facility(health_facility);
                         base_data.setDistrict(health_facility.getDistrict());
                         base_data.setSub_county(health_facility.getSub_county());
@@ -716,14 +716,14 @@ public class UploadBean implements Serializable {
                         save_basa_data(base_data, i);
                     }
                     if (health_facilityList.size() > 1) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because more than one facility found in facilities table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
                         EIHDMSPersistentManager.instance().getSession().merge(i);
                     }
                     if (health_facilityList.isEmpty()) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because facility not found in facilities table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
@@ -746,14 +746,14 @@ public class UploadBean implements Serializable {
                         save_basa_data(base_data, i);
                     }
                     if (parishList.size() > 1) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because more than one parish found in parishes table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
                         EIHDMSPersistentManager.instance().getSession().merge(i);
                     }
                     if (parishList.isEmpty()) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because parish not found in parishes table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
@@ -772,14 +772,14 @@ public class UploadBean implements Serializable {
                         save_basa_data(base_data, i);
                     }
                     if (districtList.size() > 1) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because more than one district found in districts table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
                         EIHDMSPersistentManager.instance().getSession().merge(i);
                     }
                     if (districtList.isEmpty()) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because district not found in districts table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
@@ -813,7 +813,7 @@ public class UploadBean implements Serializable {
             /**
              * Modify Interface Data
              */
-            i.setStatus_m("Moved");
+            i.setStatus_m("Pass");
             i.setStatus_m_desc("Moved to base successfully");
             i.setLast_edit_date(new Timestamp(new Date().getTime()));
             i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
@@ -841,8 +841,18 @@ public class UploadBean implements Serializable {
 //            for (int i = 0; i < numberOfSheets; i++) {
 //                Sheet sheet = workbook.getSheetAt(i);
                 List<Data_element> data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form.getReport_form_id() + " and de.report_form_group=" + report_form_group.getReport_form_group_id() + " order by fg.group_order,de.group_column_number ASC").list();
+                
+                /**
+                 * Set Column Order
+                 */
                 Map demap = new HashMap();
-                int tempcounter = 1;
+                int tempcounter = 0;
+                if (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility")) {
+                    tempcounter = 3;
+                } else {
+                    tempcounter = 1;
+                }
+
                 for (Data_element de : data_elements) {
                     demap.put(tempcounter, de);
                     tempcounter++;
@@ -1304,14 +1314,14 @@ public class UploadBean implements Serializable {
                         EIHDMSPersistentManager.instance().getSession().merge(i);
                     }
                     if (health_facilityList.size() > 1) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because more than one facility found in facilities table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
                         EIHDMSPersistentManager.instance().getSession().merge(i);
                     }
                     if (health_facilityList.isEmpty()) {
-                        i.setStatus_v("Not Moved");
+                        i.setStatus_v("Fail");
                         i.setStatus_v_desc("Not moved to base because facility not found in facilities table");
                         i.setLast_edit_date(new Timestamp(new Date().getTime()));
                         i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
