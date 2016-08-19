@@ -72,7 +72,7 @@ public class UploadBean implements Serializable {
     private Date report_period_from_date;
     private Date report_period_to_date;
     private Financial_year financial_year;
-    private int report_period_quarter;
+    private Integer report_period_quarter;
     private String report_period_name;
     @ManagedProperty("#{interface_dataBean}")
     private Interface_dataBean interface_dataBean;
@@ -87,6 +87,34 @@ public class UploadBean implements Serializable {
     private Parish parish;
     private List<Data_element> data_elements;
     private Health_facility health_facility;
+
+    private Integer report_period_year;
+    private Integer report_period_month;
+    private Integer report_period_week;
+
+    public Integer getReport_period_year() {
+        return report_period_year;
+    }
+
+    public void setReport_period_year(Integer report_period_year) {
+        this.report_period_year = report_period_year;
+    }
+
+    public Integer getReport_period_month() {
+        return report_period_month;
+    }
+
+    public void setReport_period_month(Integer report_period_month) {
+        this.report_period_month = report_period_month;
+    }
+
+    public Integer getReport_period_week() {
+        return report_period_week;
+    }
+
+    public void setReport_period_week(Integer report_period_week) {
+        this.report_period_week = report_period_week;
+    }
 
     public Interface_dataBean getInterface_dataBean() {
         return interface_dataBean;
@@ -176,11 +204,11 @@ public class UploadBean implements Serializable {
         this.financial_year = financial_year;
     }
 
-    public int getReport_period_quarter() {
+    public Integer getReport_period_quarter() {
         return report_period_quarter;
     }
 
-    public void setReport_period_quarter(int report_period_quarter) {
+    public void setReport_period_quarter(Integer report_period_quarter) {
         this.report_period_quarter = report_period_quarter;
     }
 
@@ -802,6 +830,9 @@ public class UploadBean implements Serializable {
             base_data.setReport_period_from_date(i.getReport_period_from_date());
             base_data.setReport_period_to_date(i.getReport_period_to_date());
             base_data.setReport_period_name(i.getReport_period_name());
+            base_data.setReport_period_month(i.getReport_period_month());
+            base_data.setReport_period_week(i.getReport_period_week());
+            base_data.setReport_period_year(i.getReport_period_year());
             base_data.setIs_active(1);
             base_data.setAdd_date(new Timestamp(new Date().getTime()));
             base_data.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
@@ -828,6 +859,41 @@ public class UploadBean implements Serializable {
         try {
             //Report_form report_form = Report_form.getReport_formByORMID(reportformid);
             if (report_form != null && report_form_group != null) {
+                if (report_period_year == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Year Field is Required for All Forms!", "Year Field is Required for All Forms!"));
+                    return;
+                }
+                if (report_period_from_date == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Date From Field is Required for All Forms!", "Date From Field is Required for All Forms!"));
+                    return;
+                }
+                if (report_period_to_date == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Date To Field is Required for All Forms!", "Date To Field is Required for All Forms!"));
+                    return;
+                }
+                if (report_period_year == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Year Field is Required for All Forms!", "Year Field is Required for All Forms!"));
+                    return;
+                }
+                if (report_form.getReport_form_frequency().equals("Quarterly") && report_period_quarter == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Quarter Field is Required for Quarterly Forms!", "Quarter Field is Required for Quarterly Forms!"));
+                    return;
+                }
+                if (report_form.getReport_form_frequency().equals("Monthly") && report_period_month == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Month Field is Required for Monthly Forms!", "Month Field is Required for Monthly Forms!"));
+                    return;
+                }
+                if (report_form.getReport_form_frequency().equals("Weekly") && report_period_week == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Week Field is Required for Monthly Forms!", "Week Field is Required for Weekly Forms!"));
+                    return;
+                }
                 //fis = new FileInputStream(inputStream);
 
                 // Using XSSF for xlsx format, for xls use HSSF
@@ -841,7 +907,7 @@ public class UploadBean implements Serializable {
 //            for (int i = 0; i < numberOfSheets; i++) {
 //                Sheet sheet = workbook.getSheetAt(i);
                 List<Data_element> data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form.getReport_form_id() + " and de.report_form_group=" + report_form_group.getReport_form_group_id() + " order by fg.group_order,de.group_column_number ASC").list();
-                
+
                 /**
                  * Set Column Order
                  */
@@ -975,6 +1041,9 @@ public class UploadBean implements Serializable {
         interface_data.setFinancial_year(financial_year);
         interface_data.setReport_period_quarter(report_period_quarter);
         interface_data.setReport_period_name(report_period_name);
+        interface_data.setReport_period_month(report_period_month);
+        interface_data.setReport_period_week(report_period_week);
+        interface_data.setReport_period_year(report_period_year);
         if (district != null) {
             interface_data.setDistrict_name(district.getDistrict_name());
         }

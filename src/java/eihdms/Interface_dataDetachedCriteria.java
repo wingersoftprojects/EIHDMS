@@ -31,6 +31,9 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final StringExpression district_name;
 	public final IntegerExpression financial_yearId;
 	public final AssociationExpression financial_year;
+	public final IntegerExpression report_period_month;
+	public final IntegerExpression report_period_week;
+	public final IntegerExpression report_period_year;
 	public final IntegerExpression report_period_quarter;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
@@ -62,6 +65,9 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		district_name = new StringExpression("district_name", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
 		financial_year = new AssociationExpression("financial_year", this.getDetachedCriteria());
+		report_period_month = new IntegerExpression("report_period_month", this.getDetachedCriteria());
+		report_period_week = new IntegerExpression("report_period_week", this.getDetachedCriteria());
+		report_period_year = new IntegerExpression("report_period_year", this.getDetachedCriteria());
 		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());
@@ -94,6 +100,9 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		district_name = new StringExpression("district_name", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
 		financial_year = new AssociationExpression("financial_year", this.getDetachedCriteria());
+		report_period_month = new IntegerExpression("report_period_month", this.getDetachedCriteria());
+		report_period_week = new IntegerExpression("report_period_week", this.getDetachedCriteria());
+		report_period_year = new IntegerExpression("report_period_year", this.getDetachedCriteria());
 		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());

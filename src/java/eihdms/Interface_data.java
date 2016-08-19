@@ -448,6 +448,15 @@ public class Interface_data implements Serializable {
 	@JoinColumns({ @JoinColumn(name="financial_year_id", referencedColumnName="financial_year_id") })	
 	private eihdms.Financial_year financial_year;
 	
+	@Column(name="report_period_month", nullable=true, length=11)	
+	private Integer report_period_month;
+	
+	@Column(name="report_period_week", nullable=true, length=11)	
+	private Integer report_period_week;
+	
+	@Column(name="report_period_year", nullable=true, length=11)	
+	private Integer report_period_year;
+	
 	@Column(name="report_period_quarter", nullable=true, length=11)	
 	private Integer report_period_quarter;
 	
@@ -688,6 +697,42 @@ public class Interface_data implements Serializable {
 	
 	public String getStatus_m_desc() {
 		return status_m_desc;
+	}
+	
+	public void setReport_period_month(int value) {
+		setReport_period_month(new Integer(value));
+	}
+	
+	public void setReport_period_month(Integer value) {
+		this.report_period_month = value;
+	}
+	
+	public Integer getReport_period_month() {
+		return report_period_month;
+	}
+	
+	public void setReport_period_week(int value) {
+		setReport_period_week(new Integer(value));
+	}
+	
+	public void setReport_period_week(Integer value) {
+		this.report_period_week = value;
+	}
+	
+	public Integer getReport_period_week() {
+		return report_period_week;
+	}
+	
+	public void setReport_period_year(int value) {
+		setReport_period_year(new Integer(value));
+	}
+	
+	public void setReport_period_year(Integer value) {
+		this.report_period_year = value;
+	}
+	
+	public Integer getReport_period_year() {
+		return report_period_year;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

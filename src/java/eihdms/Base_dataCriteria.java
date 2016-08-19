@@ -35,6 +35,9 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	public final AssociationExpression district;
 	public final IntegerExpression financial_yearId;
 	public final AssociationExpression financial_year;
+	public final IntegerExpression report_period_month;
+	public final IntegerExpression report_period_week;
+	public final IntegerExpression report_period_year;
 	public final IntegerExpression report_period_quarter;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
@@ -64,6 +67,9 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 		district = new AssociationExpression("district", this);
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this);
 		financial_year = new AssociationExpression("financial_year", this);
+		report_period_month = new IntegerExpression("report_period_month", this);
+		report_period_week = new IntegerExpression("report_period_week", this);
+		report_period_year = new IntegerExpression("report_period_year", this);
 		report_period_quarter = new IntegerExpression("report_period_quarter", this);
 		report_period_from_date = new DateExpression("report_period_from_date", this);
 		report_period_to_date = new DateExpression("report_period_to_date", this);
