@@ -691,7 +691,7 @@ public class UploadBean implements Serializable {
 
     private void move_data_to_base(Batch batch) {
         try {
-            List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status_v='Validated' AND batch= " + batch.getBatch_id()).list();
+            List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status_v='Pass' AND batch= " + batch.getBatch_id()).list();
             for (Interface_data i : interface_datas_tobase) {
                 District d = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
                 Sub_county s = Sub_county.loadSub_countyByQuery("is_active=1 AND sub_county_name='" + i.getSub_county_name() + "' AND county.district=" + (d != null ? d.getDistrict_id() : 0), null);
