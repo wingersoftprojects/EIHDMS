@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="Validation Error List" style="border-style: solid;">
+                <p:dataTable value="#{uploadBean.generate_validation_report()}" var="item">
+                    <p:column headerText="Batch Id">
+                        <h:outputText value="#{item.batch_id}"/>
+                    </p:column>
+                    <p:column headerText="Added By">
+                        <h:outputText value="#{item.addedBy}"/>
+                    </p:column>
+                    <p:column headerText="Date">
+                        <h:outputText value="#{item.addDate}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Details" action="#{uploadBean.generate_validation_report(item.batch_id)}" update=":validationreportdialog" oncomplete="PF('validationReport').show();"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        <ui:include src="dialog_validationreport.xhtml"/>
+
+    </ui:define>
+
+</ui:composition>

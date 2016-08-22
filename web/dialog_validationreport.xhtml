@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition>
+
+        <p:dialog header="Validation Report" widgetVar="validationReport" modal="true" resizable="false" >
+            <h:form>
+                <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    <p:printer target="validationreportdialog" />
+                </p:commandButton>
+            </h:form>
+            <h:form id="validationreportdialog">
+                <p:panel header="Validation Summary" style="border-style: solid;">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Batch No." style="font-size: 16px;"/>
+                        <p:outputLabel value="#{uploadBean.batchDetails.batch.batch_id}" style="font-size: 16px;"/>
+                        <p:outputLabel value="Uploaded By" style="font-size: 16px;"/>
+                        <p:outputLabel value="#{uploadBean.batchDetails.batchUserName}" style="font-size: 16px;"/>
+                        <p:outputLabel value="Date Uploaded" style="font-size: 16px;"/>
+                        <p:outputLabel value="#{uploadBean.batchDetails.batch.add_date}" style="font-size: 16px;">
+                            <f:convertDateTime pattern="dd/MM/yyyy H:mm:ss" timeZone="EAT"/>
+                        </p:outputLabel>
+                    </p:panelGrid>
+                    <p:dataTable value="#{uploadBean.validationReportList}" var="item">
+                        <p:column headerText="District">
+                            <h:outputText value="#{item.districtName}"/>
+                        </p:column>
+                        <p:column headerText="Sub County">
+                            <h:outputText value="#{item.sub_countyName}"/>
+                        </p:column>
+                        <p:column headerText="Parish">
+                            <h:outputText value="#{item.parishName}"/>
+                        </p:column>
+                        <p:column headerText="Health Facility">
+                            <h:outputText value="#{item.facilityName}"/>
+                        </p:column>
+                        <p:column headerText="Validation Error">
+                            <h:outputText value="#{item.validationDescription}" style="white-space: pre-wrap;word-wrap: break-word; " />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

@@ -78,9 +78,9 @@
                                 <p:commandButton value="+" action="#{validation_ruleBean.append_operand('+')}" process="@this" update="@form"/>
                                 <p:commandButton value="-" action="#{validation_ruleBean.append_operand('-')}" process="@this" update="@form"/>
                                 <p:commandButton value=">" action="#{validation_ruleBean.append_operand('>')}" process="@this" update="@form"/>
-                                <p:commandButton value="Less Than" action="#{validation_ruleBean.append_operand('lt')}" process="@this" update="@form"/>
+                                <p:commandButton value="&lt;" action="#{validation_ruleBean.append_operand('lt')}" escape="false" process="@this" update="@form"/>
                                 <p:commandButton value=">=" action="#{validation_ruleBean.append_operand('>=')}" process="@this" update="@form"/>
-                                <p:commandButton value="Less Or Equal" action="#{validation_ruleBean.append_operand('le')}" process="@this" update="@form"/>
+                                <p:commandButton value="&lt;=" action="#{validation_ruleBean.append_operand('le')}" escape="false" process="@this" update="@form"/>
                             </p:outputPanel>
                             <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{validation_ruleBean.save(loginBean.user_detail.user_detail_id)}" update="@form"/>
                             <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{validation_ruleBean.cancel()}" update="@form" process="@this"/>

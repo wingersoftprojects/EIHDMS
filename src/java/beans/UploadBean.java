@@ -20,6 +20,7 @@ import eihdms.Region;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
 import eihdms.Sub_county;
+import eihdms.User_detail;
 import eihdms.Validation_rule;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -91,6 +92,24 @@ public class UploadBean implements Serializable {
     private Integer report_period_year;
     private Integer report_period_month;
     private Integer report_period_week;
+    private BatchDetails batchDetails;
+    private List<ValidationReport> validationReportList;
+
+    public BatchDetails getBatchDetails() {
+        return batchDetails;
+    }
+
+    public void setBatchDetails(BatchDetails batchDetails) {
+        this.batchDetails = batchDetails;
+    }
+
+    public List<ValidationReport> getValidationReportList() {
+        return validationReportList;
+    }
+
+    public void setValidationReportList(List<ValidationReport> validationReportList) {
+        this.validationReportList = validationReportList;
+    }
 
     public Integer getReport_period_year() {
         return report_period_year;
@@ -426,172 +445,6 @@ public class UploadBean implements Serializable {
         return validation_rule_name;
     }
 
-//    public void validate_upload(Report_form_group report_form_group) {
-//        switch (report_form_group.getReport_form().getLowest_report_form_level()) {
-//            case "Facility":
-//                Set<String> facility_hierarchyset = new HashSet();
-//                for (Interface_data interface_data : interface_datas) {
-//                    facility_hierarchyset.add(interface_data.getDistrict_name() + ":" + interface_data.getParish_name() + ":" + interface_data.getHealth_facility_name());
-//                }
-//                for (String facilityhierarchy : facility_hierarchyset) {
-//                    validationtext = validate(report_form_group, facilityhierarchy);
-//                    for (Interface_data interface_data : interface_datas) {
-//                        if (facilityhierarchy.equals(interface_data.getDistrict_name() + ":" + interface_data.getParish_name() + ":" + interface_data.getHealth_facility_name())) {
-//                            if (!validationtext.isEmpty()) {
-//                                interface_data.setStatus("Invalid");
-//                                interface_data.setStatus_desc("Not Passed Validation because: " + validationtext);
-//                            } else {
-//                                interface_data.setStatus("Validated");
-//                                interface_data.setStatus_desc("Validated and ready for moving");
-//                            }
-//                        }
-//                    }
-//                }
-//                break;
-//            case "Parish":
-//                Set<String> parish_hierarchyset = new HashSet();
-//                for (Interface_data interface_data : interface_datas) {
-//                    parish_hierarchyset.add(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name());
-//                }
-//                for (String parish_hierarchy : parish_hierarchyset) {
-//                    validationtext = validate(report_form_group, parish_hierarchy);
-//                    for (Interface_data interface_data : interface_datas) {
-//                        if (parish_hierarchy.equals(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name())) {
-//                            if (!validationtext.isEmpty()) {
-//                                interface_data.setStatus("Invalid");
-//                                interface_data.setStatus_desc("Not Passed Validation because: " + validationtext);
-//                            } else {
-//                                interface_data.setStatus("Validated");
-//                                interface_data.setStatus_desc("Validated and ready for moving");
-//                            }
-//                        }
-//                    }
-//                }
-//                break;
-//            case "District":
-//                Set<String> district_hierarchyset = new HashSet();
-//                for (Interface_data interface_data : interface_datas) {
-//                    district_hierarchyset.add(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name());
-//                }
-//                for (String district_hierarchy : district_hierarchyset) {
-//                    validationtext = validate(report_form_group, district_hierarchy);
-//                    for (Interface_data interface_data : interface_datas) {
-//                        if (district_hierarchy.equals(interface_data.getDistrict_name() + ":" + interface_data.getSub_county_name() + ":" + interface_data.getParish_name())) {
-//                            if (!validationtext.isEmpty()) {
-//                                interface_data.setStatus("Invalid");
-//                                interface_data.setStatus_desc("Not Passed Validation because: " + validationtext);
-//                            } else {
-//                                interface_data.setStatus("Validated");
-//                                interface_data.setStatus_desc("Validated and ready for moving");
-//                            }
-//                        }
-//                    }
-//                }
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//    public String validate(Report_form_group report_form_group, String locationarray) {
-//        String[] splitlocation = locationarray.split(":");
-//        String val_district = "";
-//        String val_parish = "";
-//        String val_facility = "";
-//        String val_sub_county = "";
-//        if (report_form_group.getReport_form().getLowest_report_form_level().equals("Facility")) {
-//            val_district = splitlocation[0];
-//            val_parish = splitlocation[1];
-//            val_facility = splitlocation[2];
-//        }
-//        if (report_form_group.getReport_form().getLowest_report_form_level().equals("Parish")) {
-//            val_district = splitlocation[0];
-//            val_sub_county = splitlocation[1];
-//            val_parish = splitlocation[2];
-//        }
-//        if (report_form_group.getReport_form().getLowest_report_form_level().equals("District")) {
-//            val_district = splitlocation[0];
-//        }
-//        validationtext = "";
-//        try {
-//            List<Validation_rule> validation_temps = Validation_rule.queryValidation_rule("is_active=1 AND report_form_group=" + report_form_group.getReport_form_group_id(), null);
-//            for (Validation_rule v : validation_temps) {
-//                Interface_data a = null;
-//                Interface_data b = null;
-//                Interface_data c = null;
-//                Interface_data d = null;
-//                for (Interface_data interface_data : interface_datas) {
-//                    if (report_form_group.getReport_form().getLowest_report_form_level().equals("Facility") && interface_data.getDistrict_name().equals(val_district) && interface_data.getParish_name().equals(val_parish) && interface_data.getHealth_facility_name().equals(val_facility)) {
-//                        if (v.getA() != null && interface_data.getData_element().getData_element_id() == v.getA().getData_element_id()) {
-//                            a = interface_data;
-//                        }
-//                        if (v.getB() != null && interface_data.getData_element().getData_element_id() == v.getB().getData_element_id()) {
-//                            b = interface_data;
-//                        }
-//                        if (v.getC() != null && interface_data.getData_element().getData_element_id() == v.getC().getData_element_id()) {
-//                            c = interface_data;
-//                        }
-//                        if (v.getD() != null && interface_data.getData_element().getData_element_id() == v.getD().getData_element_id()) {
-//                            d = interface_data;
-//                        }
-//                    } else if (report_form_group.getReport_form().getLowest_report_form_level().equals("Parish") && interface_data.getDistrict_name().equals(val_district) && interface_data.getSub_county_name().equals(val_sub_county) && interface_data.getParish_name().equals(val_parish)) {
-//                        if (v.getA() != null && interface_data.getData_element().getData_element_id() == v.getA().getData_element_id()) {
-//                            a = interface_data;
-//                        }
-//                        if (v.getB() != null && interface_data.getData_element().getData_element_id() == v.getB().getData_element_id()) {
-//                            b = interface_data;
-//                        }
-//                        if (v.getC() != null && interface_data.getData_element().getData_element_id() == v.getC().getData_element_id()) {
-//                            c = interface_data;
-//                        }
-//                        if (v.getD() != null && interface_data.getData_element().getData_element_id() == v.getD().getData_element_id()) {
-//                            d = interface_data;
-//                        }
-//                    } else if (report_form_group.getReport_form().getLowest_report_form_level().equals("District") && interface_data.getDistrict_name().equals(val_district)) {
-//                        if (v.getA() != null && interface_data.getData_element().getData_element_id() == v.getA().getData_element_id()) {
-//                            a = interface_data;
-//                        }
-//                        if (v.getB() != null && interface_data.getData_element().getData_element_id() == v.getB().getData_element_id()) {
-//                            b = interface_data;
-//                        }
-//                        if (v.getC() != null && interface_data.getData_element().getData_element_id() == v.getC().getData_element_id()) {
-//                            c = interface_data;
-//                        }
-//                        if (v.getD() != null && interface_data.getData_element().getData_element_id() == v.getD().getData_element_id()) {
-//                            d = interface_data;
-//                        }
-//                    }
-//                }
-//                switch (v.getValidation_rule_formula()) {
-//                    case "a+b=c":
-//                        if (a != null && b != null && c != null) {
-//                            if ((Float.parseFloat(a.getData_element_value()) + Float.parseFloat(b.getData_element_value())) != Float.parseFloat(c.getData_element_value())) {
-//                                validationtext += ":" + v.getValidation_rule_name();
-//                            }
-//                        }
-//                        break;
-//                    case "a Greater Than b":
-//                        if (a != null && b != null) {
-//                            if (Float.parseFloat(a.getData_element_value()) <= Float.parseFloat(b.getData_element_value())) {
-//                                validationtext += ":" + v.getValidation_rule_name();
-//                            }
-//                        }
-//                        break;
-//                    case "a Less Than b":
-//                        if (a != null && b != null) {
-//                            if (Float.parseFloat(a.getData_element_value()) >= Float.parseFloat(b.getData_element_value())) {
-//                                validationtext += ":" + v.getValidation_rule_name();
-//                            }
-//                        }
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        } catch (PersistentException ex) {
-//            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return validationtext;
-//    }
     private void set_Status_V(Interface_data interface_data) {
         if (!validationtext.isEmpty()) {
             interface_data.setStatus_v("Fail");
@@ -710,6 +563,7 @@ public class UploadBean implements Serializable {
                  */
                 transaction.commit();
                 loginBean.saveMessage();
+                generate_validation_report(batch.getBatch_id());
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -852,6 +706,66 @@ public class UploadBean implements Serializable {
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void generate_validation_report(int batch_id) {
+        try {
+            Batch b = Batch.getBatchByORMID(batch_id);
+            User_detail user_detail = User_detail.getUser_detailByORMID(b.getAdd_by());
+            batchDetails = new BatchDetails();
+            batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
+            batchDetails.setBatch(b);
+            List<ValidationReport> tempValidationReports = new ArrayList<>();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc FROM interface_data where batch_id=" + batch_id).list();
+            for (Object[] objects : validations) {
+                ValidationReport vr = new ValidationReport();
+                if (objects[3] != null) {
+                    vr.DistrictName = objects[0].toString();
+                    vr.Sub_countyName = objects[1].toString();
+                    vr.FacilityName = objects[3].toString();
+                    vr.ParishName = "";
+                } else if (objects[2] != null) {
+                    vr.DistrictName = objects[0].toString();
+                    vr.Sub_countyName = objects[1].toString();
+                    vr.ParishName = objects[3].toString();
+                    vr.FacilityName = "";
+                } else {
+                    vr.DistrictName = objects[0].toString();
+                    vr.Sub_countyName = "";
+                    vr.ParishName = "";
+                    vr.FacilityName = "";
+                }
+                vr.setValidationDescription(objects[5].toString());
+                tempValidationReports.add(vr);
+            }
+            validationReportList = new ArrayList<>(tempValidationReports);
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<ValidationReport> generate_validation_report() {
+        validationReportList = new ArrayList<>();
+        try {
+            //Batch b = Batch.getBatchByORMID(batch_id);
+            //User_detail user_detail = User_detail.getUser_detailByORMID(b.getAdd_by());
+            //batchDetails = new BatchDetails();
+            //batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
+            //batchDetails.setBatch(b);
+            List<ValidationReport> tempValidationReports = new ArrayList<>();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT interface_data.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date FROM interface_data INNER JOIN user_detail ON user_detail.user_detail_id = interface_data.add_by INNER JOIN batch ON interface_data.batch_id = batch.batch_id where status_v='Fail' order by batch_id desc").list();
+            for (Object[] objects : validations) {
+                ValidationReport vr = new ValidationReport();
+                vr.setBatch_id(Integer.parseInt(objects[0].toString()));
+                vr.AddedBy = objects[1].toString();
+                vr.setAddDate(objects[2].toString());
+                tempValidationReports.add(vr);
+            }
+            validationReportList = new ArrayList<>(tempValidationReports);
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return validationReportList;
     }
 
     public void uploadexcel(InputStream inputStream) {
@@ -1410,6 +1324,115 @@ public class UploadBean implements Serializable {
             }
             interface_datas = new ArrayList<>();
         }
+    }
+
+    public class ValidationReport {
+
+        private String FacilityName;
+        private String DistrictName;
+        private String ParishName;
+        private String Sub_countyName;
+        private String ValidationDescription;
+        private String Status;
+        private String AddedBy;
+        private int batch_id;
+        private String AddDate;
+
+        public String getAddDate() {
+            return AddDate;
+        }
+
+        public void setAddDate(String AddDate) {
+            this.AddDate = AddDate;
+        }
+
+        public String getAddedBy() {
+            return AddedBy;
+        }
+
+        public void setAddedBy(String AddedBy) {
+            this.AddedBy = AddedBy;
+        }
+
+        public int getBatch_id() {
+            return batch_id;
+        }
+
+        public void setBatch_id(int batch_id) {
+            this.batch_id = batch_id;
+        }
+
+        public String getStatus() {
+            return Status;
+        }
+
+        public void setStatus(String Status) {
+            this.Status = Status;
+        }
+
+        public String getFacilityName() {
+            return FacilityName;
+        }
+
+        public void setFacilityName(String FacilityName) {
+            this.FacilityName = FacilityName;
+        }
+
+        public String getValidationDescription() {
+            return ValidationDescription;
+        }
+
+        public void setValidationDescription(String ValidationDescription) {
+            this.ValidationDescription = ValidationDescription;
+        }
+
+        public String getDistrictName() {
+            return DistrictName;
+        }
+
+        public void setDistrictName(String DistrictName) {
+            this.DistrictName = DistrictName;
+        }
+
+        public String getParishName() {
+            return ParishName;
+        }
+
+        public String getSub_countyName() {
+            return Sub_countyName;
+        }
+
+        public void setSub_countyName(String Sub_countyName) {
+            this.Sub_countyName = Sub_countyName;
+        }
+
+        public void setParishName(String ParishName) {
+            this.ParishName = ParishName;
+        }
+
+    }
+
+    public class BatchDetails {
+
+        private Batch batch;
+        private String BatchUserName;
+
+        public Batch getBatch() {
+            return batch;
+        }
+
+        public void setBatch(Batch batch) {
+            this.batch = batch;
+        }
+
+        public String getBatchUserName() {
+            return BatchUserName;
+        }
+
+        public void setBatchUserName(String BatchUserName) {
+            this.BatchUserName = BatchUserName;
+        }
+
     }
 
 }
