@@ -25,7 +25,10 @@
                             <f:convertDateTime pattern="dd/MM/yyyy H:mm:ss" timeZone="EAT"/>
                         </p:outputLabel>
                     </p:panelGrid>
-                    <p:dataTable value="#{uploadBean.validationReportList}" var="item">
+                    <p:dataTable value="#{uploadBean.validationReportList}" var="item" rows="5"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,50,500">
                         <p:column headerText="District">
                             <h:outputText value="#{item.districtName}"/>
                         </p:column>
@@ -38,7 +41,7 @@
                         <p:column headerText="Health Facility">
                             <h:outputText value="#{item.facilityName}"/>
                         </p:column>
-                        <p:column headerText="Validation Error">
+                        <p:column headerText="Validation Message">
                             <h:outputText value="#{item.validationDescription}" style="white-space: pre-wrap;word-wrap: break-word; " />
                         </p:column>
                     </p:dataTable>

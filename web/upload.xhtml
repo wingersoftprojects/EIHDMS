@@ -18,7 +18,7 @@
                     <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                         <f:selectItem itemLabel="" />
                         <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this" update="report_form_group"/>
+                        <p:ajax process="@this" update="@form"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="report_form_group" value="Report Form Group:" />
                     <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
@@ -55,8 +55,8 @@
                         <f:selectItem itemLabel="Q4" itemValue="4" />
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Month:" for="report_period_month"/>
-                    <p:selectOneMenu id="report_period_month" value="#{uploadBean.report_period_month}">
+                    <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly()}"/>
+                    <p:selectOneMenu id="report_period_month" value="#{uploadBean.report_period_month}" rendered="#{uploadBean.showmonthly()}">
                         <f:selectItem itemLabel="Select One" itemValue="" />
                         <f:selectItem itemLabel="01" itemValue="1" />
                         <f:selectItem itemLabel="02" itemValue="2" />
@@ -72,8 +72,8 @@
                         <f:selectItem itemLabel="12" itemValue="12" />
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Week:" for="report_period_week"/>
-                    <p:selectOneMenu id="report_period_week" value="#{uploadBean.report_period_week}">
+                    <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
+                    <p:selectOneMenu id="report_period_week" value="#{uploadBean.report_period_week}" rendered="#{uploadBean.showweekly()}">
                         <f:selectItem itemLabel="Select One" itemValue="" />
                         <f:selectItem itemLabel="Week1" itemValue="1" />
                         <f:selectItem itemLabel="Week2" itemValue="2" />
@@ -106,6 +106,7 @@
                     <script type="text/javascript">
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
+                            classicView: true,
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
@@ -122,11 +123,11 @@
                             formats: [
                                 {
                                     name: "decimal",
-                                    decimalPlaces: 3
+                                    decimalPlaces: 1
                                 }
                             ],
                             expandAll: true,
-                            licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+                                    licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
                         };
                         //flexmonster.expandAllData();
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
@@ -136,6 +137,7 @@
                     <script type="text/javascript">
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
+                            classicView: true,
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
@@ -152,11 +154,11 @@
                             formats: [
                                 {
                                     name: "decimal",
-                                    decimalPlaces: 3
+                                    decimalPlaces: 1
                                 }
                             ],
                             expandAll: true,
-                            licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+                                    licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
                         };
                         //flexmonster.expandAllData();
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
@@ -166,6 +168,7 @@
                     <script type="text/javascript">
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
+                            classicView: true,
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
@@ -180,11 +183,11 @@
                             formats: [
                                 {
                                     name: "decimal",
-                                    decimalPlaces: 3
+                                    decimalPlaces: 1
                                 }
                             ],
                             expandAll: true,
-                            licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+                                    licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
                         };
                         //flexmonster.expandAllData();
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);

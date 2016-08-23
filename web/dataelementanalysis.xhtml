@@ -61,6 +61,8 @@
                         var jsonData = #{data_element_AnalysisBean.getjSONArray()};
 
                         var report = {
+                            classicView: true,
+                            expandAll: true,
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
@@ -75,7 +77,7 @@
                             formats: [
                                 {
                                     name: "decimal",
-                                    decimalPlaces: 3
+                                    decimalPlaces: 1
                                 }
                             ],
                             licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"

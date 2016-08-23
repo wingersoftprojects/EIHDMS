@@ -16,7 +16,7 @@ public class LoadDataElements {
      */
     public static void main(String[] args) {
         GeneralUtilities gu=new GeneralUtilities();
-        gu.load_data_element_dependancies("HMIS 033B Epidemiological Facility Weekly");
+        gu.load_data_element_dependancies("HMIS 106a");
     }
     
 }

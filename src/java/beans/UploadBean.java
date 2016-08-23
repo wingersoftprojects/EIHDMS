@@ -95,6 +95,28 @@ public class UploadBean implements Serializable {
     private BatchDetails batchDetails;
     private List<ValidationReport> validationReportList;
 
+    public boolean showweekly(){
+        if(report_form==null){
+        return false;
+        }else{
+            if(report_form.getReport_form_frequency().equals("Weekly")){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean showmonthly(){
+        if(report_form==null){
+        return false;
+        }else{
+            if(report_form.getReport_form_frequency().equals("Monthly") || report_form.getReport_form_frequency().equals("Weekly")){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
     public BatchDetails getBatchDetails() {
         return batchDetails;
     }
@@ -445,6 +467,50 @@ public class UploadBean implements Serializable {
         return validation_rule_name;
     }
 
+    public String validate_upload_existing_data(String reporting_hierarchy, int financial_year, int quarter, int month, int week, int calendar_year) {
+        String condition = "";
+        condition += "CONCAT(d.district_name,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)='" + reporting_hierarchy + "'";
+        if (financial_year != 0) {
+            condition += " AND fy.financial_year_id=" + financial_year;
+        }
+        if (quarter != 0) {
+            condition += " AND report_period_quarter=" + quarter;
+        }
+        if (month != 0) {
+            condition += " AND report_period_month=" + month;
+        }
+        if (calendar_year != 0) {
+            condition += " AND report_period_year=" + calendar_year;
+        }
+        if (week != 0) {
+            condition += " AND report_period_week=" + week;
+        }
+        String validation_rule_name = "";
+        String sql = "SELECT b.data_element_id,b.data_element_value FROM base_data AS b "
+                + "INNER JOIN district AS d ON b.district_id = d.district_id"
+                + " LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id"
+                + " LEFT JOIN parish AS p ON b.parish_id = p.parish_id"
+                + " INNER JOIN financial_year AS fy ON b.financial_year_id = fy.financial_year_id"
+                + " LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id"
+                + " INNER JOIN data_element ON b.data_element_id = data_element.data_element_id "
+                + " INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id WHERE " + condition + " AND rg.report_form_group_id=" + report_form_group.getReport_form_group_id();
+        ResultSet rs = null;
+        try {
+
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                validation_rule_name += "\n" + "Data for the same period has already been uploaded Location:" + reporting_hierarchy + ",FY:" + this.financial_year.getFinancial_year_name() + ",Quarter:" + quarter + ",Month:" + month + ",Week:" + week + "";
+            } else {
+                validation_rule_name = "";
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        return validation_rule_name;
+    }
+
     private void set_Status_V(Interface_data interface_data) {
         if (!validationtext.isEmpty()) {
             interface_data.setStatus_v("Fail");
@@ -510,6 +576,7 @@ public class UploadBean implements Serializable {
                     }
                     for (String facilityhierarchy : facility_hierarchyset) {
                         validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,health_facility_name)", facilityhierarchy);
+                        validationtext += validate_upload_existing_data(facilityhierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
                         for (Interface_data interface_data : interface_datas_tovalidate) {
                             if (facilityhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name())) {
                                 set_Status_V(interface_data);
@@ -525,6 +592,7 @@ public class UploadBean implements Serializable {
                     }
                     for (String parishhierarchy : parish_hierarchyset) {
                         validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,parish_name)", parishhierarchy);
+                        validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
                         for (Interface_data interface_data : interface_datas_tovalidate) {
                             if (parishhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name())) {
                                 set_Status_V(interface_data);
@@ -540,6 +608,7 @@ public class UploadBean implements Serializable {
                     }
                     for (String districthierarchy : district_hierarchyset) {
                         validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name)", districthierarchy);
+                        validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
                         for (Interface_data interface_data : interface_datas_tovalidate) {
                             if (districthierarchy.equals(interface_data.getDistrict_name())) {
                                 set_Status_V(interface_data);
@@ -901,10 +970,10 @@ public class UploadBean implements Serializable {
                                     Map.Entry pair = (Map.Entry) it.next();
                                     Interface_data interface_data = new Interface_data();
                                     if (cellindex > 0 && (int) pair.getKey() == cellindex && report_form.getLowest_report_form_level().equals("District")) {
-                                        interface_data.setDistrict_name(district_name);
-                                        interface_data.setSub_county_name(sub_county_name);
-                                        interface_data.setParish_name(parish_name);
-                                        interface_data.setHealth_facility_name(facility_name);
+                                        interface_data.setDistrict_name(district_name.replace("'", "''"));
+                                        interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
+                                        interface_data.setParish_name(parish_name.replace("'", "''"));
+                                        interface_data.setHealth_facility_name(facility_name.replace("'", "''"));
                                         /**
                                          * Read Data values
                                          */
@@ -915,10 +984,10 @@ public class UploadBean implements Serializable {
                                         interface_datas.add(interface_data);
                                     }
                                     if (cellindex > 2 && (int) pair.getKey() == cellindex && (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility"))) {
-                                        interface_data.setDistrict_name(district_name);
-                                        interface_data.setSub_county_name(sub_county_name);
-                                        interface_data.setParish_name(parish_name);
-                                        interface_data.setHealth_facility_name(facility_name);
+                                        interface_data.setDistrict_name(district_name.replace("'", "''"));
+                                        interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
+                                        interface_data.setParish_name(parish_name.replace("'", "''"));
+                                        interface_data.setHealth_facility_name(facility_name.replace("'", "''"));
                                         /**
                                          * Read Data values
                                          */
