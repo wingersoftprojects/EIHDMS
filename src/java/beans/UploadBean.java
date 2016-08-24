@@ -576,7 +576,7 @@ public class UploadBean implements Serializable {
                     }
                     for (String facilityhierarchy : facility_hierarchyset) {
                         validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,health_facility_name)", facilityhierarchy);
-                        validationtext += validate_upload_existing_data(facilityhierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
+                        validationtext += validate_upload_existing_data(facilityhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
                         for (Interface_data interface_data : interface_datas_tovalidate) {
                             if (facilityhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name())) {
                                 set_Status_V(interface_data);
@@ -592,7 +592,8 @@ public class UploadBean implements Serializable {
                     }
                     for (String parishhierarchy : parish_hierarchyset) {
                         validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,parish_name)", parishhierarchy);
-                        validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
+                        //validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
+                        validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
                         for (Interface_data interface_data : interface_datas_tovalidate) {
                             if (parishhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name())) {
                                 set_Status_V(interface_data);
@@ -608,7 +609,8 @@ public class UploadBean implements Serializable {
                     }
                     for (String districthierarchy : district_hierarchyset) {
                         validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name)", districthierarchy);
-                        validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
+                        //validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
+                        validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
                         for (Interface_data interface_data : interface_datas_tovalidate) {
                             if (districthierarchy.equals(interface_data.getDistrict_name())) {
                                 set_Status_V(interface_data);
