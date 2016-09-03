@@ -1,5 +1,5 @@
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package ormsamples;

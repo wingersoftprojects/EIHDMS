@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -31,6 +31,7 @@ public class Temp_health_facilityDetachedCriteria extends AbstractORMDetachedCri
 	public final StringExpression xcoordinate;
 	public final StringExpression ycoordinate;
 	public final StringExpression zcoordinate;
+	public final StringExpression ownership;
 	
 	public Temp_health_facilityDetachedCriteria() {
 		super(eihdms.Temp_health_facility.class, eihdms.Temp_health_facilityCriteria.class);
@@ -46,6 +47,7 @@ public class Temp_health_facilityDetachedCriteria extends AbstractORMDetachedCri
 		xcoordinate = new StringExpression("xcoordinate", this.getDetachedCriteria());
 		ycoordinate = new StringExpression("ycoordinate", this.getDetachedCriteria());
 		zcoordinate = new StringExpression("zcoordinate", this.getDetachedCriteria());
+		ownership = new StringExpression("ownership", this.getDetachedCriteria());
 	}
 	
 	public Temp_health_facilityDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -62,6 +64,7 @@ public class Temp_health_facilityDetachedCriteria extends AbstractORMDetachedCri
 		xcoordinate = new StringExpression("xcoordinate", this.getDetachedCriteria());
 		ycoordinate = new StringExpression("ycoordinate", this.getDetachedCriteria());
 		zcoordinate = new StringExpression("zcoordinate", this.getDetachedCriteria());
+		ownership = new StringExpression("ownership", this.getDetachedCriteria());
 	}
 	
 	public Temp_health_facility uniqueTemp_health_facility(PersistentSession session) {

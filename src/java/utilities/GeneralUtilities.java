@@ -412,7 +412,7 @@ public class GeneralUtilities implements Serializable {
                 /**
                  * Health Facility
                  */
-                List<Object[]> health_facility_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT health_facility_name,sub_district_name,xcoordinate,ycoordinate,zcoordinate,district_name,county_name,sub_county_name,parish_name,facility_level_name,region_name from temp_health_facility order by temp_health_facility_id asc").list();
+                List<Object[]> health_facility_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT health_facility_name,sub_district_name,xcoordinate,ycoordinate,zcoordinate,district_name,county_name,sub_county_name,parish_name,facility_level_name,region_name,ownership from temp_health_facility order by temp_health_facility_id asc").list();
                 for (Object[] health_facility_name : health_facility_nameList) {
                     t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                     if (health_facility_name[0] != null) {
@@ -444,6 +444,7 @@ public class GeneralUtilities implements Serializable {
                                 health_facility.setIs_deleted(0);
                                 health_facility.setAdd_by(1);
                                 health_facility.setAdd_date(new Timestamp(new Date().getTime()));
+                                health_facility.setOwnership(health_facility_name[11].toString());
                                 health_facility.save();
                             }
                         }

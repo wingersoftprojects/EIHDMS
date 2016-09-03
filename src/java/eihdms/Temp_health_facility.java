@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -402,6 +402,9 @@ public class Temp_health_facility implements Serializable {
 	@Column(name="zcoordinate", nullable=true, length=100)	
 	private String zcoordinate;
 	
+	@Column(name="ownership", nullable=true, length=50)	
+	private String ownership;
+	
 	private void setTemp_health_facility_id(int value) {
 		this.temp_health_facility_id = value;
 	}
@@ -500,6 +503,14 @@ public class Temp_health_facility implements Serializable {
 	
 	public String getZcoordinate() {
 		return zcoordinate;
+	}
+	
+	public void setOwnership(String value) {
+		this.ownership = value;
+	}
+	
+	public String getOwnership() {
+		return ownership;
 	}
 	
 	@Override	

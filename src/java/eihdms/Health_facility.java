@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -523,6 +523,9 @@ public class Health_facility implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="ownership", nullable=true, length=50)	
+	private String ownership;
+	
 	@OneToMany(mappedBy="health_facility", targetEntity=eihdms.Base_data.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
@@ -634,6 +637,14 @@ public class Health_facility implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setOwnership(String value) {
+		this.ownership = value;
+	}
+	
+	public String getOwnership() {
+		return ownership;
 	}
 	
 	public void setRegion(eihdms.Region value) {

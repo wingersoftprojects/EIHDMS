@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Select District">
+                <p:panelGrid columns="3" id="tree_panel_grid">
+                    <p:outputLabel for="district" value="District:" />
+                    <p:selectOneMenu id="district" value="#{health_facilityBean.district}" style="width:125px" required="true" requiredMessage="District is Required" converter="districtConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{districtBean.tsActive}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <h:commandButton value="View Location Tree" action="#{health_facilityBean.getLocationTreeNodeByDistrict(health_facilityBean.district)}" />
+                </p:panelGrid>
+            </p:fieldset>
+            <h:panelGrid columns="1">
+                <p:fieldset legend="Location Tree : #{health_facilityBean.district.district_name}">
+                    <p:tree value="#{health_facilityBean.locationTreeNode}" var="node" style="width: 100%">              
+                        <p:treeNode>
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                    </p:tree>
+                </p:fieldset>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

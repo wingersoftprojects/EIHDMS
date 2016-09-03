@@ -61,6 +61,17 @@
                             <f:selectItems value="#{facility_levelBean.tsActive}" var="item" itemLabel="#{item.facility_level_name}" itemValue="#{item}"/>
                             <p:ajax event="change" process="@this" update="district"/>
                         </p:selectOneMenu>
+                        <p:outputLabel value="Ownership:" for="ownership"/>
+                        <p:selectOneMenu id="ownership" value="#{health_facilityBean.selected.ownership}" required="true" requiredMessage="Ownership is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Government" itemValue="Government" />
+                            <f:selectItem itemLabel="PNFP" itemValue="PNFP" />
+                            <f:selectItem itemLabel="PFP" itemValue="PFP" />
+                            <f:selectItem itemLabel="NGO" itemValue="NGO" />
+                            <f:selectItem itemLabel="UCMG" itemValue="UCMG" />
+                            <f:selectItem itemLabel="UPMG" itemValue="UPMG" />
+                            <f:selectItem itemLabel="Clinic" itemValue="Clinic" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="X-Coordinate:" for="xcoordinate"/>
                         <p:inputText id="xcoordinate" value="#{health_facilityBean.selected.xcoordinate}"/>
                         <p:outputLabel value="Y-Coordinate:" for="ycoordinate"/>
@@ -112,6 +123,9 @@
                     </p:column>
                     <p:column headerText="Facility Level">
                         <h:outputText value="#{item.facility_level.facility_level_name}"/>
+                    </p:column>
+                    <p:column headerText="Ownership">
+                        <h:outputText value="#{item.ownership}"/>
                     </p:column>
                     <p:column headerText="X-Coordinate">
                         <h:outputText value="#{item.xcoordinate}"/>

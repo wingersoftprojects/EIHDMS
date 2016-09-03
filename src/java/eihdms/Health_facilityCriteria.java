@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -44,6 +44,7 @@ public class Health_facilityCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final StringExpression ownership;
 	public final CollectionExpression base_data;
 	
 	public Health_facilityCriteria(Criteria criteria) {
@@ -73,6 +74,7 @@ public class Health_facilityCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		ownership = new StringExpression("ownership", this);
 		base_data = new CollectionExpression("base_data", this);
 	}
 	

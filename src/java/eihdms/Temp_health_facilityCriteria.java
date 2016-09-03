@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -31,6 +31,7 @@ public class Temp_health_facilityCriteria extends AbstractORMCriteria {
 	public final StringExpression xcoordinate;
 	public final StringExpression ycoordinate;
 	public final StringExpression zcoordinate;
+	public final StringExpression ownership;
 	
 	public Temp_health_facilityCriteria(Criteria criteria) {
 		super(criteria);
@@ -46,6 +47,7 @@ public class Temp_health_facilityCriteria extends AbstractORMCriteria {
 		xcoordinate = new StringExpression("xcoordinate", this);
 		ycoordinate = new StringExpression("ycoordinate", this);
 		zcoordinate = new StringExpression("zcoordinate", this);
+		ownership = new StringExpression("ownership", this);
 	}
 	
 	public Temp_health_facilityCriteria(PersistentSession session) {

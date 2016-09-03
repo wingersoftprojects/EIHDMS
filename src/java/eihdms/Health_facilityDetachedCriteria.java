@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -44,6 +44,7 @@ public class Health_facilityDetachedCriteria extends AbstractORMDetachedCriteria
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final StringExpression ownership;
 	public final CollectionExpression base_data;
 	
 	public Health_facilityDetachedCriteria() {
@@ -73,6 +74,7 @@ public class Health_facilityDetachedCriteria extends AbstractORMDetachedCriteria
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		ownership = new StringExpression("ownership", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 	}
 	
@@ -103,6 +105,7 @@ public class Health_facilityDetachedCriteria extends AbstractORMDetachedCriteria
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		ownership = new StringExpression("ownership", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 	}
 	
