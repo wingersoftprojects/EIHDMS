@@ -8,7 +8,6 @@ package beans;
 import eihdms.Base_data;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Financial_year;
-import eihdms.Interface_data;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
 import java.util.ArrayList;
@@ -158,7 +157,11 @@ public class Data_element_AnalysisBean {
             }
         }
         try {
-            base_dataList = (List<Base_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT b FROM Base_data b where " + condition).list();
+            if (condition.isEmpty()) {
+                base_dataList = new ArrayList<>();
+            } else {
+                base_dataList = (List<Base_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT b FROM Base_data b where " + condition).list();
+            }
         } catch (PersistentException ex) {
             base_dataList = new ArrayList<>();
             Logger.getLogger(Data_element_AnalysisBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,13 +176,15 @@ public class Data_element_AnalysisBean {
         jObj.put("SexCategory", new JSONObject().put("type", "string"));
         jObj.put("OtherCategory", new JSONObject().put("type", "string"));
         jObj.put("District", new JSONObject().put("hierarchy", "Location").accumulate("type", "level"));
-        if (report_form.getLowest_report_form_level().equals("Facility")) {
-            jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
-            jObj.put("Facility", new JSONObject().put("hierarchy", "Location").accumulate("type", "level").accumulate("parent", "SubCounty"));
-        }
-        if (report_form.getLowest_report_form_level().equals("Parish")) {
-            jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
-            jObj.put("Parish", new JSONObject().put("parent", "SubCounty").accumulate("hierarchy", "Location").accumulate("type", "level"));
+        if (report_form != null) {
+            if (report_form.getLowest_report_form_level().equals("Facility")) {
+                jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
+                jObj.put("Facility", new JSONObject().put("hierarchy", "Location").accumulate("type", "level").accumulate("parent", "SubCounty"));
+            }
+            if (report_form.getLowest_report_form_level().equals("Parish")) {
+                jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
+                jObj.put("Parish", new JSONObject().put("parent", "SubCounty").accumulate("hierarchy", "Location").accumulate("type", "level"));
+            }
         }
         jObj.put("Section", new JSONObject().put("type", "level").accumulate("hierarchy", "Section"));
         jObj.put("SubSection", new JSONObject().put("type", "level").accumulate("hierarchy", "Section").accumulate("parent", "Section"));
@@ -230,6 +235,9 @@ public class Data_element_AnalysisBean {
     }
 
     public JSONArray getjSONArray() {
+        if (report_form == null) {
+            filter_base_data();
+        }
         return jSONArray;
     }
 
