@@ -50,6 +50,10 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final StringExpression status_v_desc;
 	public final StringExpression status_m;
 	public final StringExpression status_m_desc;
+	public final IntegerExpression health_facility_id;
+	public final IntegerExpression parish_id;
+	public final IntegerExpression sub_county_id;
+	public final IntegerExpression district_id;
 	
 	public Interface_dataDetachedCriteria() {
 		super(eihdms.Interface_data.class, eihdms.Interface_dataCriteria.class);
@@ -84,6 +88,10 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		status_v_desc = new StringExpression("status_v_desc", this.getDetachedCriteria());
 		status_m = new StringExpression("status_m", this.getDetachedCriteria());
 		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
+		health_facility_id = new IntegerExpression("health_facility_id", this.getDetachedCriteria());
+		parish_id = new IntegerExpression("parish_id", this.getDetachedCriteria());
+		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
+		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
 	}
 	
 	public Interface_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -119,6 +127,10 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		status_v_desc = new StringExpression("status_v_desc", this.getDetachedCriteria());
 		status_m = new StringExpression("status_m", this.getDetachedCriteria());
 		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
+		health_facility_id = new IntegerExpression("health_facility_id", this.getDetachedCriteria());
+		parish_id = new IntegerExpression("parish_id", this.getDetachedCriteria());
+		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
+		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {

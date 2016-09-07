@@ -50,6 +50,10 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final StringExpression status_v_desc;
 	public final StringExpression status_m;
 	public final StringExpression status_m_desc;
+	public final IntegerExpression health_facility_id;
+	public final IntegerExpression parish_id;
+	public final IntegerExpression sub_county_id;
+	public final IntegerExpression district_id;
 	
 	public Interface_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -84,6 +88,10 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		status_v_desc = new StringExpression("status_v_desc", this);
 		status_m = new StringExpression("status_m", this);
 		status_m_desc = new StringExpression("status_m_desc", this);
+		health_facility_id = new IntegerExpression("health_facility_id", this);
+		parish_id = new IntegerExpression("parish_id", this);
+		sub_county_id = new IntegerExpression("sub_county_id", this);
+		district_id = new IntegerExpression("district_id", this);
 	}
 	
 	public Interface_dataCriteria(PersistentSession session) {

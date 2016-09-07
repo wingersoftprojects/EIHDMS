@@ -507,6 +507,18 @@ public class Interface_data implements Serializable {
 	@Column(name="status_m_desc", nullable=true)	
 	private String status_m_desc;
 	
+	@Column(name="health_facility_id", nullable=true, length=11)	
+	private Integer health_facility_id;
+	
+	@Column(name="parish_id", nullable=true, length=11)	
+	private Integer parish_id;
+	
+	@Column(name="sub_county_id", nullable=true, length=10)	
+	private Integer sub_county_id;
+	
+	@Column(name="district_id", nullable=true, length=10)	
+	private Integer district_id;
+	
 	private void setInterface_data_id(int value) {
 		this.interface_data_id = value;
 	}
@@ -733,6 +745,54 @@ public class Interface_data implements Serializable {
 	
 	public Integer getReport_period_year() {
 		return report_period_year;
+	}
+	
+	public void setHealth_facility_id(int value) {
+		setHealth_facility_id(new Integer(value));
+	}
+	
+	public void setHealth_facility_id(Integer value) {
+		this.health_facility_id = value;
+	}
+	
+	public Integer getHealth_facility_id() {
+		return health_facility_id;
+	}
+	
+	public void setParish_id(int value) {
+		setParish_id(new Integer(value));
+	}
+	
+	public void setParish_id(Integer value) {
+		this.parish_id = value;
+	}
+	
+	public Integer getParish_id() {
+		return parish_id;
+	}
+	
+	public void setSub_county_id(int value) {
+		setSub_county_id(new Integer(value));
+	}
+	
+	public void setSub_county_id(Integer value) {
+		this.sub_county_id = value;
+	}
+	
+	public Integer getSub_county_id() {
+		return sub_county_id;
+	}
+	
+	public void setDistrict_id(int value) {
+		setDistrict_id(new Integer(value));
+	}
+	
+	public void setDistrict_id(Integer value) {
+		this.district_id = value;
+	}
+	
+	public Integer getDistrict_id() {
+		return district_id;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {
