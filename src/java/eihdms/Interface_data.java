@@ -519,6 +519,9 @@ public class Interface_data implements Serializable {
 	@Column(name="district_id", nullable=true, length=10)	
 	private Integer district_id;
 	
+	@Column(name="report_period_bi_month", nullable=true, length=11)	
+	private Integer report_period_bi_month;
+	
 	private void setInterface_data_id(int value) {
 		this.interface_data_id = value;
 	}
@@ -793,6 +796,18 @@ public class Interface_data implements Serializable {
 	
 	public Integer getDistrict_id() {
 		return district_id;
+	}
+	
+	public void setReport_period_bi_month(int value) {
+		setReport_period_bi_month(new Integer(value));
+	}
+	
+	public void setReport_period_bi_month(Integer value) {
+		this.report_period_bi_month = value;
+	}
+	
+	public Integer getReport_period_bi_month() {
+		return report_period_bi_month;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

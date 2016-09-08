@@ -105,6 +105,9 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Kpi_data_element leihdmsKpi_data_element = eihdms.Kpi_data_element.loadKpi_data_elementByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsKpi_data_element.save();
+			eihdms.Data_obligation leihdmsData_obligation = eihdms.Data_obligation.loadData_obligationByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsData_obligation.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -305,6 +308,12 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsKpi_data_elementCriteria.kpi_data_element_id.eq();
 		System.out.println(leihdmsKpi_data_elementCriteria.uniqueKpi_data_element());
+		
+		System.out.println("Retrieving Data_obligation by Data_obligationCriteria");
+		eihdms.Data_obligationCriteria leihdmsData_obligationCriteria = new eihdms.Data_obligationCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsData_obligationCriteria.data_obligation_id.eq();
+		System.out.println(leihdmsData_obligationCriteria.uniqueData_obligation());
 		
 	}
 	

@@ -265,6 +265,14 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Data_obligation...");
+		eihdms.Data_obligation[] eihdmsData_obligations = eihdms.Data_obligation.listData_obligationByQuery(null, null);
+		length = Math.min(eihdmsData_obligations.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsData_obligations[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -651,6 +659,18 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsKpi_data_elements[i]);
 		}
 		System.out.println(length + " Kpi_data_element record(s) retrieved."); 
+		
+		System.out.println("Listing Data_obligation by Criteria...");
+		eihdms.Data_obligationCriteria leihdmsData_obligationCriteria = new eihdms.Data_obligationCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsData_obligationCriteria.data_obligation_id.eq();
+		leihdmsData_obligationCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Data_obligation[] eihdmsData_obligations = leihdmsData_obligationCriteria.listData_obligation();
+		length =eihdmsData_obligations== null ? 0 : Math.min(eihdmsData_obligations.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsData_obligations[i]);
+		}
+		System.out.println(length + " Data_obligation record(s) retrieved."); 
 		
 	}
 	

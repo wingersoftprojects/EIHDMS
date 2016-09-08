@@ -389,6 +389,10 @@ public class Report_form implements Serializable {
 			for(int i = 0; i < lValidation_rules.length; i++) {
 				lValidation_rules[i].setReport_form(null);
 			}
+			eihdms.Data_obligation[] lData_obligations = (eihdms.Data_obligation[])getData_obligation().toArray(new eihdms.Data_obligation[getData_obligation().size()]);
+			for(int i = 0; i < lData_obligations.length; i++) {
+				lData_obligations[i].setReport_form(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -422,6 +426,10 @@ public class Report_form implements Serializable {
 			eihdms.Validation_rule[] lValidation_rules = (eihdms.Validation_rule[])getValidation_rule().toArray(new eihdms.Validation_rule[getValidation_rule().size()]);
 			for(int i = 0; i < lValidation_rules.length; i++) {
 				lValidation_rules[i].setReport_form(null);
+			}
+			eihdms.Data_obligation[] lData_obligations = (eihdms.Data_obligation[])getData_obligation().toArray(new eihdms.Data_obligation[getData_obligation().size()]);
+			for(int i = 0; i < lData_obligations.length; i++) {
+				lData_obligations[i].setReport_form(null);
 			}
 			try {
 				session.delete(this);
@@ -504,6 +512,11 @@ public class Report_form implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set validation_rule = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Data_obligation.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set data_obligation = new java.util.HashSet();
 	
 	private void setReport_form_id(int value) {
 		this.report_form_id = value;
@@ -664,6 +677,15 @@ public class Report_form implements Serializable {
 	
 	public java.util.Set getValidation_rule() {
 		return validation_rule;
+	}
+	
+	
+	public void setData_obligation(java.util.Set value) {
+		this.data_obligation = value;
+	}
+	
+	public java.util.Set getData_obligation() {
+		return data_obligation;
 	}
 	
 	
