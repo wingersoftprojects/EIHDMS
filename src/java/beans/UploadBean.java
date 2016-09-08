@@ -95,28 +95,24 @@ public class UploadBean implements Serializable {
     private BatchDetails batchDetails;
     private List<ValidationReport> validationReportList;
 
-    public boolean showweekly(){
-        if(report_form==null){
-        return false;
-        }else{
-            if(report_form.getReport_form_frequency().equals("Weekly")){
-                return true;
-            }
+    public boolean showweekly() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Weekly")) {
+            return true;
         }
         return false;
     }
-    public boolean showmonthly(){
-        if(report_form==null){
-        return false;
-        }else{
-            if(report_form.getReport_form_frequency().equals("Monthly") || report_form.getReport_form_frequency().equals("Weekly")){
-                return true;
-            }
+
+    public boolean showmonthly() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Monthly") || report_form.getReport_form_frequency().equals("Weekly")) {
+            return true;
         }
         return false;
     }
-    
-    
+
     public BatchDetails getBatchDetails() {
         return batchDetails;
     }
@@ -521,6 +517,22 @@ public class UploadBean implements Serializable {
         }
     }
 
+    public void validate_and_load_data_to_base(int batch_id) {
+        String sql = "{call sp_validate_data(?,?,?)}";
+        ResultSet rs = null;
+        try {
+
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, report_form_group.getReport_form_group_id());
+            ps.setInt(2, batch_id);
+            ps.setString(3, report_form.getLowest_report_form_level());
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }
+
     public void load_interface() {
         if (!interface_datas.isEmpty()) {
             try {
@@ -554,7 +566,7 @@ public class UploadBean implements Serializable {
                     i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
                     i.setIs_deleted(0);
                     i.setStatus_u("Pass");
-                    i.setStatus_u_desc("Uploaded To interface pending validation");
+                    i.setStatus_u_desc("Uploaded To interface");
                     i.save();
                     //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
                 }
@@ -563,76 +575,76 @@ public class UploadBean implements Serializable {
                  * Load Base Data
                  */
 
+                validate_and_load_data_to_base(batch.getBatch_id());
+
                 /**
                  * Validate Data
                  */
-                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-                List<Interface_data> interface_datas_tovalidate = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where batch= " + batch.getBatch_id() + " AND i.data_element.report_form=" + report_form.getReport_form_id() + " AND i.data_element.report_form_group=" + report_form_group.getReport_form_group_id()).list();
-
-                if (report_form.getLowest_report_form_level().equals("Facility")) {
-                    Set<String> facility_hierarchyset = new HashSet();
-                    for (Interface_data interface_data : interface_datas_tovalidate) {
-                        facility_hierarchyset.add(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name());
-                    }
-                    for (String facilityhierarchy : facility_hierarchyset) {
-                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,health_facility_name)", facilityhierarchy);
-                        validationtext += validate_upload_existing_data(facilityhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
-                        for (Interface_data interface_data : interface_datas_tovalidate) {
-                            if (facilityhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name())) {
-                                set_Status_V(interface_data);
-                            }
-                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
-                        }
-                    }
-                }
-                if (report_form.getLowest_report_form_level().equals("Parish")) {
-                    Set<String> parish_hierarchyset = new HashSet();
-                    for (Interface_data interface_data : interface_datas_tovalidate) {
-                        parish_hierarchyset.add(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name());
-                    }
-                    for (String parishhierarchy : parish_hierarchyset) {
-                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,parish_name)", parishhierarchy);
-                        //validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
-                        validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
-                        for (Interface_data interface_data : interface_datas_tovalidate) {
-                            if (parishhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name())) {
-                                set_Status_V(interface_data);
-                            }
-                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
-                        }
-                    }
-                }
-                if (report_form.getLowest_report_form_level().equals("District")) {
-                    Set<String> district_hierarchyset = new HashSet();
-                    for (Interface_data interface_data : interface_datas_tovalidate) {
-                        district_hierarchyset.add(interface_data.getDistrict_name());
-                    }
-                    for (String districthierarchy : district_hierarchyset) {
-                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name)", districthierarchy);
-                        //validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
-                        validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
-                        for (Interface_data interface_data : interface_datas_tovalidate) {
-                            if (districthierarchy.equals(interface_data.getDistrict_name())) {
-                                set_Status_V(interface_data);
-                            }
-                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
-                        }
-                    }
-                }
-                transaction.commit();
-
+//                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+//                List<Interface_data> interface_datas_tovalidate = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where batch= " + batch.getBatch_id() + " AND i.data_element.report_form=" + report_form.getReport_form_id() + " AND i.data_element.report_form_group=" + report_form_group.getReport_form_group_id()).list();
+//
+//                if (report_form.getLowest_report_form_level().equals("Facility")) {
+//                    Set<String> facility_hierarchyset = new HashSet();
+//                    for (Interface_data interface_data : interface_datas_tovalidate) {
+//                        facility_hierarchyset.add(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name());
+//                    }
+//                    for (String facilityhierarchy : facility_hierarchyset) {
+//                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,health_facility_name)", facilityhierarchy);
+//                        validationtext += validate_upload_existing_data(facilityhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
+//                        for (Interface_data interface_data : interface_datas_tovalidate) {
+//                            if (facilityhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name())) {
+//                                set_Status_V(interface_data);
+//                            }
+//                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
+//                        }
+//                    }
+//                }
+//                if (report_form.getLowest_report_form_level().equals("Parish")) {
+//                    Set<String> parish_hierarchyset = new HashSet();
+//                    for (Interface_data interface_data : interface_datas_tovalidate) {
+//                        parish_hierarchyset.add(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name());
+//                    }
+//                    for (String parishhierarchy : parish_hierarchyset) {
+//                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,parish_name)", parishhierarchy);
+//                        validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
+//                        for (Interface_data interface_data : interface_datas_tovalidate) {
+//                            if (parishhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name())) {
+//                                set_Status_V(interface_data);
+//                            }
+//                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
+//                        }
+//                    }
+//                }
+//                if (report_form.getLowest_report_form_level().equals("District")) {
+//                    Set<String> district_hierarchyset = new HashSet();
+//                    for (Interface_data interface_data : interface_datas_tovalidate) {
+//                        district_hierarchyset.add(interface_data.getDistrict_name());
+//                    }
+//                    for (String districthierarchy : district_hierarchyset) {
+//                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name)", districthierarchy);
+//                        //validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
+//                        validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
+//                        for (Interface_data interface_data : interface_datas_tovalidate) {
+//                            if (districthierarchy.equals(interface_data.getDistrict_name())) {
+//                                set_Status_V(interface_data);
+//                            }
+//                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
+//                        }
+//                    }
+//                }
+//                transaction.commit();
                 /**
                  * End Validate Data
                  */
-                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                //transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                 /**
                  * Move data to base
                  */
-                move_data_to_base(batch);
+                //move_data_to_base(batch);
                 /**
                  * End move data to base
                  */
-                transaction.commit();
+                //transaction.commit();
                 loginBean.saveMessage();
                 generate_validation_report(batch.getBatch_id());
             } catch (PersistentException ex) {
