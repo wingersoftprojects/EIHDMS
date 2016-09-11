@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Data Loaded Status Report">
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="year_value" value="Select Year:" />
+                    <p:selectOneMenu id="year_value" value="#{data_obligationBean.selected_year}" style="width:125px" required="true" requiredMessage="Year is Required">
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                        <p:ajax process="@this" update="data_items"/>
+                    </p:selectOneMenu>
+                    <!-- <h:commandButton value="Download Excel Template" action="#{data_elementBean.retrieveReportFormOrderedDataElements(uploadBean.report_form,uploadBean.report_form_group)}" /> -->
+                </p:panelGrid>
+                <p:panelGrid id="data_items">
+                    <p:dataTable value="#{data_obligationBean.report_form_monthlyList}" var="rf">
+                        <p:column headerText="Report Form">
+                            <h:outputText value="#{rf.report_form_name}"/>
+                        </p:column>
+                        <p:column headerText="Entity">
+                            <h:outputText value="#{rf.lowest_report_form_level}"/>
+                        </p:column>
+                        <p:column headerText="Frequency">
+                            <h:outputText value="#{rf.report_form_frequency}"/>
+                        </p:column>
+
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,1)}">
+                            <p:column headerText="Jan">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,2)}">
+                            <p:column headerText="Feb">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,3)}">
+                            <p:column headerText="Mar">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,4)}">
+                            <p:column headerText="Apr">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,5)}">
+                            <p:column headerText="May">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,6)}">
+                            <p:column headerText="Jun">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,7)}">
+                            <p:column headerText="Jul">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,8)}">
+                            <p:column headerText="Aug">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,9)}">
+                            <p:column headerText="Sep">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,10)}">
+                            <p:column headerText="Oct">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,11)}">
+                            <p:column headerText="Nov">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                        <ui:repeat var="ob" value="#{data_obligationBean.getData_obligation_monthly(rf.report_dorm_id,data_obligationBean.selected_year,12)}">
+                            <p:column headerText="Dec">
+                                <h:outputText value="#{100*(ob.month_records_d/ob.count_district)}% Ds" rendered="#{rf.lowest_report_porm_level=='District'}"/>
+                                <h:outputText value="#{100*(ob.month_records_p/ob.count_parish)}% Ps" rendered="#{rf.lowest_report_porm_level=='Parish'}"/>
+                                <h:outputText value="#{100*(ob.month_records_f/ob.count_facility)}% Fs" rendered="#{rf.lowest_report_porm_level=='Facility'}"/>
+                                <h:outputText value="#{100*(ob.month_des/ob.count_de)}% DEs"/>
+                            </p:column>
+                        </ui:repeat>
+                    </p:dataTable>
+                </p:panelGrid>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

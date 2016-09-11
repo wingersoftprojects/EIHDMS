@@ -48,6 +48,7 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression report_period_bi_month;
 	
 	public Base_dataDetachedCriteria() {
 		super(eihdms.Base_data.class, eihdms.Base_dataCriteria.class);
@@ -80,6 +81,7 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 	}
 	
 	public Base_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -113,6 +115,7 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {

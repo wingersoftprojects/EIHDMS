@@ -54,6 +54,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final IntegerExpression parish_id;
 	public final IntegerExpression sub_county_id;
 	public final IntegerExpression district_id;
+	public final IntegerExpression report_period_bi_month;
 	
 	public Interface_dataDetachedCriteria() {
 		super(eihdms.Interface_data.class, eihdms.Interface_dataCriteria.class);
@@ -92,6 +93,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		parish_id = new IntegerExpression("parish_id", this.getDetachedCriteria());
 		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
 		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 	}
 	
 	public Interface_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -131,6 +133,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		parish_id = new IntegerExpression("parish_id", this.getDetachedCriteria());
 		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
 		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {

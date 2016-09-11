@@ -54,6 +54,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression parish_id;
 	public final IntegerExpression sub_county_id;
 	public final IntegerExpression district_id;
+	public final IntegerExpression report_period_bi_month;
 	
 	public Interface_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -92,6 +93,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		parish_id = new IntegerExpression("parish_id", this);
 		sub_county_id = new IntegerExpression("sub_county_id", this);
 		district_id = new IntegerExpression("district_id", this);
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this);
 	}
 	
 	public Interface_dataCriteria(PersistentSession session) {

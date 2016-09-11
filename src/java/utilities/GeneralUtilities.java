@@ -23,6 +23,8 @@ import eihdms.Technical_area;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -73,6 +75,18 @@ public class GeneralUtilities implements Serializable {
 
     public static SimpleDateFormat simpleDateFormatDate() {
         return new SimpleDateFormat("yyyy-MM-ddd");
+    }
+    
+    public static Integer getCurrentYear(){
+        int current_year=0;
+        current_year= Calendar.getInstance().get(Calendar.YEAR);
+        return current_year;
+    }
+    
+    public static Integer getCurrentMonth(){
+        int current_month=0;
+        current_month= Calendar.getInstance().get(Calendar.MONTH)+1;
+        return current_month;
     }
 
     public String checkdoctype(String docurl) {

@@ -48,6 +48,7 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression report_period_bi_month;
 	
 	public Base_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -80,6 +81,7 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this);
 	}
 	
 	public Base_dataCriteria(PersistentSession session) {

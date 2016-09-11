@@ -529,6 +529,9 @@ public class Base_data implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="report_period_bi_month", nullable=true, length=11)	
+	private Integer report_period_bi_month;
+	
 	private void setBase_data_id(int value) {
 		this.base_data_id = value;
 	}
@@ -675,6 +678,18 @@ public class Base_data implements Serializable {
 	
 	public Integer getReport_period_year() {
 		return report_period_year;
+	}
+	
+	public void setReport_period_bi_month(int value) {
+		setReport_period_bi_month(new Integer(value));
+	}
+	
+	public void setReport_period_bi_month(Integer value) {
+		this.report_period_bi_month = value;
+	}
+	
+	public Integer getReport_period_bi_month() {
+		return report_period_bi_month;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

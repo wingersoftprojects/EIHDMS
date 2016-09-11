@@ -37,6 +37,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression user_action;
 	public final CollectionExpression report_form_group;
 	public final CollectionExpression validation_rule;
+	public final CollectionExpression data_obligation;
 	
 	public Report_formCriteria(Criteria criteria) {
 		super(criteria);
@@ -58,6 +59,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		user_action = new CollectionExpression("user_action", this);
 		report_form_group = new CollectionExpression("report_form_group", this);
 		validation_rule = new CollectionExpression("validation_rule", this);
+		data_obligation = new CollectionExpression("data_obligation", this);
 	}
 	
 	public Report_formCriteria(PersistentSession session) {
@@ -90,6 +92,10 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public Validation_ruleCriteria createValidation_ruleCriteria() {
 		return new Validation_ruleCriteria(createCriteria("validation_rule"));
+	}
+	
+	public Data_obligationCriteria createData_obligationCriteria() {
+		return new Data_obligationCriteria(createCriteria("data_obligation"));
 	}
 	
 	public Report_form uniqueReport_form() {
