@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -37,7 +37,6 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_period_quarter;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
-	public final StringExpression report_period_name;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
 	public final TimestampExpression add_date;
@@ -76,7 +75,6 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		report_period_quarter = new IntegerExpression("report_period_quarter", this);
 		report_period_from_date = new DateExpression("report_period_from_date", this);
 		report_period_to_date = new DateExpression("report_period_to_date", this);
-		report_period_name = new StringExpression("report_period_name", this);
 		is_deleted = new IntegerExpression("is_deleted", this);
 		is_active = new IntegerExpression("is_active", this);
 		add_date = new TimestampExpression("add_date", this);

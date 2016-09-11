@@ -1,5 +1,5 @@
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package ormsamples;
@@ -40,13 +40,13 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : sub_section, data_element, is_active, is_deleted, report_form, section_order, section_name
 			leihdmsSection.save();
 			eihdms.Interface_data leihdmsInterface_data = eihdms.Interface_data.createInterface_data();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_name, report_period_to_date, report_period_from_date, data_element_value, data_element
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_to_date, report_period_from_date, data_element_value, data_element
 			leihdmsInterface_data.save();
 			eihdms.Data_element leihdmsData_element = eihdms.Data_element.createData_element();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : kpi_data_element, standard_rule, base_data, interface_data, is_active, is_deleted, sub_section, section, report_form
 			leihdmsData_element.save();
 			eihdms.Base_data leihdmsBase_data = eihdms.Base_data.createBase_data();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_name, report_period_to_date, report_period_from_date, data_element_value, data_element
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_period_to_date, report_period_from_date, data_element_value, data_element
 			leihdmsBase_data.save();
 			eihdms.Validation_rule leihdmsValidation_rule = eihdms.Validation_rule.createValidation_rule();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, validation_rule_formula, validation_rule_name, report_form_group, report_form

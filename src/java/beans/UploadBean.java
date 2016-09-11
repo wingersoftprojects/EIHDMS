@@ -93,6 +93,11 @@ public class UploadBean implements Serializable {
     private Integer report_period_month;
     private Integer report_period_week;
     private BatchDetails batchDetails;
+    private Integer report_period_bi_month;
+    private String insert_string;
+    private String table_string;
+    private String database_type;
+
     private List<ValidationReport> validationReportList;
 
     public boolean showweekly() {
@@ -108,6 +113,24 @@ public class UploadBean implements Serializable {
         if (report_form == null) {
             return false;
         } else if (report_form.getReport_form_frequency().equals("Monthly") || report_form.getReport_form_frequency().equals("Weekly")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean showbimonthly() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean showquartery() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Quarterly")) {
             return true;
         }
         return false;
@@ -257,9 +280,13 @@ public class UploadBean implements Serializable {
         this.report_period_name = report_period_name;
     }
 
-    private String insert_string;
-    private String table_string;
-    private String database_type;
+    public Integer getReport_period_bi_month() {
+        return report_period_bi_month;
+    }
+
+    public void setReport_period_bi_month(Integer report_period_bi_month) {
+        this.report_period_bi_month = report_period_bi_month;
+    }
 
     public String getDatabase_type() {
         return database_type;
@@ -764,9 +791,10 @@ public class UploadBean implements Serializable {
             base_data.setData_element_value(i.getData_element_value());
             base_data.setFinancial_year(i.getFinancial_year());
             base_data.setReport_period_quarter(i.getReport_period_quarter());
+            base_data.setReport_period_bi_month(i.getReport_period_bi_month());
             base_data.setReport_period_from_date(i.getReport_period_from_date());
             base_data.setReport_period_to_date(i.getReport_period_to_date());
-            base_data.setReport_period_name(i.getReport_period_name());
+            //base_data.setReport_period_name(i.getReport_period_name());
             base_data.setReport_period_month(i.getReport_period_month());
             base_data.setReport_period_week(i.getReport_period_week());
             base_data.setReport_period_year(i.getReport_period_year());
@@ -1037,7 +1065,8 @@ public class UploadBean implements Serializable {
         interface_data.setReport_period_to_date(report_period_to_date);
         interface_data.setFinancial_year(financial_year);
         interface_data.setReport_period_quarter(report_period_quarter);
-        interface_data.setReport_period_name(report_period_name);
+        //interface_data.setReport_period_name(report_period_name);
+        interface_data.setReport_period_bi_month(report_period_bi_month);
         interface_data.setReport_period_month(report_period_month);
         interface_data.setReport_period_week(report_period_week);
         interface_data.setReport_period_year(report_period_year);
@@ -1272,7 +1301,8 @@ public class UploadBean implements Serializable {
                 interface_data.setReport_period_quarter(this.getReport_period_quarter());
                 interface_data.setReport_period_from_date(this.getReport_period_from_date());
                 interface_data.setReport_period_to_date(this.getReport_period_to_date());
-                interface_data.setReport_period_name(this.getReport_period_name());
+                //interface_data.setReport_period_name(this.getReport_period_name());
+                interface_data.setReport_period_bi_month(this.getReport_period_bi_month());
                 interface_data.setIs_deleted(0);
                 interface_data.setIs_active(1);
                 interface_datas.add(interface_data);
@@ -1361,7 +1391,8 @@ public class UploadBean implements Serializable {
                         base_data.setReport_period_quarter(i.getReport_period_quarter());
                         base_data.setReport_period_from_date(i.getReport_period_from_date());
                         base_data.setReport_period_to_date(i.getReport_period_to_date());
-                        base_data.setReport_period_name(i.getReport_period_name());
+                        //base_data.setReport_period_name(i.getReport_period_name());
+                        base_data.setReport_period_bi_month(i.getReport_period_bi_month());
                         base_data.setIs_active(1);
                         base_data.setAdd_date(new Timestamp(new Date().getTime()));
                         base_data.setAdd_by(loginBean.getUser_detail().getUser_detail_id());

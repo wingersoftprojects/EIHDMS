@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -468,9 +468,6 @@ public class Interface_data implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private java.util.Date report_period_to_date;
 	
-	@Column(name="report_period_name", nullable=false, length=100)	
-	private String report_period_name;
-	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
 	
@@ -580,14 +577,6 @@ public class Interface_data implements Serializable {
 	
 	public java.util.Date getReport_period_to_date() {
 		return report_period_to_date;
-	}
-	
-	public void setReport_period_name(String value) {
-		this.report_period_name = value;
-	}
-	
-	public String getReport_period_name() {
-		return report_period_name;
 	}
 	
 	public void setIs_deleted(int value) {
