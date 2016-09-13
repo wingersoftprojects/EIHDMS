@@ -23,43 +23,71 @@
                         <f:selectItems value="#{report_form_groupBean.getts(data_element_AnalysisBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
                         <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel for="financial_year" value="Financial Year:" />
-                    <p:selectOneMenu id="financial_year" value="#{data_element_AnalysisBean.financial_year}" style="width:125px" required="true" requiredMessage="Financial Year is Required" converter="financial_yearConverter">
-                        <f:selectItem itemLabel="" />
-                        <f:selectItems value="#{financial_yearBean.tsActive}" var="item" itemLabel="#{item.financial_year_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Report Period Quarter:" for="report_period_quarter"/>
-                    <p:selectOneMenu id="report_period_quarter" value="#{data_element_AnalysisBean.report_period_quarter}" required="true" requiredMessage="Technical area is active field is required">
+                    <p:outputLabel value="Calendar Year:" for="report_period_year"/>
+                    <p:selectOneMenu id="report_period_year" value="#{data_element_AnalysisBean.report_period_year}" required="true" requiredMessage="Calendar year field is required">
                         <f:selectItem itemLabel="Select One" itemValue="" />
-                        <f:selectItem itemLabel="Q1" itemValue="1" />
-                        <f:selectItem itemLabel="Q2" itemValue="2" />
-                        <f:selectItem itemLabel="Q3" itemValue="3" />
-                        <f:selectItem itemLabel="Q4" itemValue="4" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
                         <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Report Period Start date:" for="report_period_from_date" />
-                    <p:calendar id="report_period_from_date" value="#{data_element_AnalysisBean.report_period_from_date}" title="startdate" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">
-                        <p:ajax event="dateSelect" process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
-                    </p:calendar>
-                    <p:outputLabel value="Report Period End Date:" for="report_period_to_date" />
-                    <p:calendar id="report_period_to_date" value="#{data_element_AnalysisBean.report_period_to_date}" title="report_period_to_date" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="End Date field is required">
-                        <p:ajax event="dateSelect" process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
-                    </p:calendar>
-                    <p:outputLabel value="Report Period Name:" for="report_period_name"/>
-                    <p:inputText id="report_period_name" value="#{data_element_AnalysisBean.report_period_name}">
+                    <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{data_element_AnalysisBean.showquartery()}"/>
+                    <p:selectOneMenu id="report_period_quarter" value="#{data_element_AnalysisBean.report_period_quarter}" rendered="#{data_element_AnalysisBean.showquartery()}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Q1(Jan-Apr)" itemValue="1" />
+                        <f:selectItem itemLabel="Q2(May-Aug)" itemValue="2" />
+                        <f:selectItem itemLabel="Q3(Sep-Dec)" itemValue="3" />
                         <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
-                    </p:inputText>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{data_element_AnalysisBean.showbimonthly()}"/>
+                    <p:selectOneMenu id="report_period_bi_month" value="#{data_element_AnalysisBean.report_period_bi_month}" rendered="#{data_element_AnalysisBean.showbimonthly()}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Jan-Feb" itemValue="1" />
+                        <f:selectItem itemLabel="Mar-Apr" itemValue="2" />
+                        <f:selectItem itemLabel="May-Jun" itemValue="3" />
+                        <f:selectItem itemLabel="Jul-Aug" itemValue="4" />
+                        <f:selectItem itemLabel="Sep-Oct" itemValue="5" />
+                        <f:selectItem itemLabel="Nov-Dec" itemValue="6" />
+                        <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Month:" for="report_period_month" rendered="#{data_element_AnalysisBean.showmonthly() or data_element_AnalysisBean.showweekly()}"/>
+                    <p:selectOneMenu id="report_period_month" value="#{data_element_AnalysisBean.report_period_month}" rendered="#{data_element_AnalysisBean.showmonthly() or data_element_AnalysisBean.showweekly()}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Jan" itemValue="1" />
+                        <f:selectItem itemLabel="Feb" itemValue="2" />
+                        <f:selectItem itemLabel="Mar" itemValue="3" />
+                        <f:selectItem itemLabel="Apr" itemValue="4" />
+                        <f:selectItem itemLabel="May" itemValue="5" />
+                        <f:selectItem itemLabel="Jun" itemValue="6" />
+                        <f:selectItem itemLabel="Jul" itemValue="7" />
+                        <f:selectItem itemLabel="Aug" itemValue="8" />
+                        <f:selectItem itemLabel="Sep" itemValue="9" />
+                        <f:selectItem itemLabel="Oct" itemValue="10" />
+                        <f:selectItem itemLabel="Nov" itemValue="11" />
+                        <f:selectItem itemLabel="Dec" itemValue="12" />
+                        <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Week:" for="report_period_week" rendered="#{data_element_AnalysisBean.showweekly()}"/>
+                    <p:selectOneMenu id="report_period_week" value="#{data_element_AnalysisBean.report_period_week}" rendered="#{data_element_AnalysisBean.showweekly()}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Week1" itemValue="1" />
+                        <f:selectItem itemLabel="Week2" itemValue="2" />
+                        <f:selectItem itemLabel="Week3" itemValue="3" />
+                        <f:selectItem itemLabel="Week4" itemValue="4" />
+                        <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
+                    </p:selectOneMenu>
                 </p:panelGrid>
                 <p:panel id="pivotarea">
                     <!-- 1. Create a DIV container to insert the component -->
                     <div id="pivotContainer"></div>
 
+                    <div id="pivotContainerKPI"></div>
+
                     <h:outputScript name="./component/flexmonster/flexmonster.js"/>
                     <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
                     <script type="text/javascript">
                         var jsonData = #{data_element_AnalysisBean.getjSONArray()};
-
                         var report = {
                             classicView: true,
                             dataSourceType: "json",
@@ -83,7 +111,32 @@
                             expandAll: true,
                             drillAll: true
                         };
+
+                        var report2 = {
+                            viewType: "charts",
+                            chartType: "bar",
+                            configuratorActive: true,
+                            configuratorButton: true,
+                            showChartMeasures: true,
+                            showFilterInCharts: true,
+                            //dataSourceType: "csv",
+                            //filename: "http://www.flexmonster.com/flexmonster/data/dashboard.ocsv",
+                            dataSourceType: "json",
+                            data: jsonData,
+                            pages: [],
+                            columns: [
+                                {uniqueName: "Location"}
+                            ],
+                            rows: [],
+                            measures: [
+                                {uniqueName: "DataElementValue"}
+                            ],
+                            licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+
+                        };
+
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                        var pivot2 = flexmonster.embedPivotComponent("flexmonster/", "pivotContainerKPI", "100%", "200", report2,true);
 
                     </script>
                 </p:panel>

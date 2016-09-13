@@ -393,6 +393,18 @@ public class Report_form implements Serializable {
 			for(int i = 0; i < lData_obligations.length; i++) {
 				lData_obligations[i].setReport_form(null);
 			}
+			eihdms.Kpi[] lKpis = (eihdms.Kpi[])getKpi().toArray(new eihdms.Kpi[getKpi().size()]);
+			for(int i = 0; i < lKpis.length; i++) {
+				lKpis[i].setReport_form(null);
+			}
+			eihdms.Interface_data[] lInterface_datas = (eihdms.Interface_data[])getInterface_data().toArray(new eihdms.Interface_data[getInterface_data().size()]);
+			for(int i = 0; i < lInterface_datas.length; i++) {
+				lInterface_datas[i].setReport_form(null);
+			}
+			eihdms.Base_data[] lBase_datas = (eihdms.Base_data[])getBase_data().toArray(new eihdms.Base_data[getBase_data().size()]);
+			for(int i = 0; i < lBase_datas.length; i++) {
+				lBase_datas[i].setReport_form(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -430,6 +442,18 @@ public class Report_form implements Serializable {
 			eihdms.Data_obligation[] lData_obligations = (eihdms.Data_obligation[])getData_obligation().toArray(new eihdms.Data_obligation[getData_obligation().size()]);
 			for(int i = 0; i < lData_obligations.length; i++) {
 				lData_obligations[i].setReport_form(null);
+			}
+			eihdms.Kpi[] lKpis = (eihdms.Kpi[])getKpi().toArray(new eihdms.Kpi[getKpi().size()]);
+			for(int i = 0; i < lKpis.length; i++) {
+				lKpis[i].setReport_form(null);
+			}
+			eihdms.Interface_data[] lInterface_datas = (eihdms.Interface_data[])getInterface_data().toArray(new eihdms.Interface_data[getInterface_data().size()]);
+			for(int i = 0; i < lInterface_datas.length; i++) {
+				lInterface_datas[i].setReport_form(null);
+			}
+			eihdms.Base_data[] lBase_datas = (eihdms.Base_data[])getBase_data().toArray(new eihdms.Base_data[getBase_data().size()]);
+			for(int i = 0; i < lBase_datas.length; i++) {
+				lBase_datas[i].setReport_form(null);
 			}
 			try {
 				session.delete(this);
@@ -517,6 +541,21 @@ public class Report_form implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set data_obligation = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Kpi.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set kpi = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Interface_data.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set interface_data = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Base_data.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set base_data = new java.util.HashSet();
 	
 	private void setReport_form_id(int value) {
 		this.report_form_id = value;
@@ -686,6 +725,33 @@ public class Report_form implements Serializable {
 	
 	public java.util.Set getData_obligation() {
 		return data_obligation;
+	}
+	
+	
+	public void setKpi(java.util.Set value) {
+		this.kpi = value;
+	}
+	
+	public java.util.Set getKpi() {
+		return kpi;
+	}
+	
+	
+	public void setInterface_data(java.util.Set value) {
+		this.interface_data = value;
+	}
+	
+	public java.util.Set getInterface_data() {
+		return interface_data;
+	}
+	
+	
+	public void setBase_data(java.util.Set value) {
+		this.base_data = value;
+	}
+	
+	public java.util.Set getBase_data() {
+		return base_data;
 	}
 	
 	

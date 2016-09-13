@@ -397,10 +397,6 @@ public class Data_element implements Serializable {
 			for(int i = 0; i < lStandard_rules.length; i++) {
 				lStandard_rules[i].setData_element(null);
 			}
-			eihdms.Kpi_data_element[] lKpi_data_elements = (eihdms.Kpi_data_element[])getKpi_data_element().toArray(new eihdms.Kpi_data_element[getKpi_data_element().size()]);
-			for(int i = 0; i < lKpi_data_elements.length; i++) {
-				lKpi_data_elements[i].setData_element(null);
-			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -442,10 +438,6 @@ public class Data_element implements Serializable {
 			eihdms.Standard_rule[] lStandard_rules = (eihdms.Standard_rule[])getStandard_rule().toArray(new eihdms.Standard_rule[getStandard_rule().size()]);
 			for(int i = 0; i < lStandard_rules.length; i++) {
 				lStandard_rules[i].setData_element(null);
-			}
-			eihdms.Kpi_data_element[] lKpi_data_elements = (eihdms.Kpi_data_element[])getKpi_data_element().toArray(new eihdms.Kpi_data_element[getKpi_data_element().size()]);
-			for(int i = 0; i < lKpi_data_elements.length; i++) {
-				lKpi_data_elements[i].setData_element(null);
 			}
 			try {
 				session.delete(this);
@@ -556,11 +548,6 @@ public class Data_element implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set standard_rule = new java.util.HashSet();
-	
-	@OneToMany(mappedBy="data_element", targetEntity=eihdms.Kpi_data_element.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
-	private java.util.Set kpi_data_element = new java.util.HashSet();
 	
 	private void setData_element_id(int value) {
 		this.data_element_id = value;
@@ -794,15 +781,6 @@ public class Data_element implements Serializable {
 	
 	public java.util.Set getStandard_rule() {
 		return standard_rule;
-	}
-	
-	
-	public void setKpi_data_element(java.util.Set value) {
-		this.kpi_data_element = value;
-	}
-	
-	public java.util.Set getKpi_data_element() {
-		return kpi_data_element;
 	}
 	
 	

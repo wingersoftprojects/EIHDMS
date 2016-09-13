@@ -1062,6 +1062,7 @@ public class UploadBean implements Serializable {
     private void read_excel_data(Interface_data interface_data, Map.Entry pair, Cell cell) {
         interface_data.setData_element((Data_element) pair.getValue());
         interface_data.setReport_period_from_date(report_period_from_date);
+        interface_data.setReport_form(report_form);
         interface_data.setReport_period_to_date(report_period_to_date);
         interface_data.setFinancial_year(financial_year);
         interface_data.setReport_period_quarter(report_period_quarter);

@@ -365,10 +365,10 @@ public class Kpi implements Serializable {
 	
 	public boolean deleteAndDissociate()throws PersistentException {
 		try {
-			eihdms.Kpi_data_element[] lKpi_data_elements = (eihdms.Kpi_data_element[])getKpi_data_element().toArray(new eihdms.Kpi_data_element[getKpi_data_element().size()]);
-			for(int i = 0; i < lKpi_data_elements.length; i++) {
-				lKpi_data_elements[i].setKpi(null);
+			if(getReport_form() != null) {
+				getReport_form().getKpi().remove(this);
 			}
+			
 			return delete();
 		}
 		catch(Exception e) {
@@ -379,10 +379,10 @@ public class Kpi implements Serializable {
 	
 	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
 		try {
-			eihdms.Kpi_data_element[] lKpi_data_elements = (eihdms.Kpi_data_element[])getKpi_data_element().toArray(new eihdms.Kpi_data_element[getKpi_data_element().size()]);
-			for(int i = 0; i < lKpi_data_elements.length; i++) {
-				lKpi_data_elements[i].setKpi(null);
+			if(getReport_form() != null) {
+				getReport_form().getKpi().remove(this);
 			}
+			
 			try {
 				session.delete(this);
 				return true;
@@ -402,11 +402,19 @@ public class Kpi implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_KPI_KPI_ID_GENERATOR", strategy="native")	
 	private int kpi_id;
 	
-	@Column(name="kpi_name", nullable=true, length=255)	
+	@Column(name="kpi_name", nullable=false, length=255)	
 	private String kpi_name;
 	
-	@Column(name="kpi_summary_function", nullable=true, length=100)	
+	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) })	
+	private eihdms.Report_form report_form;
+	
+	@Column(name="kpi_summary_function", nullable=false, length=100)	
 	private String kpi_summary_function;
+	
+	@Column(name="data_elements_involved", nullable=false)	
+	private String data_elements_involved;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
@@ -425,11 +433,6 @@ public class Kpi implements Serializable {
 	
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
-	
-	@OneToMany(mappedBy="kpi", targetEntity=eihdms.Kpi_data_element.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
-	private java.util.Set kpi_data_element = new java.util.HashSet();
 	
 	private void setKpi_id(int value) {
 		this.kpi_id = value;
@@ -515,14 +518,21 @@ public class Kpi implements Serializable {
 		return last_edit_by;
 	}
 	
-	public void setKpi_data_element(java.util.Set value) {
-		this.kpi_data_element = value;
+	public void setData_elements_involved(String value) {
+		this.data_elements_involved = value;
 	}
 	
-	public java.util.Set getKpi_data_element() {
-		return kpi_data_element;
+	public String getData_elements_involved() {
+		return data_elements_involved;
 	}
 	
+	public void setReport_form(eihdms.Report_form value) {
+		this.report_form = value;
+	}
+	
+	public eihdms.Report_form getReport_form() {
+		return report_form;
+	}
 	
 	@Override	
 	public int hashCode() {

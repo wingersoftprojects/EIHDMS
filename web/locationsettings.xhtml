@@ -26,7 +26,7 @@
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="2">
                 <p:fieldset legend="Regions">
-                    <p:panelGrid columns="2">
+                    <h:panelGrid columns="2">
                         <p:outputLabel value="Region Name:" for="region_name"/>
                         <p:inputText id="region_name" value="#{regionBean.selected.region_name}" required="true" requiredMessage="District Name is required"/>
                         <p:outputLabel value="Is Active?:" for="is_active"/>
@@ -37,7 +37,7 @@
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" action="#{regionBean.save(loginBean.user_detail.user_detail_id)}" process="@this,region_name,is_active" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{districtBean.cancel()}" update="@form" process="@this"/>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="region_table" value="#{regionBean.ts}" var="item" rows="10"
                          paginator="true"
@@ -64,7 +64,7 @@
                 </p:dataTable>
 
                 <p:fieldset legend="District">
-                    <p:panelGrid columns="2">
+                    <h:panelGrid columns="2">
                         <p:outputLabel value="District Name:" for="district_name"/>
                         <p:inputText id="district_name" value="#{districtBean.selected.district_name}" required="true" requiredMessage="District Name is required"/>
                         <p:outputLabel for="region" value="Region:" />
@@ -81,7 +81,7 @@
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" process="district_name,is_active2,region,@this" action="#{districtBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{districtBean.cancel()}" update="@form" process="@this"/>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="district_table" value="#{districtBean.ts}" var="item" rows="10"
                          paginator="true"
@@ -111,7 +111,7 @@
                 </p:dataTable>
 
                 <p:fieldset legend="Sub District">
-                    <p:panelGrid columns="2">
+                    <h:panelGrid columns="2">
                         <p:outputLabel for="district3" value="District:" />
                         <p:selectOneMenu id="district3" value="#{sub_districtBean.selected.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
@@ -128,7 +128,7 @@
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" process="sub_district_name,is_active6,district3,@this" action="#{sub_districtBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sub_districtBean.cancel()}" update="@form" process="@this"/>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="sub_district_table" value="#{sub_districtBean.ts}" var="item" rows="10"
                          paginator="true"
@@ -161,7 +161,7 @@
                 </p:dataTable>
 
                 <p:fieldset legend="County">
-                    <p:panelGrid columns="2">
+                    <h:panelGrid columns="2">
                         <p:outputLabel for="district" value="District:" />
                         <p:selectOneMenu id="district" value="#{countyBean.selected.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
@@ -178,7 +178,7 @@
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" process="county_name,is_active3,district,@this" action="#{countyBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{countyBean.cancel()}" update="@form" process="@this"/>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="county_table" value="#{countyBean.ts}" var="item" rows="10"
                          paginator="true"
@@ -211,7 +211,7 @@
                 </p:dataTable>
 
                 <p:fieldset legend="Sub County">
-                    <p:panelGrid columns="2">
+                    <h:panelGrid columns="2">
                         <p:outputLabel for="district2" value="District:" />
                         <p:selectOneMenu id="district2" value="#{countyBean.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
@@ -234,7 +234,7 @@
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" process="sub_county_name,is_active4,county,@this" action="#{sub_countyBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{sub_countyBean.cancel()}" update="@form" process="@this"/>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="sub_county_table" value="#{sub_countyBean.ts}" var="item" rows="10"
                          paginator="true"
@@ -270,7 +270,7 @@
                 </p:dataTable>
 
                 <p:fieldset legend="Parish">
-                    <p:panelGrid columns="2">
+                    <h:panelGrid columns="2">
                         <p:outputLabel for="district4" value="District:" />
                         <p:selectOneMenu id="district4" value="#{countyBean.district}" style="width:125px" required="true" requiredMessage="District field is Required" converter="districtConverter">
                             <f:selectItem itemLabel="" />
@@ -299,7 +299,7 @@
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" process="parish_name,is_active5,sub_county,@this" action="#{parishBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{parishBean.cancel()}" update="@form" process="@this"/>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="parish_table" value="#{parishBean.ts}" var="item" rows="10"
                          paginator="true"

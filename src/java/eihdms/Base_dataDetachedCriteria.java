@@ -48,6 +48,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final IntegerExpression report_period_bi_month;
+	public final IntegerExpression report_formId;
+	public final AssociationExpression report_form;
 	
 	public Base_dataDetachedCriteria() {
 		super(eihdms.Base_data.class, eihdms.Base_dataCriteria.class);
@@ -80,6 +82,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
+		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
+		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 	}
 	
 	public Base_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -113,6 +117,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
+		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
+		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {
@@ -141,6 +147,10 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Financial_yearDetachedCriteria createFinancial_yearCriteria() {
 		return new Financial_yearDetachedCriteria(createCriteria("financial_year"));
+	}
+	
+	public Report_formDetachedCriteria createReport_formCriteria() {
+		return new Report_formDetachedCriteria(createCriteria("report_form"));
 	}
 	
 	public Base_data uniqueBase_data(PersistentSession session) {

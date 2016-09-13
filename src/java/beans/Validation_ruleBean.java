@@ -140,11 +140,11 @@ public class Validation_ruleBean extends AbstractBean<Validation_rule> implement
         if (validation_formula == null) {
             validation_formula = "";
         }
-        this.getSelected().setValidation_rule_formula(validation_formula + " Col" + data_element.getData_element_id());;
+        this.getSelected().setValidation_rule_formula(validation_formula + " DE" + data_element.getData_element_id());;
         String data_elements_involved = this.getSelected().getData_elements_involved();
         if (data_elements_involved == null) {
             data_elements_involved = "";
         }
-        this.getSelected().setData_elements_involved(data_elements_involved + "\n" + " Col" + data_element.getData_element_id() + "=>" + data_element.getData_element_name());
+        this.getSelected().setData_elements_involved(data_elements_involved + "\n" + " DE" + data_element.getData_element_id() + "=>" + data_element.getData_element_name());
     }
 }

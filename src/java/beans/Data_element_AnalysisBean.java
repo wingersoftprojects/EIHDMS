@@ -7,11 +7,9 @@ package beans;
 
 import eihdms.Base_data;
 import eihdms.EIHDMSPersistentManager;
-import eihdms.Financial_year;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,14 +31,49 @@ public class Data_element_AnalysisBean {
     private Report_form report_form;
     private List<Report_form_group> report_form_groups;
     private List<Report_form> report_forms;
-    private Date report_period_from_date;
-    private Date report_period_to_date;
-    private Financial_year financial_year;
-    private int report_period_quarter;
-    private String report_period_name;
+    private Integer report_period_year;
+    private Integer report_period_quarter;
+    private Integer report_period_month;
+    private String report_period_week;
     private List<Base_data> base_dataList;
     private String condition;
     private JSONArray jSONArray;
+
+    public boolean showweekly() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Weekly")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean showmonthly() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Monthly") || report_form.getReport_form_frequency().equals("Weekly")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean showbimonthly() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean showquartery() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Quarterly")) {
+            return true;
+        }
+        return false;
+    }
 
     public Report_form_group getReport_form_group() {
         return report_form_group;
@@ -74,46 +107,6 @@ public class Data_element_AnalysisBean {
         this.report_forms = report_forms;
     }
 
-    public Date getReport_period_from_date() {
-        return report_period_from_date;
-    }
-
-    public void setReport_period_from_date(Date report_period_from_date) {
-        this.report_period_from_date = report_period_from_date;
-    }
-
-    public Date getReport_period_to_date() {
-        return report_period_to_date;
-    }
-
-    public void setReport_period_to_date(Date report_period_to_date) {
-        this.report_period_to_date = report_period_to_date;
-    }
-
-    public Financial_year getFinancial_year() {
-        return financial_year;
-    }
-
-    public void setFinancial_year(Financial_year financial_year) {
-        this.financial_year = financial_year;
-    }
-
-    public int getReport_period_quarter() {
-        return report_period_quarter;
-    }
-
-    public void setReport_period_quarter(int report_period_quarter) {
-        this.report_period_quarter = report_period_quarter;
-    }
-
-    public String getReport_period_name() {
-        return report_period_name;
-    }
-
-    public void setReport_period_name(String report_period_name) {
-        this.report_period_name = report_period_name;
-    }
-
     public List<Base_data> getBase_dataList() {
         return base_dataList;
     }
@@ -130,6 +123,38 @@ public class Data_element_AnalysisBean {
         this.condition = condition;
     }
 
+    public Integer getReport_period_year() {
+        return report_period_year;
+    }
+
+    public void setReport_period_year(Integer report_period_year) {
+        this.report_period_year = report_period_year;
+    }
+
+    public Integer getReport_period_quarter() {
+        return report_period_quarter;
+    }
+
+    public void setReport_period_quarter(Integer report_period_quarter) {
+        this.report_period_quarter = report_period_quarter;
+    }
+
+    public Integer getReport_period_month() {
+        return report_period_month;
+    }
+
+    public void setReport_period_month(Integer report_period_month) {
+        this.report_period_month = report_period_month;
+    }
+
+    public String getReport_period_week() {
+        return report_period_week;
+    }
+
+    public void setReport_period_week(String report_period_week) {
+        this.report_period_week = report_period_week;
+    }
+    
     public void filter_base_data() {
         condition = "";
         if (report_form != null) {
@@ -142,18 +167,32 @@ public class Data_element_AnalysisBean {
                 condition += "b.data_element.report_form_group=" + report_form_group.getReport_form_group_id();
             }
         }
-        if (financial_year != null) {
+        if (report_period_year != null) {
             if (!condition.isEmpty()) {
-                condition += " AND b.financial_year=" + financial_year.getFinancial_year_id();
+                condition += " AND report_period_year=" + report_period_year;
             } else {
-                condition += "b.financial_year=" + financial_year.getFinancial_year_id();
+                condition += "report_period_year=" + report_period_year;
             }
         }
-        if (report_period_quarter != 0) {
+        if (report_period_quarter != null) {
             if (!condition.isEmpty()) {
                 condition += " AND report_period_quarter=" + report_period_quarter;
             } else {
                 condition += "report_period_quarter=" + report_period_quarter;
+            }
+        }
+        if (report_period_month != null) {
+            if (!condition.isEmpty()) {
+                condition += " AND report_period_month=" + report_period_month;
+            } else {
+                condition += "report_period_month=" + report_period_month;
+            }
+        }
+        if (report_period_week != null) {
+            if (!condition.isEmpty()) {
+                condition += " AND report_period_week=" + report_period_week;
+            } else {
+                condition += "report_period_week=" + report_period_week;
             }
         }
         try {

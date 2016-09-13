@@ -36,9 +36,8 @@
                             </p:inputTextarea>
                             <p:outputLabel value="Is Active?:" for="is_active"/>
                             <p:selectOneMenu id="is_active" value="#{validation_ruleBean.selected.is_active}" required="true" requiredMessage="Section is active field is required">
-                                <!-- <f:selectItem itemLabel="Select One" itemValue="" /> -->
-                                <f:selectItem itemLabel="Yes" itemValue="1" />
                                 <f:selectItem itemLabel="No" itemValue="0" />
+                                <f:selectItem itemLabel="Yes" itemValue="1" />
                             </p:selectOneMenu>
                             <p:outputLabel value="Validation Rule Formula:" for="validation_rule_formula"/>
                             <p:inputTextarea cols="60" rows="10" value="#{validation_ruleBean.selected.validation_rule_formula}" id="validation_rule_formula" required="true" requiredMessage="Validation Formula Field is required!">
@@ -49,11 +48,11 @@
                                 <p:outputLabel value="Data Element:" for="dataelement"/>
                                 <p:autoComplete id="dataelement" value="#{validation_ruleBean.data_element}"
                                                 completeMethod="#{validation_ruleBean.completeData_element}"
-                                                var="data_element" itemLabel="#{data_element.data_element_name} (Col#{data_element.data_element_id})" itemValue="#{data_element}" 
+                                                var="data_element" itemLabel="#{data_element.data_element_name} (DE#{data_element.data_element_id})" itemValue="#{data_element}" 
                                                 converter="data_elementConverter" forceSelection="true"
-                                                minQueryLength="3" dropdown="true">
+                                                minQueryLength="3" dropdown="true" maxResults="8">
                                     <p:column headerText="Data Element Name" style="text-align: left">
-                                        <h:outputText value="#{data_element.data_element_name} (Col#{data_element.data_element_id})">
+                                        <h:outputText value="#{data_element.data_element_name} (DE#{data_element.data_element_id})">
                                         </h:outputText>
                                     </p:column>
                                     <p:column headerText="Report Form" style="text-align: left">

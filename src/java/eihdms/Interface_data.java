@@ -377,6 +377,10 @@ public class Interface_data implements Serializable {
 				getFinancial_year().getInterface_data().remove(this);
 			}
 			
+			if(getReport_form() != null) {
+				getReport_form().getInterface_data().remove(this);
+			}
+			
 			return delete();
 		}
 		catch(Exception e) {
@@ -397,6 +401,10 @@ public class Interface_data implements Serializable {
 			
 			if(getFinancial_year() != null) {
 				getFinancial_year().getInterface_data().remove(this);
+			}
+			
+			if(getReport_form() != null) {
+				getReport_form().getInterface_data().remove(this);
 			}
 			
 			try {
@@ -518,6 +526,11 @@ public class Interface_data implements Serializable {
 	
 	@Column(name="report_period_bi_month", nullable=true, length=11)	
 	private Integer report_period_bi_month;
+	
+	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") })	
+	private eihdms.Report_form report_form;
 	
 	private void setInterface_data_id(int value) {
 		this.interface_data_id = value;
@@ -821,6 +834,14 @@ public class Interface_data implements Serializable {
 	
 	public eihdms.Batch getBatch() {
 		return batch;
+	}
+	
+	public void setReport_form(eihdms.Report_form value) {
+		this.report_form = value;
+	}
+	
+	public eihdms.Report_form getReport_form() {
+		return report_form;
 	}
 	
 	@Override	

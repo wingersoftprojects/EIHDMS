@@ -54,6 +54,8 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression sub_county_id;
 	public final IntegerExpression district_id;
 	public final IntegerExpression report_period_bi_month;
+	public final IntegerExpression report_formId;
+	public final AssociationExpression report_form;
 	
 	public Interface_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -92,6 +94,8 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		sub_county_id = new IntegerExpression("sub_county_id", this);
 		district_id = new IntegerExpression("district_id", this);
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this);
+		report_formId = new IntegerExpression("report_form.report_form_id", this);
+		report_form = new AssociationExpression("report_form", this);
 	}
 	
 	public Interface_dataCriteria(PersistentSession session) {
@@ -112,6 +116,10 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	
 	public Financial_yearCriteria createFinancial_yearCriteria() {
 		return new Financial_yearCriteria(createCriteria("financial_year"));
+	}
+	
+	public Report_formCriteria createReport_formCriteria() {
+		return new Report_formCriteria(createCriteria("report_form"));
 	}
 	
 	public Interface_data uniqueInterface_data() {

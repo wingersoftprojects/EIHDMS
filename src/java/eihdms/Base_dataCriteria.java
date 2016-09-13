@@ -48,6 +48,8 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final IntegerExpression report_period_bi_month;
+	public final IntegerExpression report_formId;
+	public final AssociationExpression report_form;
 	
 	public Base_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -80,6 +82,8 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this);
+		report_formId = new IntegerExpression("report_form.report_form_id", this);
+		report_form = new AssociationExpression("report_form", this);
 	}
 	
 	public Base_dataCriteria(PersistentSession session) {
@@ -116,6 +120,10 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	
 	public Financial_yearCriteria createFinancial_yearCriteria() {
 		return new Financial_yearCriteria(createCriteria("financial_year"));
+	}
+	
+	public Report_formCriteria createReport_formCriteria() {
+		return new Report_formCriteria(createCriteria("report_form"));
 	}
 	
 	public Base_data uniqueBase_data() {

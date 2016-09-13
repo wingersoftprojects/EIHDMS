@@ -102,9 +102,6 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Kpi leihdmsKpi = eihdms.Kpi.loadKpiByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsKpi.save();
-			eihdms.Kpi_data_element leihdmsKpi_data_element = eihdms.Kpi_data_element.loadKpi_data_elementByQuery(null, null);
-			// Update the properties of the persistent object
-			leihdmsKpi_data_element.save();
 			eihdms.Data_obligation leihdmsData_obligation = eihdms.Data_obligation.loadData_obligationByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsData_obligation.save();
@@ -302,12 +299,6 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsKpiCriteria.kpi_id.eq();
 		System.out.println(leihdmsKpiCriteria.uniqueKpi());
-		
-		System.out.println("Retrieving Kpi_data_element by Kpi_data_elementCriteria");
-		eihdms.Kpi_data_elementCriteria leihdmsKpi_data_elementCriteria = new eihdms.Kpi_data_elementCriteria();
-		// Please uncomment the follow line and fill in parameter(s)
-		//leihdmsKpi_data_elementCriteria.kpi_data_element_id.eq();
-		System.out.println(leihdmsKpi_data_elementCriteria.uniqueKpi_data_element());
 		
 		System.out.println("Retrieving Data_obligation by Data_obligationCriteria");
 		eihdms.Data_obligationCriteria leihdmsData_obligationCriteria = new eihdms.Data_obligationCriteria();

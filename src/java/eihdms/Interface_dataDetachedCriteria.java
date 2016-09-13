@@ -54,6 +54,8 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final IntegerExpression sub_county_id;
 	public final IntegerExpression district_id;
 	public final IntegerExpression report_period_bi_month;
+	public final IntegerExpression report_formId;
+	public final AssociationExpression report_form;
 	
 	public Interface_dataDetachedCriteria() {
 		super(eihdms.Interface_data.class, eihdms.Interface_dataCriteria.class);
@@ -92,6 +94,8 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
 		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
+		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
+		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 	}
 	
 	public Interface_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -131,6 +135,8 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
 		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
+		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
+		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {
@@ -143,6 +149,10 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	
 	public Financial_yearDetachedCriteria createFinancial_yearCriteria() {
 		return new Financial_yearDetachedCriteria(createCriteria("financial_year"));
+	}
+	
+	public Report_formDetachedCriteria createReport_formCriteria() {
+		return new Report_formDetachedCriteria(createCriteria("report_form"));
 	}
 	
 	public Interface_data uniqueInterface_data(PersistentSession session) {

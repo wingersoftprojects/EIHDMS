@@ -426,7 +426,7 @@ public class Validation_rule implements Serializable {
 	@Column(name="validation_rule_formula", nullable=false, length=100)	
 	private String validation_rule_formula;
 	
-	@Column(name="data_elements_involved", nullable=true)	
+	@Column(name="data_elements_involved", nullable=false)	
 	private String data_elements_involved;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	

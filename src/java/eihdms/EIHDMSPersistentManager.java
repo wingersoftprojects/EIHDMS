@@ -67,7 +67,6 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Financial_year.class);
 		configuration.addAnnotatedClass(eihdms.Batch.class);
 		configuration.addAnnotatedClass(eihdms.Kpi.class);
-		configuration.addAnnotatedClass(eihdms.Kpi_data_element.class);
 		configuration.addAnnotatedClass(eihdms.Data_obligation.class);
 		configuration.buildMappings();
 		return configuration;

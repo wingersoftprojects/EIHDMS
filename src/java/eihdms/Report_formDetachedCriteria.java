@@ -38,6 +38,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression report_form_group;
 	public final CollectionExpression validation_rule;
 	public final CollectionExpression data_obligation;
+	public final CollectionExpression kpi;
+	public final CollectionExpression interface_data;
+	public final CollectionExpression base_data;
 	
 	public Report_formDetachedCriteria() {
 		super(eihdms.Report_form.class, eihdms.Report_formCriteria.class);
@@ -60,6 +63,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		data_obligation = new CollectionExpression("data_obligation", this.getDetachedCriteria());
+		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
+		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
+		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -83,6 +89,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		data_obligation = new CollectionExpression("data_obligation", this.getDetachedCriteria());
+		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
+		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
+		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
@@ -111,6 +120,18 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Data_obligationDetachedCriteria createData_obligationCriteria() {
 		return new Data_obligationDetachedCriteria(createCriteria("data_obligation"));
+	}
+	
+	public KpiDetachedCriteria createKpiCriteria() {
+		return new KpiDetachedCriteria(createCriteria("kpi"));
+	}
+	
+	public Interface_dataDetachedCriteria createInterface_dataCriteria() {
+		return new Interface_dataDetachedCriteria(createCriteria("interface_data"));
+	}
+	
+	public Base_dataDetachedCriteria createBase_dataCriteria() {
+		return new Base_dataDetachedCriteria(createCriteria("base_data"));
 	}
 	
 	public Report_form uniqueReport_form(PersistentSession session) {

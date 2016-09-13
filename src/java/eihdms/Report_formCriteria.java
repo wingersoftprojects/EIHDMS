@@ -38,6 +38,9 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression report_form_group;
 	public final CollectionExpression validation_rule;
 	public final CollectionExpression data_obligation;
+	public final CollectionExpression kpi;
+	public final CollectionExpression interface_data;
+	public final CollectionExpression base_data;
 	
 	public Report_formCriteria(Criteria criteria) {
 		super(criteria);
@@ -60,6 +63,9 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		report_form_group = new CollectionExpression("report_form_group", this);
 		validation_rule = new CollectionExpression("validation_rule", this);
 		data_obligation = new CollectionExpression("data_obligation", this);
+		kpi = new CollectionExpression("kpi", this);
+		interface_data = new CollectionExpression("interface_data", this);
+		base_data = new CollectionExpression("base_data", this);
 	}
 	
 	public Report_formCriteria(PersistentSession session) {
@@ -96,6 +102,18 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public Data_obligationCriteria createData_obligationCriteria() {
 		return new Data_obligationCriteria(createCriteria("data_obligation"));
+	}
+	
+	public KpiCriteria createKpiCriteria() {
+		return new KpiCriteria(createCriteria("kpi"));
+	}
+	
+	public Interface_dataCriteria createInterface_dataCriteria() {
+		return new Interface_dataCriteria(createCriteria("interface_data"));
+	}
+	
+	public Base_dataCriteria createBase_dataCriteria() {
+		return new Base_dataCriteria(createCriteria("base_data"));
 	}
 	
 	public Report_form uniqueReport_form() {

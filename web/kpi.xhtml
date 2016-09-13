@@ -9,32 +9,75 @@
         <f:metadata>
             <f:event listener="#{kpiBean.init()}" type="preRenderView" />
             <f:event listener="#{kpiBean.initializelist()}" type="preRenderView" />
-            <f:event listener="#{kpi_data_elementBean.init()}" type="preRenderView" />
-            <f:event listener="#{kpi_data_elementBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
         <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl id="messages" showDetail="true" />
-            <p:panelGrid columns="2">
+            <p:panelGrid columns="1">
                 <p:fieldset legend="KPIs">
                     <p:panelGrid columns="2">
-                        <p:outputLabel value="KPI:" for="kpi_name"/>
-                        <p:inputText id="kpi_name" value="#{kpiBean.selected.kpi_name}" required="true" requiredMessage="KPI name field is required"/>
-                        <p:outputLabel value="SUMMARY FUNCTION?:" for="kpi_summary_function"/>
-                        <p:selectOneMenu id="kpi_summary_function" value="#{kpiBean.selected.kpi_summary_function}" required="true" requiredMessage="KPI Summary function field is required">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="PERCENTAGE" itemValue="PERCENTAGE" />
-                            <f:selectItem itemLabel="COUNT" itemValue="COUNT" />
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Is Active?:" for="is_active"/>
-                        <p:selectOneMenu id="is_active" value="#{kpiBean.selected.is_active}" required="true" requiredMessage="KPI is active field is required">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="Yes" itemValue="1" />
-                            <f:selectItem itemLabel="No" itemValue="0" />
-                        </p:selectOneMenu>
-                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{kpiBean.save(loginBean.user_detail.user_detail_id)}" update="@form" process="@this,kpi_name,is_active,kpi_summary_function"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{kpiBean.cancel()}" update="@form" process="@this"/>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="Report Form:" for="report_form"/>
+                            <p:selectOneMenu id="report_form" value="#{kpiBean.selected.report_form}" style="width:125px" required="true" requiredMessage="Report Form field is Required" converter="report_formConverter">
+                                <f:selectItem itemLabel="" />
+                                <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                                <p:ajax process="@this"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="KPI Name:" for="kpi_name"/>
+                            <p:inputText id="kpi_name" value="#{kpiBean.selected.kpi_name}" required="true" requiredMessage="KPI name field is required"/>
+                            <p:outputLabel value="Is Active?:" for="is_active"/>
+                            <p:selectOneMenu id="is_active" value="#{kpiBean.selected.is_active}" required="true" requiredMessage="KPI is active field is required">
+                                <f:selectItem itemLabel="Yes" itemValue="1" />
+                                <f:selectItem itemLabel="No" itemValue="0" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="SUMMARY FUNCTION?:" for="kpi_summary_function"/>
+                            <p:inputTextarea cols="80" rows="10" value="#{kpiBean.selected.kpi_summary_function}" id="kpi_summary_function" required="true" requiredMessage="Validation Formula Field is required!">
+                                <p:ajax event="blur"/>
+                            </p:inputTextarea>
+                            <p:outputLabel value=""/>
+                            <p:outputPanel>
+                                <p:outputLabel value="Data Element:" for="dataelement"/>
+                                <p:autoComplete id="dataelement" value="#{kpiBean.data_element}"
+                                                completeMethod="#{kpiBean.completeData_element}"
+                                                var="data_element" itemLabel="#{data_element.data_element_name} (DE#{data_element.data_element_id})" itemValue="#{data_element}" 
+                                                converter="data_elementConverter" forceSelection="true"
+                                                minQueryLength="3" dropdown="true" maxResults="8">
+                                    <p:column headerText="Data Element Name" style="text-align: left">
+                                        <h:outputText value="#{data_element.data_element_name} (DE#{data_element.data_element_id})">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Report Form" style="text-align: left">
+                                        <h:outputText value="#{data_element.report_form.report_form_name}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Section" style="text-align: left">
+                                        <h:outputText value="#{data_element.section.section_name}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Sub Section" style="text-align: left">
+                                        <h:outputText value="#{data_element.sub_section.sub_section_name}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:ajax event="itemSelect" listener="#{kpiBean.append_data_element()}" process="@this" update="@form"></p:ajax>
+                                    <p:ajax event="change" listener="#{kpiBean.append_data_element()}" process="@this" update="@form"></p:ajax>
+                                </p:autoComplete>
+                                <p:commandButton value="(" action="#{kpiBean.append_operand('(')}" process="@this" update="@form"/>
+                                <p:commandButton value=")" action="#{kpiBean.append_operand(')')}" process="@this" update="@form"/>
+                                <p:commandButton value="/" action="#{kpiBean.append_operand('/')}" process="@this" update="@form"/>
+                                <p:commandButton value="*" action="#{kpiBean.append_operand('*')}" process="@this" update="@form"/>
+                                <p:commandButton value="+" action="#{kpiBean.append_operand('+')}" process="@this" update="@form"/>
+                                <p:commandButton value="-" action="#{kpiBean.append_operand('-')}" process="@this" update="@form"/>
+                            </p:outputPanel>
+                            <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{kpiBean.save(loginBean.user_detail.user_detail_id)}" update="@form" process="@this,kpi_name,is_active,kpi_summary_function"/>
+                            <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{kpiBean.cancel()}" update="@form" process="@this"/>
+                        </p:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Involved Data Elements:" for="data_elements_involved"/>
+                            <p:inputTextarea cols="70" rows="20" value="#{kpiBean.selected.data_elements_involved}" id="data_elements_involved" readonly="true">
+                                <p:ajax event="blur"/>
+                            </p:inputTextarea>
+                        </h:panelGrid>
                     </p:panelGrid>
                 </p:fieldset>
 
@@ -64,89 +107,6 @@
                         </p:confirmDialog>
                     </p:column>
                 </p:dataTable>
-
-                <p:fieldset legend="KPI Data Element">
-                    <p:panelGrid columns="2">
-                        <p:outputLabel for="kpi" value="KPI:" />
-                        <p:selectOneMenu id="kpi" value="#{kpi_data_elementBean.selected.kpi}" style="width:125px" required="true" requiredMessage="KPI Name is Required" converter="kpiConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{kpiBean.tsActive}" var="item" itemLabel="#{item.kpi_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Report Form:" for="report_form"/>
-                        <p:selectOneMenu id="report_form" value="#{kpi_data_elementBean.report_form}" style="width:125px" required="true" requiredMessage="Report Form field is Required" converter="report_formConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="section"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel for="section" value="Section:" />
-                        <p:selectOneMenu id="section" value="#{kpi_data_elementBean.section}" style="width:125px" required="true" requiredMessage="Section field is Required" converter="sectionConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{report_form_groupBean.getsecions(kpi_data_elementBean.report_form)}" var="item" itemLabel="#{item.section_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Data Element:" for="dataelement"/>
-                        <p:autoComplete id="dataelement" value="#{kpi_data_elementBean.selected.data_element}"
-                                        completeMethod="#{kpi_data_elementBean.completeData_element}"
-                                        var="data_element" itemLabel="#{data_element.data_element_name}" itemValue="#{data_element}" 
-                                        converter="data_elementConverter" forceSelection="true"
-                                        minQueryLength="3" dropdown="true" required="true" requiredMessage="Data element field is required!">
-                            <p:column headerText="Data Element Name" style="text-align: left">
-                                <h:outputText value="#{data_element.data_element_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Report Form" style="text-align: left">
-                                <h:outputText value="#{data_element.report_form.report_form_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Section" style="text-align: left">
-                                <h:outputText value="#{data_element.section.section_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Sub Section" style="text-align: left">
-                                <h:outputText value="#{data_element.sub_section.sub_section_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:ajax event="itemSelect" process="@this" update="@form"></p:ajax>
-                            <p:ajax event="change" process="@this" update="@form"></p:ajax>
-                        </p:autoComplete>
-                        <p:outputLabel value="Is Active?:" for="is_active2"/>
-                        <p:selectOneMenu id="is_active2" value="#{kpi_data_elementBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="Yes" itemValue="1" />
-                            <f:selectItem itemLabel="No" itemValue="0" />
-                        </p:selectOneMenu>
-                        <p:commandButton value="SAVE" process="kpi,is_active2,dataelement,@this" action="#{kpi_data_elementBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" update="@form"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{kpi_data_elementBean.cancel()}" update="@form" process="@this"/>
-                    </p:panelGrid>
-                </p:fieldset>
-                <p:dataTable id="kpi_data_element_table" value="#{kpi_data_elementBean.ts}" var="item" rows="10"
-                             paginator="true"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,15,30,50,100">
-                    <p:column headerText="KPI">
-                        #{item.kpi.kpi_name}
-                    </p:column>
-                    <p:column headerText="KPI Data Element Name">
-                        #{item.data_element.data_element_name}
-                    </p:column>
-                    <p:column headerText="Active?">
-                        #{generalUtilities.convertYesNo(item.is_active)}
-                    </p:column>
-                    <p:column headerText="">
-                        <p:commandButton value="Edit" action="#{kpi_data_elementBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
-                        </p:commandButton>
-                        <p:commandButton value="Delete" actionListener="#{kpi_data_elementBean.delete(item)}" update="@form" process="@this">
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
-                        </p:commandButton>
-
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog>
-                    </p:column>
-                </p:dataTable>
-
             </p:panelGrid>
         </h:form>
     </ui:define>
