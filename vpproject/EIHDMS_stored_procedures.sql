@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-13 15:55:17
+Date: 2016-09-13 17:54:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,7 +57,9 @@ de.data_element_context,
 rf.report_form_name,
 rfg.report_form_group_name,
 de.report_form_id,
-de.report_form_group_id
+de.report_form_group_id,
+r.region_id,
+c.county_id
 FROM
 base_data AS bd
 INNER JOIN district AS d ON bd.district_id = d.district_id
@@ -181,7 +183,7 @@ SET @sql_drop_table=CONCAT('DROP TABLE IF EXISTS ','z_temp_base_data_',in_table_
 prepare stmt_drop_table from @sql_drop_table;
 execute stmt_drop_table;
 
-SET @sql = CONCAT('CREATE TABLE ', 'z_temp_base_data_',in_table_name ,' SELECT region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id,', @sql, ' FROM vw_base_data GROUP BY region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id HAVING report_form_id=',in_report_form_id);
+SET @sql = CONCAT('CREATE TABLE ', 'z_temp_base_data_',in_table_name ,' SELECT region_id,district_id,county_id,sub_county_id,parish_id,health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id,', @sql, ' FROM vw_base_data GROUP BY region_id,district_id,county_id,sub_county_id,parish_id,health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id HAVING report_form_id=',in_report_form_id);
 
 prepare stmt from @sql;
 execute stmt;
@@ -203,7 +205,7 @@ CALL sp_pivot_base_data_by_form_id_and_logged_in_user(in_report_form_id ,in_user
 
 SELECT kpi_summary_function FROM kpi where kpi_id=in_kpi_id into kpi_summary_function_v;
 
-SET @sql_kpi=CONCAT('SELECT temp.*,',kpi_summary_function_v,' AS kpi_value FROM z_temp_base_data_',in_username,' AS temp');
+SET @sql_kpi=CONCAT('SELECT temp.*,',kpi_summary_function_v,' AS kpi_value FROM z_temp_base_data_',in_username,' AS temp WHERE ',kpi_summary_function_v,' is not null');
 
 prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
