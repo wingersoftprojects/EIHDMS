@@ -6,6 +6,7 @@
 package beans;
 
 import connections.DBConnection;
+import eihdms.Base_data;
 import eihdms.Data_element;
 import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
@@ -27,6 +28,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.orm.PersistentException;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONObject;
 import utilities.GeneralUtilities;
 
 /**
@@ -48,6 +51,8 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
 
     private District[] selectedDistricts;
     private List<District> districts;
+    private JSONArray jSONArray;
+    private List<Object[]> base_dataList;
 
     public KpiBean() {
         super(Kpi.class);
@@ -90,7 +95,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         for (int i = 0; i < x; i++) {
             if (YearsStr.length() > 0) {
                 YearsStr = YearsStr + "," + this.selectedYears[i];
-            }else{
+            } else {
                 YearsStr = "" + this.selectedYears[i];
             }
         }
@@ -110,6 +115,13 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         System.out.println("KPI:" + this.selectedKPI.getKpi_id());
         System.out.println("Years:" + YearsStr);
         System.out.println("Districts:" + DistrictsStr);
+
+        try {
+            base_dataList = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("CALL sp_select_kpi(:kpi,:username,:report_form_id,:years,:districts)").setParameter("kpi", this.getSelectedKPI().getKpi_id()).setParameter("years", YearsStr).setParameter("districts", DistrictsStr).setParameter("username", loginBean.getUser_detail().getUser_name()).setParameter("report_form_id", selectedKPI.getReport_form().getReport_form_id()).list();
+        } catch (PersistentException ex) {
+            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        load_jSON();
 
     }
 
@@ -328,5 +340,84 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
      */
     public void setDistricts(List<District> districts) {
         this.districts = districts;
+    }
+
+    public String getValidation_formula() {
+        return validation_formula;
+    }
+
+    public void setValidation_formula(String validation_formula) {
+        this.validation_formula = validation_formula;
+    }
+
+    public List<Object[]> getBase_dataList() {
+        return base_dataList;
+    }
+
+    public void setBase_dataList(List<Object[]> base_dataList) {
+        this.base_dataList = base_dataList;
+    }
+
+    private void load_jSON() {
+        JSONArray jArray = new JSONArray();
+        JSONObject jObj = new JSONObject();
+        jObj.put("District", new JSONObject().put("type", "string"));
+        jObj.put("County", new JSONObject().put("type", "string"));
+        jObj.put("Subcounty", new JSONObject().put("type", "string"));
+        jObj.put("Parish", new JSONObject().put("type", "string"));
+        jObj.put("Facility", new JSONObject().put("type", "string"));
+        jObj.put("Year", new JSONObject().put("type", "string"));
+        jObj.put("Quarter", new JSONObject().put("type", "string"));
+        jObj.put("Value", new JSONObject().put("type", "number"));
+        jArray.put(jObj);
+
+        if (base_dataList == null) {
+            base_dataList = new ArrayList<>();
+        }
+        for (Object[] base_data : base_dataList) {
+            jObj = new JSONObject();
+            jObj.put("District", base_data[0].toString());
+            if (base_data[1] == null) {
+                jObj.put("County", "");
+            } else {
+                jObj.put("County", base_data[1].toString());
+            }
+            if (base_data[2] == null) {
+                jObj.put("Subcounty", "");
+            } else {
+                jObj.put("Subcounty", base_data[2].toString());
+            }
+            if (base_data[3] == null) {
+                jObj.put("Parish", "");
+            } else {
+                jObj.put("Parish", base_data[3].toString());
+            }
+            if (base_data[4] == null) {
+                jObj.put("Facility", "");
+            } else {
+                jObj.put("Facility", base_data[4].toString());
+            }
+            jObj.put("Year", base_data[5]);
+            if (base_data[6] == null) {
+                jObj.put("Quarter", "");
+            } else {
+                jObj.put("Quarter", base_data[6]);
+            }
+            if (base_data[7] == null) {
+                jObj.put("Value", 0);
+            } else {
+                jObj.put("Value", base_data[7].toString());
+            }
+            jArray.put(jObj);
+        }
+        jSONArray = jArray;
+    }
+
+    public JSONArray getjSONArray() {
+        return jSONArray;
+    }
+
+    public void setjSONArray(JSONArray jSONArray) {
+        this.jSONArray = jSONArray;
     }
 }
