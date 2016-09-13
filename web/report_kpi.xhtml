@@ -26,17 +26,16 @@
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="years" value="Report Period Year(s):" />
+                    <p:outputLabel for="years" value="Report Period Year:" />
                     <p:selectCheckboxMenu id="years" value="#{kpiBean.selectedYears}" label="">
                         <f:selectItems value="#{kpiBean.years}" />
                     </p:selectCheckboxMenu>
-
+                    
                     <p:outputLabel for="district" value="District:" />
-                    <p:selectOneMenu id="district" value="#{kpiBean.selectedDistrict}" style="width:125px" converter="districtConverter">
-                        <f:selectItem itemLabel="" />
-                        <f:selectItems value="#{districtBean.tsActive}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this"/>
-                    </p:selectOneMenu>
+                    <p:selectCheckboxMenu id="district" value="#{kpiBean.selectedDistricts}" label="" panelStyle="width:150px" converter="districtConverter">
+                        <f:selectItems value="#{kpiBean.districts}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
+                    </p:selectCheckboxMenu>
+                    
                     <h:commandButton value="Show Report" action="#{kpiBean.showReport()}" />
                 </p:panelGrid>
             </p:fieldset>

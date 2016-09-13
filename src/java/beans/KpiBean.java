@@ -40,10 +40,14 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     private String validation_formula = "";
     private Data_element data_element;
     private Kpi selectedKPI;
-    private District selectedDistrict;
     private Integer[] selectedYears;
     private List<Integer> years;
+    private Integer[] selectedDistrictIDs;
+    private List<Integer> districtIDs;
     private Technical_area selectedTA;
+
+    private District[] selectedDistricts;
+    private List<District> districts;
 
     public KpiBean() {
         super(Kpi.class);
@@ -77,6 +81,35 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     }
 
     public void showReport() {
+        String YearsStr = "";
+        String DistrictsStr = "";
+
+        //get 1016,2015,2013 string format for selected years
+        int x = 0;
+        x = this.selectedYears.length;
+        for (int i = 0; i < x; i++) {
+            if (YearsStr.length() > 0) {
+                YearsStr = YearsStr + "," + this.selectedYears[i];
+            }else{
+                YearsStr = "" + this.selectedYears[i];
+            }
+        }
+
+        //get 1,2,3 string format for selected districts
+        int y = 0;
+        y = this.selectedDistricts.length;
+        for (int i = 0; i < y; i++) {
+            if (DistrictsStr.length() > 0) {
+                DistrictsStr = DistrictsStr + "," + this.selectedDistricts[i].getDistrict_id();
+            } else {
+                DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
+            }
+        }
+
+        //Print selected ones
+        System.out.println("KPI:" + this.selectedKPI.getKpi_id());
+        System.out.println("Years:" + YearsStr);
+        System.out.println("Districts:" + DistrictsStr);
 
     }
 
@@ -168,20 +201,6 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     }
 
     /**
-     * @return the selectedDistrict
-     */
-    public District getSelectedDistrict() {
-        return selectedDistrict;
-    }
-
-    /**
-     * @param selectedDistrict the selectedDistrict to set
-     */
-    public void setSelectedDistrict(District selectedDistrict) {
-        this.selectedDistrict = selectedDistrict;
-    }
-
-    /**
      * @return the selectedYears
      */
     public Integer[] getSelectedYears() {
@@ -202,7 +221,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         int currentYear = 0;
         try {
             currentYear = GeneralUtilities.getCurrentYear();
-            this.years=new ArrayList<>();
+            this.years = new ArrayList<>();
             this.years.add(currentYear);
             this.years.add(currentYear - 1);
             this.years.add(currentYear - 2);
@@ -238,5 +257,76 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
      */
     public void setSelectedTA(Technical_area selectedTA) {
         this.selectedTA = selectedTA;
+    }
+
+    /**
+     * @return the selectedDistrictIDs
+     */
+    public Integer[] getSelectedDistrictIDs() {
+        return selectedDistrictIDs;
+    }
+
+    /**
+     * @param selectedDistrictIDs the selectedDistrictIDs to set
+     */
+    public void setSelectedDistrictIDs(Integer[] selectedDistrictIDs) {
+        this.selectedDistrictIDs = selectedDistrictIDs;
+    }
+
+    /**
+     * @return the districtIDs
+     */
+    public List<Integer> getDistrictIDs() {
+        List<District> districtList = new ArrayList<>();
+        this.districtIDs = new ArrayList<>();
+        try {
+            districtList = District.queryDistrict("is_deleted=0", "district_name");
+            for (int i = 0; i < districtList.size(); i++) {
+                this.districtIDs.add(districtList.get(i).getDistrict_id());
+            }
+        } catch (PersistentException | NullPointerException ex) {
+        }
+        return districtIDs;
+    }
+
+    /**
+     * @param districtIDs the districtIDs to set
+     */
+    public void setDistrictIDs(List<Integer> districtIDs) {
+        this.districtIDs = districtIDs;
+    }
+
+    /**
+     * @return the selectedDistricts
+     */
+    public District[] getSelectedDistricts() {
+        return selectedDistricts;
+    }
+
+    /**
+     * @param selectedDistricts the selectedDistricts to set
+     */
+    public void setSelectedDistricts(District[] selectedDistricts) {
+        this.selectedDistricts = selectedDistricts;
+    }
+
+    /**
+     * @return the districts
+     */
+    public List<District> getDistricts() {
+        List<District> districtList = new ArrayList<>();
+        try {
+            districtList = District.queryDistrict("is_deleted=0", "district_name");
+        } catch (PersistentException | NullPointerException ex) {
+        }
+        this.districts = districtList;
+        return districts;
+    }
+
+    /**
+     * @param districts the districts to set
+     */
+    public void setDistricts(List<District> districts) {
+        this.districts = districts;
     }
 }
