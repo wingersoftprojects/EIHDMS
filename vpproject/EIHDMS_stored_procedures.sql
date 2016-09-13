@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-13 18:04:48
+Date: 2016-09-13 22:16:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -170,7 +170,7 @@ DROP PROCEDURE IF EXISTS `sp_pivot_base_data_by_form_id_and_logged_in_user`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_pivot_base_data_by_form_id_and_logged_in_user`(IN in_report_form_id int,IN in_table_name varchar(100))
 BEGIN
-		SET SESSION group_concat_max_len = 10000000;
+		SET SESSION group_concat_max_len = 100000000;
 SET @sql = NULL;
 SELECT
   GROUP_CONCAT(DISTINCT
@@ -196,16 +196,30 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_select_kpi`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200),IN in_report_form_id int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200),IN in_report_form_id int,IN in_report_period_year varchar(1000),IN in_district_id varchar(1000))
 BEGIN
 
 DECLARE kpi_summary_function_v varchar(12000);
+SET @report_period_year_v ='';
+SET @district_id_v ='';
+
+IF LENGTH(in_report_period_year )>0 THEN
+SET @report_period_year_v=CONCAT('report_period_year in(',in_report_period_year,')') ;
+ELSE
+SET @report_period_year_v='1=1';
+END IF;
+
+IF LENGTH(in_district_id )>0 THEN
+SET @district_id_v=CONCAT('district_id in(',in_district_id,')') ;
+ELSE
+SET @district_id_v ='1=1';
+END IF;
 
 CALL sp_pivot_base_data_by_form_id_and_logged_in_user(in_report_form_id ,in_username);
 
 SELECT kpi_summary_function FROM kpi where kpi_id=in_kpi_id into kpi_summary_function_v;
 
-SET @sql_kpi=CONCAT('SELECT temp.*,',kpi_summary_function_v,' AS kpi_value FROM z_temp_base_data_',in_username,' AS temp WHERE ',kpi_summary_function_v,' is not null');
+SET @sql_kpi=CONCAT('SELECT district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,',kpi_summary_function_v,' AS kpi_value FROM z_temp_base_data_',in_username,' AS temp WHERE ',kpi_summary_function_v,' is not null AND ',@district_id_v,' AND ',@report_period_year_v);
 
 prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
