@@ -7,10 +7,11 @@ package beans;
 
 import connections.DBConnection;
 import eihdms.Data_element;
+import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Kpi;
 import eihdms.Report_form;
-import eihdms.Validation_rule;
+import eihdms.Technical_area;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +27,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.orm.PersistentException;
+import utilities.GeneralUtilities;
 
 /**
  *
@@ -37,6 +39,11 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
 
     private String validation_formula = "";
     private Data_element data_element;
+    private Kpi selectedKPI;
+    private District selectedDistrict;
+    private Integer[] selectedYears;
+    private List<Integer> years;
+    private Technical_area selectedTA;
 
     public KpiBean() {
         super(Kpi.class);
@@ -57,6 +64,20 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
 
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
+    }
+
+    public List<Kpi> returnKpiByTA(Technical_area ta) {
+        List<Kpi> kpiList = new ArrayList<>();
+        try {
+            kpiList = Kpi.queryKpi("technical_area=" + ta.getTechnical_area_id(), null);
+        } catch (PersistentException | NullPointerException ex) {
+            //Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return kpiList;
+    }
+
+    public void showReport() {
+
     }
 
     private Report_form report_form;
@@ -130,5 +151,92 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             data_elements_involved = "";
         }
         this.getSelected().setData_elements_involved(data_elements_involved + "\n" + " DE" + data_element.getData_element_id() + "=>" + data_element.getData_element_name());
+    }
+
+    /**
+     * @return the selectedKPI
+     */
+    public Kpi getSelectedKPI() {
+        return selectedKPI;
+    }
+
+    /**
+     * @param selectedKPI the selectedKPI to set
+     */
+    public void setSelectedKPI(Kpi selectedKPI) {
+        this.selectedKPI = selectedKPI;
+    }
+
+    /**
+     * @return the selectedDistrict
+     */
+    public District getSelectedDistrict() {
+        return selectedDistrict;
+    }
+
+    /**
+     * @param selectedDistrict the selectedDistrict to set
+     */
+    public void setSelectedDistrict(District selectedDistrict) {
+        this.selectedDistrict = selectedDistrict;
+    }
+
+    /**
+     * @return the selectedYears
+     */
+    public Integer[] getSelectedYears() {
+        return selectedYears;
+    }
+
+    /**
+     * @param selectedYears the selectedYears to set
+     */
+    public void setSelectedYears(Integer[] selectedYears) {
+        this.selectedYears = selectedYears;
+    }
+
+    /**
+     * @return the years
+     */
+    public List<Integer> getYears() {
+        int currentYear = 0;
+        try {
+            currentYear = GeneralUtilities.getCurrentYear();
+            this.years=new ArrayList<>();
+            this.years.add(currentYear);
+            this.years.add(currentYear - 1);
+            this.years.add(currentYear - 2);
+            this.years.add(currentYear - 3);
+            this.years.add(currentYear - 4);
+            this.years.add(currentYear - 5);
+            this.years.add(currentYear - 6);
+            this.years.add(currentYear - 7);
+            this.years.add(currentYear - 8);
+            this.years.add(currentYear - 9);
+            this.years.add(currentYear - 10);
+        } catch (NullPointerException npe) {
+        }
+        return years;
+    }
+
+    /**
+     * @param years the years to set
+     */
+    public void setYears(List<Integer> years) {
+        this.years = years;
+    }
+
+    /**
+     * @return the selectedTA
+     */
+    public Technical_area getSelectedTA() {
+        return selectedTA;
+    }
+
+    /**
+     * @param selectedTA the selectedTA to set
+     */
+    public void setSelectedTA(Technical_area selectedTA) {
+        this.selectedTA = selectedTA;
     }
 }

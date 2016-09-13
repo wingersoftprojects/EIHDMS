@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Standard KPI Report">
+                <p:panelGrid columns="9" id="grid1">
+                    <p:outputLabel value="Technical Area:" for="technical_area"/>
+                    <p:selectOneMenu id="technical_area" value="#{kpiBean.selectedTA}" style="width:125px" converter="technical_areaConverter" required="true" requiredMessage="Technical Area is needed">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{technical_areaBean.tsActive}" var="item" itemLabel="#{item.technical_area_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="kpi"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel value="KPI:" for="kpi"/>
+                    <p:selectOneMenu id="kpi" value="#{kpiBean.selectedKPI}" style="width:125px" converter="kpiConverter" required="true" requiredMessage="KPI is needed">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{kpiBean.returnKpiByTA(kpiBean.selectedTA)}" var="item" itemLabel="#{item.kpi_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="years" value="Report Period Year(s):" />
+                    <p:selectCheckboxMenu id="years" value="#{kpiBean.selectedYears}" label="">
+                        <f:selectItems value="#{kpiBean.years}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="district" value="District:" />
+                    <p:selectOneMenu id="district" value="#{kpiBean.selectedDistrict}" style="width:125px" converter="districtConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{districtBean.tsActive}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <h:commandButton value="Show Report" action="#{kpiBean.showReport()}" />
+                </p:panelGrid>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
