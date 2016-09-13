@@ -29,6 +29,7 @@ public class Technical_areaCriteria extends AbstractORMCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression data_element;
+	public final CollectionExpression kpi;
 	
 	public Technical_areaCriteria(Criteria criteria) {
 		super(criteria);
@@ -42,6 +43,7 @@ public class Technical_areaCriteria extends AbstractORMCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		data_element = new CollectionExpression("data_element", this);
+		kpi = new CollectionExpression("kpi", this);
 	}
 	
 	public Technical_areaCriteria(PersistentSession session) {
@@ -54,6 +56,10 @@ public class Technical_areaCriteria extends AbstractORMCriteria {
 	
 	public Data_elementCriteria createData_elementCriteria() {
 		return new Data_elementCriteria(createCriteria("data_element"));
+	}
+	
+	public KpiCriteria createKpiCriteria() {
+		return new KpiCriteria(createCriteria("kpi"));
 	}
 	
 	public Technical_area uniqueTechnical_area() {

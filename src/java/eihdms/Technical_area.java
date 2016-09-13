@@ -369,6 +369,10 @@ public class Technical_area implements Serializable {
 			for(int i = 0; i < lData_elements.length; i++) {
 				lData_elements[i].setTechnical_area(null);
 			}
+			eihdms.Kpi[] lKpis = (eihdms.Kpi[])getKpi().toArray(new eihdms.Kpi[getKpi().size()]);
+			for(int i = 0; i < lKpis.length; i++) {
+				lKpis[i].setTechnical_area(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -382,6 +386,10 @@ public class Technical_area implements Serializable {
 			eihdms.Data_element[] lData_elements = (eihdms.Data_element[])getData_element().toArray(new eihdms.Data_element[getData_element().size()]);
 			for(int i = 0; i < lData_elements.length; i++) {
 				lData_elements[i].setTechnical_area(null);
+			}
+			eihdms.Kpi[] lKpis = (eihdms.Kpi[])getKpi().toArray(new eihdms.Kpi[getKpi().size()]);
+			for(int i = 0; i < lKpis.length; i++) {
+				lKpis[i].setTechnical_area(null);
 			}
 			try {
 				session.delete(this);
@@ -430,6 +438,11 @@ public class Technical_area implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set data_element = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="technical_area", targetEntity=eihdms.Kpi.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set kpi = new java.util.HashSet();
 	
 	private void setTechnical_area_id(int value) {
 		this.technical_area_id = value;
@@ -513,6 +526,15 @@ public class Technical_area implements Serializable {
 	
 	public java.util.Set getData_element() {
 		return data_element;
+	}
+	
+	
+	public void setKpi(java.util.Set value) {
+		this.kpi = value;
+	}
+	
+	public java.util.Set getKpi() {
+		return kpi;
 	}
 	
 	

@@ -20,9 +20,11 @@ import org.orm.criteria.*;
 
 public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression kpi_id;
-	public final StringExpression kpi_name;
+	public final IntegerExpression technical_areaId;
+	public final AssociationExpression technical_area;
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
+	public final StringExpression kpi_name;
 	public final StringExpression kpi_summary_function;
 	public final StringExpression data_elements_involved;
 	public final IntegerExpression is_deleted;
@@ -35,9 +37,11 @@ public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 	public KpiDetachedCriteria() {
 		super(eihdms.Kpi.class, eihdms.KpiCriteria.class);
 		kpi_id = new IntegerExpression("kpi_id", this.getDetachedCriteria());
-		kpi_name = new StringExpression("kpi_name", this.getDetachedCriteria());
+		technical_areaId = new IntegerExpression("technical_area.technical_area_id", this.getDetachedCriteria());
+		technical_area = new AssociationExpression("technical_area", this.getDetachedCriteria());
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
+		kpi_name = new StringExpression("kpi_name", this.getDetachedCriteria());
 		kpi_summary_function = new StringExpression("kpi_summary_function", this.getDetachedCriteria());
 		data_elements_involved = new StringExpression("data_elements_involved", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
@@ -51,9 +55,11 @@ public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 	public KpiDetachedCriteria(DetachedCriteria aDetachedCriteria) {
 		super(aDetachedCriteria, eihdms.KpiCriteria.class);
 		kpi_id = new IntegerExpression("kpi_id", this.getDetachedCriteria());
-		kpi_name = new StringExpression("kpi_name", this.getDetachedCriteria());
+		technical_areaId = new IntegerExpression("technical_area.technical_area_id", this.getDetachedCriteria());
+		technical_area = new AssociationExpression("technical_area", this.getDetachedCriteria());
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
+		kpi_name = new StringExpression("kpi_name", this.getDetachedCriteria());
 		kpi_summary_function = new StringExpression("kpi_summary_function", this.getDetachedCriteria());
 		data_elements_involved = new StringExpression("data_elements_involved", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
@@ -62,6 +68,10 @@ public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+	}
+	
+	public Technical_areaDetachedCriteria createTechnical_areaCriteria() {
+		return new Technical_areaDetachedCriteria(createCriteria("technical_area"));
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {

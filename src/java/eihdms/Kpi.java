@@ -365,6 +365,10 @@ public class Kpi implements Serializable {
 	
 	public boolean deleteAndDissociate()throws PersistentException {
 		try {
+			if(getTechnical_area() != null) {
+				getTechnical_area().getKpi().remove(this);
+			}
+			
 			if(getReport_form() != null) {
 				getReport_form().getKpi().remove(this);
 			}
@@ -379,6 +383,10 @@ public class Kpi implements Serializable {
 	
 	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
 		try {
+			if(getTechnical_area() != null) {
+				getTechnical_area().getKpi().remove(this);
+			}
+			
 			if(getReport_form() != null) {
 				getReport_form().getKpi().remove(this);
 			}
@@ -402,13 +410,18 @@ public class Kpi implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_KPI_KPI_ID_GENERATOR", strategy="native")	
 	private int kpi_id;
 	
-	@Column(name="kpi_name", nullable=false, length=255)	
-	private String kpi_name;
+	@ManyToOne(targetEntity=eihdms.Technical_area.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="technical_area_id", referencedColumnName="technical_area_id") })	
+	private eihdms.Technical_area technical_area;
 	
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) })	
 	private eihdms.Report_form report_form;
+	
+	@Column(name="kpi_name", nullable=false, length=255)	
+	private String kpi_name;
 	
 	@Column(name="kpi_summary_function", nullable=false, length=100)	
 	private String kpi_summary_function;
@@ -532,6 +545,14 @@ public class Kpi implements Serializable {
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
+	}
+	
+	public void setTechnical_area(eihdms.Technical_area value) {
+		this.technical_area = value;
+	}
+	
+	public eihdms.Technical_area getTechnical_area() {
+		return technical_area;
 	}
 	
 	@Override	

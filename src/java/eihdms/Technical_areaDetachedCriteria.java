@@ -29,6 +29,7 @@ public class Technical_areaDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression data_element;
+	public final CollectionExpression kpi;
 	
 	public Technical_areaDetachedCriteria() {
 		super(eihdms.Technical_area.class, eihdms.Technical_areaCriteria.class);
@@ -42,6 +43,7 @@ public class Technical_areaDetachedCriteria extends AbstractORMDetachedCriteria 
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
+		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
 	}
 	
 	public Technical_areaDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -56,10 +58,15 @@ public class Technical_areaDetachedCriteria extends AbstractORMDetachedCriteria 
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
+		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
 		return new Data_elementDetachedCriteria(createCriteria("data_element"));
+	}
+	
+	public KpiDetachedCriteria createKpiCriteria() {
+		return new KpiDetachedCriteria(createCriteria("kpi"));
 	}
 	
 	public Technical_area uniqueTechnical_area(PersistentSession session) {

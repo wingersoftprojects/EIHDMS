@@ -100,7 +100,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
 			leihdmsBatch.save();
 			eihdms.Kpi leihdmsKpi = eihdms.Kpi.createKpi();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, data_elements_involved, kpi_summary_function, report_form, kpi_name
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, data_elements_involved, kpi_summary_function, kpi_name, report_form
 			leihdmsKpi.save();
 			eihdms.Data_obligation leihdmsData_obligation = eihdms.Data_obligation.createData_obligation();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : report_form

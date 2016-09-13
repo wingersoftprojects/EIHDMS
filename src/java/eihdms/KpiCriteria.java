@@ -20,9 +20,11 @@ import org.orm.criteria.*;
 
 public class KpiCriteria extends AbstractORMCriteria {
 	public final IntegerExpression kpi_id;
-	public final StringExpression kpi_name;
+	public final IntegerExpression technical_areaId;
+	public final AssociationExpression technical_area;
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
+	public final StringExpression kpi_name;
 	public final StringExpression kpi_summary_function;
 	public final StringExpression data_elements_involved;
 	public final IntegerExpression is_deleted;
@@ -35,9 +37,11 @@ public class KpiCriteria extends AbstractORMCriteria {
 	public KpiCriteria(Criteria criteria) {
 		super(criteria);
 		kpi_id = new IntegerExpression("kpi_id", this);
-		kpi_name = new StringExpression("kpi_name", this);
+		technical_areaId = new IntegerExpression("technical_area.technical_area_id", this);
+		technical_area = new AssociationExpression("technical_area", this);
 		report_formId = new IntegerExpression("report_form.report_form_id", this);
 		report_form = new AssociationExpression("report_form", this);
+		kpi_name = new StringExpression("kpi_name", this);
 		kpi_summary_function = new StringExpression("kpi_summary_function", this);
 		data_elements_involved = new StringExpression("data_elements_involved", this);
 		is_deleted = new IntegerExpression("is_deleted", this);
@@ -54,6 +58,10 @@ public class KpiCriteria extends AbstractORMCriteria {
 	
 	public KpiCriteria() throws PersistentException {
 		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+	}
+	
+	public Technical_areaCriteria createTechnical_areaCriteria() {
+		return new Technical_areaCriteria(createCriteria("technical_area"));
 	}
 	
 	public Report_formCriteria createReport_formCriteria() {

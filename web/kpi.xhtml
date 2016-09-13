@@ -18,6 +18,12 @@
                 <p:fieldset legend="KPIs">
                     <p:panelGrid columns="2">
                         <p:panelGrid columns="2">
+                            <p:outputLabel value="Technical Area:" for="technical_area"/>
+                            <p:selectOneMenu id="technical_area" value="#{kpiBean.selected.technical_area}" style="width:125px" converter="technical_areaConverter">
+                                <f:selectItem itemLabel="" />
+                                <f:selectItems value="#{technical_areaBean.tsActive}" var="item" itemLabel="#{item.technical_area_name}" itemValue="#{item}"/>
+                                <p:ajax process="@this"/>
+                            </p:selectOneMenu>
                             <p:outputLabel value="Report Form:" for="report_form"/>
                             <p:selectOneMenu id="report_form" value="#{kpiBean.selected.report_form}" style="width:125px" required="true" requiredMessage="Report Form field is Required" converter="report_formConverter">
                                 <f:selectItem itemLabel="" />
