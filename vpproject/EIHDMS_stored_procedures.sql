@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-13 15:24:54
+Date: 2016-09-13 15:55:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -194,10 +194,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_select_kpi`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200),IN in_report_form_id int)
 BEGIN
-	DECLARE kpi_summary_function_v varchar(12000);
 
+DECLARE kpi_summary_function_v varchar(12000);
+
+CALL sp_pivot_base_data_by_form_id_and_logged_in_user(in_report_form_id ,in_username);
 
 SELECT kpi_summary_function FROM kpi where kpi_id=in_kpi_id into kpi_summary_function_v;
 
