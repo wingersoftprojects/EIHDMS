@@ -19,7 +19,7 @@
                     <p:panelGrid columns="2">
                         <p:panelGrid columns="2">
                             <p:outputLabel value="Technical Area:" for="technical_area"/>
-                            <p:selectOneMenu id="technical_area" value="#{kpiBean.selected.technical_area}" style="width:125px" converter="technical_areaConverter">
+                            <p:selectOneMenu id="technical_area" value="#{kpiBean.selected.technical_area}" style="width:125px" converter="technical_areaConverter" required="true" requiredMessage="Technical Area field is required!">
                                 <f:selectItem itemLabel="" />
                                 <f:selectItems value="#{technical_areaBean.tsActive}" var="item" itemLabel="#{item.technical_area_name}" itemValue="#{item}"/>
                                 <p:ajax process="@this"/>
@@ -91,6 +91,9 @@
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15,30,50,100">
+                    <p:column headerText="Technical Area">
+                        <h:outputText value="#{item.technical_area.technical_area_name}"/>
+                    </p:column>
                     <p:column headerText="KPI">
                         <h:outputText value="#{item.kpi_name}"/>
                     </p:column>
