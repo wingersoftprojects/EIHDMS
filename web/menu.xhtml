@@ -21,7 +21,6 @@
                                 <p:submenu label="Data" icon="ui-icon-circle-plus">
                                     <p:menuitem value="Data Upload"  action="upload?faces-redirect=true" icon="ui-icon-arrowthick-1-n"/>
                                     <p:menuitem value="Data Entry"  action="dataentry?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
-                                    <p:menuitem value="Validation Error List"  action="validationerrorlist?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
                                 </p:submenu>
                                 <p:submenu label="Settings" icon="ui-icon-gear">
                                     <p:submenu label="Location Settings" icon="ui-icon-info">
@@ -33,9 +32,10 @@
                                     <p:submenu label="Form Settings" icon="ui-icon-document">
                                         <p:menuitem value="Technical Areas" action="technicalarea?faces-redirect=true" />
                                         <p:menuitem value="Report Form Details" action="reportform?faces-redirect=true" />
-                                        <p:menuitem value="Report Form Groups" action="reportformgroup?faces-redirect=true" />
+                                        <p:menuitem value="Upload Groups" action="reportformgroup?faces-redirect=true" />
+                                        <p:menuitem value="Upload Groups Tree" action="reportformgrouptree?faces-redirect=true" />
                                         <p:menuitem value="Data Elements" action="dataelement?faces-redirect=true" />
-                                        <p:menuitem value="Report Form Tree" action="dataelementview?faces-redirect=true" />
+                                        <p:menuitem value="Data Elements Tree" action="dataelementtree?faces-redirect=true" />
                                         <p:menuitem value="Standard Rules" action="standardrule?faces-redirect=true"  />
                                         <p:menuitem value="Validation Rules" action="validationrule?faces-redirect=true" />
                                         <p:menuitem value="Financial Year" action="financialyear?faces-redirect=true" />
@@ -62,8 +62,7 @@
                                         <p:menuitem value="Pivot Analysis" action="dataelementanalysis?faces-redirect=true" icon="ui-icon-search"/>
                                     </p:submenu>
                                     <p:submenu label="Validation Reports">
-                                        <p:menuitem value="Report 1" url="#" />
-                                        <p:menuitem value="Report 2" url="#" />
+                                        <p:menuitem value="Upload Validation Report"  action="validationerrorlist?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
                                     </p:submenu>
                                     <p:submenu label="User Action Reports">
                                         <p:menuitem value="Report 1" url="#" />

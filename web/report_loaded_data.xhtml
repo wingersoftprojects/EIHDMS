@@ -15,7 +15,7 @@
                 <p:panelGrid columns="1">
                     <h:commandButton value="Load Obligation (Temp)" action="#{data_obligationBean.update_data_obligation_full_current_year()}" />
                 </p:panelGrid>
-                <p:panelGrid columns="2">
+                <h:panelGrid columns="2">
                     <p:outputLabel for="year_value" value="Select Year:" />
                     <p:selectOneMenu id="year_value" value="#{data_obligationBean.selected_year}" style="width:125px" required="true" requiredMessage="Year is Required">
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
@@ -25,179 +25,184 @@
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
                     <h:commandButton value="Show Report" action="#{data_obligationBean.refreshData_obligation_all_List(data_obligationBean.selected_year)}" />
-                </p:panelGrid>
-                <p:dataTable value="#{data_obligationBean.report_form_monthlyList}" var="rf">
-                    <p:column headerText="Report Form">
-                        <h:outputText value="#{rf.report_form_name}"/>
-                    </p:column>
-                    <p:column headerText="Entity">
-                        <h:outputText value="#{rf.lowest_report_form_level}"/>
-                    </p:column>
-                    <p:column headerText="Frequency">
-                        <h:outputText value="#{rf.report_form_frequency}"/>
-                    </p:column>
-                    <p:column headerText="Jan">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 1)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 1)}"/>
-                    </p:column>
-                    <p:column headerText="Feb">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 2)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 2)}"/>
-                    </p:column>
-                    <p:column headerText="Mar">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 3)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 3)}"/>
-                    </p:column>
-                    <p:column headerText="Apr">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 4)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 4)}"/>
-                    </p:column>
-                    <p:column headerText="May">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 5)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 5)}"/>
-                    </p:column>
-                    <p:column headerText="Jun">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 6)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 6)}"/>
-                    </p:column>
-                    <p:column headerText="Jul">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 7)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 7)}"/>
-                    </p:column>
-                    <p:column headerText="Aug">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 8)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 8)}"/>
-                    </p:column>
-                    <p:column headerText="Sep">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 9)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 9)}"/>
-                    </p:column>
-                    <p:column headerText="Oct">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 10)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 10)}"/>
-                    </p:column>
-                    <p:column headerText="Nov">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 11)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 11)}"/>
-                    </p:column>
-                    <p:column headerText="Dec">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 12)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 12)}"/>
-                    </p:column>
-                </p:dataTable>
-
-                <p:dataTable value="#{data_obligationBean.report_form_quarterlyList}" var="rf">
-                    <p:column headerText="Report Form">
-                        <h:outputText value="#{rf.report_form_name}"/>
-                    </p:column>
-                    <p:column headerText="Entity">
-                        <h:outputText value="#{rf.lowest_report_form_level}"/>
-                    </p:column>
-                    <p:column headerText="Frequency">
-                        <h:outputText value="#{rf.report_form_frequency}"/>
-                    </p:column>
-                    <p:column headerText="Q1(Jan-Apr)">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 1)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 1)}"/>
-                    </p:column>
-                    <p:column headerText="Q2(May-Aug)">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 2)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 2)}"/>
-                    </p:column>
-                    <p:column headerText="Q3(Sep-Dec)">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 3)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 3)}"/>
-                    </p:column>
-                </p:dataTable>
-
-                <p:dataTable value="#{data_obligationBean.report_form_bi_monthlyList}" var="rf">
-                    <p:column headerText="Report Form">
-                        <h:outputText value="#{rf.report_form_name}"/>
-                    </p:column>
-                    <p:column headerText="Entity">
-                        <h:outputText value="#{rf.lowest_report_form_level}"/>
-                    </p:column>
-                    <p:column headerText="Frequency">
-                        <h:outputText value="#{rf.report_form_frequency}"/>
-                    </p:column>
-                    <p:column headerText="Jan-Feb">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 1)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEBisMonthly(rf.report_form_id, 1)}"/>
-                    </p:column>
-                    <p:column headerText="Mar-Apr">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 2)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 2)}"/>
-                    </p:column>
-                    <p:column headerText="May-Jun">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 3)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 3)}"/>
-                    </p:column>
-                    <p:column headerText="Jul-Aug">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 4)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 4)}"/>
-                    </p:column>
-                    <p:column headerText="Sep-Oct">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 5)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 5)}"/>
-                    </p:column>
-                    <p:column headerText="Nov-Dec">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 6)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 6)}"/>
-                    </p:column>
-                </p:dataTable>
-
-                <p:dataTable value="#{data_obligationBean.report_form_weeklyList}" var="rf">
-                    <p:column headerText="Report Form">
-                        <h:outputText value="#{rf.report_form_name}"/>
-                    </p:column>
-                    <p:column headerText="Entity">
-                        <h:outputText value="#{rf.lowest_report_form_level}"/>
-                    </p:column>
-                    <p:column headerText="Frequency">
-                        <h:outputText value="#{rf.report_form_frequency}"/>
-                    </p:column>
-                    <p:column headerText="Week1">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 1)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 1)}"/>
-                    </p:column>
-                    <p:column headerText="Week2">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 2)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 2)}"/>
-                    </p:column>
-                    <p:column headerText="Week3">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 3)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 3)}"/>
-                    </p:column>
-                    <p:column headerText="Week4">
-                        <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 4)}"/>
-                        <f:verbatim><br/></f:verbatim>
-                        <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 4)}"/>
-                    </p:column>
-                </p:dataTable>       
+                </h:panelGrid>
+                <p:fieldset legend="Monthly">
+                    <p:dataTable value="#{data_obligationBean.report_form_monthlyList}" var="rf">
+                        <p:column headerText="Report Form">
+                            <h:outputText value="#{rf.report_form_name}"/>
+                        </p:column>
+                        <p:column headerText="Entity">
+                            <h:outputText value="#{rf.lowest_report_form_level}"/>
+                        </p:column>
+                        <p:column headerText="Frequency">
+                            <h:outputText value="#{rf.report_form_frequency}"/>
+                        </p:column>
+                        <p:column headerText="Jan">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 1)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 1)}"/>
+                        </p:column>
+                        <p:column headerText="Feb">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 2)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 2)}"/>
+                        </p:column>
+                        <p:column headerText="Mar">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 3)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 3)}"/>
+                        </p:column>
+                        <p:column headerText="Apr">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 4)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 4)}"/>
+                        </p:column>
+                        <p:column headerText="May">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 5)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 5)}"/>
+                        </p:column>
+                        <p:column headerText="Jun">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 6)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 6)}"/>
+                        </p:column>
+                        <p:column headerText="Jul">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 7)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 7)}"/>
+                        </p:column>
+                        <p:column headerText="Aug">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 8)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 8)}"/>
+                        </p:column>
+                        <p:column headerText="Sep">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 9)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 9)}"/>
+                        </p:column>
+                        <p:column headerText="Oct">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 10)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 10)}"/>
+                        </p:column>
+                        <p:column headerText="Nov">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 11)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 11)}"/>
+                        </p:column>
+                        <p:column headerText="Dec">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 12)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 12)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+                <p:fieldset legend="Quarterly">
+                    <p:dataTable value="#{data_obligationBean.report_form_quarterlyList}" var="rf">
+                        <p:column headerText="Report Form">
+                            <h:outputText value="#{rf.report_form_name}"/>
+                        </p:column>
+                        <p:column headerText="Entity">
+                            <h:outputText value="#{rf.lowest_report_form_level}"/>
+                        </p:column>
+                        <p:column headerText="Frequency">
+                            <h:outputText value="#{rf.report_form_frequency}"/>
+                        </p:column>
+                        <p:column headerText="Q1(Jan-Apr)">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 1)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 1)}"/>
+                        </p:column>
+                        <p:column headerText="Q2(May-Aug)">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 2)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 2)}"/>
+                        </p:column>
+                        <p:column headerText="Q3(Sep-Dec)">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 3)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 3)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+                <p:fieldset legend="Bi-Monthly">
+                    <p:dataTable value="#{data_obligationBean.report_form_bi_monthlyList}" var="rf">
+                        <p:column headerText="Report Form">
+                            <h:outputText value="#{rf.report_form_name}"/>
+                        </p:column>
+                        <p:column headerText="Entity">
+                            <h:outputText value="#{rf.lowest_report_form_level}"/>
+                        </p:column>
+                        <p:column headerText="Frequency">
+                            <h:outputText value="#{rf.report_form_frequency}"/>
+                        </p:column>
+                        <p:column headerText="Jan-Feb">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 1)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEBisMonthly(rf.report_form_id, 1)}"/>
+                        </p:column>
+                        <p:column headerText="Mar-Apr">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 2)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 2)}"/>
+                        </p:column>
+                        <p:column headerText="May-Jun">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 3)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 3)}"/>
+                        </p:column>
+                        <p:column headerText="Jul-Aug">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 4)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 4)}"/>
+                        </p:column>
+                        <p:column headerText="Sep-Oct">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 5)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 5)}"/>
+                        </p:column>
+                        <p:column headerText="Nov-Dec">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 6)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 6)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+                <p:fieldset legend="Weekly">
+                    <p:dataTable value="#{data_obligationBean.report_form_weeklyList}" var="rf">
+                        <p:column headerText="Report Form">
+                            <h:outputText value="#{rf.report_form_name}"/>
+                        </p:column>
+                        <p:column headerText="Entity">
+                            <h:outputText value="#{rf.lowest_report_form_level}"/>
+                        </p:column>
+                        <p:column headerText="Frequency">
+                            <h:outputText value="#{rf.report_form_frequency}"/>
+                        </p:column>
+                        <p:column headerText="Week1">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 1)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 1)}"/>
+                        </p:column>
+                        <p:column headerText="Week2">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 2)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 2)}"/>
+                        </p:column>
+                        <p:column headerText="Week3">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 3)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 3)}"/>
+                        </p:column>
+                        <p:column headerText="Week4">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 4)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 4)}"/>
+                        </p:column>
+                    </p:dataTable>  
+                </p:fieldset>
             </p:fieldset>
         </h:form>
     </ui:define>

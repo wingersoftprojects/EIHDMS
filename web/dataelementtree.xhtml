@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Select Report Form">
+                <p:panelGrid columns="3" id="tree_panel_grid">
+                    <p:outputLabel for="report_form" value="Report Form:" />
+                    <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <h:commandButton value="Show Report Form Data Elements Tree" action="#{data_elementBean.getTreeNodeByNone(uploadBean.report_form)}" />
+                </p:panelGrid>
+            </p:fieldset>
+            <h:panelGrid columns="1">
+                <p:fieldset legend="Report Form Data Elements Tree">
+                    <p:tree value="#{data_elementBean.treeNodeByNone}" var="node" style="width: 100%">              
+                        <p:treeNode>
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                    </p:tree>
+                </p:fieldset>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
