@@ -112,16 +112,39 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         }
 
         //Print selected ones
-        System.out.println("KPI:" + this.selectedKPI.getKpi_id());
-        System.out.println("Years:" + YearsStr);
-        System.out.println("Districts:" + DistrictsStr);
+//        System.out.println("KPI:" + this.selectedKPI.getKpi_id());
+//        System.out.println("Years:" + YearsStr);
+//        System.out.println("Districts:" + DistrictsStr);
 
-        try {
-            base_dataList = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("CALL sp_select_kpi(:kpi,:username,:report_form_id,:years,:districts)").setParameter("kpi", this.getSelectedKPI().getKpi_id()).setParameter("years", YearsStr).setParameter("districts", DistrictsStr).setParameter("username", loginBean.getUser_detail().getUser_name()).setParameter("report_form_id", selectedKPI.getReport_form().getReport_form_id()).list();
-        } catch (PersistentException ex) {
-            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
+//        try {
+//            base_dataList = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("CALL sp_select_kpi(:kpi,:username,:report_form_id,:years,:districts)").setParameter("kpi", this.getSelectedKPI().getKpi_id()).setParameter("years", YearsStr).setParameter("districts", DistrictsStr).setParameter("username", loginBean.getUser_detail().getUser_name()).setParameter("report_form_id", selectedKPI.getReport_form().getReport_form_id()).list();
+//        } catch (PersistentException ex) {
+//            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+        String sql = "{call sp_select_kpi(?,?,?,?,?)}";
+        ResultSet rs = null;
+        try (
+                Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            ps.setInt(1, selectedKPI.getKpi_id());
+            ps.setString(2, loginBean.getUser_detail().getUser_name());
+            ps.setInt(3, selectedKPI.getReport_form().getReport_form_id());
+            ps.setString(4, YearsStr);
+            ps.setString(5, DistrictsStr);
+            rs = ps.executeQuery();
+            load_jSON(rs);
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.err.println(ex.getMessage());
+                }
+            }
         }
-        load_jSON();
 
     }
 
@@ -358,59 +381,70 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         this.base_dataList = base_dataList;
     }
 
-    private void load_jSON() {
-        JSONArray jArray = new JSONArray();
-        JSONObject jObj = new JSONObject();
-        jObj.put("District", new JSONObject().put("type", "string"));
-        jObj.put("County", new JSONObject().put("type", "string"));
-        jObj.put("Subcounty", new JSONObject().put("type", "string"));
-        jObj.put("Parish", new JSONObject().put("type", "string"));
-        jObj.put("Facility", new JSONObject().put("type", "string"));
-        jObj.put("Year", new JSONObject().put("type", "string"));
-        jObj.put("Quarter", new JSONObject().put("type", "string"));
-        jObj.put("Value", new JSONObject().put("type", "number"));
-        jArray.put(jObj);
-
-        if (base_dataList == null) {
-            base_dataList = new ArrayList<>();
-        }
-        for (Object[] base_data : base_dataList) {
-            jObj = new JSONObject();
-            jObj.put("District", base_data[0].toString());
-            if (base_data[1] == null) {
-                jObj.put("County", "");
-            } else {
-                jObj.put("County", base_data[1].toString());
-            }
-            if (base_data[2] == null) {
-                jObj.put("Subcounty", "");
-            } else {
-                jObj.put("Subcounty", base_data[2].toString());
-            }
-            if (base_data[3] == null) {
-                jObj.put("Parish", "");
-            } else {
-                jObj.put("Parish", base_data[3].toString());
-            }
-            if (base_data[4] == null) {
-                jObj.put("Facility", "");
-            } else {
-                jObj.put("Facility", base_data[4].toString());
-            }
-            jObj.put("Year", base_data[5]);
-            if (base_data[6] == null) {
-                jObj.put("Quarter", "");
-            } else {
-                jObj.put("Quarter", base_data[6]);
-            }
-            if (base_data[7] == null) {
-                jObj.put("Value", 0);
-            } else {
-                jObj.put("Value", base_data[7].toString());
-            }
+    private void load_jSON(ResultSet rs) {
+        try {
+            JSONArray jArray = new JSONArray();
+            JSONObject jObj = new JSONObject();
+            jObj.put("District", new JSONObject().put("type", "string"));
+            jObj.put("County", new JSONObject().put("type", "string"));
+            jObj.put("Subcounty", new JSONObject().put("type", "string"));
+            jObj.put("Parish", new JSONObject().put("type", "string"));
+            jObj.put("Facility", new JSONObject().put("type", "string"));
+            jObj.put("Year", new JSONObject().put("type", "string"));
+            jObj.put("Quarter", new JSONObject().put("type", "string"));
+            jObj.put("Value", new JSONObject().put("type", "number"));
             jArray.put(jObj);
+
+            while (rs.next()) {
+                jObj = new JSONObject();
+                try {
+                    jObj.put("District", rs.getString(1));
+                } catch (NullPointerException npe) {
+                    jObj.put("District", "");
+                }
+
+                try {
+                    jObj.put("County", rs.getString(2));
+                } catch (NullPointerException npe) {
+                    jObj.put("County", "");
+                }
+                try {
+                    jObj.put("Subcounty", rs.getString(3));
+                } catch (NullPointerException npe) {
+                    jObj.put("Subcounty", "");
+                }
+
+                try {
+                    jObj.put("Parish", rs.getString(4));
+                } catch (NullPointerException npe) {
+                    jObj.put("Parish", "");
+                }
+                try {
+                    jObj.put("Facility", rs.getString(5));
+                } catch (NullPointerException npe) {
+                    jObj.put("Facility", "");
+                }
+                try {
+                    jObj.put("Year", rs.getInt(6));
+                } catch (NullPointerException npe) {
+                    jObj.put("Year", "");
+                }
+                try {
+                    jObj.put("Quarter", rs.getString(7));
+                } catch (NullPointerException npe) {
+                    jObj.put("Quarter", "");
+                }
+                try {
+                    jObj.put("Value", rs.getInt(8));
+                } catch (NullPointerException npe) {
+                    jObj.put("Value", 0);
+                }
+                jArray.put(jObj);
+            }
+            jSONArray = jArray;
+        } catch (SQLException ex) {
+            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jSONArray = jArray;
     }
 
     public JSONArray getjSONArray() {
