@@ -1236,6 +1236,17 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="county_name">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>100</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
     <Column name="district_name">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
@@ -1484,6 +1495,17 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="county_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>11</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
@@ -1860,6 +1882,18 @@
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
       <ReferencedColumn>sub_county.sub_county_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="county_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>county.county_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
       <Nullable>true</Nullable>
@@ -3666,6 +3700,17 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="data_element_context">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>-1</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
   </Entity>
   <Entity name="temp_health_facility" PKClustered="0">
     <Column name="temp_health_facility_id">
@@ -4875,6 +4920,16 @@
     </Columns>
     <RefColumns>
       <Column>technical_area_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKbase_data808335">
+    <ReferenceTable>base_data</ReferenceTable>
+    <ReferencedTable>county</ReferencedTable>
+    <Columns>
+      <Column>county_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>county_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>

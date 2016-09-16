@@ -229,7 +229,7 @@ public class GeneralUtilities implements Serializable {
              * Data Element
              */
             if (report_form != null) {
-                List<Object[]> data_element_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT report_form_group_name,technical_area_name,section_column_number,group_column_number,data_element_name,data_type,data_size,age_category,sex_category,other_category,description,data_element_code,section_name,sub_section_name from temp_data_element where report_form_name='" + report_form.getReport_form_name() + "' order by temp_data_element_id asc").list();
+                List<Object[]> data_element_nameList = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT report_form_group_name,technical_area_name,section_column_number,group_column_number,data_element_name,data_type,data_size,age_category,sex_category,other_category,description,data_element_code,section_name,sub_section_name,data_element_context from temp_data_element where report_form_name='" + report_form.getReport_form_name() + "' order by temp_data_element_id asc").list();
                 for (Object[] data_element_name : data_element_nameList) {
                     t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                     if (data_element_name[4] != null) {
@@ -249,8 +249,9 @@ public class GeneralUtilities implements Serializable {
                                 data_element.setAge_category(data_element_name[7] != null ? data_element_name[7].toString() : null);
                                 data_element.setSex_category(data_element_name[8] != null ? data_element_name[8].toString() : null);
                                 data_element.setOther_category(data_element_name[9] != null ? data_element_name[9].toString() : null);
-                                data_element.setOther_category(data_element_name[10] != null ? data_element_name[10].toString() : null);
+                                data_element.setDescription(data_element_name[10] != null ? data_element_name[10].toString() : null);
                                 data_element.setData_element_code(data_element_name[11] != null ? data_element_name[11].toString() : null);
+                                data_element.setData_element_context(data_element_name[14] != null ? data_element_name[14].toString() : null);
                                 data_element.setReport_form(report_form);
                                 data_element.setSection(section);
                                 data_element.setSub_section(sub_section);

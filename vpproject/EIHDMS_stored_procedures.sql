@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-13 22:16:56
+Date: 2016-09-16 19:43:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,7 +65,7 @@ base_data AS bd
 INNER JOIN district AS d ON bd.district_id = d.district_id
 INNER JOIN region AS r ON d.region_id = r.region_id
 LEFT JOIN sub_county AS sc ON bd.sub_county_id = sc.sub_county_id
-LEFT JOIN county AS c ON sc.county_id = c.county_id
+LEFT JOIN county AS c ON c.county_id = bd.county_id
 LEFT JOIN parish AS p ON bd.parish_id = p.parish_id
 LEFT JOIN health_facility AS h ON bd.health_facility_id = h.health_facility_id
 INNER JOIN data_element AS de ON bd.data_element_id = de.data_element_id
@@ -97,7 +97,8 @@ data_element.data_element_name,
 report_form.report_form_id,
 report_form_group.report_form_group_id,
 interface_data.sub_county_name,
-interface_data.batch_id
+interface_data.batch_id,
+interface_data.county_name
 FROM
 interface_data
 INNER JOIN data_element ON interface_data.data_element_id = data_element.data_element_id
@@ -130,7 +131,7 @@ sub_county_id,
 batch_id,
 report_period_month,
 report_period_week,
-report_period_year,report_period_bi_month,report_form_id) SELECT 
+report_period_year,report_period_bi_month,report_form_id,county_id) SELECT 
 data_element_id,
 data_element_value,
 health_facility_id,
@@ -152,7 +153,8 @@ report_period_month,
 report_period_week,
 report_period_year,
 report_period_bi_month,
-report_form_id  
+report_form_id,
+county_id
 FROM interface_data where batch_id=in_batch_id AND status_v='Pass';
 
 
@@ -406,32 +408,35 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_update_location_id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_location_id`(IN in_reporting_level varchar(50),IN in_district_name varchar(200), IN in_sub_county_name varchar(200), IN in_parish_name varchar(200), IN in_health_facility_name varchar(200), IN in_batch_id int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_location_id`(IN in_reporting_level varchar(50),IN in_district_name varchar(200),IN in_county_name varchar(200), IN in_sub_county_name varchar(200), IN in_parish_name varchar(200), IN in_health_facility_name varchar(200), IN in_batch_id int)
 BEGIN
 
 DECLARE health_facility_id_v int;
 DECLARE parish_id_v int;
 DECLARE sub_county_id_v int;
 DECLARE district_id_v int;
+DECLARE county_id_v int;
 
 
 IF in_reporting_level='Facility' THEN
 SELECT district_id FROM district where district_name=in_district_name into district_id_v;
-SELECT sub_county_id FROM sub_county sc INNER JOIN county c on c.county_id=sc.county_id where c.district_id=district_id_v AND sub_county_name=in_sub_county_name limit 1 into sub_county_id_v;
+SELECT county_id FROM county c where c.district_id=district_id_v and c.county_name=in_county_name  into county_id_v;
+SELECT sub_county_id FROM sub_county sc where sc.county_id=county_id_v and sc.sub_county_name=in_sub_county_name into sub_county_id_v;
 SELECT health_facility_id FROM health_facility where sub_county_id=sub_county_id_v AND district_id=district_id_v AND health_facility_name=in_health_facility_name into health_facility_id_v;
 
 IF health_facility_id_v!=0 THEN
-UPDATE interface_data set district_id=district_id_v, sub_county_id=sub_county_id_v,health_facility_id=health_facility_id_v WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND health_facility_name=in_health_facility_name AND batch_id=in_batch_id ;
+UPDATE interface_data set district_id=district_id_v,county_id=county_id_v, sub_county_id=sub_county_id_v,health_facility_id=health_facility_id_v WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND health_facility_name=in_health_facility_name AND batch_id=in_batch_id ;
 ELSE
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Facility ',in_district_name,'/',in_sub_county_name ,'/',in_health_facility_name ,' does not exist!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND health_facility_name=in_health_facility_name AND batch_id=in_batch_id ;
 END IF;
 ELSEIF in_reporting_level='Parish' THEN
 SELECT district_id FROM district where district_name=in_district_name into district_id_v;
-SELECT sub_county_id FROM sub_county sc INNER JOIN county c on c.county_id=sc.county_id where c.district_id=district_id_v AND sub_county_name=in_sub_county_name limit 1 into sub_county_id_v;
+SELECT county_id FROM county c where c.district_id=district_id_v and c.county_name=in_county_name  into county_id_v;
+SELECT sub_county_id FROM sub_county sc where sc.county_id=county_id_v and sc.sub_county_name=in_sub_county_name into sub_county_id_v;
 SELECT parish_id FROM parish where sub_county_id=sub_county_id_v AND district_id=district_id_v AND parish_name=in_parish_name into parish_id_v;
 
 IF parish_id_v!=0 THEN
-UPDATE interface_data set district_id=district_id_v, sub_county_id=sub_county_id_v,parish_id=parish_id_v WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
+UPDATE interface_data set district_id=district_id_v,county_id=county_id_v, sub_county_id=sub_county_id_v,parish_id=parish_id_v WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
 ELSE
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Parish ',in_district_name,'/',in_sub_county_name ,'/',in_parish_name ,' does not exist!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
 END IF;
@@ -452,7 +457,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_validate_batch`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_batch`(IN batch_id int,IN reporting_level_name varchar(200), IN in_validation_formula varchar(200),IN in_reporting_name varchar(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_batch`(IN batch_id int,IN reporting_level_name varchar(500), IN in_validation_formula varchar(200),IN in_reporting_name varchar(200))
 BEGIN
 	SET SESSION group_concat_max_len = 1000000;
 SET @sql = NULL;
@@ -476,7 +481,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_validate_data`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_data`(IN in_report_form_group_id int, IN in_batch_id int,IN in_reporting_level varchar(50))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_data`(IN in_report_form_group_id int, IN in_batch_id int,IN in_reporting_level varchar(255))
 BEGIN
 	
 DECLARE validation_rule_formula_v varchar(200);
@@ -485,6 +490,7 @@ DECLARE validation_rule_name_v varchar(200);
 DECLARE validation_text varchar(12000);
 
 DECLARE district_name_v varchar(200);
+DECLARE county_name_v varchar(200);
 DECLARE sub_county_name_v varchar(200);
 DECLARE parish_name_v varchar(200);
 DECLARE health_facility_name_v varchar(200);
@@ -501,11 +507,11 @@ DECLARE reporting_hierarchy_v varchar(500);
 
 DECLARE cur_validation_rules CURSOR FOR SELECT validation_rule_formula,validation_rule_name FROM validation_rule where report_form_group_id=in_report_form_group_id and is_active=1;
 DECLARE cur_district_level CURSOR FOR SELECT DISTINCT district_name FROM interface_data where batch_id=in_batch_id;
-DECLARE cur_parish_level CURSOR FOR SELECT DISTINCT district_name,sub_county_name,parish_name FROM interface_data where batch_id=in_batch_id;
-DECLARE cur_facility_level CURSOR FOR SELECT DISTINCT district_name,sub_county_name,health_facility_name FROM interface_data where batch_id=in_batch_id;
-DECLARE cur_location CURSOR FOR SELECT DISTINCT district_name,sub_county_name,parish_name,health_facility_name FROM interface_data where batch_id=in_batch_id;
+DECLARE cur_parish_level CURSOR FOR SELECT DISTINCT district_name,county_name,sub_county_name,parish_name FROM interface_data where batch_id=in_batch_id;
+DECLARE cur_facility_level CURSOR FOR SELECT DISTINCT district_name,county_name,sub_county_name,health_facility_name FROM interface_data where batch_id=in_batch_id;
+DECLARE cur_location CURSOR FOR SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name FROM interface_data where batch_id=in_batch_id;
 -- For Existing DATA
-DECLARE cur_interface_data CURSOR FOR SELECT DISTINCT CONCAT(district_name,sub_county_name,parish_name,health_facility_name) AS reporting_hierarchy,report_period_week,report_period_month,report_period_bi_month,report_period_quarter,report_period_year FROM interface_data where batch_id=in_batch_id;
+DECLARE cur_interface_data CURSOR FOR SELECT DISTINCT CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END) AS reporting_hierarchy,report_period_week,report_period_month,report_period_bi_month,report_period_quarter,report_period_year FROM interface_data where batch_id=in_batch_id;
 -- For Existing DATA
 
 
@@ -560,7 +566,7 @@ ELSEIF   in_reporting_level = 'Parish' THEN
 BEGIN
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET parish_name_v ='';
 loopParish: LOOP
-	FETCH cur_parish_level INTO district_name_v,sub_county_name_v,parish_name_v;
+	FETCH cur_parish_level INTO district_name_v,county_name_v,sub_county_name_v,parish_name_v;
 IF parish_name_v='' THEN
 LEAVE loopParish;
 END IF;
@@ -573,7 +579,7 @@ DECLARE CONTINUE HANDLER FOR NOT FOUND SET validation_rule_formula_v='';
 IF validation_rule_formula_v='' THEN
 LEAVE loopValidationrule;
 END IF;
-call sp_validate_batch(in_batch_id,'CONCAT(district_name,sub_county_name,parish_name)',validation_rule_formula_v,CONCAT(district_name_v,sub_county_name_v,parish_name_v));
+call sp_validate_batch(in_batch_id,'CONCAT(district_name,CASE WHEN county_name IS NULL THEN '''' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '''' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '''' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '''' ELSE health_facility_name END)',validation_rule_formula_v,CONCAT(district_name_v,county_name_v,sub_county_name_v,parish_name_v));
 IF FOUND_ROWS()=0 THEN
 IF LENGTH(validation_text)>0 THEN
 SET validation_text=CONCAT(validation_text,'\n=>Failed Validation Rule:',validation_rule_name_v);
@@ -583,9 +589,9 @@ END IF;
 END IF;
 	END LOOP;
 if LENGTH(validation_text)>0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
+UPDATE interface_data set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
 ELSE
-UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
+UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
 END IF;
 END;
 CLOSE cur_validation_rules;
@@ -597,7 +603,7 @@ ELSEIF   in_reporting_level = 'Facility' THEN
 BEGIN
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET health_facility_name_v ='';
 loopFacility: LOOP
-	FETCH cur_facility_level INTO district_name_v,sub_county_name_v,health_facility_name_v;
+	FETCH cur_facility_level INTO district_name_v,county_name_v,sub_county_name_v,health_facility_name_v;
 IF health_facility_name_v='' THEN
 LEAVE loopFacility;
 END IF;
@@ -611,7 +617,7 @@ DECLARE CONTINUE HANDLER FOR NOT FOUND SET validation_rule_formula_v='';
 IF validation_rule_formula_v='' THEN
 LEAVE loopValidationrule;
 END IF;
-call sp_validate_batch(in_batch_id,'CONCAT(district_name,sub_county_name,health_facility_name)',validation_rule_formula_v,CONCAT(district_name_v,sub_county_name_v,health_facility_name_v));
+call sp_validate_batch(in_batch_id,'CONCAT(district_name,CASE WHEN county_name IS NULL THEN '''' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '''' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '''' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '''' ELSE health_facility_name END)',validation_rule_formula_v,CONCAT(district_name_v,county_name_v,sub_county_name_v,health_facility_name_v));
 IF FOUND_ROWS()=0 THEN
 IF LENGTH(validation_text)>0 THEN
 SET validation_text=CONCAT(validation_text,'\n=>Failed Validation Rule:',validation_rule_name_v);
@@ -621,9 +627,9 @@ END IF;
 END IF;
 	END LOOP;
 if LENGTH(validation_text)>0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
+UPDATE interface_data set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
 ELSE
-UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
+UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
 END IF;
 END;
 CLOSE cur_validation_rules;
@@ -645,11 +651,11 @@ DECLARE CONTINUE HANDLER FOR NOT FOUND SET district_name_v ='';
 OPEN cur_location;
 loopUpdateLocation: LOOP
 
-	FETCH cur_location INTO district_name_v, sub_county_name_v,parish_name_v,health_facility_name_v;
+	FETCH cur_location INTO district_name_v,county_name_v, sub_county_name_v,parish_name_v,health_facility_name_v;
 		IF district_name_v='' THEN
 		LEAVE loopUpdateLocation;
 		END IF;
-	CALL sp_update_location_id (in_reporting_level ,district_name_v,sub_county_name_v,parish_name_v,health_facility_name_v,in_batch_id);
+	CALL sp_update_location_id (in_reporting_level ,district_name_v,county_name_v,sub_county_name_v,parish_name_v,health_facility_name_v,in_batch_id);
 
 END LOOP;
 CLOSE cur_location;
@@ -694,75 +700,80 @@ BEGIN
 
 IF in_frequency='Weekly' THEN
 SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN district AS d ON b.district_id = d.district_id
-                 LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
+								LEFT JOIN county c on b.county_id=c.county_id
+                LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
                 -- INNER JOIN financial_year AS fy ON b.financial_year_id = fy.financial_year_id
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_week=in_week AND b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_week=in_week AND b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month,',Week:', in_week) WHERE CONCAT(district_name,sub_county_name,parish_name,health_facility_name)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month,',Week:', in_week) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
 
 IF in_frequency='Monthly' THEN
 SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN district AS d ON b.district_id = d.district_id
-                 LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
+								LEFT JOIN county c on b.county_id=c.county_id
+                LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
                 -- INNER JOIN financial_year AS fy ON b.financial_year_id = fy.financial_year_id
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month) WHERE CONCAT(district_name,sub_county_name,parish_name,health_facility_name)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
 
 IF in_frequency='Bi-Monthly' THEN
 SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN district AS d ON b.district_id = d.district_id
-                 LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
+								LEFT JOIN county c on b.county_id=c.county_id
+                LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
                 -- INNER JOIN financial_year AS fy ON b.financial_year_id = fy.financial_year_id
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_bi_month=in_bi_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_bi_month=in_bi_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month) WHERE CONCAT(district_name,sub_county_name,parish_name,health_facility_name)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
 
 IF in_frequency='Quarterly' THEN
 SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN district AS d ON b.district_id = d.district_id
-                 LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
+								LEFT JOIN county c on b.county_id=c.county_id
+                LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
                 -- INNER JOIN financial_year AS fy ON b.financial_year_id = fy.financial_year_id
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_quarter=in_quarter AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_quarter=in_quarter AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter) WHERE CONCAT(district_name,sub_county_name,parish_name,health_facility_name)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
 
 IF in_frequency='Annually' THEN
 SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN district AS d ON b.district_id = d.district_id
-                 LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
+								LEFT JOIN county c on b.county_id=c.county_id
+                LEFT JOIN sub_county AS s ON b.sub_county_id = s.sub_county_id LEFT JOIN parish AS p ON b.parish_id = p.parish_id
                 -- INNER JOIN financial_year AS fy ON b.financial_year_id = fy.financial_year_id
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year) WHERE CONCAT(district_name,sub_county_name,parish_name,health_facility_name)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;

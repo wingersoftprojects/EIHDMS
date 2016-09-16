@@ -154,7 +154,7 @@ public class Data_element_AnalysisBean {
     public void setReport_period_week(String report_period_week) {
         this.report_period_week = report_period_week;
     }
-    
+
     public void filter_base_data() {
         condition = "";
         if (report_form != null) {
@@ -214,20 +214,38 @@ public class Data_element_AnalysisBean {
         jObj.put("AgeCategory", new JSONObject().put("type", "string"));
         jObj.put("SexCategory", new JSONObject().put("type", "string"));
         jObj.put("OtherCategory", new JSONObject().put("type", "string"));
-        jObj.put("District", new JSONObject().put("hierarchy", "Location").accumulate("type", "level"));
+        jObj.put("District", new JSONObject().put("type", "string"));
+//        jObj.put("County", new JSONObject().put("type", "string"));
+//        jObj.put("Subcounty", new JSONObject().put("type", "string"));
+//        jObj.put("Parish", new JSONObject().put("type", "string"));
+//        jObj.put("Facility", new JSONObject().put("type", "string"));
+//        jObj.put("Year", new JSONObject().put("type", "string"));
+//        jObj.put("Quarter", new JSONObject().put("type", "string"));
+//        jObj.put("Value", new JSONObject().put("type", "number"));
+//        jObj.put("District", new JSONObject().put("hierarchy", "Location").accumulate("type", "level"));
         if (report_form != null) {
             if (report_form.getLowest_report_form_level().equals("Facility")) {
-                jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
-                jObj.put("Facility", new JSONObject().put("hierarchy", "Location").accumulate("type", "level").accumulate("parent", "SubCounty"));
+                jObj.put("County", new JSONObject().put("type", "string"));
+                jObj.put("SubCounty", new JSONObject().put("type", "string"));
+                jObj.put("Parish", new JSONObject().put("type", "string"));
+                jObj.put("Facility", new JSONObject().put("type", "string"));
+//                jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
+//                jObj.put("Facility", new JSONObject().put("hierarchy", "Location").accumulate("type", "level").accumulate("parent", "SubCounty"));
             }
             if (report_form.getLowest_report_form_level().equals("Parish")) {
-                jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
-                jObj.put("Parish", new JSONObject().put("parent", "SubCounty").accumulate("hierarchy", "Location").accumulate("type", "level"));
+                jObj.put("County", new JSONObject().put("type", "string"));
+                jObj.put("SubCounty", new JSONObject().put("type", "string"));
+                jObj.put("Parish", new JSONObject().put("type", "string"));
+//                jObj.put("SubCounty", new JSONObject().put("parent", "District").accumulate("hierarchy", "Location").accumulate("type", "level"));
+//                jObj.put("Parish", new JSONObject().put("parent", "SubCounty").accumulate("hierarchy", "Location").accumulate("type", "level"));
             }
         }
-        jObj.put("Section", new JSONObject().put("type", "level").accumulate("hierarchy", "Section"));
-        jObj.put("SubSection", new JSONObject().put("type", "level").accumulate("hierarchy", "Section").accumulate("parent", "Section"));
-        jObj.put("DataElement", new JSONObject().put("type", "level").accumulate("hierarchy", "Section").accumulate("parent", "SubSection"));
+        jObj.put("Section", new JSONObject().put("type", "string"));
+        jObj.put("SubSection", new JSONObject().put("type", "string"));
+        jObj.put("DataElement", new JSONObject().put("type", "string"));
+//        jObj.put("Section", new JSONObject().put("type", "level").accumulate("hierarchy", "Section"));
+//        jObj.put("SubSection", new JSONObject().put("type", "level").accumulate("hierarchy", "Section").accumulate("parent", "Section"));
+//        jObj.put("DataElement", new JSONObject().put("type", "level").accumulate("hierarchy", "Section").accumulate("parent", "SubSection"));
         jObj.put("DataElementValue", new JSONObject().put("type", "number"));
         jArray.put(jObj);
 
@@ -253,12 +271,14 @@ public class Data_element_AnalysisBean {
             }
             jObj.put("District", base_data.getDistrict().getDistrict_name());
             if (report_form.getLowest_report_form_level().equals("Facility")) {
+                jObj.put("County", base_data.getCounty().getCounty_name());
                 jObj.put("SubCounty", base_data.getSub_county().getSub_county_name());
                 jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
             }
             if (report_form.getLowest_report_form_level().equals("Parish")) {
                 jObj.put("Parish", base_data.getParish().getParish_name());
                 jObj.put("SubCounty", base_data.getSub_county().getSub_county_name());
+                jObj.put("County", base_data.getCounty().getCounty_name());
             }
             jObj.put("Section", base_data.getData_element().getSection().getSection_name());
             jObj.put("SubSection", base_data.getData_element().getSub_section().getSub_section_name());

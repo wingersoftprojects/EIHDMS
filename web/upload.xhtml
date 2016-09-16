@@ -28,7 +28,7 @@
                     </p:selectOneMenu>
                     <p:outputLabel value="Calendar Year:" for="report_period_year"/>
                     <p:selectOneMenu id="report_period_year" value="#{uploadBean.report_period_year}" required="true" requiredMessage="Calendar year field is required">
-                    <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Select One" itemValue="" />
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
@@ -102,10 +102,13 @@
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
                             classicView: true,
+                            configuratorActive: false,
+                            configuratorButton: true,
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
                                 {uniqueName: "District"},
+                                {uniqueName: "County"},
                                 {uniqueName: "Subcounty"},
                                 {uniqueName: "Facility"}
                             ],
@@ -134,10 +137,13 @@
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
                             classicView: true,
+                            configuratorActive: false,
+                            configuratorButton: true,
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
                                 {uniqueName: "District"},
+                                {uniqueName: "County"},
                                 {uniqueName: "Subcounty"},
                                 {uniqueName: "Parish"}
                             ],
@@ -166,6 +172,8 @@
                         var jsonData = #{uploadBean.getjSONArray()};
                         var report = {
                             classicView: true,
+                            configuratorActive: false,
+                            configuratorButton: true,
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [

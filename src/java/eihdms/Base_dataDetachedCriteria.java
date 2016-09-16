@@ -31,6 +31,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final AssociationExpression parish;
 	public final IntegerExpression sub_countyId;
 	public final AssociationExpression sub_county;
+	public final IntegerExpression countyId;
+	public final AssociationExpression county;
 	public final IntegerExpression districtId;
 	public final AssociationExpression district;
 	public final IntegerExpression financial_yearId;
@@ -65,6 +67,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		parish = new AssociationExpression("parish", this.getDetachedCriteria());
 		sub_countyId = new IntegerExpression("sub_county.sub_county_id", this.getDetachedCriteria());
 		sub_county = new AssociationExpression("sub_county", this.getDetachedCriteria());
+		countyId = new IntegerExpression("county.county_id", this.getDetachedCriteria());
+		county = new AssociationExpression("county", this.getDetachedCriteria());
 		districtId = new IntegerExpression("district.district_id", this.getDetachedCriteria());
 		district = new AssociationExpression("district", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
@@ -100,6 +104,8 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		parish = new AssociationExpression("parish", this.getDetachedCriteria());
 		sub_countyId = new IntegerExpression("sub_county.sub_county_id", this.getDetachedCriteria());
 		sub_county = new AssociationExpression("sub_county", this.getDetachedCriteria());
+		countyId = new IntegerExpression("county.county_id", this.getDetachedCriteria());
+		county = new AssociationExpression("county", this.getDetachedCriteria());
 		districtId = new IntegerExpression("district.district_id", this.getDetachedCriteria());
 		district = new AssociationExpression("district", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
@@ -139,6 +145,10 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Sub_countyDetachedCriteria createSub_countyCriteria() {
 		return new Sub_countyDetachedCriteria(createCriteria("sub_county"));
+	}
+	
+	public CountyDetachedCriteria createCountyCriteria() {
+		return new CountyDetachedCriteria(createCriteria("county"));
 	}
 	
 	public DistrictDetachedCriteria createDistrictCriteria() {

@@ -28,6 +28,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final StringExpression health_facility_name;
 	public final StringExpression parish_name;
 	public final StringExpression sub_county_name;
+	public final StringExpression county_name;
 	public final StringExpression district_name;
 	public final IntegerExpression financial_yearId;
 	public final AssociationExpression financial_year;
@@ -52,6 +53,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression health_facility_id;
 	public final IntegerExpression parish_id;
 	public final IntegerExpression sub_county_id;
+	public final IntegerExpression county_id;
 	public final IntegerExpression district_id;
 	public final IntegerExpression report_period_bi_month;
 	public final IntegerExpression report_formId;
@@ -68,6 +70,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		health_facility_name = new StringExpression("health_facility_name", this);
 		parish_name = new StringExpression("parish_name", this);
 		sub_county_name = new StringExpression("sub_county_name", this);
+		county_name = new StringExpression("county_name", this);
 		district_name = new StringExpression("district_name", this);
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this);
 		financial_year = new AssociationExpression("financial_year", this);
@@ -92,6 +95,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		health_facility_id = new IntegerExpression("health_facility_id", this);
 		parish_id = new IntegerExpression("parish_id", this);
 		sub_county_id = new IntegerExpression("sub_county_id", this);
+		county_id = new IntegerExpression("county_id", this);
 		district_id = new IntegerExpression("district_id", this);
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this);
 		report_formId = new IntegerExpression("report_form.report_form_id", this);

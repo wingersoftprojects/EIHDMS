@@ -93,10 +93,13 @@
                             dataSourceType: "json",
                             data: jsonData,
                             rows: [
-                                {uniqueName: "Location"}
+                                {uniqueName: "District"},
+                                {uniqueName: "County"},
                             ],
                             columns: [
-                                {uniqueName: "Section", sortName: "asc"}
+                                {uniqueName: "Section"},
+                                {uniqueName: "SubSection"},
+                                {uniqueName: "DataElement"}
                             ],
                             measures: [
                                 {uniqueName: "DataElementValue", format: "decimal"}
@@ -136,7 +139,7 @@
                         };
 
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-                        var pivot2 = flexmonster.embedPivotComponent("flexmonster/", "pivotContainerKPI", "100%", "200", report2,true);
+                        var pivot2 = flexmonster.embedPivotComponent("flexmonster/", "pivotContainerKPI", "100%", "200", report2, true);
 
                     </script>
                 </p:panel>

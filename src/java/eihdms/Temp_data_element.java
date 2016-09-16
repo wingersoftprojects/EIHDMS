@@ -414,6 +414,9 @@ public class Temp_data_element implements Serializable {
 	@Column(name="data_element_code", nullable=true, length=50)	
 	private String data_element_code;
 	
+	@Column(name="data_element_context", nullable=true)	
+	private String data_element_context;
+	
 	private void setTemp_data_element_id(int value) {
 		this.temp_data_element_id = value;
 	}
@@ -556,6 +559,14 @@ public class Temp_data_element implements Serializable {
 	
 	public String getData_element_code() {
 		return data_element_code;
+	}
+	
+	public void setData_element_context(String value) {
+		this.data_element_context = value;
+	}
+	
+	public String getData_element_context() {
+		return data_element_context;
 	}
 	
 	@Override	

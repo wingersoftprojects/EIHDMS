@@ -99,6 +99,33 @@ public class UploadBean implements Serializable {
     private String database_type;
 
     private List<ValidationReport> validationReportList;
+    private List<ValidationReport> validationReportSelected;
+
+    String report_form_name;
+    List<String> report_form_nameList;
+
+    public String getReport_form_name() {
+        return report_form_name;
+    }
+
+    public void setReport_form_name(String report_form_name) {
+        this.report_form_name = report_form_name;
+    }
+
+    public List<String> getReport_form_nameList() {
+        List<String> aList = new ArrayList<>();
+        try {
+            aList = EIHDMSPersistentManager.instance().getSession().createQuery("select distinct report_form_name from Temp_data_element").list();
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.report_form_nameList = aList;
+        return report_form_nameList;
+    }
+
+    public void setReport_form_nameList(List<String> report_form_nameList) {
+        this.report_form_nameList = report_form_nameList;
+    }
 
     public boolean showweekly() {
         if (report_form == null) {
@@ -150,6 +177,14 @@ public class UploadBean implements Serializable {
 
     public void setValidationReportList(List<ValidationReport> validationReportList) {
         this.validationReportList = validationReportList;
+    }
+
+    public List<ValidationReport> getValidationReportSelected() {
+        return validationReportSelected;
+    }
+
+    public void setValidationReportSelected(List<ValidationReport> validationReportSelected) {
+        this.validationReportSelected = validationReportSelected;
     }
 
     public Integer getReport_period_year() {
@@ -319,11 +354,13 @@ public class UploadBean implements Serializable {
             jObj.put("DataElement", new JSONObject().put("type", "string"));
             if (report_form.getLowest_report_form_level().equals("Facility")) {
                 jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("County", new JSONObject().put("type", "string"));
                 jObj.put("Subcounty", new JSONObject().put("type", "string"));
                 jObj.put("Facility", new JSONObject().put("type", "string"));
             }
             if (report_form.getLowest_report_form_level().equals("Parish")) {
                 jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("County", new JSONObject().put("type", "string"));
                 jObj.put("Subcounty", new JSONObject().put("type", "string"));
                 jObj.put("Parish", new JSONObject().put("type", "string"));
             }
@@ -341,11 +378,13 @@ public class UploadBean implements Serializable {
                 jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
                 if (report_form.getLowest_report_form_level().equals("Facility")) {
                     jObj.put("District", interface_data.getDistrict_name());
+                    jObj.put("County", interface_data.getCounty_name());
                     jObj.put("Subcounty", interface_data.getSub_county_name());
                     jObj.put("Facility", interface_data.getHealth_facility_name());
                 }
                 if (report_form.getLowest_report_form_level().equals("Parish")) {
                     jObj.put("District", interface_data.getDistrict_name());
+                    jObj.put("County", interface_data.getCounty_name());
                     jObj.put("Subcounty", interface_data.getSub_county_name());
                     jObj.put("Parish", interface_data.getParish_name());
                 }
@@ -607,215 +646,12 @@ public class UploadBean implements Serializable {
                 /**
                  * Validate Data
                  */
-//                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-//                List<Interface_data> interface_datas_tovalidate = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where batch= " + batch.getBatch_id() + " AND i.data_element.report_form=" + report_form.getReport_form_id() + " AND i.data_element.report_form_group=" + report_form_group.getReport_form_group_id()).list();
-//
-//                if (report_form.getLowest_report_form_level().equals("Facility")) {
-//                    Set<String> facility_hierarchyset = new HashSet();
-//                    for (Interface_data interface_data : interface_datas_tovalidate) {
-//                        facility_hierarchyset.add(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name());
-//                    }
-//                    for (String facilityhierarchy : facility_hierarchyset) {
-//                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,health_facility_name)", facilityhierarchy);
-//                        validationtext += validate_upload_existing_data(facilityhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
-//                        for (Interface_data interface_data : interface_datas_tovalidate) {
-//                            if (facilityhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getHealth_facility_name())) {
-//                                set_Status_V(interface_data);
-//                            }
-//                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
-//                        }
-//                    }
-//                }
-//                if (report_form.getLowest_report_form_level().equals("Parish")) {
-//                    Set<String> parish_hierarchyset = new HashSet();
-//                    for (Interface_data interface_data : interface_datas_tovalidate) {
-//                        parish_hierarchyset.add(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name());
-//                    }
-//                    for (String parishhierarchy : parish_hierarchyset) {
-//                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name,sub_county_name,parish_name)", parishhierarchy);
-//                        validationtext += validate_upload_existing_data(parishhierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
-//                        for (Interface_data interface_data : interface_datas_tovalidate) {
-//                            if (parishhierarchy.equals(interface_data.getDistrict_name() + interface_data.getSub_county_name() + interface_data.getParish_name())) {
-//                                set_Status_V(interface_data);
-//                            }
-//                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
-//                        }
-//                    }
-//                }
-//                if (report_form.getLowest_report_form_level().equals("District")) {
-//                    Set<String> district_hierarchyset = new HashSet();
-//                    for (Interface_data interface_data : interface_datas_tovalidate) {
-//                        district_hierarchyset.add(interface_data.getDistrict_name());
-//                    }
-//                    for (String districthierarchy : district_hierarchyset) {
-//                        validationtext = validate_upload_procedure(batch.getBatch_id(), "CONCAT(district_name)", districthierarchy);
-//                        //validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), report_period_quarter, report_period_month, report_period_week, report_period_year);
-//                        validationtext += validate_upload_existing_data(districthierarchy, financial_year.getFinancial_year_id(), (report_period_quarter!=null?report_period_quarter:0), (report_period_month!=null?report_period_month:0), (report_period_week!=null?report_period_week:0), (report_period_year!=null?report_period_year:0));
-//                        for (Interface_data interface_data : interface_datas_tovalidate) {
-//                            if (districthierarchy.equals(interface_data.getDistrict_name())) {
-//                                set_Status_V(interface_data);
-//                            }
-//                            EIHDMSPersistentManager.instance().getSession().merge(interface_data);
-//                        }
-//                    }
-//                }
-//                transaction.commit();
-                /**
-                 * End Validate Data
-                 */
-                //transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-                /**
-                 * Move data to base
-                 */
-                //move_data_to_base(batch);
-                /**
-                 * End move data to base
-                 */
-                //transaction.commit();
                 loginBean.saveMessage();
                 generate_validation_report(batch.getBatch_id());
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
             interface_datas = new ArrayList<>();
-        }
-    }
-
-    private void move_data_to_base(Batch batch) {
-        try {
-            List<Interface_data> interface_datas_tobase = (List<Interface_data>) EIHDMSPersistentManager.instance().getSession().createQuery("SELECT i FROM Interface_data i where i.status_v='Pass' AND batch= " + batch.getBatch_id()).list();
-            for (Interface_data i : interface_datas_tobase) {
-                District d = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
-                Sub_county s = Sub_county.loadSub_countyByQuery("is_active=1 AND sub_county_name='" + i.getSub_county_name() + "' AND county.district=" + (d != null ? d.getDistrict_id() : 0), null);
-                Parish p = null;
-                if (report_form.getLowest_report_form_level().equals("Parish")) {
-                    p = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county_id=" + (s != null ? s.getSub_county_id() : 0), null);
-                }
-
-                List<Health_facility> health_facilityList = Health_facility.queryHealth_facility("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id() : 0), null);
-                List<Parish> parishList = EIHDMSPersistentManager.instance().getSession().createQuery("SELECT p from Parish p where p.is_active=1 AND p.sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND p.sub_county=" + (s != null ? s.getSub_county_id() : 0) + " AND p.parish_name='" + i.getParish_name() + "'").list();// Parish.queryParish("is_active=1 AND parish_name='" + i.getParish_name() + "' AND district_id=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county_id=" + (s != null ? s.getSub_county_id() : 0), null);
-                List<District> districtList = District.queryDistrict("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
-                if (report_form.getLowest_report_form_level().equals("Facility")) {
-                    if (health_facilityList.size() == 1) {
-                        Base_data base_data = Base_data.createBase_data();
-                        health_facility = Health_facility.loadHealth_facilityByQuery("is_active=1 AND health_facility_name='" + i.getHealth_facility_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id() : 0), null);
-                        base_data.setHealth_facility(health_facility);
-                        base_data.setDistrict(health_facility.getDistrict());
-                        base_data.setSub_county(health_facility.getSub_county());
-                        /**
-                         * Save to base data
-                         */
-                        save_basa_data(base_data, i);
-                    }
-                    if (health_facilityList.size() > 1) {
-                        i.setStatus_v("Fail");
-                        i.setStatus_v_desc("Not moved to base because more than one facility found in facilities table");
-                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                        EIHDMSPersistentManager.instance().getSession().merge(i);
-                    }
-                    if (health_facilityList.isEmpty()) {
-                        i.setStatus_v("Fail");
-                        i.setStatus_v_desc("Not moved to base because facility not found in facilities table");
-                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                        EIHDMSPersistentManager.instance().getSession().merge(i);
-                    }
-                }
-                if (report_form.getLowest_report_form_level().equals("Parish")) {
-                    if (parishList.size() == 1) {
-                        Base_data base_data = Base_data.createBase_data();
-                        parish = Parish.loadParishByQuery("is_active=1 AND parish_name='" + i.getParish_name() + "' AND sub_county.county.district=" + (d != null ? d.getDistrict_id() : 0) + " AND sub_county=" + (s != null ? s.getSub_county_id() : 0), null);
-                        base_data.setParish(parish);
-                        if (parish != null) {
-                            base_data.setDistrict(d);
-                            base_data.setSub_county(parish.getSub_county());
-                        }
-
-                        /**
-                         * Save to base data
-                         */
-                        save_basa_data(base_data, i);
-                    }
-                    if (parishList.size() > 1) {
-                        i.setStatus_v("Fail");
-                        i.setStatus_v_desc("Not moved to base because more than one parish found in parishes table");
-                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                        EIHDMSPersistentManager.instance().getSession().merge(i);
-                    }
-                    if (parishList.isEmpty()) {
-                        i.setStatus_v("Fail");
-                        i.setStatus_v_desc("Not moved to base because parish not found in parishes table");
-                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                        EIHDMSPersistentManager.instance().getSession().merge(i);
-                    }
-                }
-                if (report_form.getLowest_report_form_level().equals("District")) {
-                    if (districtList.size() == 1) {
-                        Base_data base_data = Base_data.createBase_data();
-                        district = District.loadDistrictByQuery("is_active=1 AND district_name='" + i.getDistrict_name() + "'", null);
-                        base_data.setDistrict(district);
-
-                        /**
-                         * Save to base data
-                         */
-                        save_basa_data(base_data, i);
-                    }
-                    if (districtList.size() > 1) {
-                        i.setStatus_v("Fail");
-                        i.setStatus_v_desc("Not moved to base because more than one district found in districts table");
-                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                        EIHDMSPersistentManager.instance().getSession().merge(i);
-                    }
-                    if (districtList.isEmpty()) {
-                        i.setStatus_v("Fail");
-                        i.setStatus_v_desc("Not moved to base because district not found in districts table");
-                        i.setLast_edit_date(new Timestamp(new Date().getTime()));
-                        i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-                        EIHDMSPersistentManager.instance().getSession().merge(i);
-                    }
-                }
-            }
-        } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void save_basa_data(Base_data base_data, Interface_data i) {
-        try {
-            base_data.setBatch(i.getBatch());
-            base_data.setData_element(i.getData_element());
-            base_data.setData_element_value(i.getData_element_value());
-            base_data.setFinancial_year(i.getFinancial_year());
-            base_data.setReport_period_quarter(i.getReport_period_quarter());
-            base_data.setReport_period_bi_month(i.getReport_period_bi_month());
-            base_data.setReport_period_from_date(i.getReport_period_from_date());
-            base_data.setReport_period_to_date(i.getReport_period_to_date());
-            //base_data.setReport_period_name(i.getReport_period_name());
-            base_data.setReport_period_month(i.getReport_period_month());
-            base_data.setReport_period_week(i.getReport_period_week());
-            base_data.setReport_period_year(i.getReport_period_year());
-            base_data.setIs_active(1);
-            base_data.setAdd_date(new Timestamp(new Date().getTime()));
-            base_data.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
-            base_data.setIs_deleted(0);
-            /**
-             * Save Base Data
-             */
-            base_data.save();
-            /**
-             * Modify Interface Data
-             */
-            i.setStatus_m("Pass");
-            i.setStatus_m_desc("Moved to base successfully");
-            i.setLast_edit_date(new Timestamp(new Date().getTime()));
-            i.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
-            EIHDMSPersistentManager.instance().getSession().merge(i);
-        } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -827,17 +663,20 @@ public class UploadBean implements Serializable {
             batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
             batchDetails.setBatch(b);
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc FROM interface_data where batch_id=" + batch_id).list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc FROM interface_data where batch_id=" + batch_id).list();
+            int counter = 1;
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
-                if (objects[3] != null) {
+                if (objects[4] != null) {
                     vr.DistrictName = objects[0].toString();
-                    vr.Sub_countyName = objects[1].toString();
-                    vr.FacilityName = objects[3].toString();
+                    vr.CountyName = objects[1].toString();
+                    vr.Sub_countyName = objects[2].toString();
+                    vr.FacilityName = objects[4].toString();
                     vr.ParishName = "";
-                } else if (objects[2] != null) {
+                } else if (objects[3] != null) {
                     vr.DistrictName = objects[0].toString();
-                    vr.Sub_countyName = objects[1].toString();
+                    vr.CountyName = objects[1].toString();
+                    vr.Sub_countyName = objects[2].toString();
                     vr.ParishName = objects[3].toString();
                     vr.FacilityName = "";
                 } else {
@@ -846,8 +685,15 @@ public class UploadBean implements Serializable {
                     vr.ParishName = "";
                     vr.FacilityName = "";
                 }
-                vr.setValidationDescription(objects[5].toString());
+                try {
+                    vr.setStatus(objects[5].toString());
+                    vr.setValidationDescription(objects[6].toString());
+                } catch (NullPointerException ex) {
+                    vr.setValidationDescription("");
+                }
+                vr.setReportId(counter);
                 tempValidationReports.add(vr);
+                counter++;
             }
             validationReportList = new ArrayList<>(tempValidationReports);
         } catch (PersistentException ex) {
@@ -858,11 +704,6 @@ public class UploadBean implements Serializable {
     public List<ValidationReport> generate_validation_report() {
         validationReportList = new ArrayList<>();
         try {
-            //Batch b = Batch.getBatchByORMID(batch_id);
-            //User_detail user_detail = User_detail.getUser_detailByORMID(b.getAdd_by());
-            //batchDetails = new BatchDetails();
-            //batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
-            //batchDetails.setBatch(b);
             List<ValidationReport> tempValidationReports = new ArrayList<>();
             List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT interface_data.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date FROM interface_data INNER JOIN user_detail ON user_detail.user_detail_id = interface_data.add_by INNER JOIN batch ON interface_data.batch_id = batch.batch_id where status_v='Fail' order by batch_id desc").list();
             for (Object[] objects : validations) {
@@ -939,7 +780,7 @@ public class UploadBean implements Serializable {
                 Map demap = new HashMap();
                 int tempcounter = 0;
                 if (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility")) {
-                    tempcounter = 3;
+                    tempcounter = 4;
                 } else {
                     tempcounter = 1;
                 }
@@ -961,6 +802,7 @@ public class UploadBean implements Serializable {
                         String facility_name = "";
                         String parish_name = "";
                         String district_name = "";
+                        String county_name = "";
                         String sub_county_name = "";
                         //Cell cell = row.getCell(1);
                         Iterator<Cell> cellIterator1 = row.cellIterator();
@@ -970,12 +812,12 @@ public class UploadBean implements Serializable {
                             counter++;
                         }
                         if (row.getRowNum() == 0) {
-                            if ((counter - 3) != data_elements.size() && report_form.getLowest_report_form_level().equals("Facility")) {
+                            if ((counter - 4) != data_elements.size() && report_form.getLowest_report_form_level().equals("Facility")) {
                                 FacesContext context = FacesContext.getCurrentInstance();
                                 context.addMessage(null, new FacesMessage("Invalid Upload due to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
                                 return;
                             }
-                            if ((counter - 3) != data_elements.size() && report_form.getLowest_report_form_level().equals("Parish")) {
+                            if ((counter - 4) != data_elements.size() && report_form.getLowest_report_form_level().equals("Parish")) {
                                 FacesContext context = FacesContext.getCurrentInstance();
                                 context.addMessage(null, new FacesMessage("Invalid Upload due to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
                                 return;
@@ -991,13 +833,15 @@ public class UploadBean implements Serializable {
                         if (row.getRowNum() > 0) {
                             if (report_form.getLowest_report_form_level().equals("Facility")) {
                                 district_name = row.getCell(0).getStringCellValue();
-                                sub_county_name = row.getCell(1).getStringCellValue();
-                                facility_name = row.getCell(2).getStringCellValue();
+                                county_name = row.getCell(1).getStringCellValue();
+                                sub_county_name = row.getCell(2).getStringCellValue();
+                                facility_name = row.getCell(3).getStringCellValue();
                             }
                             if (report_form.getLowest_report_form_level().equals("Parish")) {
                                 district_name = row.getCell(0).getStringCellValue();
-                                sub_county_name = row.getCell(1).getStringCellValue();
-                                parish_name = row.getCell(2).getStringCellValue();
+                                county_name = row.getCell(1).getStringCellValue();
+                                sub_county_name = row.getCell(2).getStringCellValue();
+                                parish_name = row.getCell(3).getStringCellValue();
                             }
                             if (report_form.getLowest_report_form_level().equals("District")) {
                                 district_name = row.getCell(0).getStringCellValue();
@@ -1025,8 +869,9 @@ public class UploadBean implements Serializable {
                                          */
                                         interface_datas.add(interface_data);
                                     }
-                                    if (cellindex > 2 && (int) pair.getKey() == cellindex && (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility"))) {
+                                    if (cellindex > 3 && (int) pair.getKey() == cellindex && (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility"))) {
                                         interface_data.setDistrict_name(district_name.replace("'", "''"));
+                                        interface_data.setCounty_name(county_name.replace("'", "''"));
                                         interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
                                         interface_data.setParish_name(parish_name.replace("'", "''"));
                                         interface_data.setHealth_facility_name(facility_name.replace("'", "''"));
@@ -1066,19 +911,10 @@ public class UploadBean implements Serializable {
         interface_data.setReport_period_to_date(report_period_to_date);
         interface_data.setFinancial_year(financial_year);
         interface_data.setReport_period_quarter(report_period_quarter);
-        //interface_data.setReport_period_name(report_period_name);
         interface_data.setReport_period_bi_month(report_period_bi_month);
         interface_data.setReport_period_month(report_period_month);
         interface_data.setReport_period_week(report_period_week);
         interface_data.setReport_period_year(report_period_year);
-        if (district != null) {
-            interface_data.setDistrict_name(district.getDistrict_name());
-        }
-        if (parish != null) {
-            interface_data.setParish_name(parish.getParish_name());
-        }
-        //interface_data.setStatus("Not Moved");
-        //interface_data.setStatus_desc("Not yet moved to base data");
         switch (cell.getCellType()) {
             case Cell.CELL_TYPE_STRING:
                 interface_data.setData_element_value(cell.getStringCellValue().replace("'", "''"));
@@ -1382,8 +1218,6 @@ public class UploadBean implements Serializable {
                         base_data.setData_element(i.getData_element());
                         base_data.setData_element_value(i.getData_element_value());
                         base_data.setData_element_value(i.getData_element_value());
-//                    District d = District.loadDistrictByQuery("district_name='" + i.getDistrict_name() + "'", null);
-//                    Parish p = Parish.loadParishByQuery("parish_name='" + i.getParish_name() + "'", null);
                         Health_facility health_facility = Health_facility.loadHealth_facilityByQuery("health_facility_name='" + i.getHealth_facility_name() + "'", null); //AND district_id=" + (district != null ? district.getDistrict_id() : 0) + " AND parish_id=" + (parish != null ? parish.getParish_id() : 0), null);
                         base_data.setHealth_facility(health_facility);
                         base_data.setDistrict(health_facility.getDistrict());
@@ -1445,6 +1279,7 @@ public class UploadBean implements Serializable {
 
         private String FacilityName;
         private String DistrictName;
+        private String CountyName;
         private String ParishName;
         private String Sub_countyName;
         private String ValidationDescription;
@@ -1452,6 +1287,23 @@ public class UploadBean implements Serializable {
         private String AddedBy;
         private int batch_id;
         private String AddDate;
+        private int ReportId;
+
+        public int getReportId() {
+            return ReportId;
+        }
+
+        public void setReportId(int ReportId) {
+            this.ReportId = ReportId;
+        }
+
+        public String getCountyName() {
+            return CountyName;
+        }
+
+        public void setCountyName(String CountyName) {
+            this.CountyName = CountyName;
+        }
 
         public String getAddDate() {
             return AddDate;

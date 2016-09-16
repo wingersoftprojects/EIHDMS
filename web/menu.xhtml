@@ -52,11 +52,13 @@
 
                                 <p:submenu label="Tools" icon="ui-icon-wrench">
                                     <p:menuitem value="Download Template" action="downloadtemplate?faces-redirect=true" icon="ui-icon-arrowthick-1-s"/>
+                                    <p:menuitem value="Generate SQL Script" action="upload_generate_sql?faces-redirect=true" icon="ui-icon-wrench"/>
                                 </p:submenu>
 
                                 <p:submenu label="Reports" icon="ui-icon-copy">
                                     <p:submenu label="Standard Reports">
                                         <p:menuitem value="KPI Reports" action="report_kpi?faces-redirect=true" />
+                                        <p:menuitem value="Standard Reports" action="report_kpi?faces-redirect=true" />
                                     </p:submenu>
                                     <p:submenu label="Dynamic Reports">
                                         <p:menuitem value="Pivot Analysis" action="dataelementanalysis?faces-redirect=true" icon="ui-icon-search"/>

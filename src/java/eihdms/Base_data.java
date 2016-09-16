@@ -385,6 +385,10 @@ public class Base_data implements Serializable {
 				getSub_county().getBase_data().remove(this);
 			}
 			
+			if(getCounty() != null) {
+				getCounty().getBase_data().remove(this);
+			}
+			
 			if(getDistrict() != null) {
 				getDistrict().getBase_data().remove(this);
 			}
@@ -425,6 +429,10 @@ public class Base_data implements Serializable {
 			
 			if(getSub_county() != null) {
 				getSub_county().getBase_data().remove(this);
+			}
+			
+			if(getCounty() != null) {
+				getCounty().getBase_data().remove(this);
 			}
 			
 			if(getDistrict() != null) {
@@ -485,6 +493,11 @@ public class Base_data implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id") })	
 	private eihdms.Sub_county sub_county;
+	
+	@ManyToOne(targetEntity=eihdms.County.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="county_id", referencedColumnName="county_id") })	
+	private eihdms.County county;
 	
 	@ManyToOne(targetEntity=eihdms.District.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
@@ -756,6 +769,14 @@ public class Base_data implements Serializable {
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
+	}
+	
+	public void setCounty(eihdms.County value) {
+		this.county = value;
+	}
+	
+	public eihdms.County getCounty() {
+		return county;
 	}
 	
 	@Override	

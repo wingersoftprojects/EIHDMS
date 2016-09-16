@@ -35,6 +35,7 @@ public class Temp_data_elementDetachedCriteria extends AbstractORMDetachedCriter
 	public final StringExpression technical_area_name;
 	public final StringExpression description;
 	public final StringExpression data_element_code;
+	public final StringExpression data_element_context;
 	
 	public Temp_data_elementDetachedCriteria() {
 		super(eihdms.Temp_data_element.class, eihdms.Temp_data_elementCriteria.class);
@@ -54,6 +55,7 @@ public class Temp_data_elementDetachedCriteria extends AbstractORMDetachedCriter
 		technical_area_name = new StringExpression("technical_area_name", this.getDetachedCriteria());
 		description = new StringExpression("description", this.getDetachedCriteria());
 		data_element_code = new StringExpression("data_element_code", this.getDetachedCriteria());
+		data_element_context = new StringExpression("data_element_context", this.getDetachedCriteria());
 	}
 	
 	public Temp_data_elementDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -74,6 +76,7 @@ public class Temp_data_elementDetachedCriteria extends AbstractORMDetachedCriter
 		technical_area_name = new StringExpression("technical_area_name", this.getDetachedCriteria());
 		description = new StringExpression("description", this.getDetachedCriteria());
 		data_element_code = new StringExpression("data_element_code", this.getDetachedCriteria());
+		data_element_context = new StringExpression("data_element_context", this.getDetachedCriteria());
 	}
 	
 	public Temp_data_element uniqueTemp_data_element(PersistentSession session) {

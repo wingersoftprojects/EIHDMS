@@ -448,6 +448,9 @@ public class Interface_data implements Serializable {
 	@Column(name="sub_county_name", nullable=true, length=100)	
 	private String sub_county_name;
 	
+	@Column(name="county_name", nullable=true, length=100)	
+	private String county_name;
+	
 	@Column(name="district_name", nullable=true, length=100)	
 	private String district_name;
 	
@@ -520,6 +523,9 @@ public class Interface_data implements Serializable {
 	
 	@Column(name="sub_county_id", nullable=true, length=10)	
 	private Integer sub_county_id;
+	
+	@Column(name="county_id", nullable=true, length=11)	
+	private Integer county_id;
 	
 	@Column(name="district_id", nullable=true, length=10)	
 	private Integer district_id;
@@ -810,6 +816,26 @@ public class Interface_data implements Serializable {
 	
 	public Integer getReport_period_bi_month() {
 		return report_period_bi_month;
+	}
+	
+	public void setCounty_name(String value) {
+		this.county_name = value;
+	}
+	
+	public String getCounty_name() {
+		return county_name;
+	}
+	
+	public void setCounty_id(int value) {
+		setCounty_id(new Integer(value));
+	}
+	
+	public void setCounty_id(Integer value) {
+		this.county_id = value;
+	}
+	
+	public Integer getCounty_id() {
+		return county_id;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

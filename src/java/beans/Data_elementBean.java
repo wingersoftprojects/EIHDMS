@@ -226,6 +226,114 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                     if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
                         cell = (XSSFCell) row.createCell(colIndex);
                         cell.setCellStyle(cs);
+                        cell.setCellValue("County");
+                        colIndex += 1;
+                    }
+                    if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
+                        cell = (XSSFCell) row.createCell(colIndex);
+                        cell.setCellStyle(cs);
+                        cell.setCellValue("Sub County");
+                        colIndex += 1;
+                    }
+                    if (lowestreportformlevel.equals("Parish")) {
+                        cell = (XSSFCell) row.createCell(colIndex);
+                        cell.setCellStyle(cs);
+                        cell.setCellValue("Parish");
+                        colIndex += 1;
+                    }
+                    if (lowestreportformlevel.equals("Facility")) {
+                        cell = (XSSFCell) row.createCell(colIndex);
+                        cell.setCellStyle(cs);
+                        cell.setCellValue("Facility");
+                        colIndex += 1;
+                    }
+                }
+                cell = (XSSFCell) row.createCell(colIndex);
+                cell.setCellStyle(cs);
+                cell.setCellValue(de.getData_element_name());
+                colIndex += 1;
+            }
+            /*
+             //Create file system using specific name
+             out = new FileOutputStream(new File(fileNameFull));
+             //write operation workbook using file out object
+             workbook.write(out);
+            
+             //close
+             out.close();
+             */
+            HttpServletResponse res = HttpJSFUtil.getResponse();
+            res.setContentType("application/vnd.ms-excel");
+            res.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
+            try {
+                ServletOutputStream sout = res.getOutputStream();
+                workbook.write(sout);
+                sout.flush();
+                sout.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            FacesContext faces = FacesContext.getCurrentInstance();
+            faces.responseComplete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void DownloadExcelTemplate_old(List<Data_element> des, String filename, String sheetname, String lowestreportformlevel) {
+        XSSFWorkbook workbook = null;
+        int rowIndex = 0;
+        int colIndex = 0;
+
+        try {
+            //Create Blank workbook
+            workbook = new XSSFWorkbook();
+            //Create a blank spreadsheet
+            XSSFSheet spreadsheet = workbook.createSheet(sheetname);
+
+            //set the margins
+            double leftMarginInches = spreadsheet.getMargin(spreadsheet.LeftMargin);
+            double topMarginInches = spreadsheet.getMargin(spreadsheet.TopMargin);
+
+            double rightMarginInches = spreadsheet.getMargin(spreadsheet.RightMargin);
+            double bottomMarginInches = spreadsheet.getMargin(spreadsheet.BottomMargin);
+            spreadsheet.setMargin(spreadsheet.LeftMargin, leftMarginInches * 0);
+            spreadsheet.setMargin(spreadsheet.TopMargin, topMarginInches * 0);
+            spreadsheet.setMargin(spreadsheet.RightMargin, rightMarginInches * 0);
+            spreadsheet.setMargin(spreadsheet.BottomMargin, bottomMarginInches * 0);
+            spreadsheet.setMargin(spreadsheet.HeaderMargin, 0);
+            spreadsheet.setMargin(spreadsheet.FooterMargin, 0);
+            spreadsheet.setFitToPage(true);
+
+            //create first row on a created spreadsheet
+            XSSFRow row = null;
+            XSSFCell cell = null;
+
+            //--------------fonts---------------
+            XSSFFont fontTop = workbook.createFont();
+            fontTop.setBold(false);
+            fontTop.setFontName("Arial");
+            fontTop.setFontHeightInPoints((short) 16);
+
+            //--------------header--------------
+            rowIndex = 0;
+            colIndex = 0;
+            //set wrap text to true
+            CellStyle cs = workbook.createCellStyle();
+            cs.setWrapText(true);
+
+            row = spreadsheet.createRow(rowIndex);
+            for (Data_element de : des) {
+                if (colIndex == 0) {
+                    cell = (XSSFCell) row.createCell(colIndex);
+                    cell.setCellStyle(cs);
+                    cell.setCellValue("District");
+                    colIndex += 1;
+                    if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
+                        cell = (XSSFCell) row.createCell(colIndex);
+                        cell.setCellStyle(cs);
                         cell.setCellValue("Sub County");
                         colIndex += 1;
                     }

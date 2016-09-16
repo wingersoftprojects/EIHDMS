@@ -1,37 +1,73 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
 
+    <ui:define name="content">
         <h:form id="form">
             <p:growl/>
-            <p:panelGrid columns="2">
-                <p:outputLabel for="table_string" value="Table:" />
-                <p:inputText id="table_string" value="#{uploadBean.table_string}" style="width:125px" required="true" requiredMessage="Table field is Required">
-                    <p:ajax process="@this" event="change"/>
-                    <p:ajax process="@this" event="blur"/>
-                </p:inputText>
-                <p:outputLabel value="Database Type:" for="database_type"/>
-                <p:selectOneMenu id="database_type" value="#{uploadBean.database_type}" required="true" requiredMessage="Database Type field is required">
-                    <f:selectItem itemLabel="Select One" itemValue="" />
-                    <f:selectItem itemLabel="SQL SERVER" itemValue="SQL SERVER" />
-                    <f:selectItem itemLabel="MY SQL" itemValue="MY SQL" />
-                    <p:ajax process="@this"/>
-                </p:selectOneMenu>
-                <p:outputLabel value="Upload"/>
-                <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUploadgenerate_insertstring}" mode="advanced"
-                              auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process=":form:table_string,:form:database_type" />
-                <p:outputLabel for="insert_string" value="Insert String:" />
-                <p:inputTextarea rows="6" cols="200" value="#{uploadBean.insert_string}" id="insert_string" />
-            </p:panelGrid>
-
+            <p:fieldset legend="Generate Database Insert SQL Script from Excel File">
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="table_string" value="Table:" />
+                    <p:selectOneMenu id="table_string" value="#{uploadBean.table_string}" required="true" requiredMessage="Table field is required">
+                        <f:selectItem itemLabel="" itemValue="" />
+                        <f:selectItem itemLabel="temp_data_element" itemValue="temp_data_element" />
+                        <f:selectItem itemLabel="temp_health_facility" itemValue="temp_health_facility" />
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Database Type:" for="database_type"/>
+                    <p:selectOneMenu id="database_type" value="#{uploadBean.database_type}" required="true" requiredMessage="Database Type field is required">
+                        <f:selectItem itemLabel="MY SQL" itemValue="MY SQL" />
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Excel File"/>
+                    <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUploadgenerate_insertstring}" mode="advanced"
+                                  auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="insert_string" multiple="false" process=":form:table_string,:form:database_type" />
+                    <p:outputLabel for="insert_string" value="SQL Insert Script:" />
+                    <p:inputTextarea rows="6" cols="200" value="#{uploadBean.insert_string}" id="insert_string" />
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Facilities - Load Uploaded Temp Data">
+                <h:commandButton value="Load Facilities">
+                    <f:ajax listener="#{generalUtilities.load_health_facility_dependancies()}" execute="@this" render="@this"/>
+                </h:commandButton>
+            </p:fieldset>
+            <p:fieldset legend="Data Elements - Load Uploaded Temp Data">
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="Temp Report Form Name"/>
+                    <p:selectOneMenu id="report_form_name" value="#{uploadBean.report_form_name}" style="width:125px" required="true" requiredMessage="Temp Report Form Name is Required">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{uploadBean.report_form_nameList}"/>
+                        <p:ajax process="@this" update="@this"/>
+                    </p:selectOneMenu>
+                    <h:commandButton value="Load Data Elements">
+                        <f:ajax listener="#{generalUtilities.load_data_element_dependancies(uploadBean.report_form_name)}" execute="@this report_form_name" render="@this report_form_name"/>
+                    </h:commandButton>
+                </h:panelGrid>
+            </p:fieldset>
         </h:form>
-    </h:body>
-</html>
+        
+         <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
 
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

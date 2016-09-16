@@ -35,6 +35,7 @@ public class Temp_data_elementCriteria extends AbstractORMCriteria {
 	public final StringExpression technical_area_name;
 	public final StringExpression description;
 	public final StringExpression data_element_code;
+	public final StringExpression data_element_context;
 	
 	public Temp_data_elementCriteria(Criteria criteria) {
 		super(criteria);
@@ -54,6 +55,7 @@ public class Temp_data_elementCriteria extends AbstractORMCriteria {
 		technical_area_name = new StringExpression("technical_area_name", this);
 		description = new StringExpression("description", this);
 		data_element_code = new StringExpression("data_element_code", this);
+		data_element_context = new StringExpression("data_element_context", this);
 	}
 	
 	public Temp_data_elementCriteria(PersistentSession session) {
