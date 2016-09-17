@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-17 19:37:05
+Date: 2016-09-17 19:58:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -110,8 +110,9 @@ INNER JOIN report_form_group ON report_form_group.report_form_id = report_form.r
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_execute_insert_string`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_execute_insert_string`(IN in_sql_string text)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_execute_insert_string`(IN in_sql_string blob)
 BEGIN
+		SET SESSION group_concat_max_len = 1000000000000;
 SET @sql=in_sql_string;
 prepare stmt from @sql;
 execute stmt;
@@ -442,7 +443,7 @@ IF FOUND_ROWS()=0 THEN
 	SELECT sub_district_id from sub_district where sub_district_name=sub_district_name_v2 and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v));
 	IF FOUND_ROWS()>0 THEN
 		INSERT INTO health_facility (health_facility_name,facility_level_id,parish_id,sub_county_id,county_id,sub_district_id,district_id,region_id,ownership,short_name,xcoordinate,ycoordinate,zcoordinate,is_deleted,is_active,add_by,add_date)
-		VALUES (parish_name_v,
+		VALUES (health_facility_name_v,
 		(SELECT facility_level_id from facility_level where facility_level_name=facility_level_name_v2),
 		(SELECT parish_id from parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))))),
 		(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))),

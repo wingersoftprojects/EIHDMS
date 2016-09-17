@@ -29,7 +29,7 @@
                                   auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="insert_string,execute_sql" multiple="false" process=":form:table_string,:form:database_type" />
                     <p:outputLabel for="insert_string" value="SQL Insert Script:" />
                     <p:inputTextarea rows="6" cols="200" value="#{uploadBean.insert_string}" id="insert_string" />
-                    <h:commandButton value="Execute Insert SQL" rendered="#{uploadBean.insert_string.length() gt 0}" id="execute_sql">
+                    <h:commandButton value="Execute Insert SQL" id="execute_sql">
                         <f:ajax listener="#{generalUtilities.execute_insert_string(uploadBean.insert_string)}" execute="@this" render="@this"/>
                     </h:commandButton>
                 </h:panelGrid>
