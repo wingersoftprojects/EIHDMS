@@ -526,6 +526,9 @@ public class Health_facility implements Serializable {
 	@Column(name="ownership", nullable=true, length=50)	
 	private String ownership;
 	
+	@Column(name="short_name", nullable=true, length=100)	
+	private String short_name;
+	
 	@OneToMany(mappedBy="health_facility", targetEntity=eihdms.Base_data.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
@@ -645,6 +648,14 @@ public class Health_facility implements Serializable {
 	
 	public String getOwnership() {
 		return ownership;
+	}
+	
+	public void setShort_name(String value) {
+		this.short_name = value;
+	}
+	
+	public String getShort_name() {
+		return short_name;
 	}
 	
 	public void setRegion(eihdms.Region value) {

@@ -405,6 +405,9 @@ public class Temp_health_facility implements Serializable {
 	@Column(name="ownership", nullable=true, length=50)	
 	private String ownership;
 	
+	@Column(name="short_name", nullable=true, length=100)	
+	private String short_name;
+	
 	private void setTemp_health_facility_id(int value) {
 		this.temp_health_facility_id = value;
 	}
@@ -511,6 +514,14 @@ public class Temp_health_facility implements Serializable {
 	
 	public String getOwnership() {
 		return ownership;
+	}
+	
+	public void setShort_name(String value) {
+		this.short_name = value;
+	}
+	
+	public String getShort_name() {
+		return short_name;
 	}
 	
 	@Override	

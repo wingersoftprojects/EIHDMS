@@ -45,6 +45,7 @@ public class Health_facilityDetachedCriteria extends AbstractORMDetachedCriteria
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final StringExpression ownership;
+	public final StringExpression short_name;
 	public final CollectionExpression base_data;
 	
 	public Health_facilityDetachedCriteria() {
@@ -75,6 +76,7 @@ public class Health_facilityDetachedCriteria extends AbstractORMDetachedCriteria
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		ownership = new StringExpression("ownership", this.getDetachedCriteria());
+		short_name = new StringExpression("short_name", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 	}
 	
@@ -106,6 +108,7 @@ public class Health_facilityDetachedCriteria extends AbstractORMDetachedCriteria
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		ownership = new StringExpression("ownership", this.getDetachedCriteria());
+		short_name = new StringExpression("short_name", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 	}
 	

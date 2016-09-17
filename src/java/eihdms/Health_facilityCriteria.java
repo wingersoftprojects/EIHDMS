@@ -45,6 +45,7 @@ public class Health_facilityCriteria extends AbstractORMCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final StringExpression ownership;
+	public final StringExpression short_name;
 	public final CollectionExpression base_data;
 	
 	public Health_facilityCriteria(Criteria criteria) {
@@ -75,6 +76,7 @@ public class Health_facilityCriteria extends AbstractORMCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		ownership = new StringExpression("ownership", this);
+		short_name = new StringExpression("short_name", this);
 		base_data = new CollectionExpression("base_data", this);
 	}
 	
