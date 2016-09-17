@@ -33,7 +33,7 @@
             </p:fieldset>
             <p:fieldset legend="Facilities - Load Uploaded Temp Data">
                 <h:commandButton value="Load Facilities">
-                    <f:ajax listener="#{generalUtilities.load_health_facility_dependancies()}" execute="@this" render="@this"/>
+                    <f:ajax listener="#{generalUtilities.load_health_facility_dependancies_from_procedure()}" execute="@this" render="@this"/>
                 </h:commandButton>
             </p:fieldset>
             <p:fieldset legend="Data Elements - Load Uploaded Temp Data">
@@ -45,7 +45,7 @@
                         <p:ajax process="@this" update="@this"/>
                     </p:selectOneMenu>
                     <h:commandButton value="Load Data Elements">
-                        <f:ajax listener="#{generalUtilities.load_data_element_dependancies(uploadBean.report_form_name)}" execute="@this report_form_name" render="@this report_form_name"/>
+                        <f:ajax listener="#{generalUtilities.load_data_element_dependancies_from_procedure(uploadBean.report_form_name)}" execute="@this report_form_name" render="@this report_form_name"/>
                     </h:commandButton>
                 </h:panelGrid>
             </p:fieldset>

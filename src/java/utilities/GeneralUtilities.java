@@ -5,6 +5,7 @@
  */
 package utilities;
 
+import connections.DBConnection;
 import eihdms.County;
 import eihdms.Data_element;
 import eihdms.District;
@@ -21,6 +22,10 @@ import eihdms.Sub_district;
 import eihdms.Sub_section;
 import eihdms.Technical_area;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,16 +81,16 @@ public class GeneralUtilities implements Serializable {
     public static SimpleDateFormat simpleDateFormatDate() {
         return new SimpleDateFormat("yyyy-MM-ddd");
     }
-    
-    public static Integer getCurrentYear(){
-        int current_year=0;
-        current_year= Calendar.getInstance().get(Calendar.YEAR);
+
+    public static Integer getCurrentYear() {
+        int current_year = 0;
+        current_year = Calendar.getInstance().get(Calendar.YEAR);
         return current_year;
     }
-    
-    public static Integer getCurrentMonth(){
-        int current_month=0;
-        current_month= Calendar.getInstance().get(Calendar.MONTH)+1;
+
+    public static Integer getCurrentMonth() {
+        int current_month = 0;
+        current_month = Calendar.getInstance().get(Calendar.MONTH) + 1;
         return current_month;
     }
 
@@ -272,6 +277,31 @@ public class GeneralUtilities implements Serializable {
         }
     }
 
+    public void load_data_element_dependancies_from_procedure(String report_form_name) {
+        String sql = "{call sp_load_data_element(?)}";
+        ResultSet rs = null;
+        try {
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, report_form_name);
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }
+
+    public void load_health_facility_dependancies_from_procedure() {
+        String sql = "{call sp_load_health_facility()}";
+        ResultSet rs = null;
+        try {
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }
+
     public void load_health_facility_dependancies() {
         try {
             // TODO code application logic here
@@ -433,9 +463,9 @@ public class GeneralUtilities implements Serializable {
                     if (health_facility_name[0] != null) {
                         if (!health_facility_name[0].toString().isEmpty()) {
                             Region region = Region.loadRegionByQuery("region_name='" + health_facility_name[10].toString() + "'", null);
-                            District district = District.loadDistrictByQuery("district_name='" + health_facility_name[5].toString() + "' AND region_id=" + (region != null ? region.getRegion_id(): 0), null);
+                            District district = District.loadDistrictByQuery("district_name='" + health_facility_name[5].toString() + "' AND region_id=" + (region != null ? region.getRegion_id() : 0), null);
                             County county = County.loadCountyByQuery("county_name='" + health_facility_name[6].toString() + "' AND district_id=" + (district != null ? district.getDistrict_id() : 0), null);
-                            if(county==null){
+                            if (county == null) {
                                 System.out.println(health_facility_name[6].toString());
                             }
                             Sub_county sub_county = Sub_county.loadSub_countyByQuery("sub_county_name='" + health_facility_name[7].toString() + "' AND county_id=" + (county != null ? county.getCounty_id() : 0), null);

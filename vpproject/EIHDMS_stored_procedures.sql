@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-16 19:43:03
+Date: 2016-09-17 18:49:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -104,6 +104,374 @@ interface_data
 INNER JOIN data_element ON interface_data.data_element_id = data_element.data_element_id
 INNER JOIN report_form ON report_form.report_form_id = data_element.report_form_id
 INNER JOIN report_form_group ON report_form_group.report_form_id = report_form.report_form_id AND report_form_group.report_form_group_id = data_element.report_form_group_id ;
+
+-- ----------------------------
+-- Procedure structure for sp_load_data_element
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_load_data_element`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_load_data_element`(IN in_report_form_name varchar(100))
+BEGIN
+
+-- DECLARE report_form_name_v varchar(100);
+DECLARE report_form_group_name_v varchar(100);
+DECLARE section_name_v varchar(100);
+DECLARE sub_section_name_v varchar(100);
+DECLARE technical_area_name_v varchar(100);
+DECLARE data_element_name_v varchar(255);
+DECLARE report_form_id_v int;
+
+DECLARE section_column_number_v int;
+DECLARE group_column_number_v int;
+DECLARE data_type_v varchar(100);
+DECLARE data_size_v int;
+DECLARE age_category_v varchar(100);
+DECLARE sex_category_v varchar(100);
+DECLARE other_category_v varchar(100);
+DECLARE technical_area_name_v2 varchar(100);
+DECLARE description_v varchar(255);
+DECLARE data_element_code_v varchar(255);
+DECLARE data_element_context_v varchar(255);
+DECLARE report_form_group_name_v2 varchar(100);
+
+DECLARE cur_report_form CURSOR FOR SELECT distinct report_form_name from temp_data_element where report_form_name=in_report_form_name;
+DECLARE cur_technical_area CURSOR FOR SELECT distinct technical_area_name from temp_data_element where report_form_name=in_report_form_name;
+DECLARE cur_report_form_group CURSOR FOR SELECT distinct report_form_group_name from temp_data_element where report_form_name IN (select DISTINCT report_form_name from report_form where report_form_name=in_report_form_name);
+DECLARE cur_section CURSOR FOR SELECT distinct section_name from temp_data_element where report_form_name IN (select DISTINCT report_form_name from report_form where report_form_name=in_report_form_name);
+DECLARE cur_sub_section CURSOR FOR SELECT distinct sub_section_name from temp_data_element where report_form_name=in_report_form_name AND section_name IN (select DISTINCT section_name from section where section_name=section_name_v and report_form_id in (select report_form_id from report_form where report_form_name=in_report_form_name));
+DECLARE cur_data_element CURSOR FOR SELECT distinct data_element_name,section_column_number,group_column_number,data_type,data_size,age_category,sex_category,other_category,technical_area_name,description,data_element_code,data_element_context,report_form_group_name from temp_data_element where report_form_name=in_report_form_name AND sub_section_name IN (SELECT sub_section_name from sub_section where sub_section_name=sub_section_name_v AND section_id in (SELECT section_id from section where section_name=section_name_v AND report_form_id IN (SELECT report_form_id from report_form where report_form_name=in_report_form_name)));
+
+
+select report_form_id from report_form where report_form_name=in_report_form_name into report_form_id_v;
+
+
+-- Begin Technical Area
+OPEN cur_technical_area;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET technical_area_name_v ='';
+	loopTechnicalArea: LOOP
+			FETCH cur_technical_area INTO technical_area_name_v;
+				IF technical_area_name_v='' THEN
+					LEAVE loopTechnicalArea;
+				END IF;
+
+	SELECT * FROM technical_area where technical_area_name=technical_area_name_v;
+	IF FOUND_ROWS()=0 AND technical_area_name_v<>'' THEN
+		INSERT INTO technical_area (technical_area_name,description,is_deleted,is_active,add_by,add_date) VALUES (technical_area_name_v,technical_area_name_v,0,1,1,NOW());
+	END IF;
+END LOOP;
+END;
+CLOSE cur_technical_area;
+-- End Technical Area
+
+
+-- Begin Report form group
+OPEN cur_report_form_group;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET report_form_group_name_v ='';
+	loopReportFormGroup: LOOP
+			FETCH cur_report_form_group INTO report_form_group_name_v;
+				IF report_form_group_name_v='' THEN
+					LEAVE loopReportFormGroup;
+				END IF;
+	SELECT * FROM report_form_group where report_form_group_name=report_form_group_name_v AND report_form_id IN (select report_form_id from report_form where report_form_name=in_report_form_name);
+		IF FOUND_ROWS()=0 THEN
+			INSERT INTO report_form_group (report_form_group_name,`description`,report_form_id,group_order,is_deleted,is_active,add_by,add_date) VALUES (report_form_group_name_v,report_form_group_name_v,report_form_id_v,1,0,1,1,NOW());
+		END IF;
+	END LOOP;
+END;
+CLOSE cur_report_form_group;
+-- End Report form group
+
+-- Begin Section
+OPEN cur_section;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET section_name_v ='';
+	loopSection: LOOP
+			FETCH cur_section INTO section_name_v;
+				IF section_name_v='' THEN
+					LEAVE loopSection;
+				END IF;
+
+	SELECT * FROM section where section_name=section_name_v AND report_form_id=report_form_id_v;
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO section (section_name,section_order,report_form_id,is_deleted,is_active,add_by,add_date) VALUES (section_name_v,1,report_form_id_v,0,1,1,NOW());
+	END IF;
+
+-- Begin Sub Section
+OPEN cur_sub_section;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET sub_section_name_v ='';
+	loopSubSection: LOOP
+			FETCH cur_sub_section INTO sub_section_name_v;
+				IF sub_section_name_v='' THEN
+					LEAVE loopSubSection;
+				END IF;
+
+	SELECT * FROM sub_section where sub_section_name=sub_section_name_v AND section_id IN (SELECT section_id from section where section_name=section_name_v AND report_form_id=report_form_id_v);
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO sub_section (sub_section_name,sub_section_order,section_id,is_deleted,is_active,add_by,add_date) VALUES (sub_section_name_v,1,(SELECT section_id from section where section_name=section_name_v AND report_form_id=report_form_id_v),0,1,1,NOW());
+	END IF;
+
+-- Begin Data Element
+OPEN cur_data_element;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET data_element_name_v ='';
+	loopDataElement: LOOP
+			FETCH cur_data_element INTO data_element_name_v,section_column_number_v,group_column_number_v,data_type_v,data_size_v,age_category_v,sex_category_v,other_category_v,technical_area_name_v2,description_v,data_element_code_v,data_element_context_v,report_form_group_name_v2;
+				IF data_element_name_v='' THEN
+					LEAVE loopDataElement;
+				END IF;
+
+	SELECT * FROM data_element where data_element_name=data_element_name_v AND sub_section_id IN (SELECT sub_section_id from sub_section WHERE sub_section_name=sub_section_name_v AND section_id IN (SELECT section_id from section where section_name=section_name_v AND report_form_id=report_form_id_v));
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO data_element (report_form_id,section_id,sub_section_id,technical_area_id,report_form_group_id,data_element_name,
+data_type,data_size,description,section_column_number,group_column_number,data_element_code,age_category,sex_category,
+other_category,data_element_context,is_deleted,is_active,add_by,add_date) 
+VALUES (report_form_id_v,
+(SELECT section_id from section where section_name=section_name_v AND report_form_id=report_form_id_v),
+(SELECT sub_section_id from sub_section WHERE sub_section_name=sub_section_name_v AND section_id IN (SELECT section_id from section where section_name=section_name_v AND report_form_id=report_form_id_v)),
+(SELECT technical_area_id from technical_area where technical_area_name=technical_area_name_v2),
+(SELECT report_form_group_id from report_form_group where report_form_group_name=report_form_group_name_v2 AND report_form_id=report_form_id_v),
+data_element_name_v,
+data_type_v,
+data_size_v,
+description_v,
+section_column_number_v,
+group_column_number_v,
+data_element_code_v,
+age_category_v,
+sex_category_v,
+other_category_v,
+data_element_context_v,
+0,1,1,NOW());
+	END IF;
+END LOOP;
+END;
+CLOSE cur_data_element;
+-- End Data Element
+
+END LOOP;
+END;
+CLOSE cur_sub_section;
+-- End Sub Section
+
+END LOOP;
+END;
+CLOSE cur_section;
+-- End Section
+
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_load_health_facility
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_load_health_facility`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_load_health_facility`()
+BEGIN
+
+DECLARE region_name_v varchar(200);
+DECLARE district_name_v varchar(200);
+DECLARE sub_district_name_v varchar(200);
+DECLARE sub_district_name_v2 varchar(200);
+DECLARE county_name_v varchar(200);
+DECLARE sub_county_name_v varchar(200);
+DECLARE parish_name_v varchar(200);
+DECLARE health_facility_name_v varchar(200);
+DECLARE facility_level_name_v varchar(200);
+DECLARE facility_level_name_v2 varchar(200);
+DECLARE cur_facility_level CURSOR FOR SELECT distinct facility_level_name from temp_health_facility;
+DECLARE cur_regions CURSOR FOR SELECT distinct region_name from temp_health_facility;
+DECLARE cur_districts CURSOR FOR SELECT distinct district_name from temp_health_facility where region_name IN (select DISTINCT region_name from region where region_name=region_name_v);
+DECLARE cur_sub_districts CURSOR FOR SELECT distinct sub_district_name from temp_health_facility where district_name IN (select DISTINCT district_name from district where district_name=district_name_v and region_id in (select region_id from region where region_name=region_name_v));
+DECLARE cur_counties CURSOR FOR SELECT distinct county_name from temp_health_facility where district_name IN (select DISTINCT district_name from district where district_name=district_name_v and region_id in (select region_id from region where region_name=region_name_v));
+DECLARE cur_sub_counties CURSOR FOR SELECT distinct sub_county_name from temp_health_facility where county_name IN (SELECT county_name from county where county_name=county_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v AND region_id IN (SELECT region_id from region where region_name=region_name_v)));
+DECLARE cur_parishes CURSOR FOR SELECT distinct parish_name from temp_health_facility where sub_county_name IN (SELECT sub_county_name from sub_county where sub_county_name=sub_county_name_v AND county_id in (select county_id from county where county_name=county_name_v AND district_id in (select district_id from district where district_name=district_name_v AND region_id in (SELECT region_id from region where region_name=region_name_v))));
+DECLARE cur_health_facilities CURSOR FOR SELECT distinct health_facility_name,sub_district_name,facility_level_name from temp_health_facility where parish_name IN(SELECT parish_name from parish where parish_name=parish_name_v AND sub_county_id in (select sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in(select county_id from county where county_name=county_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v AND region_id in(SELECT region_id from region where region_name=region_name_v)))));
+
+
+-- Begin Facility Level
+OPEN cur_facility_level;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET facility_level_name_v ='';
+	loopFacilityLevel: LOOP
+			FETCH cur_facility_level INTO facility_level_name_v;
+				IF facility_level_name_v='' THEN
+					LEAVE loopFacilityLevel;
+				END IF;
+
+	SELECT * FROM facility_level where facility_level_name=facility_level_name_v;
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO facility_level (facility_level_name,is_deleted,is_active,add_by,add_date) VALUES (facility_level_name_v,0,1,1,NOW());
+	END IF;
+END LOOP;
+END;
+CLOSE cur_facility_level;
+-- End Load Facility Level
+
+-- Begin Load Region
+OPEN cur_regions;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET region_name_v ='';
+	loopRegion: LOOP
+			FETCH cur_regions INTO region_name_v;
+				IF region_name_v='' THEN
+					LEAVE loopRegion;
+				END IF;
+
+	SELECT * FROM region where region_name=region_name_v;
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO region (region_name,is_deleted,is_active,add_by,add_date) VALUES (region_name_v,0,1,1,NOW());
+	END IF;
+
+-- Begin Load District
+OPEN cur_districts;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET district_name_v ='';
+	loopDistrict: LOOP
+			FETCH cur_districts INTO district_name_v;
+				IF district_name_v='' THEN
+					LEAVE loopDistrict;
+				END IF;
+
+	SELECT * FROM district where district_name=district_name_v;
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO district (district_name,region_id,is_deleted,is_active,add_by,add_date) VALUES (district_name_v,(select region_id from region where region_name=region_name_v LIMIT 1),0,1,1,NOW());
+	END IF;
+
+-- Begin Load Sub District
+OPEN cur_sub_districts;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET sub_district_name_v ='';
+	loopSubDistrict: LOOP
+			FETCH cur_sub_districts INTO sub_district_name_v;
+				IF sub_district_name_v='' THEN
+					LEAVE loopSubDistrict;
+				END IF;
+
+	SELECT * FROM sub_district where sub_district_name=sub_district_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v));
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO sub_district (sub_district_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (sub_district_name_v,(SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v) LIMIT 1),0,1,1,NOW());
+	END IF;
+
+	END LOOP;
+END;
+CLOSE cur_sub_districts;
+-- End Load Sub District
+
+-- Begin Load County
+OPEN cur_counties;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET county_name_v ='';
+	loopCounty: LOOP
+			FETCH cur_counties INTO county_name_v;
+				IF county_name_v='' THEN
+					LEAVE loopCounty;
+				END IF;
+
+	SELECT * FROM county where county_name=county_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v));
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO county (county_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (county_name_v,(SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v) LIMIT 1),0,1,1,NOW());
+	END IF;
+
+-- Begin Load Sub County
+OPEN cur_sub_counties;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET sub_county_name_v ='';
+	loopSubCounty: LOOP
+			FETCH cur_sub_counties INTO sub_county_name_v;
+				IF sub_county_name_v='' THEN
+					LEAVE loopSubCounty;
+				END IF;
+
+	SELECT * FROM sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)));
+	IF FOUND_ROWS()=0 THEN
+		INSERT INTO sub_county (sub_county_name,county_id,is_deleted,is_active,add_by,add_date) VALUES (sub_county_name_v,(SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),0,1,1,NOW());
+	END IF;
+
+-- Begin Load Parish
+OPEN cur_parishes;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET parish_name_v ='';
+	loopParish: LOOP
+			FETCH cur_parishes INTO parish_name_v;
+				IF parish_name_v='' THEN
+					LEAVE loopParish;
+				END IF;
+
+	SELECT * FROM parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))));
+	IF FOUND_ROWS()=0 THEN
+	INSERT INTO parish (parish_name,sub_county_id,is_deleted,is_active,add_by,add_date) VALUES (parish_name_v,(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))),0,1,1,NOW());
+	END IF;
+
+-- Begin Load Health Facility
+OPEN cur_health_facilities;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET health_facility_name_v ='';
+	loopHealthFacility: LOOP
+			FETCH cur_health_facilities INTO health_facility_name_v,sub_district_name_v2,facility_level_name_v2;
+				IF health_facility_name_v='' THEN
+					LEAVE loopHealthFacility;
+				END IF;
+
+	SELECT * FROM health_facility where health_facility_name=health_facility_name_v AND parish_id IN (SELECT parish_id from parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))));
+IF FOUND_ROWS()=0 THEN
+	SELECT sub_district_id from sub_district where sub_district_name=sub_district_name_v2 and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v));
+	IF FOUND_ROWS()>0 THEN
+		INSERT INTO health_facility (health_facility_name,facility_level_id,parish_id,sub_county_id,county_id,sub_district_id,district_id,region_id,is_deleted,is_active,add_by,add_date)
+		VALUES (parish_name_v,
+		(SELECT facility_level_id from facility_level where facility_level_name=facility_level_name_v2),
+		(SELECT parish_id from parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))))),
+		(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))),
+		(SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),
+		(SELECT sub_district_id from sub_district where sub_district_name=sub_district_name_v2 and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),
+		(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)),
+		(select region_id from region where region_name=region_name_v),
+		0,
+		1,1,NOW());
+	ELSE
+		SELECT sub_district_name_v2;
+	END IF;
+END IF;
+
+	END LOOP;
+END;
+CLOSE cur_health_facilities;
+-- End Load Health Facility
+
+	END LOOP;
+END;
+CLOSE cur_parishes;
+-- End Load Parish
+	END LOOP;
+END;
+CLOSE cur_sub_counties;
+-- End Load Sub County
+
+	END LOOP;
+END;
+CLOSE cur_counties;
+-- End Load County
+
+
+	END LOOP;
+END;
+CLOSE cur_districts;
+-- End Load District
+
+
+	END LOOP;
+END;
+CLOSE cur_regions;
+-- End Load Region
+
+END
+;;
+DELIMITER ;
 
 -- ----------------------------
 -- Procedure structure for sp_move_data_from_interface_to_base
