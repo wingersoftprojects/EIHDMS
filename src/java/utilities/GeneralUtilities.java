@@ -34,8 +34,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
 
@@ -285,9 +287,36 @@ public class GeneralUtilities implements Serializable {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, report_form_name);
             rs = ps.executeQuery();
+            execute_success();
         } catch (SQLException se) {
             System.err.println(se.getMessage());
+            error(se);
         }
+    }
+
+    public void execute_insert_string(String insert_string) {
+        String sql = "{call sp_execute_insert_string(?)}";
+        ResultSet rs = null;
+        try {
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, insert_string);
+            rs = ps.executeQuery();
+            execute_success();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+            error(se);
+        }
+    }
+
+    private void error(SQLException se) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(se.getMessage().concat("\n").concat(se.getLocalizedMessage()), se.getMessage().concat("\n").concat(se.getLocalizedMessage())));
+    }
+
+    private void execute_success() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Completed successfully", "Completed successfully"));
     }
 
     public void load_health_facility_dependancies_from_procedure() {
@@ -297,8 +326,10 @@ public class GeneralUtilities implements Serializable {
             Connection conn = DBConnection.getMySQLConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
+            execute_success();
         } catch (SQLException se) {
             System.err.println(se.getMessage());
+            error(se);
         }
     }
 

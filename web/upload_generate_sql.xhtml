@@ -26,9 +26,12 @@
                     </p:selectOneMenu>
                     <p:outputLabel value="Excel File"/>
                     <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUploadgenerate_insertstring}" mode="advanced"
-                                  auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="insert_string" multiple="false" process=":form:table_string,:form:database_type" />
+                                  auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="insert_string,execute_sql" multiple="false" process=":form:table_string,:form:database_type" />
                     <p:outputLabel for="insert_string" value="SQL Insert Script:" />
                     <p:inputTextarea rows="6" cols="200" value="#{uploadBean.insert_string}" id="insert_string" />
+                    <h:commandButton value="Execute Insert SQL" rendered="#{uploadBean.insert_string.length() gt 0}" id="execute_sql">
+                        <f:ajax listener="#{generalUtilities.execute_insert_string(uploadBean.insert_string)}" execute="@this" render="@this"/>
+                    </h:commandButton>
                 </h:panelGrid>
             </p:fieldset>
             <p:fieldset legend="Facilities - Load Uploaded Temp Data">
@@ -50,8 +53,8 @@
                 </h:panelGrid>
             </p:fieldset>
         </h:form>
-        
-         <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
             <f:facet name="default">
                 <h:outputText value="Status: StandBy" />
             </f:facet>

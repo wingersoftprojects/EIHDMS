@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-17 18:49:06
+Date: 2016-09-17 19:10:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -104,6 +104,20 @@ interface_data
 INNER JOIN data_element ON interface_data.data_element_id = data_element.data_element_id
 INNER JOIN report_form ON report_form.report_form_id = data_element.report_form_id
 INNER JOIN report_form_group ON report_form_group.report_form_id = report_form.report_form_id AND report_form_group.report_form_group_id = data_element.report_form_group_id ;
+
+-- ----------------------------
+-- Procedure structure for sp_execute_insert_string
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_execute_insert_string`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_execute_insert_string`(IN in_sql_string text)
+BEGIN
+SET @sql=in_sql_string;
+prepare stmt from @sql;
+execute stmt;
+END
+;;
+DELIMITER ;
 
 -- ----------------------------
 -- Procedure structure for sp_load_data_element
