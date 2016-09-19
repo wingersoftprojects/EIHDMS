@@ -310,7 +310,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;
@@ -333,7 +333,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;
@@ -372,7 +372,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;
@@ -395,7 +395,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;
@@ -434,7 +434,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;
@@ -457,7 +457,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;
@@ -496,7 +496,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;
@@ -519,7 +519,7 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                     break;
                 }
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | ArithmeticException npe) {
 
         }
         return PercRecStr;

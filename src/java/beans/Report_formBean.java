@@ -9,9 +9,12 @@ import eihdms.Report_form;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import org.orm.PersistentException;
 
 /**
  *
@@ -51,5 +54,24 @@ public class Report_formBean extends AbstractBean<Report_form> implements Serial
             report_forms.add(report_form);
         }
         return report_forms;
+    }
+
+    public List<Report_form> getReport_forms_by_user(String allow) {
+        try {
+            if (loginBean.getUser_detail().getIs_user_gen_admin() == 1) {
+                return this.getTsActive();
+            } else {
+                String RFIDs = "";
+                RFIDs = loginBean.getUser_report_form_str(allow);
+                if (RFIDs.length() > 0) {
+                    return Report_form.queryReport_form("is_active=1 and is_deleted=0 and report_form_id IN(" + RFIDs + ")", null);
+                } else {
+                    return null;
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 }

@@ -8,7 +8,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:form id="form">
+        <h:form id="form" rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl/>
             <p:fieldset legend="Refresh Data Obligation for the Current Full Year">
                 <h:commandButton value="Current Year - Refresh Data Obligation">

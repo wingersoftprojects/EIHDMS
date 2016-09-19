@@ -8,7 +8,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:form id="form">
+        <h:form id="form" rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl/>
             <p:fieldset legend="Generate Database Insert SQL Script from Excel File">
                 <h:panelGrid columns="2">

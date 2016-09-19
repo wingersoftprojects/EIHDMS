@@ -78,7 +78,17 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     public List<Kpi> returnKpiByTA(Technical_area ta) {
         List<Kpi> kpiList = new ArrayList<>();
         try {
-            kpiList = Kpi.queryKpi("technical_area=" + ta.getTechnical_area_id(), null);
+            if (loginBean.getUser_detail().getIs_user_gen_admin() == 1) {
+                kpiList = Kpi.queryKpi("technical_area=" + ta.getTechnical_area_id(), null);
+            } else {
+                String AllowStr = "";
+                AllowStr = loginBean.getUser_report_form_str("allow_view");
+                if (AllowStr.length() > 0) {
+                    kpiList = Kpi.queryKpi("technical_area=" + ta.getTechnical_area_id() + " and report_form IN(" + AllowStr + ")", null);
+                } else {
+                    kpiList = null;
+                }
+            }
         } catch (PersistentException | NullPointerException ex) {
             //Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -115,13 +125,11 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
 //        System.out.println("KPI:" + this.selectedKPI.getKpi_id());
 //        System.out.println("Years:" + YearsStr);
 //        System.out.println("Districts:" + DistrictsStr);
-
 //        try {
 //            base_dataList = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("CALL sp_select_kpi(:kpi,:username,:report_form_id,:years,:districts)").setParameter("kpi", this.getSelectedKPI().getKpi_id()).setParameter("years", YearsStr).setParameter("districts", DistrictsStr).setParameter("username", loginBean.getUser_detail().getUser_name()).setParameter("report_form_id", selectedKPI.getReport_form().getReport_form_id()).list();
 //        } catch (PersistentException ex) {
 //            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-
         String sql = "{call sp_select_kpi(?,?,?,?,?)}";
         ResultSet rs = null;
         try (

@@ -6,8 +6,10 @@
 package beans;
 
 import eihdms.Group_right;
+import eihdms.Report_form;
 import eihdms.User_detail;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,6 +72,48 @@ public class LoginBean implements Serializable {
         this.password = password;
     }
 
+    //returns a list (1,2,3,4,...) of report form IDs for the current looged user given the allow_add,etc
+    public String getUser_report_form_str(String allow) {
+        String report_form_str = "";
+        for (int i = 0; i < this.getGroup_rights().size(); i++) {
+            switch (allow) {
+                case "allow_view":
+                    if (this.getGroup_rights().get(i).getAllow_view()==1) {
+                        if (report_form_str.length() > 0) {
+                            report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        } else {
+                            report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        }
+                    }   break;
+                case "allow_add":
+                    if (this.getGroup_rights().get(i).getAllow_add()==1) {
+                        if (report_form_str.length() > 0) {
+                            report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        } else {
+                            report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        }
+                }   break;
+                case "allow_edit":
+                    if (this.getGroup_rights().get(i).getAllow_edit()==1) {
+                        if (report_form_str.length() > 0) {
+                            report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        } else {
+                            report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                    }
+                    }   break;
+                case "allow_delete":
+                    if (this.getGroup_rights().get(i).getAllow_delete()==1) {
+                        if (report_form_str.length() > 0) {
+                            report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        } else {
+                            report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                    }
+                }   break;
+            }
+        }
+        return report_form_str;
+    }
+
     public void login() {
         user_detail = null;
         setIsloggedin(false);
@@ -89,7 +133,7 @@ public class LoginBean implements Serializable {
         } else {
             setIsloggedin(false);
         }
-        
+
         //get group_rights for this User
         try {
             this.setGroup_rights(new Group_rightBean().getActiveGroup_rightListByUser(user_detail));
@@ -106,11 +150,11 @@ public class LoginBean implements Serializable {
             nav.performNavigation("home?faces-redirect=true");
         } else {
             messageString = "Invalid Login Details Submitted!";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("EIHDMS Login Failure",messageString));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("EIHDMS Login Failure", messageString));
             //return "login?faces-redirect=true";
         }
     }
-    
+
     public boolean IsAllowed(int form_id, String role) {
         try {
             return new Group_rightBean().IsUserGroupsFormAccessAllowed(this.getUser_detail(), this.getGroup_rights(), form_id, role) != 0;

@@ -22,7 +22,7 @@
                                     <p:menuitem value="Data Upload"  action="upload?faces-redirect=true" icon="ui-icon-arrowthick-1-n"/>
                                     <p:menuitem value="Data Entry"  action="dataentry?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
                                 </p:submenu>
-                                <p:submenu label="Settings" icon="ui-icon-gear">
+                                <p:submenu label="Settings" icon="ui-icon-gear" rendered="#{loginBean.user_detail.is_user_gen_admin==1}">
                                     <p:submenu label="Location Settings" icon="ui-icon-info">
                                         <p:menuitem value="Location"  action="locationsettings?faces-redirect=true"  />
                                         <p:menuitem value="Facility Level" action="facilitylevel?faces-redirect=true" />
@@ -52,8 +52,8 @@
 
                                 <p:submenu label="Tools" icon="ui-icon-wrench">
                                     <p:menuitem value="Download Template" action="downloadtemplate?faces-redirect=true" icon="ui-icon-arrowthick-1-s"/>
-                                    <p:menuitem value="Generate SQL Script" action="upload_generate_sql?faces-redirect=true" icon="ui-icon-wrench"/>
-                                    <p:menuitem value="Refresh Obligations" action="refresh_data_obligation?faces-redirect=true" icon="ui-icon-refresh"/>
+                                    <p:menuitem value="Generate SQL Script" action="upload_generate_sql?faces-redirect=true" icon="ui-icon-wrench" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/>
+                                    <p:menuitem value="Refresh Obligations" action="refresh_data_obligation?faces-redirect=true" icon="ui-icon-refresh" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/>
                                 </p:submenu>
 
                                 <p:submenu label="Reports" icon="ui-icon-copy">
@@ -62,7 +62,7 @@
                                         <p:menuitem value="Standard Reports" action="report_kpi?faces-redirect=true" />
                                     </p:submenu>
                                     <p:submenu label="Dynamic Reports">
-                                        <p:menuitem value="Pivot Analysis" action="dataelementanalysis?faces-redirect=true" icon="ui-icon-search"/>
+                                        <p:menuitem value="Dynamic Pivot" action="report_dynamic_pivot?faces-redirect=true" icon="ui-icon-search"/>
                                     </p:submenu>
                                     <p:submenu label="Validation Reports">
                                         <p:menuitem value="Upload Validation Report"  action="validationerrorlist?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>

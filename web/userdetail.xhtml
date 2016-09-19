@@ -14,7 +14,7 @@
         </f:metadata>
     </ui:define>
     <ui:define name="content">
-        <h:form id="main_form">
+        <h:form id="main_form" rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="2">
                 <p:fieldset legend="User Categories Detail">
