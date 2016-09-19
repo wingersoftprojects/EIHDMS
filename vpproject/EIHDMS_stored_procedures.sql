@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-17 19:58:59
+Date: 2016-09-19 10:00:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -112,7 +112,7 @@ DROP PROCEDURE IF EXISTS `sp_execute_insert_string`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_execute_insert_string`(IN in_sql_string blob)
 BEGIN
-		SET SESSION group_concat_max_len = 1000000000000;
+		SET SESSION group_concat_max_len = 18446744073709551615;
 SET @sql=in_sql_string;
 prepare stmt from @sql;
 execute stmt;
@@ -289,6 +289,15 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_load_health_facility`()
 BEGIN
 
+DECLARE inserted_region_id_v int;
+DECLARE inserted_district_id_v int;
+DECLARE inserted_county_id_v int;
+DECLARE inserted_sub_county_id_v int;
+DECLARE inserted_parish_id_v int;
+DECLARE inserted_health_facility_id_v int;
+
+
+
 DECLARE region_name_v varchar(200);
 DECLARE district_name_v varchar(200);
 DECLARE sub_district_name_v varchar(200);
@@ -307,11 +316,11 @@ DECLARE zcoordinate_v varchar(100);
 DECLARE cur_facility_level CURSOR FOR SELECT distinct facility_level_name from temp_health_facility;
 DECLARE cur_regions CURSOR FOR SELECT distinct region_name from temp_health_facility;
 DECLARE cur_districts CURSOR FOR SELECT distinct district_name from temp_health_facility where region_name IN (select DISTINCT region_name from region where region_name=region_name_v);
-DECLARE cur_sub_districts CURSOR FOR SELECT distinct sub_district_name from temp_health_facility where district_name IN (select DISTINCT district_name from district where district_name=district_name_v and region_id in (select region_id from region where region_name=region_name_v));
-DECLARE cur_counties CURSOR FOR SELECT distinct county_name from temp_health_facility where district_name IN (select DISTINCT district_name from district where district_name=district_name_v and region_id in (select region_id from region where region_name=region_name_v));
+DECLARE cur_sub_districts CURSOR FOR SELECT distinct sub_district_name from temp_health_facility where district_name IN (select DISTINCT district_name from district where district_name=district_name_v and region_id in (select region_id from region where region_id=inserted_region_id_v));
+DECLARE cur_counties CURSOR FOR SELECT distinct county_name from temp_health_facility where district_name IN (select DISTINCT district_name from district where district_id=inserted_district_id_v and region_id in (select region_id from region where region_id=inserted_region_id_v));
 DECLARE cur_sub_counties CURSOR FOR SELECT distinct sub_county_name from temp_health_facility where county_name IN (SELECT county_name from county where county_name=county_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v AND region_id IN (SELECT region_id from region where region_name=region_name_v)));
-DECLARE cur_parishes CURSOR FOR SELECT distinct parish_name from temp_health_facility where sub_county_name IN (SELECT sub_county_name from sub_county where sub_county_name=sub_county_name_v AND county_id in (select county_id from county where county_name=county_name_v AND district_id in (select district_id from district where district_name=district_name_v AND region_id in (SELECT region_id from region where region_name=region_name_v))));
-DECLARE cur_health_facilities CURSOR FOR SELECT distinct health_facility_name,sub_district_name,facility_level_name,ownership,short_name,xcoordinate,ycoordinate,zcoordinate from temp_health_facility where parish_name IN(SELECT parish_name from parish where parish_name=parish_name_v AND sub_county_id in (select sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in(select county_id from county where county_name=county_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v AND region_id in(SELECT region_id from region where region_name=region_name_v)))));
+DECLARE cur_parishes CURSOR FOR SELECT distinct parish_name from temp_health_facility where sub_county_name IN (SELECT sub_county_name from sub_county where sub_county_id=inserted_sub_county_id_v AND county_id in (select county_id from county where county_id=inserted_county_id_v AND district_id in (select district_id from district where district_id=inserted_district_id_v AND region_id in (SELECT region_id from region where region_id=inserted_region_id_v))));
+DECLARE cur_health_facilities CURSOR FOR SELECT distinct health_facility_name,parish_name,sub_county_name,county_name,sub_district_name,district_name,region_name,facility_level_name,ownership,short_name,xcoordinate,ycoordinate,zcoordinate from temp_health_facility;
 
 
 -- Begin Facility Level
@@ -346,6 +355,7 @@ BEGIN
 	SELECT * FROM region where region_name=region_name_v;
 	IF FOUND_ROWS()=0 THEN
 		INSERT INTO region (region_name,is_deleted,is_active,add_by,add_date) VALUES (region_name_v,0,1,1,NOW());
+		SET inserted_region_id_v=LAST_INSERT_ID();
 	END IF;
 
 -- Begin Load District
@@ -360,7 +370,9 @@ BEGIN
 
 	SELECT * FROM district where district_name=district_name_v;
 	IF FOUND_ROWS()=0 THEN
-		INSERT INTO district (district_name,region_id,is_deleted,is_active,add_by,add_date) VALUES (district_name_v,(select region_id from region where region_name=region_name_v LIMIT 1),0,1,1,NOW());
+		-- INSERT INTO district (district_name,region_id,is_deleted,is_active,add_by,add_date) VALUES (district_name_v,(select region_id from region where region_name=region_name_v LIMIT 1),0,1,1,NOW());
+		INSERT INTO district (district_name,region_id,is_deleted,is_active,add_by,add_date) VALUES (district_name_v,inserted_region_id_v,0,1,1,NOW());
+		SET inserted_district_id_v=LAST_INSERT_ID();
 	END IF;
 
 -- Begin Load Sub District
@@ -375,7 +387,8 @@ BEGIN
 
 	SELECT * FROM sub_district where sub_district_name=sub_district_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v));
 	IF FOUND_ROWS()=0 THEN
-		INSERT INTO sub_district (sub_district_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (sub_district_name_v,(SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v) LIMIT 1),0,1,1,NOW());
+		-- INSERT INTO sub_district (sub_district_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (sub_district_name_v,(SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v) LIMIT 1),0,1,1,NOW());
+		INSERT INTO sub_district (sub_district_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (sub_district_name_v,inserted_district_id_v,0,1,1,NOW());
 	END IF;
 
 	END LOOP;
@@ -395,7 +408,9 @@ BEGIN
 
 	SELECT * FROM county where county_name=county_name_v AND district_id in (SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v));
 	IF FOUND_ROWS()=0 THEN
-		INSERT INTO county (county_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (county_name_v,(SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v) LIMIT 1),0,1,1,NOW());
+		-- INSERT INTO county (county_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (county_name_v,(SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v) LIMIT 1),0,1,1,NOW());
+			INSERT INTO county (county_name,district_id,is_deleted,is_active,add_by,add_date) VALUES (county_name_v,inserted_district_id_v,0,1,1,NOW());
+			SET inserted_county_id_v=LAST_INSERT_ID();
 	END IF;
 
 -- Begin Load Sub County
@@ -410,7 +425,9 @@ BEGIN
 
 	SELECT * FROM sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)));
 	IF FOUND_ROWS()=0 THEN
-		INSERT INTO sub_county (sub_county_name,county_id,is_deleted,is_active,add_by,add_date) VALUES (sub_county_name_v,(SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),0,1,1,NOW());
+		-- INSERT INTO sub_county (sub_county_name,county_id,is_deleted,is_active,add_by,add_date) VALUES (sub_county_name_v,(SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),0,1,1,NOW());
+		INSERT INTO sub_county (sub_county_name,county_id,is_deleted,is_active,add_by,add_date) VALUES (sub_county_name_v,inserted_county_id_v,0,1,1,NOW());
+SET inserted_sub_county_id_v=LAST_INSERT_ID();
 	END IF;
 
 -- Begin Load Parish
@@ -425,49 +442,10 @@ BEGIN
 
 	SELECT * FROM parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))));
 	IF FOUND_ROWS()=0 THEN
-	INSERT INTO parish (parish_name,sub_county_id,is_deleted,is_active,add_by,add_date) VALUES (parish_name_v,(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))),0,1,1,NOW());
+	-- INSERT INTO parish (parish_name,sub_county_id,is_deleted,is_active,add_by,add_date) VALUES (parish_name_v,(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))),0,1,1,NOW());
+	INSERT INTO parish (parish_name,sub_county_id,is_deleted,is_active,add_by,add_date) VALUES (parish_name_v,inserted_sub_county_id_v,0,1,1,NOW());
+	SET inserted_parish_id_v=LAST_INSERT_ID();
 	END IF;
-
--- Begin Load Health Facility
-OPEN cur_health_facilities;
-BEGIN
-	DECLARE CONTINUE HANDLER FOR NOT FOUND SET health_facility_name_v ='';
-	loopHealthFacility: LOOP
-			FETCH cur_health_facilities INTO health_facility_name_v,sub_district_name_v2,facility_level_name_v2,ownership_v,short_name_v,xcoordinate_v,ycoordinate_v,zcoordinate_v;
-				IF health_facility_name_v='' THEN
-					LEAVE loopHealthFacility;
-				END IF;
-
-	SELECT * FROM health_facility where health_facility_name=health_facility_name_v AND parish_id IN (SELECT parish_id from parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))));
-IF FOUND_ROWS()=0 THEN
-	SELECT sub_district_id from sub_district where sub_district_name=sub_district_name_v2 and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v));
-	IF FOUND_ROWS()>0 THEN
-		INSERT INTO health_facility (health_facility_name,facility_level_id,parish_id,sub_county_id,county_id,sub_district_id,district_id,region_id,ownership,short_name,xcoordinate,ycoordinate,zcoordinate,is_deleted,is_active,add_by,add_date)
-		VALUES (health_facility_name_v,
-		(SELECT facility_level_id from facility_level where facility_level_name=facility_level_name_v2),
-		(SELECT parish_id from parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))))),
-		(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))),
-		(SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),
-		(SELECT sub_district_id from sub_district where sub_district_name=sub_district_name_v2 and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),
-		(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)),
-		(select region_id from region where region_name=region_name_v),
-ownership_v,
-short_name_v,
-xcoordinate_v,
-ycoordinate_v,
-zcoordinate_v,
-		0,
-		1,1,NOW());
-	ELSE
-		SELECT sub_district_name_v2;
-	END IF;
-END IF;
-
-	END LOOP;
-END;
-CLOSE cur_health_facilities;
--- End Load Health Facility
-
 	END LOOP;
 END;
 CLOSE cur_parishes;
@@ -494,6 +472,44 @@ END;
 CLOSE cur_regions;
 -- End Load Region
 
+
+-- Begin Load Health Facility
+OPEN cur_health_facilities;
+BEGIN
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET health_facility_name_v ='';
+	loopHealthFacility: LOOP
+			FETCH cur_health_facilities INTO health_facility_name_v,parish_name_v,sub_county_name_v,county_name_v,sub_district_name_v2,district_name_v,region_name_v,facility_level_name_v2,ownership_v,short_name_v,xcoordinate_v,ycoordinate_v,zcoordinate_v;
+				IF health_facility_name_v='' THEN
+					LEAVE loopHealthFacility;
+				END IF;
+
+	SELECT * FROM health_facility where health_facility_name=health_facility_name_v AND parish_id IN (SELECT parish_id from parish where parish_name=parish_name_v AND sub_county_id IN(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))));
+IF FOUND_ROWS()=0 THEN
+	SELECT sub_district_id from sub_district where sub_district_name=sub_district_name_v2 and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v));
+	IF FOUND_ROWS()>0 THEN
+		INSERT INTO health_facility (health_facility_name,facility_level_id,parish_id,sub_county_id,county_id,sub_district_id,district_id,region_id,ownership,short_name,xcoordinate,ycoordinate,zcoordinate,is_deleted,is_active,add_by,add_date)
+		VALUES (health_facility_name_v,
+		(SELECT facility_level_id from facility_level where facility_level_name=facility_level_name_v2),
+		(SELECT parish_id FROM parish where parish_name=parish_name_v AND sub_county_id IN (SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))))),
+		(SELECT sub_county_id from sub_county where sub_county_name=sub_county_name_v AND county_id in (SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v)))),
+		(SELECT county_id from county where county_name=county_name_v and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),
+		(SELECT sub_district_id from sub_district where sub_district_name=sub_district_name_v2 and district_id in(select district_id from district where district_name=district_name_v AND region_id IN (select region_id from region where region_name=region_name_v))),
+		(SELECT district_id from district where district_name=district_name_v and region_id in(select region_id from region where region_name=region_name_v)),
+		(select region_id from region where region_name=region_name_v),
+ownership_v,
+short_name_v,
+xcoordinate_v,
+ycoordinate_v,
+zcoordinate_v,
+		0,
+		1,1,NOW());
+	END IF;
+END IF;
+
+	END LOOP;
+END;
+CLOSE cur_health_facilities;
+-- End Load Health Facility
 END
 ;;
 DELIMITER ;
