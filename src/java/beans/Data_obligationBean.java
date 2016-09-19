@@ -67,40 +67,68 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-    
-    public void update_data_obligation_full_current_year(){
-        int current_year=GeneralUtilities.getCurrentYear();
-        int current_month=GeneralUtilities.getCurrentMonth();
-        
+
+    public void update_data_obligation_full_current_year() {
+        int current_year = GeneralUtilities.getCurrentYear();
+        int current_month = GeneralUtilities.getCurrentMonth();
+        int current_bi_month = 0;
+        if (current_month % 2 > 0) {
+            current_bi_month = (current_month + 1) / 2;
+        } else {
+            current_bi_month = current_month / 2;
+        }
+
         //update for quartely
-        for(int i=1;i<=3;i++){
-            this.update_data_obligation_quarterly(current_year,i);
+        for (int i = 1; i <= 3; i++) {
+            this.update_data_obligation_quarterly(current_year, i);
         }
-        
+
         //update for bi-monthly
-        for(int i=1;i<=6;i++){
-            this.update_data_obligation_bi_monthly(current_year,i);
+        for (int i = 1; i <= current_bi_month; i++) {
+            this.update_data_obligation_bi_monthly(current_year, i);
         }
-        
+
         //update for monthly
-        for(int i=1;i<=current_month;i++){
-            this.update_data_obligation_monthly(current_year,i);
+        for (int i = 1; i <= current_month; i++) {
+            this.update_data_obligation_monthly(current_year, i);
         }
-        
+
         //update for weekly
-        for(int i=1;i<=current_month;i++){
-            for(int x=1;x<=4;x++){
-                this.update_data_obligation_weekly(current_year,i,x);
+        for (int i = 1; i <= current_month; i++) {
+            for (int x = 1; x <= 4; x++) {
+                this.update_data_obligation_weekly(current_year, i, x);
             }
         }
-        
     }
-    
-    public void update_data_obligation_full_current_month(){
-        
+
+    public void update_data_obligation_full_current_month() {
+        int current_year = GeneralUtilities.getCurrentYear();
+        int current_month = GeneralUtilities.getCurrentMonth();
+        int current_bi_month = 0;
+        if (current_month % 2 > 0) {
+            current_bi_month = (current_month + 1) / 2;
+        } else {
+            current_bi_month = current_month / 2;
+        }
+
+        //update for quartely
+        for (int i = 1; i <= 3; i++) {
+            this.update_data_obligation_quarterly(current_year, i);
+        }
+
+        //update for bi-monthly
+        this.update_data_obligation_bi_monthly(current_year, current_bi_month);
+
+        //update for monthly
+        this.update_data_obligation_monthly(current_year, current_month);
+
+        //update for weekly
+        for (int x = 1; x <= 4; x++) {
+            this.update_data_obligation_weekly(current_year, current_month, x);
+        }
     }
-    
-    public void update_data_obligation_monthly(int year_value,int month_value) {
+
+    public void update_data_obligation_monthly(int year_value, int month_value) {
         String sql = "{call sp_update_data_obligation_monthly(?,?)}";
         ResultSet rs = null;
         try {
@@ -114,8 +142,8 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
             System.err.println(se.getMessage());
         }
     }
-    
-    public void update_data_obligation_bi_monthly(int year_value,int bi_month_value) {
+
+    public void update_data_obligation_bi_monthly(int year_value, int bi_month_value) {
         String sql = "{call sp_update_data_obligation_bi_monthly(?,?)}";
         ResultSet rs = null;
         try {
@@ -129,8 +157,8 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
             System.err.println(se.getMessage());
         }
     }
-    
-    public void update_data_obligation_quarterly(int year_value,int quarter_value) {
+
+    public void update_data_obligation_quarterly(int year_value, int quarter_value) {
         String sql = "{call sp_update_data_obligation_quarterly(?,?)}";
         ResultSet rs = null;
         try {
@@ -144,8 +172,8 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
             System.err.println(se.getMessage());
         }
     }
-    
-    public void update_data_obligation_weekly(int year_value,int month_value,int week_value) {
+
+    public void update_data_obligation_weekly(int year_value, int month_value, int week_value) {
         String sql = "{call sp_update_data_obligation_weekly(?,?,?)}";
         ResultSet rs = null;
         try {
@@ -261,15 +289,21 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getMonth_value() == month_value) {
                     switch (obl.getReport_form().getLowest_report_form_level()) {
                         case "District":
-                            PercRec = 100 * obl.getMonth_records_d() / obl.getCount_district();
+                            if (obl.getCount_district() > 0) {
+                                PercRec = 100 * obl.getMonth_records_d() / obl.getCount_district();
+                            }
                             PercRecStr = PercRec + "% D";
                             break;
                         case "Parish":
-                            PercRec = 100 * obl.getMonth_records_p() / obl.getCount_parish();
+                            if (obl.getCount_parish() > 0) {
+                                PercRec = 100 * obl.getMonth_records_p() / obl.getCount_parish();
+                            }
                             PercRecStr = PercRec + "% P";
                             break;
                         case "Facility":
-                            PercRec = 100 * obl.getMonth_records_f() / obl.getCount_facility();
+                            if (obl.getCount_facility() > 0) {
+                                PercRec = 100 * obl.getMonth_records_f() / obl.getCount_facility();
+                            }
                             PercRecStr = PercRec + "% F";
                             break;
                     }
@@ -292,7 +326,9 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
             for (int i = 0; i < n; i++) {
                 obl = this.data_obligation_monthlyList.get(i);
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getMonth_value() == month_value) {
-                    PercRec = 100 * obl.getMonth_des() / obl.getCount_de();
+                    if (obl.getCount_de() > 0) {
+                        PercRec = 100 * obl.getMonth_des() / obl.getCount_de();
+                    }
                     PercRecStr = PercRec + "% E";
                     break;
                 }
@@ -315,15 +351,21 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getBi_month_value() == bi_month_value) {
                     switch (obl.getReport_form().getLowest_report_form_level()) {
                         case "District":
-                            PercRec = 100 * obl.getBi_month_records_d() / obl.getCount_district();
+                            if (obl.getCount_district() > 0) {
+                                PercRec = 100 * obl.getBi_month_records_d() / obl.getCount_district();
+                            }
                             PercRecStr = PercRec + "% D";
                             break;
                         case "Parish":
-                            PercRec = 100 * obl.getBi_month_records_p() / obl.getCount_parish();
+                            if (obl.getCount_parish() > 0) {
+                                PercRec = 100 * obl.getBi_month_records_p() / obl.getCount_parish();
+                            }
                             PercRecStr = PercRec + "% P";
                             break;
                         case "Facility":
-                            PercRec = 100 * obl.getBi_month_records_f() / obl.getCount_facility();
+                            if (obl.getCount_facility() > 0) {
+                                PercRec = 100 * obl.getBi_month_records_f() / obl.getCount_facility();
+                            }
                             PercRecStr = PercRec + "% F";
                             break;
                     }
@@ -346,7 +388,9 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
             for (int i = 0; i < n; i++) {
                 obl = this.data_obligation_bi_monthlyList.get(i);
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getBi_month_value() == bi_month_value) {
-                    PercRec = 100 * obl.getBi_month_des() / obl.getCount_de();
+                    if (obl.getCount_de() > 0) {
+                        PercRec = 100 * obl.getBi_month_des() / obl.getCount_de();
+                    }
                     PercRecStr = PercRec + "% E";
                     break;
                 }
@@ -369,15 +413,21 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getQuarter_value() == quarter_value) {
                     switch (obl.getReport_form().getLowest_report_form_level()) {
                         case "District":
-                            PercRec = 100 * obl.getQuarter_records_d() / obl.getCount_district();
+                            if (obl.getCount_district() > 0) {
+                                PercRec = 100 * obl.getQuarter_records_d() / obl.getCount_district();
+                            }
                             PercRecStr = PercRec + "% D";
                             break;
                         case "Parish":
-                            PercRec = 100 * obl.getQuarter_records_p() / obl.getCount_parish();
+                            if (obl.getCount_parish() > 0) {
+                                PercRec = 100 * obl.getQuarter_records_p() / obl.getCount_parish();
+                            }
                             PercRecStr = PercRec + "% P";
                             break;
                         case "Facility":
-                            PercRec = 100 * obl.getQuarter_records_f() / obl.getCount_facility();
+                            if (obl.getCount_facility() > 0) {
+                                PercRec = 100 * obl.getQuarter_records_f() / obl.getCount_facility();
+                            }
                             PercRecStr = PercRec + "% F";
                             break;
                     }
@@ -400,7 +450,9 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
             for (int i = 0; i < n; i++) {
                 obl = this.data_obligation_quarterlyList.get(i);
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getQuarter_value() == quarter_value) {
-                    PercRec = 100 * obl.getQuarter_des() / obl.getCount_de();
+                    if (obl.getCount_de() > 0) {
+                        PercRec = 100 * obl.getQuarter_des() / obl.getCount_de();
+                    }
                     PercRecStr = PercRec + "% E";
                     break;
                 }
@@ -423,15 +475,21 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getWeek_value() == week_value) {
                     switch (obl.getReport_form().getLowest_report_form_level()) {
                         case "District":
-                            PercRec = 100 * obl.getWeek_records_d() / obl.getCount_district();
+                            if (obl.getCount_district() > 0) {
+                                PercRec = 100 * obl.getWeek_records_d() / obl.getCount_district();
+                            }
                             PercRecStr = PercRec + "% D";
                             break;
                         case "Parish":
-                            PercRec = 100 * obl.getWeek_records_p() / obl.getCount_parish();
+                            if (obl.getCount_parish() > 0) {
+                                PercRec = 100 * obl.getWeek_records_p() / obl.getCount_parish();
+                            }
                             PercRecStr = PercRec + "% P";
                             break;
                         case "Facility":
-                            PercRec = 100 * obl.getWeek_records_f() / obl.getCount_facility();
+                            if (obl.getCount_facility() > 0) {
+                                PercRec = 100 * obl.getWeek_records_f() / obl.getCount_facility();
+                            }
                             PercRecStr = PercRec + "% F";
                             break;
                     }
@@ -454,7 +512,9 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
             for (int i = 0; i < n; i++) {
                 obl = this.data_obligation_weeklyList.get(i);
                 if (obl.getReport_form().getReport_form_id() == report_form_id && obl.getWeek_value() == week_value) {
-                    PercRec = 100 * obl.getWeek_des() / obl.getCount_de();
+                    if (obl.getCount_de() > 0) {
+                        PercRec = 100 * obl.getWeek_des() / obl.getCount_de();
+                    }
                     PercRecStr = PercRec + "% E";
                     break;
                 }
