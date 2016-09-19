@@ -12,9 +12,6 @@
         <h:form>
             <p:growl/>
             <p:fieldset legend="Data Loaded Status Report">
-                <p:panelGrid columns="1">
-                    <h:commandButton value="Load Obligation (Temp)" action="#{data_obligationBean.update_data_obligation_full_current_year()}" />
-                </p:panelGrid>
                 <h:panelGrid columns="2">
                     <p:outputLabel for="year_value" value="Select Year:" />
                     <p:selectOneMenu id="year_value" value="#{data_obligationBean.selected_year}" style="width:125px" required="true" requiredMessage="Year is Required">
