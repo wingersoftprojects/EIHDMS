@@ -432,7 +432,7 @@ public class Technical_area implements Serializable {
 	private java.sql.Timestamp last_edit_date;
 	
 	@Column(name="last_edit_by", nullable=true, length=10)	
-	private int last_edit_by;
+	private Integer last_edit_by;
 	
 	@OneToMany(mappedBy="technical_area", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
@@ -513,10 +513,14 @@ public class Technical_area implements Serializable {
 	}
 	
 	public void setLast_edit_by(int value) {
+		setLast_edit_by(new Integer(value));
+	}
+	
+	public void setLast_edit_by(Integer value) {
 		this.last_edit_by = value;
 	}
 	
-	public int getLast_edit_by() {
+	public Integer getLast_edit_by() {
 		return last_edit_by;
 	}
 	
