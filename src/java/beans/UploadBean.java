@@ -394,7 +394,11 @@ public class UploadBean implements Serializable {
                 if (interface_data.getData_element_value() == null) {
                     jObj.put("DataElementValue", 0);
                 } else {
-                    jObj.put("DataElementValue", Float.parseFloat(interface_data.getData_element_value()));
+                    try {
+                        jObj.put("DataElementValue", Float.parseFloat(interface_data.getData_element_value()));
+                    } catch (NumberFormatException nfe) {
+                        jObj.put("DataElementValue", 0);
+                    }
                 }
                 jArray.put(jObj);
             }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-21 01:25:45
+Date: 2016-09-21 09:46:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1185,3 +1185,35 @@ execute stmt;
 END
 ;;
 DELIMITER ;
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+-- ----------------------------
+-- Function structure for SPLIT_STR
+-- ----------------------------
+DROP FUNCTION IF EXISTS `SPLIT_STR`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `SPLIT_STR`(x LONGTEXT,
+  delim VARCHAR(12),
+  pos INT) RETURNS longtext CHARSET utf8
+RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
+       LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
+       delim, '') ;
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_check_duplicate_temp_data_elements
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_check_duplicate_temp_data_elements`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_duplicate_temp_data_elements`(
+	IN in_report_form_name varchar(250)
+)
+BEGIN 
+	SELECT report_form_name,data_element_name FROM temp_data_element WHERE report_form_name=in_report_form_name GROUP BY data_element_name HAVING count(data_element_name)>1;
+END
+;;
+DELIMITER ;
+
+

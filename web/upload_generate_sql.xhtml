@@ -42,16 +42,31 @@
                 </h:panelGrid>
             </p:fieldset>
             <p:fieldset legend="Data Elements - Load Uploaded Temp Data">
-                <h:panelGrid columns="3">
+                <h:panelGrid columns="5">
                     <p:outputLabel value="Temp Report Form Name"/>
                     <p:selectOneMenu id="report_form_name" value="#{uploadBean.report_form_name}" style="width:125px" required="true" requiredMessage="Temp Report Form Name is Required">
                         <f:selectItem itemLabel="" />
                         <f:selectItems value="#{uploadBean.report_form_nameList}"/>
                         <p:ajax process="@this" update="@this"/>
                     </p:selectOneMenu>
+                    <h:commandButton value="Check Duplicates">
+                        <f:ajax listener="#{generalUtilities.check_duplicate_temp_data_elements_procedure(uploadBean.report_form_name)}" execute="@this report_form_name" render="@this report_form_name @form"/>
+                    </h:commandButton>
                     <h:commandButton value="Load Data Elements">
                         <f:ajax listener="#{generalUtilities.load_data_element_dependancies_from_procedure(uploadBean.report_form_name)}" execute="@this report_form_name" render="@this report_form_name @form"/>
                     </h:commandButton>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Duplicate Temp Data Elements">
+                <h:panelGrid id="pnl_duplicate_check">
+                    <p:dataTable value="#{generalUtilities.temp_data_elements}" var="item" rendered="#{generalUtilities.temp_data_elements.size()>1}">
+                        <p:column headerText="Report Form">
+                            <p:outputLabel value="#{item.report_form_name}"/>
+                        </p:column>
+                        <p:column headerText="Data Element">
+                            <p:outputLabel value="#{item.data_element_name}"/>
+                        </p:column>
+                    </p:dataTable>
                 </h:panelGrid>
             </p:fieldset>
         </h:form>

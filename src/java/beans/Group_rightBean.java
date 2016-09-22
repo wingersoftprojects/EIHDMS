@@ -6,10 +6,14 @@
 package beans;
 
 import eihdms.EIHDMSPersistentManager;
+import eihdms.Group_detail;
 import eihdms.Group_right;
+import eihdms.Report_form;
 import eihdms.User_detail;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +22,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.LockMode;
 import org.orm.PersistentException;
+import org.orm.PersistentTransaction;
 import utilities.GeneralUtilities;
 
 /**
@@ -29,12 +35,16 @@ import utilities.GeneralUtilities;
 @SessionScoped
 public class Group_rightBean extends AbstractBean<Group_right> implements Serializable {
 
+    private Group_detail selectedGroup_detail;
+    private List<Group_right> group_rights;
+
     /**
      * Creates a new instance of Group_rightBean
      */
     public Group_rightBean() {
         super(Group_right.class);
     }
+
     @Override
     public void init() {
         if (super.getEntityClass() == null) {
@@ -51,12 +61,59 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-    
+
+    public void refreshGroup_rights(Group_detail group_detail) {
+        group_rights = new ArrayList<Group_right>();
+        List<Report_form> report_forms = new ArrayList<>();
+        report_forms = new Report_formBean().getTsActive();
+        int n = 0;
+        n = report_forms.size();
+        for (int i = 0; i < n; i++) {
+            Group_right group_right = null;
+            try {
+                group_right = Group_right.loadGroup_rightByQuery("report_form_id=" + report_forms.get(i).getReport_form_id() + " and group_detail_id=" + group_detail.getGroup_detail_id(), null, LockMode.NONE);
+                //group_right=(Group_right) Group_right.queryGroup_right("report_form_id=" + report_forms.get(i).getReport_form_id() + " and group_detail_id=" + group_detail.getGroup_detail_id(), null).get(0);
+            } catch (PersistentException | IndexOutOfBoundsException | NullPointerException ex) {
+                group_right = null;
+                Logger.getLogger(Group_rightBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (group_right == null) {
+                group_right = new Group_right();
+                group_right.setGroup_detail(group_detail);
+                group_right.setReport_form(report_forms.get(i));
+                group_right.setAllow_add(0);
+                group_right.setAllow_view(0);
+                group_right.setAllow_edit(0);
+                group_right.setAllow_delete(0);
+            }
+            group_rights.add(group_right);
+        }
+    }
+
+    public void saveGroup_rights() {
+        try {
+            if (!this.group_rights.isEmpty()) {
+                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                for (Group_right gr : this.group_rights) {
+                    gr.setIs_active(1);
+                    gr.setAdd_date(new Timestamp(new Date().getTime()));
+                    gr.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                    gr.setIs_deleted(0);
+                    gr.save();
+                }
+                transaction.commit();
+                loginBean.saveMessage();
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(Group_rightBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public List<Group_right> getActiveGroup_rightListByUser(User_detail user_detail) {
         List<Group_right> grl = new ArrayList<Group_right>();
         try {
             grl = null;
-            if (user_detail == null || user_detail.getIs_active()==0 || user_detail.getIs_deleted()==1 || user_detail.getIs_user_gen_admin()==1) {
+            if (user_detail == null || user_detail.getIs_active() == 0 || user_detail.getIs_deleted() == 1 || user_detail.getIs_user_gen_admin() == 1) {
                 //do nothing; user is either general admin OR inactive OR deleted
             } else {
                 grl = (List<Group_right>) EIHDMSPersistentManager.instance().getSession().createQuery(""
@@ -74,14 +131,14 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
         }
         return grl;
     }
-    
+
     public int IsUserGroupsFormAccessAllowed(User_detail user_detail, List<Group_right> group_rights, int form_id, String allow) {
         //first check if user is general admin
         if (user_detail == null) {
             return 0;
         }
         //for gen admins
-        if (user_detail.getIs_user_gen_admin()==1 && user_detail.getIs_active()==1) {
+        if (user_detail.getIs_user_gen_admin() == 1 && user_detail.getIs_active() == 1) {
             return 1;
         }
         //for non-gen-admins      
@@ -95,29 +152,29 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
         int IsPositiveRightSeen = 0;
 
         while (ListItemIndex < ListItemNo) {
-            if (group_rights.get(ListItemIndex).getReport_form().getReport_form_id()==form_id) {
+            if (group_rights.get(ListItemIndex).getReport_form().getReport_form_id() == form_id) {
                 if (allow.equals("View")) {
-                    if (group_rights.get(ListItemIndex).getAllow_view()==1 && IsPositiveRightSeen == 0) {
+                    if (group_rights.get(ListItemIndex).getAllow_view() == 1 && IsPositiveRightSeen == 0) {
                         IsPositiveRightSeen = 1;
-                    } else if (group_rights.get(ListItemIndex).getAllow_view()==0 && IsNegativeRightSeen == 0) {
+                    } else if (group_rights.get(ListItemIndex).getAllow_view() == 0 && IsNegativeRightSeen == 0) {
                         IsNegativeRightSeen = 1;
                     }
                 } else if (allow.equals("Add")) {
-                    if (group_rights.get(ListItemIndex).getAllow_add()==1 && IsPositiveRightSeen == 0) {
+                    if (group_rights.get(ListItemIndex).getAllow_add() == 1 && IsPositiveRightSeen == 0) {
                         IsPositiveRightSeen = 1;
-                    } else if (group_rights.get(ListItemIndex).getAllow_add()==0 && IsNegativeRightSeen == 0) {
+                    } else if (group_rights.get(ListItemIndex).getAllow_add() == 0 && IsNegativeRightSeen == 0) {
                         IsNegativeRightSeen = 1;
                     }
                 } else if (allow.equals("Edit")) {
-                    if (group_rights.get(ListItemIndex).getAllow_edit()==1 && IsPositiveRightSeen == 0) {
+                    if (group_rights.get(ListItemIndex).getAllow_edit() == 1 && IsPositiveRightSeen == 0) {
                         IsPositiveRightSeen = 1;
-                    } else if (group_rights.get(ListItemIndex).getAllow_edit()==0 && IsNegativeRightSeen == 0) {
+                    } else if (group_rights.get(ListItemIndex).getAllow_edit() == 0 && IsNegativeRightSeen == 0) {
                         IsNegativeRightSeen = 1;
                     }
                 } else if (allow.equals("Delete")) {
-                    if (group_rights.get(ListItemIndex).getAllow_delete()==1 && IsPositiveRightSeen == 0) {
+                    if (group_rights.get(ListItemIndex).getAllow_delete() == 1 && IsPositiveRightSeen == 0) {
                         IsPositiveRightSeen = 1;
-                    } else if (group_rights.get(ListItemIndex).getAllow_delete()==0 && IsNegativeRightSeen == 0) {
+                    } else if (group_rights.get(ListItemIndex).getAllow_delete() == 0 && IsNegativeRightSeen == 0) {
                         IsNegativeRightSeen = 1;
                     }
                 }
@@ -129,5 +186,33 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
         } else {
             return 0;//Dissallow Function Access
         }
+    }
+
+    /**
+     * @return the selectedGroup_detail
+     */
+    public Group_detail getSelectedGroup_detail() {
+        return selectedGroup_detail;
+    }
+
+    /**
+     * @param selectedGroup_detail the selectedGroup_detail to set
+     */
+    public void setSelectedGroup_detail(Group_detail selectedGroup_detail) {
+        this.selectedGroup_detail = selectedGroup_detail;
+    }
+
+    /**
+     * @return the group_rights
+     */
+    public List<Group_right> getGroup_rights() {
+        return group_rights;
+    }
+
+    /**
+     * @param group_rights the group_rights to set
+     */
+    public void setGroup_rights(List<Group_right> group_rights) {
+        this.group_rights = group_rights;
     }
 }

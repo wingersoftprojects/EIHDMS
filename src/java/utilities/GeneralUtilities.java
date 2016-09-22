@@ -21,6 +21,7 @@ import eihdms.Sub_county;
 import eihdms.Sub_district;
 import eihdms.Sub_section;
 import eihdms.Technical_area;
+import eihdms.Temp_data_element;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +32,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -50,6 +53,7 @@ import org.orm.PersistentTransaction;
 public class GeneralUtilities implements Serializable {
 
     private Report_form report_form_to_load_dependancies;
+    private List<Temp_data_element> temp_data_elements;
 
     public Report_form getReport_form_to_load_dependancies() {
         return report_form_to_load_dependancies;
@@ -123,6 +127,14 @@ public class GeneralUtilities implements Serializable {
                 return "Yes";
             default:
                 return "";
+        }
+    }
+
+    public String colorYesNo(int Allow) {
+        if (Allow == 1) {
+            return "blue";
+        } else {
+            return "red";
         }
     }
 
@@ -288,6 +300,31 @@ public class GeneralUtilities implements Serializable {
             ps.setString(1, report_form_name);
             rs = ps.executeQuery();
             execute_success();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+            error(se);
+        }
+    }
+
+    public void check_duplicate_temp_data_elements_procedure(String report_form_name) {
+        String sql = "{call sp_check_duplicate_temp_data_elements(?)}";
+        temp_data_elements = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, report_form_name);
+            rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                Temp_data_element tde = new Temp_data_element();
+                tde.setReport_form_name(rs.getString(1));
+                tde.setData_element_name(rs.getString(2));
+                temp_data_elements.add(tde);
+                i = i + 1;
+            }
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("" + i + " Duplicate Data Elemenets Found", "Duplicate Results"));
         } catch (SQLException se) {
             System.err.println(se.getMessage());
             error(se);
@@ -534,5 +571,19 @@ public class GeneralUtilities implements Serializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    /**
+     * @return the temp_data_elements
+     */
+    public List<Temp_data_element> getTemp_data_elements() {
+        return temp_data_elements;
+    }
+
+    /**
+     * @param temp_data_elements the temp_data_elements to set
+     */
+    public void setTemp_data_elements(List<Temp_data_element> temp_data_elements) {
+        this.temp_data_elements = temp_data_elements;
     }
 }
