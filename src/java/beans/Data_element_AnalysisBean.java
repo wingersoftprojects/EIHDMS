@@ -253,46 +253,48 @@ public class Data_element_AnalysisBean {
             base_dataList = new ArrayList<>();
         }
         for (Base_data base_data : base_dataList) {
-            jObj = new JSONObject();
-            if (base_data.getData_element().getAge_category() != null) {
-                jObj.put("AgeCategory", base_data.getData_element().getAge_category());
-            } else {
-                jObj.put("AgeCategory", "N/A");
-            }
-            if (base_data.getData_element().getSex_category() != null) {
-                jObj.put("SexCategory", base_data.getData_element().getSex_category());
-            } else {
-                jObj.put("SexCategory", "N/A");
-            }
-            if (base_data.getData_element().getOther_category() != null) {
-                jObj.put("OtherCategory", base_data.getData_element().getOther_category());
-            } else {
-                jObj.put("OtherCategory", "N/A");
-            }
-            jObj.put("District", base_data.getDistrict().getDistrict_name());
-            if (report_form.getLowest_report_form_level().equals("Facility")) {
-                jObj.put("County", base_data.getCounty().getCounty_name());
-                jObj.put("SubCounty", base_data.getSub_county().getSub_county_name());
-                jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
-            }
-            if (report_form.getLowest_report_form_level().equals("Parish")) {
-                jObj.put("Parish", base_data.getParish().getParish_name());
-                jObj.put("SubCounty", base_data.getSub_county().getSub_county_name());
-                jObj.put("County", base_data.getCounty().getCounty_name());
-            }
-            jObj.put("Section", base_data.getData_element().getSection().getSection_name());
-            jObj.put("SubSection", base_data.getData_element().getSub_section().getSub_section_name());
-            jObj.put("DataElement", base_data.getData_element().getData_element_name());
-            if (base_data.getData_element_value() == null) {
-                jObj.put("DataElementValue", 0);
-            } else {
-                try {
-                    jObj.put("DataElementValue", Float.parseFloat(base_data.getData_element_value()));
-                } catch (NumberFormatException nfe) {
-                    jObj.put("DataElementValue", 0);
+            if (base_data.getData_element().getData_type().equals("integer") || base_data.getData_element().getData_type().equals("float")) {
+                jObj = new JSONObject();
+                if (base_data.getData_element().getAge_category() != null) {
+                    jObj.put("AgeCategory", base_data.getData_element().getAge_category());
+                } else {
+                    jObj.put("AgeCategory", "N/A");
                 }
+                if (base_data.getData_element().getSex_category() != null) {
+                    jObj.put("SexCategory", base_data.getData_element().getSex_category());
+                } else {
+                    jObj.put("SexCategory", "N/A");
+                }
+                if (base_data.getData_element().getOther_category() != null) {
+                    jObj.put("OtherCategory", base_data.getData_element().getOther_category());
+                } else {
+                    jObj.put("OtherCategory", "N/A");
+                }
+                jObj.put("District", base_data.getDistrict().getDistrict_name());
+                if (report_form.getLowest_report_form_level().equals("Facility")) {
+                    jObj.put("County", base_data.getCounty().getCounty_name());
+                    jObj.put("SubCounty", base_data.getSub_county().getSub_county_name());
+                    jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
+                }
+                if (report_form.getLowest_report_form_level().equals("Parish")) {
+                    jObj.put("Parish", base_data.getParish().getParish_name());
+                    jObj.put("SubCounty", base_data.getSub_county().getSub_county_name());
+                    jObj.put("County", base_data.getCounty().getCounty_name());
+                }
+                jObj.put("Section", base_data.getData_element().getSection().getSection_name());
+                jObj.put("SubSection", base_data.getData_element().getSub_section().getSub_section_name());
+                jObj.put("DataElement", base_data.getData_element().getData_element_name());
+                if (base_data.getData_element_value() == null) {
+                    jObj.put("DataElementValue", 0);
+                } else {
+                    try {
+                        jObj.put("DataElementValue", Float.parseFloat(base_data.getData_element_value()));
+                    } catch (NumberFormatException nfe) {
+                        jObj.put("DataElementValue", 0);
+                    }
+                }
+                jArray.put(jObj);
             }
-            jArray.put(jObj);
         }
         jSONArray = jArray;
     }

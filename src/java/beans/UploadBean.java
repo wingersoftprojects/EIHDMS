@@ -374,33 +374,35 @@ public class UploadBean implements Serializable {
                 interface_datas = new ArrayList<>();
             }
             for (Interface_data interface_data : interface_datas) {
-                jObj = new JSONObject();
-                jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
-                if (report_form.getLowest_report_form_level().equals("Facility")) {
-                    jObj.put("District", interface_data.getDistrict_name());
-                    jObj.put("County", interface_data.getCounty_name());
-                    jObj.put("Subcounty", interface_data.getSub_county_name());
-                    jObj.put("Facility", interface_data.getHealth_facility_name());
-                }
-                if (report_form.getLowest_report_form_level().equals("Parish")) {
-                    jObj.put("District", interface_data.getDistrict_name());
-                    jObj.put("County", interface_data.getCounty_name());
-                    jObj.put("Subcounty", interface_data.getSub_county_name());
-                    jObj.put("Parish", interface_data.getParish_name());
-                }
-                if (report_form.getLowest_report_form_level().equals("District")) {
-                    jObj.put("District", interface_data.getDistrict_name());
-                }
-                if (interface_data.getData_element_value() == null) {
-                    jObj.put("DataElementValue", 0);
-                } else {
-                    try {
-                        jObj.put("DataElementValue", Float.parseFloat(interface_data.getData_element_value()));
-                    } catch (NumberFormatException nfe) {
-                        jObj.put("DataElementValue", 0);
+                if (interface_data.getData_element().getData_type().equals("integer") || interface_data.getData_element().getData_type().equals("float")) {
+                    jObj = new JSONObject();
+                    jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
+                    if (report_form.getLowest_report_form_level().equals("Facility")) {
+                        jObj.put("District", interface_data.getDistrict_name());
+                        jObj.put("County", interface_data.getCounty_name());
+                        jObj.put("Subcounty", interface_data.getSub_county_name());
+                        jObj.put("Facility", interface_data.getHealth_facility_name());
                     }
+                    if (report_form.getLowest_report_form_level().equals("Parish")) {
+                        jObj.put("District", interface_data.getDistrict_name());
+                        jObj.put("County", interface_data.getCounty_name());
+                        jObj.put("Subcounty", interface_data.getSub_county_name());
+                        jObj.put("Parish", interface_data.getParish_name());
+                    }
+                    if (report_form.getLowest_report_form_level().equals("District")) {
+                        jObj.put("District", interface_data.getDistrict_name());
+                    }
+                    if (interface_data.getData_element_value() == null) {
+                        jObj.put("DataElementValue", 0);
+                    } else {
+                        try {
+                            jObj.put("DataElementValue", Float.parseFloat(interface_data.getData_element_value()));
+                        } catch (NumberFormatException nfe) {
+                            jObj.put("DataElementValue", 0);
+                        }
+                    }
+                    jArray.put(jObj);
                 }
-                jArray.put(jObj);
             }
             jSONArray = jArray;
         }

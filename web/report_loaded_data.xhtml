@@ -107,20 +107,25 @@
                         <p:column headerText="Frequency">
                             <h:outputText value="#{rf.report_form_frequency}"/>
                         </p:column>
-                        <p:column headerText="Q1(Jan-Apr)">
+                        <p:column headerText="Q1(Jan-Mar)">
                             <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 1)}"/>
                             <f:verbatim><br/></f:verbatim>
                             <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 1)}"/>
                         </p:column>
-                        <p:column headerText="Q2(May-Aug)">
+                        <p:column headerText="Q2(Apr-Jun)">
                             <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 2)}"/>
                             <f:verbatim><br/></f:verbatim>
                             <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 2)}"/>
                         </p:column>
-                        <p:column headerText="Q3(Sep-Dec)">
+                        <p:column headerText="Q3(Jul-Sep)">
                             <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 3)}"/>
                             <f:verbatim><br/></f:verbatim>
                             <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 3)}"/>
+                        </p:column>
+                        <p:column headerText="Q4(Oct-Dec)">
+                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 4)}"/>
+                            <f:verbatim><br/></f:verbatim>
+                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 4)}"/>
                         </p:column>
                     </p:dataTable>
                 </p:fieldset>

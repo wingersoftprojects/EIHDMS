@@ -38,9 +38,10 @@
                     <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{uploadBean.showquartery()}"/>
                     <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" rendered="#{uploadBean.showquartery()}">
                         <f:selectItem itemLabel="Select One" itemValue="" />
-                        <f:selectItem itemLabel="Q1(Jan-Apr)" itemValue="1" />
-                        <f:selectItem itemLabel="Q2(May-Aug)" itemValue="2" />
-                        <f:selectItem itemLabel="Q3(Sep-Dec)" itemValue="3" />
+                        <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="1" />
+                        <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
+                        <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
+                        <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{uploadBean.showbimonthly()}"/>
@@ -148,9 +149,28 @@
                         <p:inputText value="#{var.data_element_value}"/>
                     </c:forEach>
                 </p:panelGrid>
-                <p:commandButton value="SAVE FORM DATA" action="#{uploadBean.dataentry_load_interface()}" update="@form" icon="ui-icon-disk" rendered="#{uploadBean.interface_datas.size()>0}"/>
+                <p:commandButton value="SAVE FORM DATA" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" icon="ui-icon-disk" rendered="#{uploadBean.interface_datas.size()>0}" oncomplete="PF('validationReport').show();"/>
             </p:fieldset>
         </h:form>
+        
+        <ui:include src="dialog_validationreport.xhtml"/>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
     </ui:define>
 
 </ui:composition>

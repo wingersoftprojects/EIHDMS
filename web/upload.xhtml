@@ -38,9 +38,10 @@
                     <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{uploadBean.showquartery()}"/>
                     <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" rendered="#{uploadBean.showquartery()}">
                         <f:selectItem itemLabel="Select One" itemValue="" />
-                        <f:selectItem itemLabel="Q1(Jan-Apr)" itemValue="1" />
-                        <f:selectItem itemLabel="Q2(May-Aug)" itemValue="2" />
-                        <f:selectItem itemLabel="Q3(Sep-Dec)" itemValue="3" />
+                        <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="1" />
+                        <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
+                        <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
+                        <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{uploadBean.showbimonthly()}"/>
@@ -91,7 +92,7 @@
                     <p:outputLabel value="Upload"/>
                     <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
                                   auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="upload_panel_grid" />
-                    <p:commandButton value="Load Data" rendered="#{uploadBean.interface_datas.size()>0}" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" oncomplete="PF('validationReport').show();"/>
+                    <p:commandButton value="LOAD DATA" rendered="#{uploadBean.interface_datas.size()>0}" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" oncomplete="PF('validationReport').show();"/>
                 </p:panelGrid>
                 <!-- 1. Create a DIV container to insert the component -->
                 <div id="pivotContainer"></div>

@@ -34,10 +34,10 @@
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{data_element_AnalysisBean.showquartery()}"/>
                     <p:selectOneMenu id="report_period_quarter" value="#{data_element_AnalysisBean.report_period_quarter}" rendered="#{data_element_AnalysisBean.showquartery()}">
-                        <f:selectItem itemLabel="Select One" itemValue="" />
-                        <f:selectItem itemLabel="Q1(Jan-Apr)" itemValue="1" />
-                        <f:selectItem itemLabel="Q2(May-Aug)" itemValue="2" />
-                        <f:selectItem itemLabel="Q3(Sep-Dec)" itemValue="3" />
+                        <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="1" />
+                        <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
+                        <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
+                        <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
                         <p:ajax process="@this" update="pivotarea" listener="#{data_element_AnalysisBean.filter_base_data()}"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{data_element_AnalysisBean.showbimonthly()}"/>
