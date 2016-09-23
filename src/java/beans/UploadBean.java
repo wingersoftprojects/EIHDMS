@@ -626,6 +626,7 @@ public class UploadBean implements Serializable {
                 batch.setAdd_date(new Timestamp(new Date().getTime()));
                 batch.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
                 batch.setIs_deleted(0);
+                batch.setIs_active(1);
                 batch.save();
                 /**
                  * End Batch
@@ -1131,23 +1132,73 @@ public class UploadBean implements Serializable {
                     interface_data.setHealth_facility_name(null);
                 }
                 try {
+                    interface_data.setDistrict_id(this.getDistrict().getDistrict_id());
                     interface_data.setDistrict_name(this.getDistrict().getDistrict_name());
                 } catch (NullPointerException npe) {
+                    interface_data.setDistrict_id(null);
                     interface_data.setDistrict_name(null);
                 }
                 try {
+                    interface_data.setCounty_id(this.getCounty().getCounty_id());
+                    interface_data.setCounty_name(this.getCounty().getCounty_name());
+                } catch (NullPointerException npe) {
+                    interface_data.setCounty_id(null);
+                    interface_data.setCounty_name(null);
+                }
+                try {
+                    interface_data.setSub_county_id(this.getSub_county().getSub_county_id());
+                    interface_data.setSub_county_name(this.getSub_county().getSub_county_name());
+                } catch (NullPointerException npe) {
+                    interface_data.setSub_county_id(null);
+                    interface_data.setSub_county_name(null);
+                }
+                try {
+                    interface_data.setParish_id(this.getParish().getParish_id());
                     interface_data.setParish_name(this.getParish().getParish_name());
                 } catch (NullPointerException npe) {
+                    interface_data.setParish_id(null);
                     interface_data.setParish_name(null);
                 }
                 interface_data.setFinancial_year(this.getFinancial_year());
+                interface_data.setReport_period_year(this.getReport_period_year());
                 interface_data.setReport_period_quarter(this.getReport_period_quarter());
                 interface_data.setReport_period_from_date(this.getReport_period_from_date());
                 interface_data.setReport_period_to_date(this.getReport_period_to_date());
-                //interface_data.setReport_period_name(this.getReport_period_name());
+                interface_data.setReport_period_month(this.getReport_period_month());
+                interface_data.setReport_period_week(this.getReport_period_week());
                 interface_data.setReport_period_bi_month(this.getReport_period_bi_month());
                 interface_data.setIs_deleted(0);
                 interface_data.setIs_active(1);
+                interface_data.setReport_form(report_form);
+                if(report_form.getLowest_report_form_level().equals("Facility")){
+                    this.parish=this.getHealth_facility().getParish();
+                    interface_data.setParish_id(this.parish.getParish_id());
+                    interface_data.setParish_name(this.parish.getParish_name());
+                    this.sub_county=this.parish.getSub_county();
+                    interface_data.setSub_county_id(this.sub_county.getSub_county_id());
+                    interface_data.setSub_county_name(this.sub_county.getSub_county_name());
+                    this.county=this.sub_county.getCounty();
+                    interface_data.setCounty_id(this.county.getCounty_id());
+                    interface_data.setCounty_name(this.county.getCounty_name());
+                    this.district=this.county.getDistrict();
+                    interface_data.setDistrict_id(this.district.getDistrict_id());
+                    interface_data.setDistrict_name(this.district.getDistrict_name());
+                }
+                if(report_form.getLowest_report_form_level().equals("Parish")){
+                    this.sub_county=this.parish.getSub_county();
+                    interface_data.setSub_county_id(this.sub_county.getSub_county_id());
+                    interface_data.setSub_county_name(this.sub_county.getSub_county_name());
+                    this.county=this.sub_county.getCounty();
+                    interface_data.setCounty_id(this.county.getCounty_id());
+                    interface_data.setCounty_name(this.county.getCounty_name());
+                    this.district=this.county.getDistrict();
+                    interface_data.setDistrict_id(this.district.getDistrict_id());
+                    interface_data.setDistrict_name(this.district.getDistrict_name());
+                }
+                if(report_form.getLowest_report_form_level().equals("District")){
+                    interface_data.setDistrict_id(this.district.getDistrict_id());
+                    interface_data.setDistrict_name(this.district.getDistrict_name());
+                }
                 interface_datas.add(interface_data);
             }
         }
