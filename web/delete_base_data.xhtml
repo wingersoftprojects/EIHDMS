@@ -2,20 +2,19 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./layout.xhtml"
-                xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
-
-        <h:form>
-            <p:growl/>
-            <p:fieldset legend="Upload" id="data_element">
-                <p:panelGrid columns="8" id="upload_panel_grid">
-                    <p:outputLabel for="report_form" value="Report Form:" />
-                    <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+        <f:view>
+            <h:form>
+                <p:growl/>
+                <p:panelGrid columns="8" id="header_panel_grid">
+                    <p:outputLabel for="report_form_id" value="Report Form:" />
+                    <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                         <f:selectItem itemLabel="" />
                         <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
                         <p:ajax process="@this" update="@form"/>
@@ -81,26 +80,58 @@
                         <f:selectItem itemLabel="Week4" itemValue="4" />
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Report Period Start date:" for="report_period_from_date" />
-                    <p:calendar id="report_period_from_date" value="#{uploadBean.report_period_from_date}" title="startdate" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">
-                        <p:ajax event="dateSelect" process="@this"/>
-                    </p:calendar>
-                    <p:outputLabel value="Report Period End Date:" for="report_period_to_date" />
-                    <p:calendar id="report_period_to_date" value="#{uploadBean.report_period_to_date}" title="report_period_to_date" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="End Date field is required">
-                        <p:ajax event="dateSelect" process="@this"/>
-                    </p:calendar>
-                    <p:outputLabel value="Upload"/>
-                    <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
-                                  auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="upload_panel_grid" />
-                    <p:commandButton value="LOAD DATA" rendered="#{uploadBean.interface_datas.size()>0}" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" oncomplete="PF('validationReport').show();"/>
+
+                    <p:outputLabel value="District:" for="district" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
+                    <p:selectOneMenu id="district" value="#{uploadBean.district}" style="width:125px" converter="districtConverter" required="true" requiredMessage="District Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{uploadBean.getdistricts()}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="county,sub_county,parish"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="County:" for="county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
+                    <p:selectOneMenu id="county" value="#{uploadBean.county}" style="width:125px" converter="countyConverter" required="true" requiredMessage="County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{uploadBean.getts_county(uploadBean.district)}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="sub_county,parish"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Sub County:" for="sub_county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
+                    <p:selectOneMenu id="sub_county" value="#{uploadBean.sub_county}" style="width:125px" converter="sub_countyConverter" required="true" requiredMessage="Sub County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{uploadBean.getts_sub_county(uploadBean.county)}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="parish,selectedParishes"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Parish:" for="parish" rendered="#{uploadBean.show_facility_level()}"/>
+                    <p:selectOneMenu id="parish" value="#{uploadBean.parish}" style="width:125px" converter="parishConverter" required="true" requiredMessage="Parish Field is needed" rendered="#{uploadBean.show_facility_level()}">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{uploadBean.getts_parish(uploadBean.sub_county)}" var="item" itemLabel="#{item.parish_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="selectedHealth_facilities"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="selectedDistricts" value="District:" rendered="#{uploadBean.show_district_level()}" />
+                    <p:selectCheckboxMenu id="selectedDistricts" value="#{uploadBean.selectedDistricts}" label="" panelStyle="width:150px" converter="districtConverter" rendered="#{uploadBean.show_district_level()}" required="true" requiredMessage="District is needed!">
+                        <f:selectItems value="#{uploadBean.getdistricts()}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
+                    </p:selectCheckboxMenu>
+                    <p:outputLabel for="selectedHealth_facilities" value="Health Facility:" rendered="#{uploadBean.show_facility_level()}" />
+                    <p:selectCheckboxMenu id="selectedHealth_facilities" value="#{uploadBean.selectedHealth_facilities}" label="" panelStyle="width:150px" converter="health_facilityConverter" rendered="#{uploadBean.show_facility_level()}" required="true" requiredMessage="Health facility is needed!">
+                        <f:selectItems value="#{uploadBean.getts_health_facility(uploadBean.parish)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.health_facility_name}" />
+                    </p:selectCheckboxMenu>
+                    <p:outputLabel for="selectedParishes" value="Parish:" rendered="#{uploadBean.show_parish_level()}" />
+                    <p:selectCheckboxMenu id="selectedParishes" value="#{uploadBean.selectedParishes}" label="" panelStyle="width:150px" converter="parishConverter" rendered="#{uploadBean.show_parish_level()}" required="true" requiredMessage="Parish is needed!">
+                        <f:selectItems value="#{uploadBean.getts_parish(uploadBean.sub_county)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.parish_name}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:commandButton value="Retrieve Data" action="#{uploadBean.refreshData_elements(uploadBean.report_form,uploadBean.report_form_group)}" update="@form"/>
                 </p:panelGrid>
+
+
                 <!-- 1. Create a DIV container to insert the component -->
                 <div id="pivotContainer"></div>
                 <h:outputScript name="./component/flexmonster/flexmonster.js"/>
                 <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
                 <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
                     <script type="text/javascript">
-                        var jsonData = #{uploadBean.getjSONArray()};
+                        var jsonData = #{uploadBean.getjSONArray_Delete()};
                         var report = {
                             classicView: true,
                             configuratorActive: false,
@@ -135,7 +166,7 @@
                 </c:if>
                 <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
                     <script type="text/javascript">
-                        var jsonData = #{uploadBean.getjSONArray()};
+                        var jsonData = #{uploadBean.getjSONArray_Delete()};
                         var report = {
                             classicView: true,
                             configuratorActive: false,
@@ -170,7 +201,7 @@
                 </c:if>
                 <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
                     <script type="text/javascript">
-                        var jsonData = #{uploadBean.getjSONArray()};
+                        var jsonData = #{uploadBean.getjSONArray_Delete()};
                         var report = {
                             classicView: true,
                             configuratorActive: false,
@@ -200,29 +231,9 @@
                         flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
                     </script>
                 </c:if>
-            </p:fieldset>
-        </h:form>
+            </h:form>
+        </f:view>
 
-        <ui:include src="dialog_validationreport.xhtml"/>
-        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
-            <f:facet name="default">
-                <h:outputText value="Status: StandBy" />
-            </f:facet>
-
-            <f:facet name="start">
-
-            </f:facet>
-
-            <f:facet name="complete">
-                <h:outputText value="Status: Completed" />
-            </f:facet>
-        </p:ajaxStatus>
-
-        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-
-        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-            <p:graphicImage name="/images/ajax-loader.gif" />
-        </p:dialog>
     </ui:define>
 
 </ui:composition>

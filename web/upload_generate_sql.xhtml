@@ -59,7 +59,7 @@
             </p:fieldset>
             <p:fieldset legend="Duplicate Temp Data Elements">
                 <h:panelGrid id="pnl_duplicate_check">
-                    <p:dataTable value="#{generalUtilities.temp_data_elements}" var="item" rendered="#{generalUtilities.temp_data_elements.size()>1}">
+                    <p:dataTable value="#{generalUtilities.temp_data_elements}" var="item" rendered="#{generalUtilities.temp_data_elements.size()>0}">
                         <p:column headerText="Report Form">
                             <p:outputLabel value="#{item.report_form_name}"/>
                         </p:column>

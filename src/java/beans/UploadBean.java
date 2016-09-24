@@ -50,6 +50,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.hibernate.HibernateException;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
 import org.primefaces.event.FileUploadEvent;
@@ -96,13 +97,158 @@ public class UploadBean implements Serializable {
     private Integer report_period_bi_month;
     private String insert_string;
     private String table_string;
-    private String database_type;
+    private String database_type = "MY SQL";
 
     private List<ValidationReport> validationReportList;
     private List<ValidationReport> validationReportSelected;
 
     String report_form_name;
     List<String> report_form_nameList;
+
+    private int passed;
+    private int failed;
+
+    private District[] selectedDistricts;
+    private Parish[] selectedParishes;
+    private Health_facility[] selectedHealth_facilities;
+
+    private List<Interface_data> interface_datas;
+    private List<Base_data> base_datas;
+
+    public List<Base_data> getBase_datas() {
+        return base_datas;
+    }
+
+    public void setBase_datas(List<Base_data> base_datas) {
+        this.base_datas = base_datas;
+    }
+
+    public District[] getSelectedDistricts() {
+        return selectedDistricts;
+    }
+
+    public void setSelectedDistricts(District[] selectedDistricts) {
+        this.selectedDistricts = selectedDistricts;
+    }
+
+    public Parish[] getSelectedParishes() {
+        return selectedParishes;
+    }
+
+    public void setSelectedParishes(Parish[] selectedParishes) {
+        this.selectedParishes = selectedParishes;
+    }
+
+    public Health_facility[] getSelectedHealth_facilities() {
+        return selectedHealth_facilities;
+    }
+
+    public void setSelectedHealth_facilities(Health_facility[] selectedHealth_facilities) {
+        this.selectedHealth_facilities = selectedHealth_facilities;
+    }
+
+    public List<District> getdistricts() {
+        List<District> districtList = new ArrayList<>();
+        try {
+            districtList = District.queryDistrict("is_deleted=0", "district_name");
+        } catch (PersistentException | NullPointerException ex) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
+        }
+        return districtList;
+    }
+
+    public List<Parish> getparishes() {
+        List<Parish> parishList = new ArrayList<>();
+        try {
+            parishList = Parish.queryParish("is_deleted=0 AND sub_county_id=" + sub_county.getSub_county_id(), "parish_name");
+        } catch (PersistentException | NullPointerException ex) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
+        }
+        return parishList;
+    }
+
+    public List<County> getts_county(District d) {
+        List<County> temp = new ArrayList<>();
+        try {
+            if (d != null) {
+                temp = (List<County>) EIHDMSPersistentManager.instance().getSession().createQuery("select c FROM County  c where c.is_deleted<>1 AND c.district=" + d.getDistrict_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<Sub_county> getts_sub_county(County c) {
+        List<Sub_county> temp = new ArrayList<>();
+        try {
+            if (c != null) {
+                temp = (List<Sub_county>) EIHDMSPersistentManager.instance().getSession().createQuery("select sc FROM Sub_county  sc where sc.is_deleted<>1 AND sc.county=" + c.getCounty_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<Parish> getts_parish(Sub_county sc) {
+        List<Parish> temp = new ArrayList<>();
+        try {
+            if (sub_county != null) {
+                temp = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select p FROM Parish  p where p.is_deleted<>1 AND p.sub_county=" + sc.getSub_county_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<Health_facility> getts_health_facility(Parish p) {
+        List<Health_facility> temp = new ArrayList<>();
+        try {
+            if (p != null) {
+                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select h FROM Health_facility  h where h.is_deleted<>1 AND h.parish=" + p.getParish_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<Health_facility> gethealth_facilities() {
+        List<Health_facility> health_facilityList = new ArrayList<>();
+        try {
+            health_facilityList = Health_facility.queryHealth_facility("is_deleted=0 AND parish_id=" + parish.getParish_id(), "health_facility_name");
+        } catch (PersistentException | NullPointerException ex) {
+        }
+        return health_facilityList;
+    }
+
+    public int getPassed() {
+        return passed;
+    }
+
+    public void setPassed(int passed) {
+        this.passed = passed;
+    }
+
+    public int getFailed() {
+        return failed;
+    }
+
+    public void setFailed(int failed) {
+        this.failed = failed;
+    }
 
     public String getReport_form_name() {
         return report_form_name;
@@ -125,6 +271,33 @@ public class UploadBean implements Serializable {
 
     public void setReport_form_nameList(List<String> report_form_nameList) {
         this.report_form_nameList = report_form_nameList;
+    }
+
+    public boolean show_facility_level() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getLowest_report_form_level().equals("Facility")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean show_parish_level() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getLowest_report_form_level().equals("Parish")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean show_district_level() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getLowest_report_form_level().equals("District")) {
+            return true;
+        }
+        return false;
     }
 
     public boolean showweekly() {
@@ -409,6 +582,124 @@ public class UploadBean implements Serializable {
         return jSONArray;
     }
 
+    public JSONArray getjSONArray_Delete() {
+        String ParishesStr = "";
+        String HealthFacilitiesStr = "";
+        String DistrictsStr = "";
+        if (report_form != null) {
+            if (report_form.getLowest_report_form_level().equals("Parish") && selectedParishes != null) {
+                //get 1016,2015,2013 string format for selected years
+                int x = 0;
+                x = this.selectedParishes.length;
+                for (int i = 0; i < x; i++) {
+                    if (ParishesStr.length() > 0) {
+                        ParishesStr = ParishesStr + "," + this.selectedParishes[i];
+                    } else {
+                        ParishesStr = "" + this.selectedParishes[i];
+                    }
+                }
+                try {
+                    base_datas = Base_data.queryBase_data("parish_id in(" + ParishesStr + ")", null);
+                } catch (PersistentException ex) {
+                    Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (report_form.getLowest_report_form_level().equals("District") && selectedDistricts != null) {
+                //get 1,2,3 string format for selected districts
+                int y = 0;
+                y = this.selectedDistricts.length;
+                for (int i = 0; i < y; i++) {
+                    if (DistrictsStr.length() > 0) {
+                        DistrictsStr = DistrictsStr + "," + this.selectedDistricts[i].getDistrict_id();
+                    } else {
+                        DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
+                    }
+                }
+                try {
+                    base_datas = Base_data.queryBase_data("district_id in(" + DistrictsStr + ")", null);
+                } catch (PersistentException ex) {
+                    Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (report_form.getLowest_report_form_level().equals("Facility") && selectedHealth_facilities != null) {
+                //get 1,2,3 string format for selected Health Facilities
+                int z = 0;
+                z = this.selectedHealth_facilities.length;
+                for (int i = 0; i < z; i++) {
+                    if (HealthFacilitiesStr.length() > 0) {
+                        HealthFacilitiesStr = HealthFacilitiesStr + "," + this.selectedHealth_facilities[i];
+                    } else {
+                        HealthFacilitiesStr = "" + this.selectedHealth_facilities[i];
+                    }
+                }
+                try {
+                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ")", null);
+                } catch (PersistentException ex) {
+                    Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        JSONArray jArray = new JSONArray();
+        if (report_form != null) {
+            JSONObject jObj = new JSONObject();
+            jObj.put("DataElement", new JSONObject().put("type", "string"));
+            if (report_form.getLowest_report_form_level().equals("Facility")) {
+                jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("County", new JSONObject().put("type", "string"));
+                jObj.put("Subcounty", new JSONObject().put("type", "string"));
+                jObj.put("Facility", new JSONObject().put("type", "string"));
+            }
+            if (report_form.getLowest_report_form_level().equals("Parish")) {
+                jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("County", new JSONObject().put("type", "string"));
+                jObj.put("Subcounty", new JSONObject().put("type", "string"));
+                jObj.put("Parish", new JSONObject().put("type", "string"));
+            }
+            if (report_form.getLowest_report_form_level().equals("District")) {
+                jObj.put("District", new JSONObject().put("type", "string"));
+            }
+            jObj.put("DataElementValue", new JSONObject().put("type", "number"));
+            jArray.put(jObj);
+
+            if (base_datas == null) {
+                base_datas = new ArrayList<>();
+            }
+            for (Base_data base_data : base_datas) {
+                if (base_data.getData_element().getData_type().equals("integer") || base_data.getData_element().getData_type().equals("float")) {
+                    jObj = new JSONObject();
+                    jObj.put("DataElement", String.format("%1$03d", base_data.getData_element().getGroup_column_number()) + base_data.getData_element().getData_element_name());
+                    if (report_form.getLowest_report_form_level().equals("Facility")) {
+                        jObj.put("District", base_data.getDistrict().getDistrict_name());
+                        jObj.put("County", base_data.getCounty().getCounty_name());
+                        jObj.put("Subcounty", base_data.getSub_county().getSub_county_name());
+                        jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
+                    }
+                    if (report_form.getLowest_report_form_level().equals("Parish")) {
+                        jObj.put("District", base_data.getDistrict().getDistrict_name());
+                        jObj.put("County", base_data.getCounty().getCounty_name());
+                        jObj.put("Subcounty", base_data.getSub_county().getSub_county_name());
+                        jObj.put("Parish", base_data.getParish().getParish_name());
+                    }
+                    if (report_form.getLowest_report_form_level().equals("District")) {
+                        jObj.put("District", base_data.getDistrict().getDistrict_name());
+                    }
+                    if (base_data.getData_element_value() == null) {
+                        jObj.put("DataElementValue", 0);
+                    } else {
+                        try {
+                            jObj.put("DataElementValue", Float.parseFloat(base_data.getData_element_value()));
+                        } catch (NumberFormatException nfe) {
+                            jObj.put("DataElementValue", 0);
+                        }
+                    }
+                    jArray.put(jObj);
+                }
+            }
+            jSONArray = jArray;
+        }
+        return jSONArray;
+    }
+
     public void setjSONArray(JSONArray jSONArray) {
         this.jSONArray = jSONArray;
     }
@@ -466,8 +757,6 @@ public class UploadBean implements Serializable {
     public void setRowdatas(List<String> rowdatas) {
         this.rowdatas = rowdatas;
     }
-
-    private List<Interface_data> interface_datas;
 
     public List<Interface_data> getInterface_datas() {
         return interface_datas;
@@ -672,6 +961,8 @@ public class UploadBean implements Serializable {
             List<ValidationReport> tempValidationReports = new ArrayList<>();
             List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc FROM interface_data where batch_id=" + batch_id).list();
             int counter = 1;
+            failed = 0;
+            passed = 0;
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
                 if (objects[4] != null) {
@@ -695,6 +986,11 @@ public class UploadBean implements Serializable {
                 try {
                     vr.setStatus(objects[5].toString());
                     vr.setValidationDescription(objects[6].toString());
+                    if (objects[5].toString().equals("Fail")) {
+                        failed++;
+                    } else {
+                        passed++;
+                    }
                 } catch (NullPointerException ex) {
                     vr.setValidationDescription("");
                 }
@@ -1170,32 +1466,32 @@ public class UploadBean implements Serializable {
                 interface_data.setIs_deleted(0);
                 interface_data.setIs_active(1);
                 interface_data.setReport_form(report_form);
-                if(report_form.getLowest_report_form_level().equals("Facility")){
-                    this.parish=this.getHealth_facility().getParish();
+                if (report_form.getLowest_report_form_level().equals("Facility")) {
+                    this.parish = this.getHealth_facility().getParish();
                     interface_data.setParish_id(this.parish.getParish_id());
                     interface_data.setParish_name(this.parish.getParish_name());
-                    this.sub_county=this.parish.getSub_county();
+                    this.sub_county = this.parish.getSub_county();
                     interface_data.setSub_county_id(this.sub_county.getSub_county_id());
                     interface_data.setSub_county_name(this.sub_county.getSub_county_name());
-                    this.county=this.sub_county.getCounty();
+                    this.county = this.sub_county.getCounty();
                     interface_data.setCounty_id(this.county.getCounty_id());
                     interface_data.setCounty_name(this.county.getCounty_name());
-                    this.district=this.county.getDistrict();
+                    this.district = this.county.getDistrict();
                     interface_data.setDistrict_id(this.district.getDistrict_id());
                     interface_data.setDistrict_name(this.district.getDistrict_name());
                 }
-                if(report_form.getLowest_report_form_level().equals("Parish")){
-                    this.sub_county=this.parish.getSub_county();
+                if (report_form.getLowest_report_form_level().equals("Parish")) {
+                    this.sub_county = this.parish.getSub_county();
                     interface_data.setSub_county_id(this.sub_county.getSub_county_id());
                     interface_data.setSub_county_name(this.sub_county.getSub_county_name());
-                    this.county=this.sub_county.getCounty();
+                    this.county = this.sub_county.getCounty();
                     interface_data.setCounty_id(this.county.getCounty_id());
                     interface_data.setCounty_name(this.county.getCounty_name());
-                    this.district=this.county.getDistrict();
+                    this.district = this.county.getDistrict();
                     interface_data.setDistrict_id(this.district.getDistrict_id());
                     interface_data.setDistrict_name(this.district.getDistrict_name());
                 }
-                if(report_form.getLowest_report_form_level().equals("District")){
+                if (report_form.getLowest_report_form_level().equals("District")) {
                     interface_data.setDistrict_id(this.district.getDistrict_id());
                     interface_data.setDistrict_name(this.district.getDistrict_name());
                 }
