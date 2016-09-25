@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-25 20:04:22
+Date: 2016-09-25 23:29:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -48,8 +48,12 @@ DROP PROCEDURE IF EXISTS `sp_delete_base_data`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_base_data`(IN in_base_data_id_in LONGTEXT,IN in_deleted_by int)
 BEGIN
+SET SESSION group_concat_max_len = 18446744073709551615;
+SET @sql = NULL;
+
 IF LENGTH(in_base_data_id_in)>0 THEN
-INSERT INTO base_data_deleted (base_data_id,
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
 data_element_id,
 data_element_value,
 health_facility_id,
@@ -100,14 +104,19 @@ add_by,
 last_edit_date,
 last_edit_by,
 batch_id,
-report_form_id,
-in_deleted_by,
+report_form_id,',
+in_deleted_by,',
 NOW()
 FROM
-base_data  where base_data_id in (in_base_data_id_in);
+base_data  where base_data_id in (',in_base_data_id_in,')');
 
- 
-DELETE FROM base_data where base_data_id in (in_base_data_id_in);
+prepare stmt from @sql;
+execute stmt;
+
+SET @sql= CONCAT('DELETE FROM base_data where base_data_id in (',in_base_data_id_in,')');
+
+prepare stmt from @sql;
+execute stmt;
 
 END IF;
 END
@@ -866,7 +875,7 @@ ELSEIF in_reporting_level='Parish' THEN
 SELECT district_id FROM district where district_name=in_district_name into district_id_v;
 SELECT county_id FROM county c where c.district_id=district_id_v and c.county_name=in_county_name  into county_id_v;
 SELECT sub_county_id FROM sub_county sc where sc.county_id=county_id_v and sc.sub_county_name=in_sub_county_name into sub_county_id_v;
-SELECT parish_id FROM parish where sub_county_id=sub_county_id_v AND district_id=district_id_v AND parish_name=in_parish_name into parish_id_v;
+SELECT parish_id FROM parish where sub_county_id=sub_county_id_v AND parish_name=in_parish_name into parish_id_v;
 
 IF parish_id_v!=0 THEN
 UPDATE interface_data set district_id=district_id_v,county_id=county_id_v, sub_county_id=sub_county_id_v,parish_id=parish_id_v WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
@@ -890,17 +899,17 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_validate_batch`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_batch`(IN batch_id int,IN reporting_level_name varchar(500), IN in_validation_formula varchar(200),IN in_reporting_name varchar(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_batch`(IN in_batch_id int,IN reporting_level_name varchar(500), IN in_validation_formula varchar(200),IN in_reporting_name varchar(200))
 BEGIN
-	SET SESSION group_concat_max_len = 1000000;
+	SET SESSION group_concat_max_len = 18446744073709551615;
 SET @sql = NULL;
 SELECT
   GROUP_CONCAT(DISTINCT
     CONCAT('max(case when data_element_id = ',data_element_id,' then data_element_value end) AS ','DE',data_element_id,' ')
   ) INTO @sql
-FROM  vw_interface_data where data_element_id;
+FROM  vw_interface_data where batch_id=in_batch_id;
 
-SET @sql = CONCAT('SELECT batch_id,',reporting_level_name,' AS ReportingName, ', @sql, ' FROM vw_interface_data GROUP BY batch_id,',reporting_level_name,' having (',in_validation_formula,') AND ReportingName =''',in_reporting_name,''' AND batch_id=',batch_id);
+SET @sql = CONCAT('SELECT batch_id,',reporting_level_name,' AS ReportingName, ', @sql, ' FROM vw_interface_data GROUP BY batch_id,',reporting_level_name,' having (',in_validation_formula,') AND ReportingName =''',in_reporting_name,''' AND batch_id=',in_batch_id);
 
 prepare stmt from @sql;
 execute stmt;
@@ -1274,6 +1283,7 @@ END
 DELIMITER ;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
+
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------

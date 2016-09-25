@@ -634,7 +634,7 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
+                    base_datas = Base_data.queryBase_data("parish_id in(" + ParishesStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -651,7 +651,7 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
+                    base_datas = Base_data.queryBase_data("district_id in(" + DistrictsStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
