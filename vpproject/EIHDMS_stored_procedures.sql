@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-21 09:46:09
+Date: 2016-09-25 07:52:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,6 +26,34 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER  VIEW
 -- ----------------------------
 DROP VIEW IF EXISTS `vw_interface_data`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER  VIEW `vw_interface_data` AS select `interface_data`.`interface_data_id` AS `interface_data_id`,`interface_data`.`data_element_id` AS `data_element_id`,`interface_data`.`data_element_value` AS `data_element_value`,`interface_data`.`health_facility_name` AS `health_facility_name`,`interface_data`.`parish_name` AS `parish_name`,`interface_data`.`district_name` AS `district_name`,`interface_data`.`report_period_from_date` AS `report_period_from_date`,`interface_data`.`report_period_to_date` AS `report_period_to_date`,`interface_data`.`is_deleted` AS `is_deleted`,`interface_data`.`is_active` AS `is_active`,`interface_data`.`add_date` AS `add_date`,`interface_data`.`add_by` AS `add_by`,`interface_data`.`last_edit_date` AS `last_edit_date`,`interface_data`.`last_edit_by` AS `last_edit_by`,`interface_data`.`financial_year_id` AS `financial_year_id`,`interface_data`.`report_period_quarter` AS `report_period_quarter`,`data_element`.`data_element_name` AS `data_element_name`,`report_form`.`report_form_id` AS `report_form_id`,`report_form_group`.`report_form_group_id` AS `report_form_group_id`,`interface_data`.`sub_county_name` AS `sub_county_name`,`interface_data`.`batch_id` AS `batch_id`,`interface_data`.`county_name` AS `county_name` from (((`interface_data` join `data_element` on((`interface_data`.`data_element_id` = `data_element`.`data_element_id`))) join `report_form` on((`report_form`.`report_form_id` = `data_element`.`report_form_id`))) join `report_form_group` on(((`report_form_group`.`report_form_id` = `report_form`.`report_form_id`) and (`report_form_group`.`report_form_group_id` = `data_element`.`report_form_group_id`)))); ;
+
+-- ----------------------------
+-- Procedure structure for sp_check_duplicate_temp_data_elements
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_check_duplicate_temp_data_elements`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_duplicate_temp_data_elements`(
+	IN in_report_form_name varchar(250)
+)
+BEGIN 
+	SELECT report_form_name,data_element_name FROM temp_data_element WHERE report_form_name=in_report_form_name GROUP BY data_element_name HAVING count(data_element_name)>1;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_delete_base_data
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_delete_base_data`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_base_data`(IN in_base_data_id_in LONGTEXT)
+BEGIN
+IF LENGTH(in_base_data_id_in)>0 THEN
+	UPDATE base_data set is_deleted=1 where base_data_id in (in_base_data_id_in);
+END IF;
+END
+;;
+DELIMITER ;
 
 -- ----------------------------
 -- Procedure structure for sp_execute_insert_string
@@ -1052,10 +1080,10 @@ SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN dis
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_week=in_week AND b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_week=in_week AND b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy AND is_deleted=0;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month,',Week:', in_week) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(CASE WHEN status_v_desc IS NULL THEN '' ELSE status_v_desc END,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month,',Week:', in_week) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
@@ -1068,10 +1096,10 @@ SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN dis
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_month=in_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy AND is_deleted=0;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(CASE WHEN status_v_desc IS NULL THEN '' ELSE status_v_desc END,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Month:',in_month) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
@@ -1084,10 +1112,10 @@ SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN dis
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_bi_month=in_bi_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_bi_month=in_bi_month AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy AND is_deleted=0;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter ,',Month:',in_month) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(CASE WHEN status_v_desc IS NULL THEN '' ELSE status_v_desc END,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Bi-Month:',in_bi_month) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
@@ -1100,10 +1128,10 @@ SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN dis
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_quarter=in_quarter AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_quarter=in_quarter AND b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy AND is_deleted=0;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(CASE WHEN status_v_desc IS NULL THEN '' ELSE status_v_desc END,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year,',Quarter:', in_quarter) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
@@ -1116,10 +1144,10 @@ SELECT b.data_element_id,b.data_element_value FROM base_data AS b INNER JOIN dis
                 LEFT JOIN health_facility AS f ON b.health_facility_id = f.health_facility_id
                 INNER JOIN data_element ON b.data_element_id = data_element.data_element_id 
                 INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id
-WHERE b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy;
+WHERE b.report_period_year=in_calendar_year AND CONCAT(d.district_name,CASE WHEN c.county_name IS NULL THEN '' ELSE c.county_name END,CASE WHEN s.sub_county_name IS NULL THEN '' ELSE s.sub_county_name END,CASE WHEN p.parish_name IS NULL THEN '' ELSE p.parish_name END ,CASE WHEN f.health_facility_name IS NULL THEN '' ELSE f.health_facility_name END)=in_reporting_hierarchy AND is_deleted=0;
 
 IF FOUND_ROWS()>0 THEN
-UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(status_v_desc,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
+UPDATE interface_data set status_v='Fail', status_v_desc=CONCAT(CASE WHEN status_v_desc IS NULL THEN '' ELSE status_v_desc END,'\n','=>Data for the same period has already been uploaded Location:', in_reporting_hierarchy ,'Year:',in_calendar_year) WHERE CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)=in_reporting_hierarchy AND batch_id= in_batch_id;
 END IF;
 
 END IF;
@@ -1187,7 +1215,6 @@ END
 DELIMITER ;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
-
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------
@@ -1201,19 +1228,3 @@ RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        delim, '') ;
 ;;
 DELIMITER ;
-
--- ----------------------------
--- Procedure structure for sp_check_duplicate_temp_data_elements
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_check_duplicate_temp_data_elements`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_duplicate_temp_data_elements`(
-	IN in_report_form_name varchar(250)
-)
-BEGIN 
-	SELECT report_form_name,data_element_name FROM temp_data_element WHERE report_form_name=in_report_form_name GROUP BY data_element_name HAVING count(data_element_name)>1;
-END
-;;
-DELIMITER ;
-
-

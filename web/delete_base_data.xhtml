@@ -85,27 +85,21 @@
                     <p:selectOneMenu id="district" value="#{uploadBean.district}" style="width:125px" converter="districtConverter" required="true" requiredMessage="District Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
                         <f:selectItem itemLabel="" />
                         <f:selectItems value="#{uploadBean.getdistricts()}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this" update="county,sub_county,parish"/>
+                        <p:ajax process="@this" update="county,sub_county,selectedParishes,selectedHealth_facilities"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel value="County:" for="county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
                     <p:selectOneMenu id="county" value="#{uploadBean.county}" style="width:125px" converter="countyConverter" required="true" requiredMessage="County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
                         <f:selectItem itemLabel="" />
                         <f:selectItems value="#{uploadBean.getts_county(uploadBean.district)}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this" update="sub_county,parish"/>
+                        <p:ajax process="@this" update="sub_county,selectedParishes,selectedHealth_facilities"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel value="Sub County:" for="sub_county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
                     <p:selectOneMenu id="sub_county" value="#{uploadBean.sub_county}" style="width:125px" converter="sub_countyConverter" required="true" requiredMessage="Sub County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
                         <f:selectItem itemLabel="" />
                         <f:selectItems value="#{uploadBean.getts_sub_county(uploadBean.county)}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this" update="parish,selectedParishes"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Parish:" for="parish" rendered="#{uploadBean.show_facility_level()}"/>
-                    <p:selectOneMenu id="parish" value="#{uploadBean.parish}" style="width:125px" converter="parishConverter" required="true" requiredMessage="Parish Field is needed" rendered="#{uploadBean.show_facility_level()}">
-                        <f:selectItem itemLabel="" />
-                        <f:selectItems value="#{uploadBean.getts_parish(uploadBean.sub_county)}" var="item" itemLabel="#{item.parish_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this" update="selectedHealth_facilities"/>
+                        <p:ajax process="@this" update="selectedParishes,selectedHealth_facilities"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel for="selectedDistricts" value="District:" rendered="#{uploadBean.show_district_level()}" />
@@ -114,14 +108,15 @@
                     </p:selectCheckboxMenu>
                     <p:outputLabel for="selectedHealth_facilities" value="Health Facility:" rendered="#{uploadBean.show_facility_level()}" />
                     <p:selectCheckboxMenu id="selectedHealth_facilities" value="#{uploadBean.selectedHealth_facilities}" label="" panelStyle="width:150px" converter="health_facilityConverter" rendered="#{uploadBean.show_facility_level()}" required="true" requiredMessage="Health facility is needed!">
-                        <f:selectItems value="#{uploadBean.getts_health_facility(uploadBean.parish)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.health_facility_name}" />
+                        <f:selectItems value="#{uploadBean.getts_health_facility(uploadBean.sub_county)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.health_facility_name}" />
                     </p:selectCheckboxMenu>
                     <p:outputLabel for="selectedParishes" value="Parish:" rendered="#{uploadBean.show_parish_level()}" />
                     <p:selectCheckboxMenu id="selectedParishes" value="#{uploadBean.selectedParishes}" label="" panelStyle="width:150px" converter="parishConverter" rendered="#{uploadBean.show_parish_level()}" required="true" requiredMessage="Parish is needed!">
                         <f:selectItems value="#{uploadBean.getts_parish(uploadBean.sub_county)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.parish_name}" />
                     </p:selectCheckboxMenu>
 
-                    <p:commandButton value="Retrieve Data" action="#{uploadBean.refreshData_elements(uploadBean.report_form,uploadBean.report_form_group)}" update="@form"/>
+                    <p:commandButton value="Retrieve Data" update="@form,cmdDeleteData"/>
+                    <p:commandButton value="Delete Data" id="cmdDeleteData" action="#{uploadBean.delete_base_data()}" update="@form"/>
                 </p:panelGrid>
 
 

@@ -209,6 +209,7 @@ public class Data_element_AnalysisBean {
     }
 
     private void load_jSON() {
+        jSONArray = new JSONArray();
         JSONArray jArray = new JSONArray();
         JSONObject jObj = new JSONObject();
         jObj.put("AgeCategory", new JSONObject().put("type", "string"));

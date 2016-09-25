@@ -56,6 +56,7 @@
                                     <p:menuitem value="Download Template" action="downloadtemplate?faces-redirect=true" icon="ui-icon-arrowthick-1-s"/>
                                     <p:menuitem value="Generate SQL Script" action="upload_generate_sql?faces-redirect=true" icon="ui-icon-wrench" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/>
                                     <p:menuitem value="Refresh Obligations" action="refresh_data_obligation?faces-redirect=true" icon="ui-icon-refresh" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/>
+                                    <p:menuitem value="Delete Base Data" action="delete_base_data?faces-redirect=true" icon="ui-icon-trash" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/>
                                 </p:submenu>
 
                                 <p:submenu label="Reports" icon="ui-icon-copy">

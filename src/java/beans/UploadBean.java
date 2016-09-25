@@ -115,6 +115,16 @@ public class UploadBean implements Serializable {
     private List<Interface_data> interface_datas;
     private List<Base_data> base_datas;
 
+    String BaseDataStr = "";
+
+    public String getBaseDataStr() {
+        return BaseDataStr;
+    }
+
+    public void setBaseDataStr(String BaseDataStr) {
+        this.BaseDataStr = BaseDataStr;
+    }
+
     public List<Base_data> getBase_datas() {
         return base_datas;
     }
@@ -211,11 +221,11 @@ public class UploadBean implements Serializable {
         return temp;
     }
 
-    public List<Health_facility> getts_health_facility(Parish p) {
+    public List<Health_facility> getts_health_facility(Sub_county sc) {
         List<Health_facility> temp = new ArrayList<>();
         try {
-            if (p != null) {
-                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select h FROM Health_facility  h where h.is_deleted<>1 AND h.parish=" + p.getParish_id()).list();
+            if (sc != null) {
+                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select h FROM Health_facility  h where h.is_deleted<>1 AND h.sub_county=" + sc.getSub_county_id()).list();
             } else {
                 temp = new ArrayList<>();
             }
@@ -521,6 +531,7 @@ public class UploadBean implements Serializable {
     }
 
     public JSONArray getjSONArray() {
+        jSONArray = new JSONArray();
         JSONArray jArray = new JSONArray();
         if (report_form != null) {
             JSONObject jObj = new JSONObject();
@@ -586,7 +597,29 @@ public class UploadBean implements Serializable {
         String ParishesStr = "";
         String HealthFacilitiesStr = "";
         String DistrictsStr = "";
+        BaseDataStr = "";
         if (report_form != null) {
+            String period_condition = "";
+            switch (report_form.getReport_form_frequency()) {
+                case "Weekly":
+                    period_condition = "report_period_week=" + report_period_week + " AND report_period_month=" + report_period_month + " AND report_period_year=" + report_period_year;
+                    break;
+                case "Monthly":
+                    period_condition = "report_period_month=" + report_period_month + " AND report_period_year=" + report_period_year;
+                    break;
+                case "Bi-Monthly":
+                    period_condition = "report_period_bi_month=" + report_period_bi_month + " AND report_period_year=" + report_period_year;
+                    break;
+                case "Quarterly":
+                    period_condition = "report_period_quarter=" + report_period_quarter + " AND report_period_year=" + report_period_year;
+                    break;
+                case "Annually":
+                    period_condition = "report_period_year=" + report_period_year;
+                    break;
+                default:
+                    break;
+            }
+
             if (report_form.getLowest_report_form_level().equals("Parish") && selectedParishes != null) {
                 //get 1016,2015,2013 string format for selected years
                 int x = 0;
@@ -599,7 +632,7 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("parish_id in(" + ParishesStr + ")", null);
+                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -616,7 +649,7 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("district_id in(" + DistrictsStr + ")", null);
+                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -633,13 +666,14 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ")", null);
+                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         JSONArray jArray = new JSONArray();
+        jSONArray = new JSONArray();
         if (report_form != null) {
             JSONObject jObj = new JSONObject();
             jObj.put("DataElement", new JSONObject().put("type", "string"));
@@ -693,6 +727,11 @@ public class UploadBean implements Serializable {
                         }
                     }
                     jArray.put(jObj);
+                }
+                if (BaseDataStr.length() > 0) {
+                    BaseDataStr = BaseDataStr + "," + base_data.getBase_data_id();
+                } else {
+                    BaseDataStr = "" + base_data.getBase_data_id();
                 }
             }
             jSONArray = jArray;
@@ -891,6 +930,28 @@ public class UploadBean implements Serializable {
             rs = ps.executeQuery();
         } catch (SQLException se) {
             System.err.println(se.getMessage());
+        }
+    }
+
+    public void delete_base_data() {
+        if (BaseDataStr.length() == 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("No Data Selected!", "No Data Selected!"));
+            return;
+        }
+        String sql = "{call sp_delete_base_data(?)}";
+        ResultSet rs = null;
+        try {
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, BaseDataStr);
+            rs = ps.executeQuery();
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Deleted successfully", "Deleted successfully"));
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
         }
     }
 
