@@ -75,6 +75,8 @@ public class GeneralUtilities implements Serializable {
         try {
             EIHDMSPersistentManager.instance().getSession().flush();
             EIHDMSPersistentManager.instance().getSession().clear();
+            EIHDMSPersistentManager.instance().getSession().getSessionFactory().getCache().evictDefaultQueryRegion();
+            EIHDMSPersistentManager.instance().getSession().getSessionFactory().getCache().evictQueryRegions();
         } catch (PersistentException ex) {
             Logger.getLogger(GeneralUtilities.class.getName()).log(Level.SEVERE, null, ex);
         }

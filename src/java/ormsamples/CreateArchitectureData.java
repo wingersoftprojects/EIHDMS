@@ -105,6 +105,9 @@ public class CreateArchitectureData {
 			eihdms.Data_obligation leihdmsData_obligation = eihdms.Data_obligation.createData_obligation();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : report_form
 			leihdmsData_obligation.save();
+			eihdms.Base_data_deleted leihdmsBase_data_deleted = eihdms.Base_data_deleted.createBase_data_deleted();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : delete_date, deleted_by, is_active, is_deleted, report_period_to_date, report_period_from_date, data_element_value, data_element_id
+			leihdmsBase_data_deleted.save();
 			t.commit();
 		}
 		catch (Exception e) {

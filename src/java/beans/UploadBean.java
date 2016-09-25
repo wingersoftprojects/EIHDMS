@@ -56,6 +56,7 @@ import org.orm.PersistentTransaction;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
+import utilities.GeneralUtilities;
 
 /**
  *
@@ -598,6 +599,7 @@ public class UploadBean implements Serializable {
         String HealthFacilitiesStr = "";
         String DistrictsStr = "";
         BaseDataStr = "";
+        GeneralUtilities.flushandclearsession();
         if (report_form != null) {
             String period_condition = "";
             switch (report_form.getReport_form_frequency()) {
@@ -939,12 +941,13 @@ public class UploadBean implements Serializable {
             context.addMessage(null, new FacesMessage("No Data Selected!", "No Data Selected!"));
             return;
         }
-        String sql = "{call sp_delete_base_data(?)}";
+        String sql = "{call sp_delete_base_data(?,?)}";
         ResultSet rs = null;
         try {
             Connection conn = DBConnection.getMySQLConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, BaseDataStr);
+            ps.setInt(2, loginBean.getUser_detail().getUser_detail_id());
             rs = ps.executeQuery();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Deleted successfully", "Deleted successfully"));

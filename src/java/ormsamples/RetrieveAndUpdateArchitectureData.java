@@ -105,6 +105,9 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Data_obligation leihdmsData_obligation = eihdms.Data_obligation.loadData_obligationByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsData_obligation.save();
+			eihdms.Base_data_deleted leihdmsBase_data_deleted = eihdms.Base_data_deleted.loadBase_data_deletedByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsBase_data_deleted.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -305,6 +308,12 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsData_obligationCriteria.data_obligation_id.eq();
 		System.out.println(leihdmsData_obligationCriteria.uniqueData_obligation());
+		
+		System.out.println("Retrieving Base_data_deleted by Base_data_deletedCriteria");
+		eihdms.Base_data_deletedCriteria leihdmsBase_data_deletedCriteria = new eihdms.Base_data_deletedCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsBase_data_deletedCriteria.base_data_deleted_id.eq();
+		System.out.println(leihdmsBase_data_deletedCriteria.uniqueBase_data_deleted());
 		
 	}
 	

@@ -265,6 +265,14 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Base_data_deleted...");
+		eihdms.Base_data_deleted[] eihdmsBase_data_deleteds = eihdms.Base_data_deleted.listBase_data_deletedByQuery(null, null);
+		length = Math.min(eihdmsBase_data_deleteds.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsBase_data_deleteds[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -651,6 +659,18 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsData_obligations[i]);
 		}
 		System.out.println(length + " Data_obligation record(s) retrieved."); 
+		
+		System.out.println("Listing Base_data_deleted by Criteria...");
+		eihdms.Base_data_deletedCriteria leihdmsBase_data_deletedCriteria = new eihdms.Base_data_deletedCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsBase_data_deletedCriteria.base_data_deleted_id.eq();
+		leihdmsBase_data_deletedCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Base_data_deleted[] eihdmsBase_data_deleteds = leihdmsBase_data_deletedCriteria.listBase_data_deleted();
+		length =eihdmsBase_data_deleteds== null ? 0 : Math.min(eihdmsBase_data_deleteds.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsBase_data_deleteds[i]);
+		}
+		System.out.println(length + " Base_data_deleted record(s) retrieved."); 
 		
 	}
 	

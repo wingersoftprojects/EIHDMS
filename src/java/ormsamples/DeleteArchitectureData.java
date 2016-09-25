@@ -73,6 +73,8 @@ public class DeleteArchitectureData {
 			leihdmsKpi.delete();
 			eihdms.Data_obligation leihdmsData_obligation = eihdms.Data_obligation.loadData_obligationByQuery(null, null);
 			leihdmsData_obligation.delete();
+			eihdms.Base_data_deleted leihdmsBase_data_deleted = eihdms.Base_data_deleted.loadBase_data_deletedByQuery(null, null);
+			leihdmsBase_data_deleted.delete();
 			t.commit();
 		}
 		catch (Exception e) {
