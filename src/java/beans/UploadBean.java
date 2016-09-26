@@ -594,6 +594,100 @@ public class UploadBean implements Serializable {
         return jSONArray;
     }
 
+    public JSONArray getjSONArray_Dynamic_Pivot(District[] selectedDistricts, Integer[] selectedYears) {
+        String YearsStr = "";
+        String DistrictsStr = "";
+//get 1016,2015,2013 string format for selected years
+        int x = 0;
+        x = selectedYears.length;
+        for (int i = 0; i < x; i++) {
+            if (YearsStr.length() > 0) {
+                YearsStr = YearsStr + "," + selectedYears[i];
+            } else {
+                YearsStr = "" + selectedYears[i];
+            }
+        }
+
+        //get 1,2,3 string format for selected districts
+        int y = 0;
+        y = selectedDistricts.length;
+        for (int i = 0; i < y; i++) {
+            if (DistrictsStr.length() > 0) {
+                DistrictsStr = DistrictsStr + "," + selectedDistricts[i].getDistrict_id();
+            } else {
+                DistrictsStr = "" + selectedDistricts[i].getDistrict_id();
+            }
+        }
+        GeneralUtilities.flushandclearsession();
+        if (report_form != null) {
+            try {
+                base_datas = Base_data.queryBase_data("district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ")", null);
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        JSONArray jArray = new JSONArray();
+        jSONArray = new JSONArray();
+        if (report_form != null) {
+            JSONObject jObj = new JSONObject();
+            jObj.put("DataElement", new JSONObject().put("type", "string"));
+            if (report_form.getLowest_report_form_level().equals("Facility")) {
+                jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("County", new JSONObject().put("type", "string"));
+                jObj.put("Subcounty", new JSONObject().put("type", "string"));
+                jObj.put("Facility", new JSONObject().put("type", "string"));
+            }
+            if (report_form.getLowest_report_form_level().equals("Parish")) {
+                jObj.put("District", new JSONObject().put("type", "string"));
+                jObj.put("County", new JSONObject().put("type", "string"));
+                jObj.put("Subcounty", new JSONObject().put("type", "string"));
+                jObj.put("Parish", new JSONObject().put("type", "string"));
+            }
+            if (report_form.getLowest_report_form_level().equals("District")) {
+                jObj.put("District", new JSONObject().put("type", "string"));
+            }
+            jObj.put("DataElementValue", new JSONObject().put("type", "number"));
+            jArray.put(jObj);
+
+            if (base_datas == null) {
+                base_datas = new ArrayList<>();
+            }
+            for (Base_data base_data : base_datas) {
+                if (base_data.getData_element().getData_type().equals("integer") || base_data.getData_element().getData_type().equals("float")) {
+                    jObj = new JSONObject();
+                    jObj.put("DataElement", String.format("%1$03d", base_data.getData_element().getGroup_column_number()) + base_data.getData_element().getData_element_name());
+                    if (report_form.getLowest_report_form_level().equals("Facility")) {
+                        jObj.put("District", base_data.getDistrict().getDistrict_name());
+                        jObj.put("County", base_data.getCounty().getCounty_name());
+                        jObj.put("Subcounty", base_data.getSub_county().getSub_county_name());
+                        jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
+                    }
+                    if (report_form.getLowest_report_form_level().equals("Parish")) {
+                        jObj.put("District", base_data.getDistrict().getDistrict_name());
+                        jObj.put("County", base_data.getCounty().getCounty_name());
+                        jObj.put("Subcounty", base_data.getSub_county().getSub_county_name());
+                        jObj.put("Parish", base_data.getParish().getParish_name());
+                    }
+                    if (report_form.getLowest_report_form_level().equals("District")) {
+                        jObj.put("District", base_data.getDistrict().getDistrict_name());
+                    }
+                    if (base_data.getData_element_value() == null) {
+                        jObj.put("DataElementValue", 0);
+                    } else {
+                        try {
+                            jObj.put("DataElementValue", Float.parseFloat(base_data.getData_element_value()));
+                        } catch (NumberFormatException nfe) {
+                            jObj.put("DataElementValue", 0);
+                        }
+                    }
+                    jArray.put(jObj);
+                }
+            }
+            jSONArray = jArray;
+        }
+        return jSONArray;
+    }
+
     public JSONArray getjSONArray_Delete() {
         String ParishesStr = "";
         String HealthFacilitiesStr = "";

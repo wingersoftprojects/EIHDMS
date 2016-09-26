@@ -20,12 +20,6 @@
                             <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_view')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
                             <p:ajax process="@this" update="@form"/>
                         </p:selectOneMenu>
-                        <p:outputLabel for="report_form_group" value="Report Form Group:" />
-                        <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
                         <p:outputLabel for="years" value="Calender Year:" />
                         <p:selectCheckboxMenu id="years" value="#{kpiBean.selectedYears}" label="" required="true" requiredMessage="Calener Year(s) required">
                             <f:selectItems value="#{kpiBean.years}" />
@@ -45,18 +39,17 @@
                     <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
                     <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Delete()};
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears)};
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,
                                 configuratorButton: true,
+                                showTotals: false,
+                                showGrandTotals:false,
                                 dataSourceType: "json",
                                 data: jsonData,
                                 rows: [
-                                    {uniqueName: "District"},
-                                    {uniqueName: "County"},
-                                    {uniqueName: "Subcounty"},
-                                    {uniqueName: "Facility"}
+                                    {uniqueName: "District"}
                                 ],
                                 columns: [
                                     {uniqueName: "DataElement", sortName: "asc"}
@@ -80,11 +73,13 @@
                     </c:if>
                     <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Delete()};
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears)};
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,
                                 configuratorButton: true,
+                                showTotals: false,
+                                showGrandTotals:false,
                                 dataSourceType: "json",
                                 data: jsonData,
                                 rows: [
@@ -115,11 +110,13 @@
                     </c:if>
                     <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Delete()};
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears)};
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,
                                 configuratorButton: true,
+                                showTotals: false,
+                                showGrandTotals:false,
                                 dataSourceType: "json",
                                 data: jsonData,
                                 rows: [
