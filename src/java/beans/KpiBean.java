@@ -120,16 +120,6 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
             }
         }
-
-        //Print selected ones
-//        System.out.println("KPI:" + this.selectedKPI.getKpi_id());
-//        System.out.println("Years:" + YearsStr);
-//        System.out.println("Districts:" + DistrictsStr);
-//        try {
-//            base_dataList = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("CALL sp_select_kpi(:kpi,:username,:report_form_id,:years,:districts)").setParameter("kpi", this.getSelectedKPI().getKpi_id()).setParameter("years", YearsStr).setParameter("districts", DistrictsStr).setParameter("username", loginBean.getUser_detail().getUser_name()).setParameter("report_form_id", selectedKPI.getReport_form().getReport_form_id()).list();
-//        } catch (PersistentException ex) {
-//            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         String sql = "{call sp_select_kpi(?,?,?,?,?)}";
         ResultSet rs = null;
         try (
@@ -154,6 +144,36 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             }
         }
 
+    }
+    
+    public String getYearString() {
+        String YearsStr = "";
+        //get 1016,2015,2013 string format for selected years
+        int x = 0;
+        x = this.selectedYears.length;
+        for (int i = 0; i < x; i++) {
+            if (YearsStr.length() > 0) {
+                YearsStr = YearsStr + "," + this.selectedYears[i];
+            } else {
+                YearsStr = "" + this.selectedYears[i];
+            }
+        }
+        return  YearsStr;
+    }
+    
+    public String getDistrictString() {
+        String DistrictsStr = "";
+        //get 1,2,3 string format for selected districts
+        int y = 0;
+        y = this.selectedDistricts.length;
+        for (int i = 0; i < y; i++) {
+            if (DistrictsStr.length() > 0) {
+                DistrictsStr = DistrictsStr + "," + this.selectedDistricts[i].getDistrict_id();
+            } else {
+                DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
+            }
+        }
+        return  DistrictsStr;
     }
 
     private Report_form report_form;
