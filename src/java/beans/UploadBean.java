@@ -597,7 +597,12 @@ public class UploadBean implements Serializable {
     public JSONArray getjSONArray_Dynamic_Pivot(District[] selectedDistricts, Integer[] selectedYears) {
         String YearsStr = "";
         String DistrictsStr = "";
-//get 1016,2015,2013 string format for selected years
+        JSONArray jArray = new JSONArray();
+        
+        if(selectedYears==null || selectedDistricts==null){
+            return jArray;
+        }
+        //get 1016,2015,2013 string format for selected years
         int x = 0;
         x = selectedYears.length;
         for (int i = 0; i < x; i++) {
@@ -618,6 +623,7 @@ public class UploadBean implements Serializable {
                 DistrictsStr = "" + selectedDistricts[i].getDistrict_id();
             }
         }
+        
         GeneralUtilities.flushandclearsession();
         if (report_form != null) {
             try {
@@ -626,7 +632,7 @@ public class UploadBean implements Serializable {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        JSONArray jArray = new JSONArray();
+        
         jSONArray = new JSONArray();
         if (report_form != null) {
             JSONObject jObj = new JSONObject();
