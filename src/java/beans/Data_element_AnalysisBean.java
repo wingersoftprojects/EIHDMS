@@ -9,6 +9,7 @@ import eihdms.Base_data;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ import org.primefaces.json.JSONObject;
  */
 @ManagedBean
 @SessionScoped
-public class Data_element_AnalysisBean {
+public class Data_element_AnalysisBean implements Serializable{
 
     private Report_form_group report_form_group;
     private Report_form report_form;
