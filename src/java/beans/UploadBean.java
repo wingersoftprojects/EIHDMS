@@ -598,8 +598,8 @@ public class UploadBean implements Serializable {
         String YearsStr = "";
         String DistrictsStr = "";
         JSONArray jArray = new JSONArray();
-        
-        if(selectedYears==null || selectedDistricts==null){
+
+        if (selectedYears == null || selectedDistricts == null) {
             return jArray;
         }
         //get 1016,2015,2013 string format for selected years
@@ -623,16 +623,16 @@ public class UploadBean implements Serializable {
                 DistrictsStr = "" + selectedDistricts[i].getDistrict_id();
             }
         }
-        
+
         GeneralUtilities.flushandclearsession();
         if (report_form != null) {
             try {
-                base_datas = Base_data.queryBase_data("district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ")", null);
+                base_datas = Base_data.queryBase_data("report_form_id=" + report_form.getReport_form_id() + " AND district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ")", null);
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         jSONArray = new JSONArray();
         if (report_form != null) {
             JSONObject jObj = new JSONObject();
@@ -734,7 +734,7 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("parish_id in(" + ParishesStr + ") AND " + period_condition, null);
+                    base_datas = Base_data.queryBase_data("report_form_id=" + report_form.getReport_form_id() + " AND parish_id in(" + ParishesStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -751,7 +751,7 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("district_id in(" + DistrictsStr + ") AND " + period_condition, null);
+                    base_datas = Base_data.queryBase_data("report_form_id=" + report_form.getReport_form_id() + " AND district_id in(" + DistrictsStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -768,7 +768,7 @@ public class UploadBean implements Serializable {
                     }
                 }
                 try {
-                    base_datas = Base_data.queryBase_data("health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
+                    base_datas = Base_data.queryBase_data("report_form_id=" + report_form.getReport_form_id() + " AND health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
                 } catch (PersistentException ex) {
                     Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
