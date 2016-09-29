@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-29 11:53:23
+Date: 2016-09-29 12:51:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -661,6 +661,22 @@ END
 DELIMITER ;
 
 -- ----------------------------
+-- Procedure structure for sp_search_room_by_name_empty
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_search_room_by_name_empty`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_room_by_name_empty`(IN `in_search_name` varchar(50))
+BEGIN
+	SELECT * FROM view_room 
+	WHERE (room_number LIKE concat('%',in_search_name,'%') OR room_category_name LIKE concat('%',in_search_name,'%'))
+ AND room_id not in (select room_id from room_occupancy where (room_occupancy_status ='Checked In' or room_occupancy_status='Reserved') AND room_id is not null)
+AND room_id is not null 
+	ORDER BY room_category_name,room_number ASC; 
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
 -- Procedure structure for sp_select_kpi
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_select_kpi`;
@@ -897,10 +913,10 @@ into district_id_v,county_id_v,sub_county_id_v,health_facility_id_v,is_active_v;
 -- SELECT sub_county_id FROM sub_county sc where sc.county_id=county_id_v and sc.sub_county_name=in_sub_county_name into sub_county_id_v;
 -- SELECT health_facility_id FROM health_facility where sub_county_id=sub_county_id_v AND district_id=district_id_v AND health_facility_name=in_health_facility_name into health_facility_id_v;
 
-IF health_facility_id_v!=0 and is_active_v=1 THEN
+IF health_facility_id_v!=0 THEN
 UPDATE interface_data set district_id=district_id_v,county_id=county_id_v, sub_county_id=sub_county_id_v,health_facility_id=health_facility_id_v WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND health_facility_name=in_health_facility_name AND batch_id=in_batch_id ;
-ELSEIF health_facility_id_v!=0 and is_active_v=0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Facility ',in_district_name,'/',in_sub_county_name ,'/',in_health_facility_name ,' is not active!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND health_facility_name=in_health_facility_name AND batch_id=in_batch_id ;
+-- ELSEIF health_facility_id_v!=0 and is_active_v=0 THEN
+-- UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Facility ',in_district_name,'/',in_sub_county_name ,'/',in_health_facility_name ,' is not active!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND health_facility_name=in_health_facility_name AND batch_id=in_batch_id ;
 ELSE
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Facility ',in_district_name,'/',in_sub_county_name ,'/',in_health_facility_name ,' does not exist!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND health_facility_name=in_health_facility_name AND batch_id=in_batch_id ;
 END IF;
@@ -915,19 +931,19 @@ into district_id_v,county_id_v,sub_county_id_v,parish_id_v,is_active_v;
 -- SELECT sub_county_id FROM sub_county sc where sc.county_id=county_id_v and sc.sub_county_name=in_sub_county_name into sub_county_id_v;
 -- SELECT parish_id FROM parish where sub_county_id=sub_county_id_v AND parish_name=in_parish_name into parish_id_v;
 
-IF parish_id_v!=0 and is_active_v=1 THEN
+IF parish_id_v!=0 THEN
 UPDATE interface_data set district_id=district_id_v,county_id=county_id_v, sub_county_id=sub_county_id_v,parish_id=parish_id_v WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
-ELSEIF health_facility_id_v!=0 and is_active_v=0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Parish ',in_district_name,'/',in_sub_county_name ,'/',in_parish_name ,' is not active!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
+-- ELSEIF health_facility_id_v!=0 and is_active_v=0 THEN
+-- UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Parish ',in_district_name,'/',in_sub_county_name ,'/',in_parish_name ,' is not active!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
 ELSE
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>Parish ',in_district_name,'/',in_sub_county_name ,'/',in_parish_name ,' does not exist!') WHERE district_name=in_district_name AND sub_county_name=in_sub_county_name AND parish_name=in_parish_name AND batch_id=in_batch_id ;
 END IF;
 ELSEIF in_reporting_level='District' THEN
 SELECT district_id,d_is_active into district_id_v,is_active_v FROM district where district_name=in_district_name;
-IF district_id_v!=0 and is_active_v=1 THEN
+IF district_id_v!=0 THEN
 UPDATE interface_data set district_id=district_id_v WHERE district_name=in_district_name AND batch_id=in_batch_id ;
-ELSEIF health_facility_id_v!=0 and is_active_v=0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>District ',in_district_name,' is not active!') WHERE district_name=in_district_name AND batch_id=in_batch_id ;
+-- ELSEIF health_facility_id_v!=0 and is_active_v=0 THEN
+-- UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>District ',in_district_name,' is not active!') WHERE district_name=in_district_name AND batch_id=in_batch_id ;
 ELSE
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(status_v_desc,'\n','=>District ',in_district_name,' does not exist!') WHERE district_name=in_district_name AND batch_id=in_batch_id ;
 END IF;
@@ -1324,6 +1340,7 @@ END
 DELIMITER ;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
+
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------
