@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-29 20:29:52
+Date: 2016-09-29 21:08:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -896,25 +896,37 @@ BEGIN
 
 IF in_reporting_level='Facility' THEN
 
-UPDATE interface_data id
-INNER JOIN vw_location vl ON (vl.district_name = id.district_name AND vl.sub_county_name=id.sub_county_name AND vl.health_facility_name=id.health_facility_name)
-SET id.district_id=vl.district_id,id.sub_county_id=vl.sub_county_id,id.health_facility_id=vl.health_facility_id where id.batch_id=in_batch_id;
-
+UPDATE interface_data id 
+set id.district_id=(SELECT DISTINCT district_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.health_facility_id=(SELECT DISTINCT health_facility_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name) WHERE batch_id=in_batch_id;
 -- Updates status on fail
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Health Facility ',district_name,'/',sub_county_name,'/',health_facility_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
 ELSEIF in_reporting_level='Parish' THEN
 
-UPDATE interface_data id
-INNER JOIN vw_location vl ON (vl.district_name = id.district_name AND vl.sub_county_name=id.sub_county_name AND vl.parish_name=id.parish_name)
-SET id.district_id=vl.district_id,id.sub_county_id=vl.sub_county_id,id.parish_id=vl.parish_id where id.batch_id=in_batch_id;
-
+UPDATE interface_data id 
+set id.district_id=(SELECT DISTINCT district_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.parish_id=(SELECT DISTINCT parish_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND parish_name=id.parish_name) WHERE batch_id=in_batch_id;
 -- Updates status on fail
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Parish ',district_name,'/',sub_county_name,'/',parish_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
 
 ELSEIF in_reporting_level='District' THEN
-UPDATE interface_data id
-INNER JOIN vw_location vl ON (vl.district_name = id.district_name)
-SET id.district_id=vl.district_id where id.batch_id=in_batch_id;
+UPDATE interface_data id 
+set id.district_id=(SELECT DISTINCT district_id from vw_location 
+where district_name=id.district_name) WHERE batch_id=in_batch_id;
 
 -- Updates status on fail
 UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because District ',district_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
@@ -1242,7 +1254,6 @@ END
 DELIMITER ;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
-
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------
