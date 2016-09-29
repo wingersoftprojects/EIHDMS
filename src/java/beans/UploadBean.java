@@ -537,13 +537,13 @@ public class UploadBean implements Serializable {
             jObj.put("DataElement", new JSONObject().put("type", "string"));
             if (report_form.getLowest_report_form_level().equals("Facility")) {
                 jObj.put("District", new JSONObject().put("type", "string"));
-                jObj.put("County", new JSONObject().put("type", "string"));
+                //jObj.put("County", new JSONObject().put("type", "string"));
                 jObj.put("Subcounty", new JSONObject().put("type", "string"));
                 jObj.put("Facility", new JSONObject().put("type", "string"));
             }
             if (report_form.getLowest_report_form_level().equals("Parish")) {
                 jObj.put("District", new JSONObject().put("type", "string"));
-                jObj.put("County", new JSONObject().put("type", "string"));
+                //jObj.put("County", new JSONObject().put("type", "string"));
                 jObj.put("Subcounty", new JSONObject().put("type", "string"));
                 jObj.put("Parish", new JSONObject().put("type", "string"));
             }
@@ -562,13 +562,13 @@ public class UploadBean implements Serializable {
                     jObj.put("DataElement", String.format("%1$03d", interface_data.getData_element().getGroup_column_number()) + interface_data.getData_element().getData_element_name());
                     if (report_form.getLowest_report_form_level().equals("Facility")) {
                         jObj.put("District", interface_data.getDistrict_name());
-                        jObj.put("County", interface_data.getCounty_name());
+                        //jObj.put("County", interface_data.getCounty_name());
                         jObj.put("Subcounty", interface_data.getSub_county_name());
                         jObj.put("Facility", interface_data.getHealth_facility_name());
                     }
                     if (report_form.getLowest_report_form_level().equals("Parish")) {
                         jObj.put("District", interface_data.getDistrict_name());
-                        jObj.put("County", interface_data.getCounty_name());
+                        //jObj.put("County", interface_data.getCounty_name());
                         jObj.put("Subcounty", interface_data.getSub_county_name());
                         jObj.put("Parish", interface_data.getParish_name());
                     }
@@ -1128,19 +1128,55 @@ public class UploadBean implements Serializable {
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
                 if (objects[4] != null) {
-                    vr.DistrictName = objects[0].toString();
-                    vr.CountyName = objects[1].toString();
-                    vr.Sub_countyName = objects[2].toString();
-                    vr.FacilityName = objects[4].toString();
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    if (objects[1] != null) {
+                        vr.CountyName = objects[1].toString();
+                    } else {
+                        vr.CountyName = "";
+                    }
+                    if (objects[2] != null) {
+                        vr.Sub_countyName = objects[2].toString();
+                    } else {
+                        vr.Sub_countyName = "";
+                    }
+                    if (objects[4] != null) {
+                        vr.FacilityName = objects[4].toString();
+                    } else {
+                        vr.FacilityName = "";
+                    }
                     vr.ParishName = "";
                 } else if (objects[3] != null) {
-                    vr.DistrictName = objects[0].toString();
-                    vr.CountyName = objects[1].toString();
-                    vr.Sub_countyName = objects[2].toString();
-                    vr.ParishName = objects[3].toString();
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    if (objects[1] != null) {
+                        vr.CountyName = objects[1].toString();
+                    } else {
+                        vr.CountyName = "";
+                    }
+                    if (objects[2] != null) {
+                        vr.Sub_countyName = objects[2].toString();
+                    } else {
+                        vr.Sub_countyName = "";
+                    }
+                    if (objects[3] != null) {
+                        vr.ParishName = objects[3].toString();
+                    } else {
+                        vr.ParishName = "";
+                    }
                     vr.FacilityName = "";
                 } else {
-                    vr.DistrictName = objects[0].toString();
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
                     vr.Sub_countyName = "";
                     vr.ParishName = "";
                     vr.FacilityName = "";
@@ -1245,7 +1281,7 @@ public class UploadBean implements Serializable {
                 Map demap = new HashMap();
                 int tempcounter = 0;
                 if (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility")) {
-                    tempcounter = 4;
+                    tempcounter = 3;
                 } else {
                     tempcounter = 1;
                 }
@@ -1277,12 +1313,12 @@ public class UploadBean implements Serializable {
                             counter++;
                         }
                         if (row.getRowNum() == 0) {
-                            if ((counter - 4) != data_elements.size() && report_form.getLowest_report_form_level().equals("Facility")) {
+                            if ((counter - 3) != data_elements.size() && report_form.getLowest_report_form_level().equals("Facility")) {
                                 FacesContext context = FacesContext.getCurrentInstance();
                                 context.addMessage(null, new FacesMessage("Invalid Upload due to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
                                 return;
                             }
-                            if ((counter - 4) != data_elements.size() && report_form.getLowest_report_form_level().equals("Parish")) {
+                            if ((counter - 3) != data_elements.size() && report_form.getLowest_report_form_level().equals("Parish")) {
                                 FacesContext context = FacesContext.getCurrentInstance();
                                 context.addMessage(null, new FacesMessage("Invalid Upload due to Number Of Columns", "Invalid Upload due to  Number Of Columns"));
                                 return;
@@ -1298,15 +1334,15 @@ public class UploadBean implements Serializable {
                         if (row.getRowNum() > 0) {
                             if (report_form.getLowest_report_form_level().equals("Facility")) {
                                 district_name = row.getCell(0).getStringCellValue();
-                                county_name = row.getCell(1).getStringCellValue();
-                                sub_county_name = row.getCell(2).getStringCellValue();
-                                facility_name = row.getCell(3).getStringCellValue();
+                                //county_name = row.getCell(1).getStringCellValue();
+                                sub_county_name = row.getCell(1).getStringCellValue();
+                                facility_name = row.getCell(2).getStringCellValue();
                             }
                             if (report_form.getLowest_report_form_level().equals("Parish")) {
                                 district_name = row.getCell(0).getStringCellValue();
-                                county_name = row.getCell(1).getStringCellValue();
-                                sub_county_name = row.getCell(2).getStringCellValue();
-                                parish_name = row.getCell(3).getStringCellValue();
+                                //county_name = row.getCell(1).getStringCellValue();
+                                sub_county_name = row.getCell(1).getStringCellValue();
+                                parish_name = row.getCell(2).getStringCellValue();
                             }
                             if (report_form.getLowest_report_form_level().equals("District")) {
                                 district_name = row.getCell(0).getStringCellValue();
@@ -1322,9 +1358,9 @@ public class UploadBean implements Serializable {
                                     Interface_data interface_data = new Interface_data();
                                     if (cellindex > 0 && (int) pair.getKey() == cellindex && report_form.getLowest_report_form_level().equals("District")) {
                                         interface_data.setDistrict_name(district_name.replace("'", "''"));
-                                        interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
-                                        interface_data.setParish_name(parish_name.replace("'", "''"));
-                                        interface_data.setHealth_facility_name(facility_name.replace("'", "''"));
+                                        //interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
+                                        //interface_data.setParish_name(parish_name.replace("'", "''"));
+                                        //interface_data.setHealth_facility_name(facility_name.replace("'", "''"));
                                         /**
                                          * Read Data values
                                          */
@@ -1334,9 +1370,9 @@ public class UploadBean implements Serializable {
                                          */
                                         interface_datas.add(interface_data);
                                     }
-                                    if (cellindex > 3 && (int) pair.getKey() == cellindex && (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility"))) {
+                                    if (cellindex > 2 && (int) pair.getKey() == cellindex && (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility"))) {
                                         interface_data.setDistrict_name(district_name.replace("'", "''"));
-                                        interface_data.setCounty_name(county_name.replace("'", "''"));
+                                        //interface_data.setCounty_name(county_name.replace("'", "''"));
                                         interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
                                         interface_data.setParish_name(parish_name.replace("'", "''"));
                                         interface_data.setHealth_facility_name(facility_name.replace("'", "''"));

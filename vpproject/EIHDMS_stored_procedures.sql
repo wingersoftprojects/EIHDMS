@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-29 21:08:19
+Date: 2016-09-29 22:10:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -900,6 +900,12 @@ UPDATE interface_data id
 set id.district_id=(SELECT DISTINCT district_id from vw_location 
 where district_name=id.district_name AND sub_county_name=id.sub_county_name 
 AND health_facility_name=id.health_facility_name),
+id.county_id=(SELECT DISTINCT county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.county_name=(SELECT DISTINCT county_name from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
 id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
 where district_name=id.district_name AND sub_county_name=id.sub_county_name 
 AND health_facility_name=id.health_facility_name),
@@ -914,6 +920,12 @@ UPDATE interface_data id
 set id.district_id=(SELECT DISTINCT district_id from vw_location 
 where district_name=id.district_name AND sub_county_name=id.sub_county_name 
 AND health_facility_name=id.health_facility_name),
+id.county_id=(SELECT DISTINCT county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND parish_name=id.parish_name),
+id.county_name=(SELECT DISTINCT county_name from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND parish_name=id.parish_name),
 id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
 where district_name=id.district_name AND sub_county_name=id.sub_county_name 
 AND health_facility_name=id.health_facility_name),
@@ -1254,6 +1266,7 @@ END
 DELIMITER ;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
+
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------
