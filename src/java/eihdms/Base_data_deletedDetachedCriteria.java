@@ -20,6 +20,7 @@ import org.orm.criteria.*;
 
 public class Base_data_deletedDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression base_data_deleted_id;
+	public final IntegerExpression base_data_id;
 	public final IntegerExpression batch_id;
 	public final IntegerExpression data_element_id;
 	public final StringExpression data_element_value;
@@ -49,6 +50,7 @@ public class Base_data_deletedDetachedCriteria extends AbstractORMDetachedCriter
 	public Base_data_deletedDetachedCriteria() {
 		super(eihdms.Base_data_deleted.class, eihdms.Base_data_deletedCriteria.class);
 		base_data_deleted_id = new IntegerExpression("base_data_deleted_id", this.getDetachedCriteria());
+		base_data_id = new IntegerExpression("base_data_id", this.getDetachedCriteria());
 		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 		data_element_id = new IntegerExpression("data_element_id", this.getDetachedCriteria());
 		data_element_value = new StringExpression("data_element_value", this.getDetachedCriteria());
@@ -79,6 +81,7 @@ public class Base_data_deletedDetachedCriteria extends AbstractORMDetachedCriter
 	public Base_data_deletedDetachedCriteria(DetachedCriteria aDetachedCriteria) {
 		super(aDetachedCriteria, eihdms.Base_data_deletedCriteria.class);
 		base_data_deleted_id = new IntegerExpression("base_data_deleted_id", this.getDetachedCriteria());
+		base_data_id = new IntegerExpression("base_data_id", this.getDetachedCriteria());
 		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 		data_element_id = new IntegerExpression("data_element_id", this.getDetachedCriteria());
 		data_element_value = new StringExpression("data_element_value", this.getDetachedCriteria());

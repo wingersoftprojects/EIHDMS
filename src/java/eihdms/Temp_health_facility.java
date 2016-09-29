@@ -408,6 +408,9 @@ public class Temp_health_facility implements Serializable {
 	@Column(name="short_name", nullable=true, length=100)	
 	private String short_name;
 	
+	@Column(name="is_active", nullable=false, length=3)	
+	private String is_active;
+	
 	private void setTemp_health_facility_id(int value) {
 		this.temp_health_facility_id = value;
 	}
@@ -522,6 +525,14 @@ public class Temp_health_facility implements Serializable {
 	
 	public String getShort_name() {
 		return short_name;
+	}
+	
+	public void setIs_active(String value) {
+		this.is_active = value;
+	}
+	
+	public String getIs_active() {
+		return is_active;
 	}
 	
 	@Override	

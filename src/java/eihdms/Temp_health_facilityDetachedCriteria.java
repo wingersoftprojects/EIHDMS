@@ -33,6 +33,7 @@ public class Temp_health_facilityDetachedCriteria extends AbstractORMDetachedCri
 	public final StringExpression zcoordinate;
 	public final StringExpression ownership;
 	public final StringExpression short_name;
+	public final StringExpression is_active;
 	
 	public Temp_health_facilityDetachedCriteria() {
 		super(eihdms.Temp_health_facility.class, eihdms.Temp_health_facilityCriteria.class);
@@ -50,6 +51,7 @@ public class Temp_health_facilityDetachedCriteria extends AbstractORMDetachedCri
 		zcoordinate = new StringExpression("zcoordinate", this.getDetachedCriteria());
 		ownership = new StringExpression("ownership", this.getDetachedCriteria());
 		short_name = new StringExpression("short_name", this.getDetachedCriteria());
+		is_active = new StringExpression("is_active", this.getDetachedCriteria());
 	}
 	
 	public Temp_health_facilityDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -68,6 +70,7 @@ public class Temp_health_facilityDetachedCriteria extends AbstractORMDetachedCri
 		zcoordinate = new StringExpression("zcoordinate", this.getDetachedCriteria());
 		ownership = new StringExpression("ownership", this.getDetachedCriteria());
 		short_name = new StringExpression("short_name", this.getDetachedCriteria());
+		is_active = new StringExpression("is_active", this.getDetachedCriteria());
 	}
 	
 	public Temp_health_facility uniqueTemp_health_facility(PersistentSession session) {

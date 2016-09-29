@@ -369,6 +369,9 @@ public class Base_data_deleted implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_BASE_DATA_DELETED_BASE_DATA_DELETED_ID_GENERATOR", strategy="native")	
 	private int base_data_deleted_id;
 	
+	@Column(name="base_data_id", nullable=false, length=11)	
+	private int base_data_id;
+	
 	@Column(name="batch_id", nullable=true, length=11)	
 	private Integer batch_id;
 	
@@ -716,6 +719,14 @@ public class Base_data_deleted implements Serializable {
 	
 	public java.sql.Timestamp getDelete_date() {
 		return delete_date;
+	}
+	
+	public void setBase_data_id(int value) {
+		this.base_data_id = value;
+	}
+	
+	public int getBase_data_id() {
+		return base_data_id;
 	}
 	
 	public String toString() {

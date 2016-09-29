@@ -91,7 +91,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : sub_section_name, section_name, report_form_name
 			leihdmsTemp_data_element.save();
 			eihdms.Temp_health_facility leihdmsTemp_health_facility = eihdms.Temp_health_facility.createTemp_health_facility();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : facility_level_name, parish_name, sub_county_name, county_name, sub_district_name, district_name, region_name, health_facility_name
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, facility_level_name, parish_name, sub_county_name, county_name, sub_district_name, district_name, region_name, health_facility_name
 			leihdmsTemp_health_facility.save();
 			eihdms.Financial_year leihdmsFinancial_year = eihdms.Financial_year.createFinancial_year();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, financial_year_name
@@ -106,7 +106,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : report_form
 			leihdmsData_obligation.save();
 			eihdms.Base_data_deleted leihdmsBase_data_deleted = eihdms.Base_data_deleted.createBase_data_deleted();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : delete_date, deleted_by, is_active, is_deleted, report_period_to_date, report_period_from_date, data_element_value, data_element_id
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : delete_date, deleted_by, is_active, is_deleted, report_period_to_date, report_period_from_date, data_element_value, data_element_id, base_data_id
 			leihdmsBase_data_deleted.save();
 			t.commit();
 		}

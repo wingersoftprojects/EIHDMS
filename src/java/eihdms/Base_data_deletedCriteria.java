@@ -20,6 +20,7 @@ import org.orm.criteria.*;
 
 public class Base_data_deletedCriteria extends AbstractORMCriteria {
 	public final IntegerExpression base_data_deleted_id;
+	public final IntegerExpression base_data_id;
 	public final IntegerExpression batch_id;
 	public final IntegerExpression data_element_id;
 	public final StringExpression data_element_value;
@@ -49,6 +50,7 @@ public class Base_data_deletedCriteria extends AbstractORMCriteria {
 	public Base_data_deletedCriteria(Criteria criteria) {
 		super(criteria);
 		base_data_deleted_id = new IntegerExpression("base_data_deleted_id", this);
+		base_data_id = new IntegerExpression("base_data_id", this);
 		batch_id = new IntegerExpression("batch_id", this);
 		data_element_id = new IntegerExpression("data_element_id", this);
 		data_element_value = new StringExpression("data_element_value", this);

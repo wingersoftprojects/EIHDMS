@@ -33,6 +33,7 @@ public class Temp_health_facilityCriteria extends AbstractORMCriteria {
 	public final StringExpression zcoordinate;
 	public final StringExpression ownership;
 	public final StringExpression short_name;
+	public final StringExpression is_active;
 	
 	public Temp_health_facilityCriteria(Criteria criteria) {
 		super(criteria);
@@ -50,6 +51,7 @@ public class Temp_health_facilityCriteria extends AbstractORMCriteria {
 		zcoordinate = new StringExpression("zcoordinate", this);
 		ownership = new StringExpression("ownership", this);
 		short_name = new StringExpression("short_name", this);
+		is_active = new StringExpression("is_active", this);
 	}
 	
 	public Temp_health_facilityCriteria(PersistentSession session) {
