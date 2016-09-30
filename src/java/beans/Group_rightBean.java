@@ -123,10 +123,14 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
     }
 
     public void All_allow(String allow_what, boolean bool_value) {
-        if (bool_value) {
-            multiChangeGroupRight(allow_what, 1);
-        } else {
-            multiChangeGroupRight(allow_what, 0);
+        try {
+            if (bool_value) {
+                multiChangeGroupRight(allow_what, 1);
+            } else {
+                multiChangeGroupRight(allow_what, 0);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Group_rightBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -159,11 +163,11 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
 
     public void refreshGroup_rights(Group_detail group_detail) {
         //first deselect allow all
-        this.All_allow_view=false;
-        this.All_allow_add=false;
-        this.All_allow_edit=false;
-        this.All_allow_delete=false;
-        
+        this.All_allow_view = false;
+        this.All_allow_add = false;
+        this.All_allow_edit = false;
+        this.All_allow_delete = false;
+
         group_rights = new ArrayList<Group_right>();
         List<Report_form> report_forms = new ArrayList<>();
         report_forms = new Report_formBean().getTsActive();
