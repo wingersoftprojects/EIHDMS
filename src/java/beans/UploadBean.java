@@ -1082,6 +1082,10 @@ public class UploadBean implements Serializable {
                 /**
                  * End Batch
                  */
+                /**
+                 * Load Interface
+                 */
+                int counter = 0;
                 for (Interface_data i : interface_datas) {
                     //interface_dataBean.setSelected(i);
                     i.setBatch(batch);
@@ -1092,9 +1096,18 @@ public class UploadBean implements Serializable {
                     i.setStatus_u("Pass");
                     i.setStatus_u_desc("Uploaded To interface");
                     i.save();
+                    if (counter % 20 == 0) { //20, same as the JDBC batch size
+                        //flush a batch of inserts and release memory:
+                        EIHDMSPersistentManager.instance().getSession().flush(); //line1
+                        EIHDMSPersistentManager.instance().getSession().clear();
+                    }
+                    counter++;
                     //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
                 }
                 transaction.commit();
+                /**
+                 * End load interface
+                 */
                 /**
                  * Load Base Data
                  */
