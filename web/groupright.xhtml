@@ -34,6 +34,20 @@
                         <p:commandButton value="Retrieve Group Rights" action="#{group_rightBean.refreshGroup_rights(group_rightBean.selectedGroup_detail)}" update="@form"/>
                     </h:panelGrid>
                     <p:panelGrid id="detail_panel_grid" columns="5">
+                        <p:outputLabel value="" style="font-weight: bold"/>
+                        <h:selectBooleanCheckbox id="all_allow_view" value="#{group_rightBean.all_allow_view}">
+                            <f:ajax listener="#{group_rightBean.All_allow('view',group_rightBean.all_allow_view)}" render="detail_panel_grid"/>
+                        </h:selectBooleanCheckbox>
+                        <h:selectBooleanCheckbox id="all_allow_add" value="#{group_rightBean.all_allow_add}">
+                            <f:ajax listener="#{group_rightBean.All_allow('add',group_rightBean.all_allow_add)}" render="detail_panel_grid"/>
+                        </h:selectBooleanCheckbox>
+                        <h:selectBooleanCheckbox id="all_allow_edit" value="#{group_rightBean.all_allow_edit}">
+                            <f:ajax listener="#{group_rightBean.All_allow('edit',group_rightBean.all_allow_edit)}" render="detail_panel_grid"/>
+                        </h:selectBooleanCheckbox>
+                        <h:selectBooleanCheckbox id="all_allow_delete" value="#{group_rightBean.all_allow_delete}">
+                            <f:ajax listener="#{group_rightBean.All_allow('delete',group_rightBean.all_allow_delete)}" render="detail_panel_grid"/>
+                        </h:selectBooleanCheckbox>
+
                         <p:outputLabel value="Report Form Name" style="font-weight: bold"/>
                         <p:outputLabel value="View" style="font-weight: bold"/>
                         <p:outputLabel value="Add" style="font-weight: bold"/>

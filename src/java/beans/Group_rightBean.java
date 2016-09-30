@@ -37,6 +37,10 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
 
     private Group_detail selectedGroup_detail;
     private List<Group_right> group_rights;
+    private boolean All_allow_view;
+    private boolean All_allow_add;
+    private boolean All_allow_edit;
+    private boolean All_allow_delete;
 
     /**
      * Creates a new instance of Group_rightBean
@@ -62,7 +66,104 @@ public class Group_rightBean extends AbstractBean<Group_right> implements Serial
         this.loginBean = loginBean;
     }
 
+    /**
+     * @return the All_allow_view
+     */
+    public boolean isAll_allow_view() {
+        return All_allow_view;
+    }
+
+    /**
+     * @param All_allow_view the All_allow_view to set
+     */
+    public void setAll_allow_view(boolean All_allow_view) {
+        this.All_allow_view = All_allow_view;
+    }
+
+    /**
+     * @return the All_allow_add
+     */
+    public boolean isAll_allow_add() {
+        return All_allow_add;
+    }
+
+    /**
+     * @param All_allow_add the All_allow_add to set
+     */
+    public void setAll_allow_add(boolean All_allow_add) {
+        this.All_allow_add = All_allow_add;
+    }
+
+    /**
+     * @return the All_allow_edit
+     */
+    public boolean isAll_allow_edit() {
+        return All_allow_edit;
+    }
+
+    /**
+     * @param All_allow_edit the All_allow_edit to set
+     */
+    public void setAll_allow_edit(boolean All_allow_edit) {
+        this.All_allow_edit = All_allow_edit;
+    }
+
+    /**
+     * @return the All_allow_delete
+     */
+    public boolean isAll_allow_delete() {
+        return All_allow_delete;
+    }
+
+    /**
+     * @param All_allow_delete the All_allow_delete to set
+     */
+    public void setAll_allow_delete(boolean All_allow_delete) {
+        this.All_allow_delete = All_allow_delete;
+    }
+
+    public void All_allow(String allow_what, boolean bool_value) {
+        if (bool_value) {
+            multiChangeGroupRight(allow_what, 1);
+        } else {
+            multiChangeGroupRight(allow_what, 0);
+        }
+    }
+
+    public void multiChangeGroupRight(String allow_what, int allow_value) {
+        int n = 0;
+        n = this.group_rights.size();
+        switch (allow_what) {
+            case "view":
+                for (int i = 0; i < n; i++) {
+                    this.group_rights.get(i).setAllow_view(allow_value);
+                }
+                break;
+            case "add":
+                for (int i = 0; i < n; i++) {
+                    this.group_rights.get(i).setAllow_add(allow_value);
+                }
+                break;
+            case "edit":
+                for (int i = 0; i < n; i++) {
+                    this.group_rights.get(i).setAllow_edit(allow_value);
+                }
+                break;
+            case "delete":
+                for (int i = 0; i < n; i++) {
+                    this.group_rights.get(i).setAllow_delete(allow_value);
+                }
+                break;
+        }
+    }
+
     public void refreshGroup_rights(Group_detail group_detail) {
+        //first deselect allow all
+        this.All_allow_view=false;
+        this.All_allow_add=false;
+        this.All_allow_edit=false;
+        this.All_allow_delete=false;
+        
         group_rights = new ArrayList<Group_right>();
         List<Report_form> report_forms = new ArrayList<>();
         report_forms = new Report_formBean().getTsActive();

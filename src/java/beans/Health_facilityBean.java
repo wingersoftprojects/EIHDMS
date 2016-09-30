@@ -73,21 +73,67 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
                     for (Sub_county sub_county : sub_countyBean.getTsActive()) {
                         if (sub_county.getCounty().getCounty_id() == county.getCounty_id()) {
                             sub_countyNode = new DefaultTreeNode(sub_county.getSub_county_name(), countyNode);
-                        for (Parish parish : parishBean.getTsActive()) {
-                            if (parish.getSub_county().getSub_county_id() == sub_county.getSub_county_id()) {
-                                parishNode = new DefaultTreeNode(parish.getParish_name(), sub_countyNode);
-                                for (Health_facility health_facility : this.getTsActive()) {
-                                    if (health_facility.getParish().getParish_id() == parish.getParish_id()) {
-                                        health_facilityNode = new DefaultTreeNode(health_facility.getHealth_facility_name(), parishNode);
+                            for (Parish parish : parishBean.getTsActive()) {
+                                if (parish.getSub_county().getSub_county_id() == sub_county.getSub_county_id()) {
+                                    parishNode = new DefaultTreeNode(parish.getParish_name(), sub_countyNode);
+                                    for (Health_facility health_facility : this.getTsActive()) {
+                                        if (health_facility.getParish().getParish_id() == parish.getParish_id()) {
+                                            health_facilityNode = new DefaultTreeNode(health_facility.getHealth_facility_name(), parishNode);
+                                        }
                                     }
-                                }
 
+                                }
                             }
-                        }
                         }
                     }
                 }
 
+            }
+        }
+    }
+
+    public void getLocationTreeNodeByDistrict_F(District aDistrict) {
+        LocationTreeNode = new DefaultTreeNode("LocationTreeNode", null);
+        //TreeNode regionNode = new DefaultTreeNode(null);
+        TreeNode districtNode = new DefaultTreeNode(null);
+        //TreeNode countyNode = new DefaultTreeNode(null);
+        TreeNode sub_countyNode = new DefaultTreeNode(null);
+        //TreeNode parishNode = new DefaultTreeNode(null);
+        TreeNode health_facilityNode = new DefaultTreeNode(null);
+        if (null != aDistrict) {
+            districtNode = new DefaultTreeNode(aDistrict.getDistrict_name(), LocationTreeNode);
+            for (Sub_county sub_county : sub_countyBean.getTsActive()) {
+                if (sub_county.getCounty().getDistrict().getDistrict_id() == aDistrict.getDistrict_id()) {
+                    sub_countyNode = new DefaultTreeNode(sub_county.getSub_county_name(), districtNode);
+                    for (Health_facility health_facility : this.getTsActive()) {
+                        if (health_facility.getParish().getSub_county().getSub_county_id() == sub_county.getSub_county_id()) {
+                            health_facilityNode = new DefaultTreeNode(health_facility.getHealth_facility_name(), sub_countyNode);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void getLocationTreeNodeByDistrict_P(District aDistrict) {
+        LocationTreeNode = new DefaultTreeNode("LocationTreeNode", null);
+        //TreeNode regionNode = new DefaultTreeNode(null);
+        TreeNode districtNode = new DefaultTreeNode(null);
+        //TreeNode countyNode = new DefaultTreeNode(null);
+        TreeNode sub_countyNode = new DefaultTreeNode(null);
+        TreeNode parishNode = new DefaultTreeNode(null);
+        //TreeNode health_facilityNode = new DefaultTreeNode(null);
+        if (null != aDistrict) {
+            districtNode = new DefaultTreeNode(aDistrict.getDistrict_name(), LocationTreeNode);
+            for (Sub_county sub_county : sub_countyBean.getTsActive()) {
+                if (sub_county.getCounty().getDistrict().getDistrict_id() == aDistrict.getDistrict_id()) {
+                    sub_countyNode = new DefaultTreeNode(sub_county.getSub_county_name(), districtNode);
+                    for (Parish parish : parishBean.getTsActive()) {
+                        if (parish.getSub_county().getSub_county_id() == sub_county.getSub_county_id()) {
+                            parishNode = new DefaultTreeNode(parish.getParish_name(), sub_countyNode);
+                        }
+                    }
+                }
             }
         }
     }

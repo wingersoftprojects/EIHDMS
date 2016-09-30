@@ -223,12 +223,12 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                     cell.setCellStyle(cs);
                     cell.setCellValue("District");
                     colIndex += 1;
-                    if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
-                        cell = (XSSFCell) row.createCell(colIndex);
-                        cell.setCellStyle(cs);
-                        cell.setCellValue("County");
-                        colIndex += 1;
-                    }
+//                    if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
+//                        cell = (XSSFCell) row.createCell(colIndex);
+//                        cell.setCellStyle(cs);
+//                        cell.setCellValue("County");
+//                        colIndex += 1;
+//                    }
                     if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
                         cell = (XSSFCell) row.createCell(colIndex);
                         cell.setCellStyle(cs);
