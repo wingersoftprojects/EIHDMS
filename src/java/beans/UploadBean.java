@@ -906,8 +906,7 @@ public class UploadBean implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        try {
-            InputStream inputStream = event.getFile().getInputstream();
+        try (InputStream inputStream = event.getFile().getInputstream()) {
             uploadexcel(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
