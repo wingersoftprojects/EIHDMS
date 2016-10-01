@@ -35,44 +35,53 @@
                     <p:dataTable id="table_Validation_Summary" widgetVar="reportList" value="#{uploadBean.validationReportList}" var="item" rows="5"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
-                                 rowsPerPageTemplate="5,10,50,500">
+                                 rowsPerPageTemplate="5,10,50,500" 
+                                 emptyMessage="No validation report found with given criteria" filteredValue="#{uploadBean.validationReportFiltered}">
                         <f:facet name="{Exporters}">
-                                    <h:commandLink>
-                                        <p:graphicImage name="images/excel.png" width="24"/>
-                                        <p:dataExporter type="xls" target="table_Validation_Summary" fileName="Validation_Report" />
-                                    </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage name="images/excel.png" width="24"/>
+                                <p:dataExporter type="xls" target="table_Validation_Summary" fileName="Validation_Report" />
+                            </h:commandLink>
 
-                                    <h:commandLink>
-                                        <p:graphicImage name="images/pdf.png" width="24"/>
-                                        <p:dataExporter type="pdf" target="table_Validation_Summary" fileName="Validation_Report"/>
-                                    </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage name="images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="table_Validation_Summary" fileName="Validation_Report"/>
+                            </h:commandLink>
 
-                                    <h:commandLink>
-                                        <p:graphicImage name="images/csv.png" width="24"/>
-                                        <p:dataExporter type="csv" target="table_Validation_Summary" fileName="Validation_Report" />
-                                    </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage name="images/csv.png" width="24"/>
+                                <p:dataExporter type="csv" target="table_Validation_Summary" fileName="Validation_Report" />
+                            </h:commandLink>
 
-                                    <h:commandLink>
-                                        <p:graphicImage name="images/xml.png" width="24"/>
-                                        <p:dataExporter type="xml" target="table_Validation_Summary" fileName="Validation_Report" />
-                                    </h:commandLink>
-                                </f:facet>
-                        <p:column headerText="District">
+                            <h:commandLink>
+                                <p:graphicImage name="images/xml.png" width="24"/>
+                                <p:dataExporter type="xml" target="table_Validation_Summary" fileName="Validation_Report" />
+                            </h:commandLink>
+                        </f:facet>
+                        <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields(Status/Facility/Parish/District/Subcounty):" />
+                            <p:inputText id="globalFilter" onkeyup="PF('reportList').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                        <p:column headerText="District" filterBy="#{item.districtName}" filterMatchMode="contains">
                             <h:outputText value="#{item.districtName}"/>
                         </p:column>
+                        <!--
                         <p:column headerText="County">
                             <h:outputText value="#{item.countyName}"/>
                         </p:column>
-                        <p:column headerText="Sub County">
+                        -->
+                        <p:column headerText="Sub County" filterBy="#{item.sub_countyName}" filterMatchMode="contains">
                             <h:outputText value="#{item.sub_countyName}"/>
                         </p:column>
-                        <p:column headerText="Parish">
+                        <p:column headerText="Parish" filterBy="#{item.parishName}" filterMatchMode="contains">
                             <h:outputText value="#{item.parishName}"/>
                         </p:column>
-                        <p:column headerText="Health Facility">
+                        <p:column headerText="Health Facility" filterBy="#{item.facilityName}" filterMatchMode="contains">
                             <h:outputText value="#{item.facilityName}"/>
                         </p:column>
-                        <p:column headerText="Status" filterBy="#{item.status}" footerText="exact" filterMatchMode="exact">
+                        <p:column headerText="Status" filterBy="#{item.status}" filterMatchMode="exact">
                             <f:facet name="filter">
                                 <p:selectOneMenu onchange="PF('reportList').filter()" >
                                     <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />

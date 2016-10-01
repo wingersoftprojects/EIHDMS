@@ -15,7 +15,7 @@
         <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="1">
-                <p:fieldset legend="Health Facilitys" id="data_element">
+                <p:fieldset legend="Health Facility" id="data_element">
                     <p:panelGrid columns="4">
                         <p:outputLabel value="Health Facility:" for="health_facility_name"/>
                         <p:inputText id="health_facility_name" value="#{health_facilityBean.selected.health_facility_name}" required="true" requiredMessage="Health Facility name field is required"/>
@@ -96,17 +96,17 @@
                              emptyMessage="No health facilities found with given criteria" filteredValue="#{health_facilityBean.filteredTs}">
                     <f:facet name="header">
                         <p:outputPanel>
-                            <h:outputText value="Search all fields:" />
+                            <h:outputText value="Search all fields(Facility or District or Subcounty):" />
                             <p:inputText id="globalFilter" onkeyup="PF('hfTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                         </p:outputPanel>
                     </f:facet>
-                    <p:column headerText="Health Facility Name">
+                    <p:column headerText="Health Facility Name" filterBy="#{item.health_facility_name}" filterMatchMode="contains">
                         <h:outputText value="#{item.health_facility_name}"/>
                     </p:column>
                     <p:column headerText="Region">
                         <h:outputText value="#{item.region.region_name}"/>
                     </p:column>
-                    <p:column headerText="District">
+                    <p:column headerText="District" filterBy="#{item.district.district_name}" filterMatchMode="contains">
                         <h:outputText value="#{item.district.district_name}"/>
                     </p:column>
                     <p:column headerText="Sub District">
@@ -115,7 +115,7 @@
                     <p:column headerText="County">
                         <h:outputText value="#{item.county.county_name}"/>
                     </p:column>
-                    <p:column headerText="Sub County">
+                    <p:column headerText="Sub County" filterBy="#{item.sub_county.sub_county_name}" filterMatchMode="contains">
                         <h:outputText value="#{item.sub_county.sub_county_name}"/>
                     </p:column>
                     <p:column headerText="Parish">
@@ -127,6 +127,7 @@
                     <p:column headerText="Ownership">
                         <h:outputText value="#{item.ownership}"/>
                     </p:column>
+                    <!--
                     <p:column headerText="X-Coordinate">
                         <h:outputText value="#{item.xcoordinate}"/>
                     </p:column>
@@ -136,6 +137,7 @@
                     <p:column headerText="Z-Coordinate">
                         <h:outputText value="#{item.xcoordinate}"/>
                     </p:column>
+                    -->
                     <p:column headerText="Active?">
                         <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
                     </p:column>

@@ -22,14 +22,14 @@
                                     <p:menuitem value="Data Upload"  action="upload?faces-redirect=true" icon="ui-icon-arrowthick-1-n"/>
                                     <p:menuitem value="Data Entry"  action="dataentry?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
                                 </p:submenu>
-                                <p:submenu label="Settings" icon="ui-icon-gear" rendered="#{loginBean.user_detail.is_user_gen_admin==1}">
+                                <p:submenu label="Settings" icon="ui-icon-gear">
                                     <p:submenu label="Location Settings" icon="ui-icon-info">
-                                        <p:menuitem value="Location"  action="locationsettings?faces-redirect=true"  />
-                                        <p:menuitem value="Facility Level" action="facilitylevel?faces-redirect=true" />
-                                        <p:menuitem value="Health Facility" action="healthfacility?faces-redirect=true" />
+                                        <p:menuitem value="Location"  action="locationsettings?faces-redirect=true" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"  />
+                                        <p:menuitem value="Facility Level" action="facilitylevel?faces-redirect=true" rendered="#{loginBean.user_detail.is_user_gen_admin==1}" />
+                                        <p:menuitem value="Health Facility" action="healthfacility?faces-redirect=true" rendered="#{loginBean.user_detail.is_user_gen_admin==1}" />
                                         <p:menuitem value="Location Tree" action="locationview?faces-redirect=true" />
                                     </p:submenu>
-                                    <p:submenu label="Form Settings" icon="ui-icon-document">
+                                    <p:submenu label="Form Settings" icon="ui-icon-document" rendered="#{loginBean.user_detail.is_user_gen_admin==1}">
                                         <p:menuitem value="Technical Areas" action="technicalarea?faces-redirect=true" />
                                         <p:menuitem value="Report Form Details" action="reportform?faces-redirect=true" />
                                         <p:menuitem value="Upload Groups" action="reportformgroup?faces-redirect=true" />
@@ -41,7 +41,7 @@
                                         <p:menuitem value="Financial Year" action="financialyear?faces-redirect=true" />
                                         <p:menuitem value="KPI" action="kpi?faces-redirect=true" />
                                     </p:submenu>
-                                    <p:submenu label="User Settings" icon="ui-icon-person">
+                                    <p:submenu label="User Settings" icon="ui-icon-person" rendered="#{loginBean.user_detail.is_user_gen_admin==1}">
                                         <p:menuitem value="Group Details" action="groupdetail?faces-redirect=true">
                                         </p:menuitem> 
                                         <p:menuitem value="Group Rights" action="groupright?faces-redirect=true">
@@ -49,7 +49,7 @@
                                         <p:menuitem value="User Details" action="userdetail?faces-redirect=true">
                                         </p:menuitem>  
                                     </p:submenu>
-                                    <p:menuitem value="Configurations" action="applicationconfiguration?faces-redirect=true" icon="ui-icon-gear"/> 
+                                    <p:menuitem value="Configurations" action="applicationconfiguration?faces-redirect=true" icon="ui-icon-gear" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/> 
                                 </p:submenu>
 
                                 <p:submenu label="Tools" icon="ui-icon-wrench">
@@ -59,15 +59,15 @@
                                     <p:menuitem value="Delete Base Data" action="delete_base_data?faces-redirect=true" icon="ui-icon-trash" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/>
                                 </p:submenu>
 
-                                <p:submenu label="Reports" icon="ui-icon-copy">
+                                <p:submenu label="Reports"  icon="ui-icon-search">
                                     <p:submenu label="Standard Reports">
                                         <p:menuitem value="KPI Reports" action="report_kpi?faces-redirect=true" />
                                     </p:submenu>
                                     <p:submenu label="Dynamic Reports">
-                                        <p:menuitem value="Dynamic Report" action="report_dynamic?faces-redirect=true" icon="ui-icon-search"/>
+                                        <p:menuitem value="Dynamic Report" action="report_dynamic?faces-redirect=true"/>
                                     </p:submenu>
                                     <p:submenu label="Validation Reports">
-                                        <p:menuitem value="Upload Validation Report"  action="validationerrorlist?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
+                                        <p:menuitem value="Validation Report"  action="report_validation?faces-redirect=true"/>
                                     </p:submenu>
                                     <p:submenu label="User Action Reports">
                                         

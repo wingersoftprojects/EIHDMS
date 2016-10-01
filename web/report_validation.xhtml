@@ -8,7 +8,7 @@
 
     <ui:define name="content">
         <h:form>
-            <p:panel header="Validation Error List" style="border-style: solid;">
+            <p:panel header="Validation Report" style="border-style: solid;">
                 <p:dataTable value="#{uploadBean.generate_validation_report()}" var="item">
                     <p:column headerText="Batch Id">
                         <h:outputText value="#{item.batch_id}"/>

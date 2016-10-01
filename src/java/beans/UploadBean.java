@@ -100,6 +100,7 @@ public class UploadBean implements Serializable {
 
     private List<ValidationReport> validationReportList;
     private List<ValidationReport> validationReportSelected;
+    private List<ValidationReport> validationReportFiltered;
 
     String report_form_name;
     List<String> report_form_nameList;
@@ -1218,15 +1219,16 @@ public class UploadBean implements Serializable {
         validationReportList = new ArrayList<>();
         try {
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT interface_data.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date FROM interface_data INNER JOIN user_detail ON user_detail.user_detail_id = interface_data.add_by INNER JOIN batch ON interface_data.batch_id = batch.batch_id where status_v='Fail' order by batch_id desc").list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT interface_data.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date FROM interface_data INNER JOIN user_detail ON user_detail.user_detail_id = interface_data.add_by INNER JOIN batch ON interface_data.batch_id = batch.batch_id order by batch_id desc").list();
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
                 vr.setBatch_id(Integer.parseInt(objects[0].toString()));
                 vr.AddedBy = objects[1].toString();
                 vr.setAddDate(objects[2].toString());
-                tempValidationReports.add(vr);
+                //tempValidationReports.add(vr);
+                validationReportList.add(vr);
             }
-            validationReportList = new ArrayList<>(tempValidationReports);
+            //validationReportList = new ArrayList<>(tempValidationReports);
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1836,6 +1838,20 @@ public class UploadBean implements Serializable {
             }
             interface_datas = new ArrayList<>();
         }
+    }
+
+    /**
+     * @return the validationReportFiltered
+     */
+    public List<ValidationReport> getValidationReportFiltered() {
+        return validationReportFiltered;
+    }
+
+    /**
+     * @param validationReportFiltered the validationReportFiltered to set
+     */
+    public void setValidationReportFiltered(List<ValidationReport> validationReportFiltered) {
+        this.validationReportFiltered = validationReportFiltered;
     }
 
     public class ValidationReport {
