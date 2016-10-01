@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -31,6 +31,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final StringExpression source_system;
+	public final IntegerExpression mode_upload;
+	public final IntegerExpression mode_data_entry;
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
 	public final CollectionExpression group_right;
@@ -56,6 +59,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		source_system = new StringExpression("source_system", this.getDetachedCriteria());
+		mode_upload = new IntegerExpression("mode_upload", this.getDetachedCriteria());
+		mode_data_entry = new IntegerExpression("mode_data_entry", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
@@ -82,6 +88,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		source_system = new StringExpression("source_system", this.getDetachedCriteria());
+		mode_upload = new IntegerExpression("mode_upload", this.getDetachedCriteria());
+		mode_data_entry = new IntegerExpression("mode_data_entry", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());

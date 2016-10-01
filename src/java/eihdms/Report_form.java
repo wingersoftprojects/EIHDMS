@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -507,6 +507,15 @@ public class Report_form implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="source_system", nullable=true, length=50)	
+	private String source_system;
+	
+	@Column(name="mode_upload", nullable=true, length=1)	
+	private Integer mode_upload;
+	
+	@Column(name="mode_data_entry", nullable=true, length=1)	
+	private Integer mode_data_entry;
+	
 	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
@@ -663,6 +672,38 @@ public class Report_form implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setSource_system(String value) {
+		this.source_system = value;
+	}
+	
+	public String getSource_system() {
+		return source_system;
+	}
+	
+	public void setMode_upload(int value) {
+		setMode_upload(new Integer(value));
+	}
+	
+	public void setMode_upload(Integer value) {
+		this.mode_upload = value;
+	}
+	
+	public Integer getMode_upload() {
+		return mode_upload;
+	}
+	
+	public void setMode_data_entry(int value) {
+		setMode_data_entry(new Integer(value));
+	}
+	
+	public void setMode_data_entry(Integer value) {
+		this.mode_data_entry = value;
+	}
+	
+	public Integer getMode_data_entry() {
+		return mode_data_entry;
 	}
 	
 	public void setData_element(java.util.Set value) {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -31,6 +31,9 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final StringExpression source_system;
+	public final IntegerExpression mode_upload;
+	public final IntegerExpression mode_data_entry;
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
 	public final CollectionExpression group_right;
@@ -56,6 +59,9 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		source_system = new StringExpression("source_system", this);
+		mode_upload = new IntegerExpression("mode_upload", this);
+		mode_data_entry = new IntegerExpression("mode_data_entry", this);
 		data_element = new CollectionExpression("data_element", this);
 		section = new CollectionExpression("section", this);
 		group_right = new CollectionExpression("group_right", this);

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -56,7 +56,6 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Group_user.class);
 		configuration.addAnnotatedClass(eihdms.User_category.class);
 		configuration.addAnnotatedClass(eihdms.Group_detail.class);
-		configuration.addAnnotatedClass(eihdms.Login_session.class);
 		configuration.addAnnotatedClass(eihdms.User_action.class);
 		configuration.addAnnotatedClass(eihdms.Technical_area.class);
 		configuration.addAnnotatedClass(eihdms.Sub_section.class);
@@ -69,6 +68,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Kpi.class);
 		configuration.addAnnotatedClass(eihdms.Data_obligation.class);
 		configuration.addAnnotatedClass(eihdms.Base_data_deleted.class);
+		configuration.addAnnotatedClass(eihdms.Login_session.class);
 		configuration.buildMappings();
 		return configuration;
 	}

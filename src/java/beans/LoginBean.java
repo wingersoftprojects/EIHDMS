@@ -6,6 +6,7 @@
 package beans;
 
 import eihdms.Group_right;
+import eihdms.Login_session;
 import eihdms.Report_form;
 import eihdms.User_detail;
 import java.io.Serializable;
@@ -18,6 +19,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.orm.PersistentException;
 import utilities.Security;
 
@@ -36,6 +39,7 @@ public class LoginBean implements Serializable {
     private String messageString = "";
     private User_detail user_detail;
     private List<Group_right> group_rights;
+    private String login_session_id;
 
     public LoginBean() {
     }
@@ -78,37 +82,41 @@ public class LoginBean implements Serializable {
         for (int i = 0; i < this.getGroup_rights().size(); i++) {
             switch (allow) {
                 case "allow_view":
-                    if (this.getGroup_rights().get(i).getAllow_view()==1) {
+                    if (this.getGroup_rights().get(i).getAllow_view() == 1) {
                         if (report_form_str.length() > 0) {
                             report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
                         } else {
                             report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
                         }
-                    }   break;
+                    }
+                    break;
                 case "allow_add":
-                    if (this.getGroup_rights().get(i).getAllow_add()==1) {
+                    if (this.getGroup_rights().get(i).getAllow_add() == 1) {
                         if (report_form_str.length() > 0) {
                             report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
                         } else {
                             report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
                         }
-                }   break;
+                    }
+                    break;
                 case "allow_edit":
-                    if (this.getGroup_rights().get(i).getAllow_edit()==1) {
+                    if (this.getGroup_rights().get(i).getAllow_edit() == 1) {
                         if (report_form_str.length() > 0) {
                             report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
                         } else {
                             report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        }
                     }
-                    }   break;
+                    break;
                 case "allow_delete":
-                    if (this.getGroup_rights().get(i).getAllow_delete()==1) {
+                    if (this.getGroup_rights().get(i).getAllow_delete() == 1) {
                         if (report_form_str.length() > 0) {
                             report_form_str = report_form_str + "," + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
                         } else {
                             report_form_str = "" + this.getGroup_rights().get(i).getReport_form().getReport_form_id();
+                        }
                     }
-                }   break;
+                    break;
             }
         }
         return report_form_str;
@@ -144,9 +152,52 @@ public class LoginBean implements Serializable {
         if (isloggedin) {
             setIsloggedin(true);
             messageString = "";
-            //return "home?faces-redirect=true";
-            FacesContext fc = FacesContext.getCurrentInstance();
-            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+
+            //create seesion
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            HttpSession httpSession = request.getSession(true);
+
+            //first delete all un-logged out sessions of this user that are older than 12 hours
+            new Login_sessionBean().deleteOldUnloggedOutSessions();
+            //---------------add login session to the session database---
+            Login_session ls = new Login_session();
+            ls.setUser_detail(user_detail);
+            ls.setSession_id(FacesContext.getCurrentInstance().getExternalContext().getSessionId(false));
+            login_session_id = ls.getSession_id();
+            String aRemoteIp = "";
+            String aRemoteHost = "";
+            String aRemoteUser = "";
+            aRemoteIp = request.getHeader("X-FORWARDED-FOR");
+            if (aRemoteIp == null) {
+                aRemoteIp = request.getRemoteAddr();
+            }
+            ls.setRemote_ip(aRemoteIp);
+            try {
+                aRemoteHost = request.getRemoteHost();
+                if (aRemoteHost == null) {
+                    aRemoteHost = "";
+                }
+            } catch (NullPointerException npe) {
+                aRemoteHost = "";
+            }
+            ls.setRemote_host(aRemoteHost);
+            try {
+                aRemoteUser = request.getRemoteUser();
+                if (aRemoteUser == null) {
+                    aRemoteUser = "";
+                }
+            } catch (NullPointerException npe) {
+                aRemoteUser = "";
+            }
+            ls.setRemote_user(aRemoteUser);
+
+            Login_sessionBean lsb = new Login_sessionBean();
+            lsb.setSelected(ls);
+            lsb.save(user_detail.getUser_detail_id());
+
+            //FacesContext fc = FacesContext.getCurrentInstance();
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
             nav.performNavigation("home?faces-redirect=true");
         } else {
             messageString = "Invalid Login Details Submitted!";
@@ -173,6 +224,7 @@ public class LoginBean implements Serializable {
     }
 
     public String logout() {
+        new Login_sessionBean().deleteLoggedInSessionId(this.user_detail.getUser_detail_id(), this.login_session_id);
         setUsername("");
         setPassword("");
         setIsloggedin(false);
@@ -228,6 +280,20 @@ public class LoginBean implements Serializable {
      */
     public void setGroup_rights(List<Group_right> group_rights) {
         this.group_rights = group_rights;
+    }
+
+    /**
+     * @return the login_session_id
+     */
+    public String getLogin_session_id() {
+        return login_session_id;
+    }
+
+    /**
+     * @param login_session_id the login_session_id to set
+     */
+    public void setLogin_session_id(String login_session_id) {
+        this.login_session_id = login_session_id;
     }
 
 }

@@ -1280,3 +1280,29 @@ RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        delim, '')
 ;;
 DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_delete_login_session_unlogged_out
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_delete_login_session_unlogged_out`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_login_session_unlogged_out`(IN in_user_detail_id int)
+BEGIN
+	SET @nw=Now();
+	UPDATE login_session SET  is_deleted=1,last_edit_date=@nw, last_edit_by=in_user_detail_id where timediff(@nw,add_date)>'12:00:00';
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_delete_login_session_id
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_delete_login_session_id`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_login_session_id`(IN in_user_detail_id int,IN in_session_id varchar(100))
+BEGIN
+	SET @nw=Now();
+	UPDATE login_session SET  is_deleted=1,last_edit_date=@nw, last_edit_by=in_user_detail_id where session_id=in_session_id;
+END
+;;
+DELIMITER ;

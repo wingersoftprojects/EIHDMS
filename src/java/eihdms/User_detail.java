@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -376,13 +376,13 @@ public class User_detail implements Serializable {
 			for(int i = 0; i < lGroup_users.length; i++) {
 				lGroup_users[i].setUser_detail(null);
 			}
-			eihdms.Login_session[] lLogin_sessions = (eihdms.Login_session[])getLogin_session().toArray(new eihdms.Login_session[getLogin_session().size()]);
-			for(int i = 0; i < lLogin_sessions.length; i++) {
-				lLogin_sessions[i].setUser_detail(null);
-			}
 			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
 			for(int i = 0; i < lUser_actions.length; i++) {
 				lUser_actions[i].setUser_detail(null);
+			}
+			eihdms.Login_session[] lLogin_sessions = (eihdms.Login_session[])getLogin_session().toArray(new eihdms.Login_session[getLogin_session().size()]);
+			for(int i = 0; i < lLogin_sessions.length; i++) {
+				lLogin_sessions[i].setUser_detail(null);
 			}
 			return delete();
 		}
@@ -402,13 +402,13 @@ public class User_detail implements Serializable {
 			for(int i = 0; i < lGroup_users.length; i++) {
 				lGroup_users[i].setUser_detail(null);
 			}
-			eihdms.Login_session[] lLogin_sessions = (eihdms.Login_session[])getLogin_session().toArray(new eihdms.Login_session[getLogin_session().size()]);
-			for(int i = 0; i < lLogin_sessions.length; i++) {
-				lLogin_sessions[i].setUser_detail(null);
-			}
 			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
 			for(int i = 0; i < lUser_actions.length; i++) {
 				lUser_actions[i].setUser_detail(null);
+			}
+			eihdms.Login_session[] lLogin_sessions = (eihdms.Login_session[])getLogin_session().toArray(new eihdms.Login_session[getLogin_session().size()]);
+			for(int i = 0; i < lLogin_sessions.length; i++) {
+				lLogin_sessions[i].setUser_detail(null);
 			}
 			try {
 				session.delete(this);
@@ -478,15 +478,15 @@ public class User_detail implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set group_user = new java.util.HashSet();
 	
-	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.Login_session.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
-	private java.util.Set login_session = new java.util.HashSet();
-	
 	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.User_action.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set user_action = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.Login_session.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set login_session = new java.util.HashSet();
 	
 	private void setUser_detail_id(int value) {
 		this.user_detail_id = value;
@@ -625,21 +625,21 @@ public class User_detail implements Serializable {
 	}
 	
 	
-	public void setLogin_session(java.util.Set value) {
-		this.login_session = value;
-	}
-	
-	public java.util.Set getLogin_session() {
-		return login_session;
-	}
-	
-	
 	public void setUser_action(java.util.Set value) {
 		this.user_action = value;
 	}
 	
 	public java.util.Set getUser_action() {
 		return user_action;
+	}
+	
+	
+	public void setLogin_session(java.util.Set value) {
+		this.login_session = value;
+	}
+	
+	public java.util.Set getLogin_session() {
+		return login_session;
 	}
 	
 	

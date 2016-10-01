@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -23,10 +23,15 @@ public class Login_sessionDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression user_detailId;
 	public final AssociationExpression user_detail;
 	public final StringExpression session_id;
-	public final TimestampExpression add_date;
 	public final StringExpression remote_ip;
 	public final StringExpression remote_host;
 	public final StringExpression remote_user;
+	public final IntegerExpression is_deleted;
+	public final IntegerExpression is_active;
+	public final TimestampExpression add_date;
+	public final IntegerExpression add_by;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	
 	public Login_sessionDetachedCriteria() {
 		super(eihdms.Login_session.class, eihdms.Login_sessionCriteria.class);
@@ -34,10 +39,15 @@ public class Login_sessionDetachedCriteria extends AbstractORMDetachedCriteria {
 		user_detailId = new IntegerExpression("user_detail.user_detail_id", this.getDetachedCriteria());
 		user_detail = new AssociationExpression("user_detail", this.getDetachedCriteria());
 		session_id = new StringExpression("session_id", this.getDetachedCriteria());
-		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
 		remote_ip = new StringExpression("remote_ip", this.getDetachedCriteria());
 		remote_host = new StringExpression("remote_host", this.getDetachedCriteria());
 		remote_user = new StringExpression("remote_user", this.getDetachedCriteria());
+		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
+		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
+		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 	}
 	
 	public Login_sessionDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -46,10 +56,15 @@ public class Login_sessionDetachedCriteria extends AbstractORMDetachedCriteria {
 		user_detailId = new IntegerExpression("user_detail.user_detail_id", this.getDetachedCriteria());
 		user_detail = new AssociationExpression("user_detail", this.getDetachedCriteria());
 		session_id = new StringExpression("session_id", this.getDetachedCriteria());
-		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
 		remote_ip = new StringExpression("remote_ip", this.getDetachedCriteria());
 		remote_host = new StringExpression("remote_host", this.getDetachedCriteria());
 		remote_user = new StringExpression("remote_user", this.getDetachedCriteria());
+		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
+		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
+		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 	}
 	
 	public User_detailDetachedCriteria createUser_detailCriteria() {

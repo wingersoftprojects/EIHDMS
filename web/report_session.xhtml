@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Active Login Session Report">
+                <p:dataTable id="dtblLoginSession" value="#{login_sessionBean.getActiveLoginSessions()}" var="ls">
+                    <p:column>
+                        <!-- column header -->
+                        <f:facet name="header">Username</f:facet>
+                        <!-- row record -->
+                        #{ls.user_detail.user_name}
+                    </p:column>               
+                    <p:column>
+                        <!-- column header -->
+                        <f:facet name="header">Session Creation Date</f:facet>
+                        <!-- row record -->
+                        <h:outputLabel value="#{ls.add_date}">
+                            <f:convertDateTime pattern="dd-MM-yyyy H:mm" timeZone="EAT"/>
+                        </h:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <!-- column header -->
+                        <f:facet name="header">Session Id</f:facet>
+                        <!-- row record -->
+                        #{ls.session_id}
+                    </p:column>
+                    <p:column>
+                        <!-- column header -->
+                        <f:facet name="header">Remote IP</f:facet>
+                        <!-- row record -->
+                        #{ls.remote_ip}
+                    </p:column>
+                    <p:column>
+                        <!-- column header -->
+                        <f:facet name="header">Remote Host</f:facet>
+                        <!-- row record -->
+                        #{ls.remote_host}
+                    </p:column>
+                    <p:column>
+                        <!-- column header -->
+                        <f:facet name="header">Remote User</f:facet>
+                        <!-- row record -->
+                        #{ls.remote_user}
+                    </p:column>
+
+                </p:dataTable>
+            </p:fieldset>
+
+        </h:form>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

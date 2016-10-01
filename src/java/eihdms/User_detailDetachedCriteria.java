@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -36,8 +36,8 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression group_user;
-	public final CollectionExpression login_session;
 	public final CollectionExpression user_action;
+	public final CollectionExpression login_session;
 	
 	public User_detailDetachedCriteria() {
 		super(eihdms.User_detail.class, eihdms.User_detailCriteria.class);
@@ -58,8 +58,8 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
-		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
+		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 	}
 	
 	public User_detailDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -81,8 +81,8 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
-		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
+		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 	}
 	
 	public User_categoryDetachedCriteria createUser_categoryCriteria() {
@@ -93,12 +93,12 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		return new Group_userDetachedCriteria(createCriteria("group_user"));
 	}
 	
-	public Login_sessionDetachedCriteria createLogin_sessionCriteria() {
-		return new Login_sessionDetachedCriteria(createCriteria("login_session"));
-	}
-	
 	public User_actionDetachedCriteria createUser_actionCriteria() {
 		return new User_actionDetachedCriteria(createCriteria("user_action"));
+	}
+	
+	public Login_sessionDetachedCriteria createLogin_sessionCriteria() {
+		return new Login_sessionDetachedCriteria(createCriteria("login_session"));
 	}
 	
 	public User_detail uniqueUser_detail(PersistentSession session) {

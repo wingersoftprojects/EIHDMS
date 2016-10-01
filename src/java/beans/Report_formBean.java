@@ -74,4 +74,23 @@ public class Report_formBean extends AbstractBean<Report_form> implements Serial
             return null;
         }
     }
+    
+    public List<Report_form> getReport_forms_by_user(String allow,String mode_col_name) {
+        try {
+            if (loginBean.getUser_detail().getIs_user_gen_admin() == 1) {
+                return Report_form.queryReport_form("is_active=1 and is_deleted=0 and "+ mode_col_name +"=1", null);
+            } else {
+                String RFIDs = "";
+                RFIDs = loginBean.getUser_report_form_str(allow);
+                if (RFIDs.length() > 0) {
+                    return Report_form.queryReport_form("is_active=1 and is_deleted=0 and "+ mode_col_name +"=1 and report_form_id IN(" + RFIDs + ")", null);
+                } else {
+                    return null;
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }

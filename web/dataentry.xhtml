@@ -17,7 +17,7 @@
                     <p:outputLabel for="report_form_id" value="Report Form:" />
                     <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                         <f:selectItem itemLabel="" />
-                        <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                        <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add','mode_data_entry')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
                         <p:ajax process="@this" update="@form"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="report_form_group" value="Report Form Group:" />

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -315,23 +315,6 @@ public class Login_session implements Serializable {
 		return login_sessionCriteria.listLogin_session();
 	}
 	
-	public boolean equals(Object aObj) {
-		if (aObj == this)
-			return true;
-		if (!(aObj instanceof Login_session))
-			return false;
-		Login_session login_session = (Login_session)aObj;
-		if (getLogin_session_id() != login_session.getLogin_session_id())
-			return false;
-		return true;
-	}
-	
-	public int hashCode() {
-		int hashcode = 0;
-		hashcode = hashcode + (int) getLogin_session_id();
-		return hashcode;
-	}
-	
 	public static Login_session createLogin_session() {
 		return new eihdms.Login_session();
 	}
@@ -415,6 +398,8 @@ public class Login_session implements Serializable {
 	
 	@Column(name="login_session_id", nullable=false, length=11)	
 	@Id	
+	@GeneratedValue(generator="EIHDMS_LOGIN_SESSION_LOGIN_SESSION_ID_GENERATOR")	
+	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_LOGIN_SESSION_LOGIN_SESSION_ID_GENERATOR", strategy="native")	
 	private int login_session_id;
 	
 	@ManyToOne(targetEntity=eihdms.User_detail.class, fetch=FetchType.LAZY)	
@@ -425,9 +410,6 @@ public class Login_session implements Serializable {
 	@Column(name="session_id", nullable=false, length=100)	
 	private String session_id;
 	
-	@Column(name="add_date", nullable=false)	
-	private java.sql.Timestamp add_date;
-	
 	@Column(name="remote_ip", nullable=false, length=100)	
 	private String remote_ip;
 	
@@ -437,7 +419,25 @@ public class Login_session implements Serializable {
 	@Column(name="remote_user", nullable=false, length=100)	
 	private String remote_user;
 	
-	public void setLogin_session_id(int value) {
+	@Column(name="is_deleted", nullable=false, length=1)	
+	private int is_deleted;
+	
+	@Column(name="is_active", nullable=false, length=1)	
+	private int is_active;
+	
+	@Column(name="add_date", nullable=false)	
+	private java.sql.Timestamp add_date;
+	
+	@Column(name="add_by", nullable=false, length=11)	
+	private int add_by;
+	
+	@Column(name="last_edit_date", nullable=true)	
+	private java.sql.Timestamp last_edit_date;
+	
+	@Column(name="last_edit_by", nullable=true, length=11)	
+	private Integer last_edit_by;
+	
+	private void setLogin_session_id(int value) {
 		this.login_session_id = value;
 	}
 	
@@ -489,6 +489,50 @@ public class Login_session implements Serializable {
 		return remote_user;
 	}
 	
+	public void setAdd_by(int value) {
+		this.add_by = value;
+	}
+	
+	public int getAdd_by() {
+		return add_by;
+	}
+	
+	public void setLast_edit_date(java.sql.Timestamp value) {
+		this.last_edit_date = value;
+	}
+	
+	public java.sql.Timestamp getLast_edit_date() {
+		return last_edit_date;
+	}
+	
+	public void setLast_edit_by(int value) {
+		setLast_edit_by(new Integer(value));
+	}
+	
+	public void setLast_edit_by(Integer value) {
+		this.last_edit_by = value;
+	}
+	
+	public Integer getLast_edit_by() {
+		return last_edit_by;
+	}
+	
+	public void setIs_deleted(int value) {
+		this.is_deleted = value;
+	}
+	
+	public int getIs_deleted() {
+		return is_deleted;
+	}
+	
+	public void setIs_active(int value) {
+		this.is_active = value;
+	}
+	
+	public int getIs_active() {
+		return is_active;
+	}
+	
 	public void setUser_detail(eihdms.User_detail value) {
 		this.user_detail = value;
 	}
@@ -500,23 +544,5 @@ public class Login_session implements Serializable {
 	public String toString() {
 		return String.valueOf(getLogin_session_id());
 	}
-	
-	@Transient	
-	private boolean _saved = false;
-	
-	public void onSave() {
-		_saved=true;
-	}
-	
-	
-	public void onLoad() {
-		_saved=true;
-	}
-	
-	
-	public boolean isSaved() {
-		return _saved;
-	}
-	
 	
 }
