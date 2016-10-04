@@ -138,20 +138,23 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                 d1.setData_element_name(report_form.getReport_form_name());
                 d1.setData_type("-");
                 level1 = new DefaultTreeNode(d1, getDataelementtreenode());
-                for (Section section : sectionBean.getTsActive()) {
+                List<Section> tempSections = Section.querySection("report_form_id=" + report_form.getReport_form_id(), "section_order,section_id");
+                for (Section section : tempSections) {
                     if (section.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
                         Data_element d2 = new Data_element();
                         d2.setData_element_name(section.getSection_name());
                         d2.setData_type("-");
                         level2 = new DefaultTreeNode(d2, level1);
                     }
-                    for (Sub_section sub_section : sub_sectionBean.getTsActive()) {
+                    List<Sub_section> tempSub_sections = Sub_section.querySub_section("section_id=" + section.getSection_id(), "sub_section_order,sub_section_id");
+                    for (Sub_section sub_section : tempSub_sections) {
                         if (sub_section.getSection().getSection_id() == section.getSection_id()) {
                             Data_element d3 = new Data_element();
                             d3.setData_element_name(sub_section.getSub_section_name());
                             d3.setData_type("-");
                             level3 = new DefaultTreeNode(d3, level2);
-                            for (Data_element data_element : this.getTsActive()) {
+                            List<Data_element> tempData_elements = Data_element.queryData_element("sub_section_id=" + sub_section.getSub_section_id(), "section_column_number");
+                            for (Data_element data_element : tempData_elements) {
                                 if (data_element.getSub_section().getSub_section_id() == sub_section.getSub_section_id()) {
                                     level4 = new DefaultTreeNode("dataelement", data_element, level3);
                                 }
@@ -293,7 +296,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                         Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                
+
                 if (lowestreportformlevel.equals("Facility")) {
                     try {
                         sql = "SELECT DISTINCT district_name,sub_county_name,health_facility_name FROM vw_location where district_id IN (" + DistrictsStr + ") and hf_is_active=1 order by district_name,sub_county_name,health_facility_name";
@@ -319,7 +322,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                         Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                
+
                 if (lowestreportformlevel.equals("District")) {
                     try {
                         sql = "SELECT DISTINCT district_name FROM vw_location where district_id IN (" + DistrictsStr + ") and d_is_active=1 order by district_name";
@@ -336,7 +339,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                         Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                
+
             }
             HttpServletResponse res = HttpJSFUtil.getResponse();
             res.setContentType("application/vnd.ms-excel");
@@ -467,21 +470,28 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         TreeNode subsectionNode = new DefaultTreeNode(null);
         TreeNode elementNode = new DefaultTreeNode(null);
         if (null != report_form) {
-            formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNodeByNone);
-            for (Section section : sectionBean.getTsActive()) {
-                if (section.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
-                    sectionNode = new DefaultTreeNode(section.getSection_name(), formNode);
-                }
-                for (Sub_section sub_section : sub_sectionBean.getTsActive()) {
-                    if (sub_section.getSection().getSection_id() == section.getSection_id()) {
-                        subsectionNode = new DefaultTreeNode(sub_section.getSub_section_name(), sectionNode);
-                        for (Data_element data_element : this.getTsActive()) {
-                            if (data_element.getSub_section().getSub_section_id() == sub_section.getSub_section_id()) {
-                                elementNode = new DefaultTreeNode(data_element.getData_element_name(), subsectionNode);
+            try {
+                formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNodeByNone);
+                List<Section> tempSections = Section.querySection("report_form_id=" + report_form.getReport_form_id(), "section_order,section_id");
+                for (Section section : tempSections) {
+                    if (section.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
+                        sectionNode = new DefaultTreeNode(section.getSection_name(), formNode);
+                    }
+                    List<Sub_section> tempSub_sections = Sub_section.querySub_section("section_id=" + section.getSection_id(), "sub_section_order,sub_section_id");
+                    for (Sub_section sub_section : tempSub_sections) {
+                        if (sub_section.getSection().getSection_id() == section.getSection_id()) {
+                            subsectionNode = new DefaultTreeNode(sub_section.getSub_section_name(), sectionNode);
+                            List<Data_element> tempData_elements = Data_element.queryData_element("sub_section_id=" + sub_section.getSub_section_id(), "section_column_number");
+                            for (Data_element data_element : tempData_elements) {
+                                if (data_element.getSub_section().getSub_section_id() == sub_section.getSub_section_id()) {
+                                    elementNode = new DefaultTreeNode(data_element.getData_element_name(), subsectionNode);
+                                }
                             }
                         }
                     }
                 }
+            } catch (PersistentException ex) {
+                Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -494,17 +504,22 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         TreeNode subsectionNode = new DefaultTreeNode(null);
         TreeNode elementNode = new DefaultTreeNode(null);
         if (null != report_form) {
-            formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNodeByGroup);
-
-            for (Report_form_group report_form_group : report_form_groupBean.getTsActive()) {
-                if (report_form_group.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
-                    groupNode = new DefaultTreeNode(report_form_group.getReport_form_group_name(), formNode);
-                }
-                for (Data_element data_element : this.getTsActive()) {
-                    if (data_element.getReport_form_group().getReport_form_group_id() == report_form_group.getReport_form_group_id()) {
-                        elementNode = new DefaultTreeNode(data_element.getData_element_name(), groupNode);
+            try {
+                formNode = new DefaultTreeNode(report_form.getReport_form_name(), TreeNodeByGroup);
+                List<Report_form_group> tempReport_form_groups = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), "group_order,report_form_group_id");
+                for (Report_form_group report_form_group : tempReport_form_groups) {
+                    if (report_form_group.getReport_form().getReport_form_id() == report_form.getReport_form_id()) {
+                        groupNode = new DefaultTreeNode(report_form_group.getReport_form_group_name(), formNode);
+                    }
+                    List<Data_element> tempData_elements = Data_element.queryData_element("report_form_group_id=" + report_form_group.getReport_form_group_id(), "group_column_number");
+                    for (Data_element data_element : tempData_elements) {
+                        if (data_element.getReport_form_group().getReport_form_group_id() == report_form_group.getReport_form_group_id()) {
+                            elementNode = new DefaultTreeNode(data_element.getData_element_name(), groupNode);
+                        }
                     }
                 }
+            } catch (PersistentException ex) {
+                Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -590,7 +605,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
             Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void onRowReorder(ReorderEvent event) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
         FacesContext.getCurrentInstance().addMessage(null, msg);

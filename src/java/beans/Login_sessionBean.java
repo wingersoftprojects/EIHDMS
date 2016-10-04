@@ -67,15 +67,16 @@ public class Login_sessionBean extends AbstractBean<Login_session> implements Se
         return lss;
     }
 
-    public void deleteOldUnloggedOutSessions() {
+    public void deleteOldUnloggedOutSessions(int user_detail_id) {
         String sql = "{call sp_delete_login_session_unlogged_out(?)}";
         try (
                 Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setInt(1, loginBean.getUser_detail().getUser_detail_id());
+            ps.setInt(1, user_detail_id);
             ps.executeUpdate();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

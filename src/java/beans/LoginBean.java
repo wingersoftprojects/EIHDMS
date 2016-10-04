@@ -159,7 +159,7 @@ public class LoginBean implements Serializable {
             HttpSession httpSession = request.getSession(true);
 
             //first delete all un-logged out sessions of this user that are older than 12 hours
-            new Login_sessionBean().deleteOldUnloggedOutSessions();
+            new Login_sessionBean().deleteOldUnloggedOutSessions(user_detail.getUser_detail_id());
             //---------------add login session to the session database---
             Login_session ls = new Login_session();
             ls.setUser_detail(user_detail);
