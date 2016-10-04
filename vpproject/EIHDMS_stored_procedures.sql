@@ -42,7 +42,7 @@ hf.county_id,
 c.county_name,
 hf.district_id,
 d.district_name,
-hf.is_active AS hf_is_avtive,
+hf.is_active AS hf_is_active,
 p.is_active AS p_is_active,
 d.is_active AS d_is_active
 FROM health_facility hf 

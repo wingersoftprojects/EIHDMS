@@ -11,7 +11,7 @@
         <h:form>
             <p:growl/>
             <p:fieldset legend="Download Excel Template for Uploading Data">
-                <p:panelGrid columns="8" id="download_panel_grid">
+                <p:panelGrid columns="5" id="download_panel_grid">
                     <p:outputLabel for="report_form" value="Report Form:" />
                     <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                         <f:selectItem itemLabel="" />
@@ -24,7 +24,12 @@
                         <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
                         <p:ajax process="@this"/>
                     </p:selectOneMenu>
-                    <h:commandButton value="Download Excel Template" action="#{data_elementBean.retrieveReportFormOrderedDataElements(uploadBean.report_form,uploadBean.report_form_group)}" />
+                    <h:commandButton value="Empty Template" action="#{data_elementBean.retrieveReportFormOrderedDataElements(uploadBean.report_form,uploadBean.report_form_group,null)}" />
+                    <p:outputLabel for="district" value="District:" />
+                    <p:selectCheckboxMenu id="district" value="#{kpiBean.selectedDistricts}" label="" style="width:150px" converter="districtConverter">
+                        <f:selectItems value="#{kpiBean.districts}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
+                    </p:selectCheckboxMenu>
+                    <h:commandButton value="Template with Location" action="#{data_elementBean.retrieveReportFormOrderedDataElements(uploadBean.report_form,uploadBean.report_form_group,kpiBean.selectedDistricts)}" />
                 </p:panelGrid>
             </p:fieldset>
         </h:form>

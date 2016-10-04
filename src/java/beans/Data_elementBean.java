@@ -7,6 +7,7 @@ package beans;
 
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Data_element;
+import eihdms.District;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
 import eihdms.Section;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.orm.PersistentException;
+import org.primefaces.event.ReorderEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
@@ -54,6 +57,10 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
     private Sub_sectionBean sub_sectionBean;
     @ManagedProperty("#{report_form_groupBean}")
     private Report_form_groupBean report_form_groupBean;
+    private List<Report_form_group> report_form_groupList;
+    private List<Section> sectionList;
+    private List<Sub_section> sub_sectionList;
+    private List<Data_element> data_elementList;
 
     /**
      * Creates a new instance of Data_elementBean
@@ -158,7 +165,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
     }
 
-    public void retrieveReportFormOrderedDataElements(Report_form report_form, Report_form_group report_form_group) {
+    public void retrieveReportFormOrderedDataElements(Report_form report_form, Report_form_group report_form_group, District[] districts) {
         String sql = "";
         List<Data_element> data_elements = new ArrayList<Data_element>();
         try {
@@ -166,7 +173,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                 sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
                 data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
                 if (data_elements.size() > 0) {
-                    this.DownloadExcelTemplate(data_elements, "TMP_" + report_form.getReport_form_code() + "_" + report_form_group.getReport_form_group_name(), report_form_group.getReport_form_group_name(), report_form.getLowest_report_form_level());
+                    this.DownloadExcelTemplate(data_elements, "TMP_" + report_form.getReport_form_code() + "_" + report_form_group.getReport_form_group_name(), report_form_group.getReport_form_group_name(), report_form.getLowest_report_form_level(), districts);
                 }
             }
         } catch (Exception ex) {
@@ -174,7 +181,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         }
     }
 
-    public void DownloadExcelTemplate(List<Data_element> des, String filename, String sheetname, String lowestreportformlevel) {
+    public void DownloadExcelTemplate(List<Data_element> des, String filename, String sheetname, String lowestreportformlevel, District[] districts) {
         XSSFWorkbook workbook = null;
         int rowIndex = 0;
         int colIndex = 0;
@@ -223,12 +230,6 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                     cell.setCellStyle(cs);
                     cell.setCellValue("District");
                     colIndex += 1;
-//                    if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
-//                        cell = (XSSFCell) row.createCell(colIndex);
-//                        cell.setCellStyle(cs);
-//                        cell.setCellValue("County");
-//                        colIndex += 1;
-//                    }
                     if (lowestreportformlevel.equals("Parish") || lowestreportformlevel.equals("Facility")) {
                         cell = (XSSFCell) row.createCell(colIndex);
                         cell.setCellStyle(cs);
@@ -253,15 +254,90 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
                 cell.setCellValue(de.getData_element_name());
                 colIndex += 1;
             }
-            /*
-             //Create file system using specific name
-             out = new FileOutputStream(new File(fileNameFull));
-             //write operation workbook using file out object
-             workbook.write(out);
-            
-             //close
-             out.close();
-             */
+            //for the location fields
+            String sql = "";
+            if (districts != null && districts.length > 0) {
+                //get 1,2,3 string format for selected districts
+                String DistrictsStr = "";
+                int y = 0;
+                y = districts.length;
+                for (int i = 0; i < y; i++) {
+                    if (DistrictsStr.length() > 0) {
+                        DistrictsStr = DistrictsStr + "," + districts[i].getDistrict_id();
+                    } else {
+                        DistrictsStr = "" + districts[i].getDistrict_id();
+                    }
+                }
+                if (lowestreportformlevel.equals("Parish")) {
+                    try {
+                        sql = "SELECT DISTINCT district_name,sub_county_name,parish_name FROM vw_location where district_id IN (" + DistrictsStr + ") and p_is_active=1 order by district_name,sub_county_name,parish_name";
+                        List<Object[]> objects = EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                        for (Object[] obj : objects) {
+                            rowIndex = rowIndex + 1;
+                            row = spreadsheet.createRow(rowIndex);
+                            colIndex = 0;
+                            cell = (XSSFCell) row.createCell(colIndex);
+                            cell.setCellStyle(cs);
+                            cell.setCellValue(obj[0].toString());
+                            colIndex += 1;
+                            cell = (XSSFCell) row.createCell(colIndex);
+                            cell.setCellStyle(cs);
+                            cell.setCellValue(obj[1].toString());
+                            colIndex += 1;
+                            cell = (XSSFCell) row.createCell(colIndex);
+                            cell.setCellStyle(cs);
+                            cell.setCellValue(obj[2].toString());
+                            colIndex += 1;
+                        }
+                    } catch (PersistentException ex) {
+                        Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+                if (lowestreportformlevel.equals("Facility")) {
+                    try {
+                        sql = "SELECT DISTINCT district_name,sub_county_name,health_facility_name FROM vw_location where district_id IN (" + DistrictsStr + ") and hf_is_active=1 order by district_name,sub_county_name,health_facility_name";
+                        List<Object[]> objects = EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                        for (Object[] obj : objects) {
+                            rowIndex = rowIndex + 1;
+                            row = spreadsheet.createRow(rowIndex);
+                            colIndex = 0;
+                            cell = (XSSFCell) row.createCell(colIndex);
+                            cell.setCellStyle(cs);
+                            cell.setCellValue(obj[0].toString());
+                            colIndex += 1;
+                            cell = (XSSFCell) row.createCell(colIndex);
+                            cell.setCellStyle(cs);
+                            cell.setCellValue(obj[1].toString());
+                            colIndex += 1;
+                            cell = (XSSFCell) row.createCell(colIndex);
+                            cell.setCellStyle(cs);
+                            cell.setCellValue(obj[2].toString());
+                            colIndex += 1;
+                        }
+                    } catch (PersistentException ex) {
+                        Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+                if (lowestreportformlevel.equals("District")) {
+                    try {
+                        sql = "SELECT DISTINCT district_name FROM vw_location where district_id IN (" + DistrictsStr + ") and d_is_active=1 order by district_name";
+                        List<Object[]> objects = EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                        for (Object[] obj : objects) {
+                            rowIndex = rowIndex + 1;
+                            row = spreadsheet.createRow(rowIndex);
+                            colIndex = 0;
+                            cell = (XSSFCell) row.createCell(colIndex);
+                            cell.setCellStyle(cs);
+                            cell.setCellValue(obj[0].toString());
+                        }
+                    } catch (PersistentException ex) {
+                        Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            }
             HttpServletResponse res = HttpJSFUtil.getResponse();
             res.setContentType("application/vnd.ms-excel");
             res.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
@@ -281,7 +357,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
             e.printStackTrace();
         }
     }
-    
+
     public void DownloadExcelTemplate_old(List<Data_element> des, String filename, String sheetname, String lowestreportformlevel) {
         XSSFWorkbook workbook = null;
         int rowIndex = 0;
@@ -437,7 +513,7 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
         this.getTreeNodeByNone(report_form);
         this.getTreeNodeByGroup(report_form);
     }
-    
+
     public Data_element getData_element(int data_element_id) {
         Data_element aData_element = new Data_element();
         try {
@@ -446,6 +522,78 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
             Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return aData_element;
+    }
+
+    public void refreshReport_form_groupList(Report_form report_form) {
+        report_form_groupList = new ArrayList<>();
+        try {
+            report_form_groupList = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), "group_order ASC");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void refreshSectionList(Report_form report_form) {
+        sectionList = new ArrayList<>();
+        try {
+            sectionList = Section.querySection("report_form_id=" + report_form.getReport_form_id(), "section_order ASC");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void refreshSub_sectionList(Section section) {
+        sub_sectionList = new ArrayList<>();
+        try {
+            sub_sectionList = Section.querySection("section_id=" + section.getSection_id(), "sub_section_order ASC");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<Sub_section> returnSub_sectionList(Section section) {
+        sub_sectionList = new ArrayList<>();
+        try {
+            sub_sectionList = Sub_section.querySub_section("section_id=" + section.getSection_id(), "sub_section_order ASC");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sub_sectionList;
+    }
+
+    public String returnReport_form_groupList(Section section, Sub_section sub_section) {
+        String sql = "";
+        String form_list = "";
+        if (section != null && sub_section != null) {
+            try {
+                sql = "select distinct report_form_group from Data_element where section_id=" + section.getSection_id() + " and sub_section_id=" + sub_section.getSub_section_id();
+                List<Report_form_group> RFGs = EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
+                for (Report_form_group RFG : RFGs) {
+                    if (form_list.length() > 0) {
+                        form_list = form_list + ", " + RFG.getReport_form_group_name();
+                    } else {
+                        form_list = RFG.getReport_form_group_name();
+                    }
+                }
+            } catch (PersistentException ex) {
+                Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return form_list;
+    }
+
+    public void refreshData_elementList(Report_form report_form) {
+        data_elementList = new ArrayList<>();
+        try {
+            data_elementList = Data_element.queryData_element("report_form_id=" + report_form.getReport_form_id(), "group_column_number,section_column_number");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void onRowReorder(ReorderEvent event) {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     /**
@@ -494,8 +642,8 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
      * @return the dataelementtreenode
      */
     public TreeNode getDataelementtreenode() {
-        if(null==dataelementtreenode){
-            dataelementtreenode=new DefaultTreeNode();
+        if (null == dataelementtreenode) {
+            dataelementtreenode = new DefaultTreeNode();
         }
         return dataelementtreenode;
     }
@@ -505,6 +653,62 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
      */
     public void setDataelementtreenode(TreeNode dataelementtreenode) {
         this.dataelementtreenode = dataelementtreenode;
+    }
+
+    /**
+     * @return the report_form_groupList
+     */
+    public List<Report_form_group> getReport_form_groupList() {
+        return report_form_groupList;
+    }
+
+    /**
+     * @param report_form_groupList the report_form_groupList to set
+     */
+    public void setReport_form_groupList(List<Report_form_group> report_form_groupList) {
+        this.report_form_groupList = report_form_groupList;
+    }
+
+    /**
+     * @return the sectionList
+     */
+    public List<Section> getSectionList() {
+        return sectionList;
+    }
+
+    /**
+     * @param sectionList the sectionList to set
+     */
+    public void setSectionList(List<Section> sectionList) {
+        this.sectionList = sectionList;
+    }
+
+    /**
+     * @return the sub_sectionList
+     */
+    public List<Sub_section> getSub_sectionList() {
+        return sub_sectionList;
+    }
+
+    /**
+     * @param sub_sectionList the sub_sectionList to set
+     */
+    public void setSub_sectionList(List<Sub_section> sub_sectionList) {
+        this.sub_sectionList = sub_sectionList;
+    }
+
+    /**
+     * @return the data_elementList
+     */
+    public List<Data_element> getData_elementList() {
+        return data_elementList;
+    }
+
+    /**
+     * @param data_elementList the data_elementList to set
+     */
+    public void setData_elementList(List<Data_element> data_elementList) {
+        this.data_elementList = data_elementList;
     }
 
 }
