@@ -43,7 +43,7 @@
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,30,50,100">
-                    <p:column headerText="Region Name">
+                    <p:column headerText="Region Name" filterBy="#{item.region_name}" filterMatchMode="contains">
                         #{item.region_name}
                     </p:column>
                     <p:column headerText="Active?">
@@ -87,10 +87,10 @@
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,30,50,100">
-                    <p:column headerText="District Name">
+                    <p:column headerText="District Name" filterBy="#{item.district_name}" filterMatchMode="contains">
                         #{item.district_name}
                     </p:column>
-                    <p:column headerText="Region">
+                    <p:column headerText="Region" filterBy="#{item.region.region_name}" filterMatchMode="contains">
                         #{item.region.region_name}
                     </p:column>
                     <p:column headerText="Active?">
@@ -134,13 +134,13 @@
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,30,50,100">
-                                        <p:column headerText="Region">
+                                        <p:column headerText="Region" filterBy="#{item.district.region.region_name}" filterMatchMode="contains">
                         #{item.district.region.region_name}
                     </p:column>
-                                        <p:column headerText="District">
+                                        <p:column headerText="District" filterBy="#{item.district.district_name}" filterMatchMode="contains">
                         #{item.district.district_name}
                     </p:column>
-                    <p:column headerText="Sub District Name">
+                    <p:column headerText="Sub District Name" filterBy="#{item.sub_district_name}" filterMatchMode="contains">
                         #{item.sub_district_name}
                     </p:column>
                     <p:column headerText="Active?">
@@ -184,13 +184,13 @@
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,30,50,100">
-                    <p:column headerText="Region">
+                    <p:column headerText="Region" filterBy="#{item.district.region.region_name}" filterMatchMode="contains">
                         #{item.district.region.region_name}
                     </p:column>
-                    <p:column headerText="District">
+                    <p:column headerText="District" filterBy="#{item.district.district_name}" filterMatchMode="contains">
                         #{item.district.district_name}
                     </p:column>
-                    <p:column headerText="County Name">
+                    <p:column headerText="County Name" filterBy="#{item.county_name}" filterMatchMode="contains">
                         #{item.county_name}
                     </p:column>
                     <p:column headerText="Active?">
@@ -240,16 +240,16 @@
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,30,50,100">
-                    <p:column headerText="Region">
+                    <p:column headerText="Region" filterBy="#{item.county.district.region.region_name}" filterMatchMode="contains">
                         #{item.county.district.region.region_name}
                     </p:column>
-                    <p:column headerText="District">
+                    <p:column headerText="District" filterBy="#{item.county.district.district_name}" filterMatchMode="contains">
                         #{item.county.district.district_name}
                     </p:column>
-                    <p:column headerText="County Name">
+                    <p:column headerText="County Name" filterBy="#{item.county.county_name}" filterMatchMode="contains">
                         #{item.county.county_name}
                     </p:column>
-                    <p:column headerText="Sub County Name">
+                    <p:column headerText="Sub County Name" filterBy="#{item.sub_county_name}" filterMatchMode="contains">
                         #{item.sub_county_name}
                     </p:column>
                     <p:column headerText="Active?">
@@ -305,19 +305,19 @@
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,30,50,100">
-                    <p:column headerText="Region">
+                    <p:column headerText="Region" filterBy="#{item.sub_county.county.district.region.region_name}" filterMatchMode="contains">
                         #{item.sub_county.county.district.region.region_name}
                     </p:column>
-                    <p:column headerText="District">
+                    <p:column headerText="District" filterBy="#{item.sub_county.county.district.district_name}" filterMatchMode="contains">
                         #{item.sub_county.county.district.district_name}
                     </p:column>
-                    <p:column headerText="County Name">
+                    <p:column headerText="County Name" filterBy="#{item.sub_county.county.county_name}" filterMatchMode="contains">
                         #{item.sub_county.county.county_name}
                     </p:column>
-                    <p:column headerText="Sub County Name">
+                    <p:column headerText="Sub County Name" filterBy="#{item.sub_county.sub_county_name}" filterMatchMode="contains">
                         #{item.sub_county.sub_county_name}
                     </p:column>
-                    <p:column headerText="Parish Name">
+                    <p:column headerText="Parish Name" filterBy="#{item.parish_name}" filterMatchMode="contains">
                         #{item.parish_name}
                     </p:column>
                     <p:column headerText="Active?">

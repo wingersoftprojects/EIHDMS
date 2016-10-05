@@ -31,14 +31,14 @@ import utilities.GeneralUtilities;
  */
 //@ManagedBean
 public abstract class AbstractBean<T> {
-    
+
     private Class<T> entityClass;
     private User_detail user;
-    
+
     public User_detail getUser() {
         return user;
     }
-    
+
     public void setUser(User_detail user) {
         this.user = user;
     }
@@ -49,24 +49,36 @@ public abstract class AbstractBean<T> {
     private List<T> tsAll;
     private List<T> tsActive;
     private List<T> filteredTs;
-    
+
     public AbstractBean() {
     }
 
     //@PostConstruct
     public void init() {
-        
+
     }
-    
+
     public void initializelist() {
         try {
             if (entityClass != null) {
                 clearCache(selected);
                 String class_name = entityClass.getSimpleName().toLowerCase();
-                if (class_name.equals("region") || class_name.equals("district") || class_name.equals("sub_district") || class_name.equals("county") || class_name.equals("sub_county") || class_name.equals("parish") || class_name.equals("health_facility")) {
+                if (class_name.equals("region")) {
                     ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.ne("is_deleted", 1)).addOrder(Order.asc(entityClass.getSimpleName().toLowerCase() + "_name")).list();
+                } else if (class_name.equals("district")) {
+                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createQuery("select d from District d ORDER BY d.region.region_name,d.district_name").list();
+                } else if (class_name.equals("sub_district")) {
+                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createQuery("select sd from Sub_district sd ORDER BY sd.district.region.region_name,sd.district.district_name,sd.sub_district_name").list();
+                } else if (class_name.equals("county")) {
+                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createQuery("select c from County c ORDER BY c.district.region.region_name,c.district.district_name,c.county_name").list();
+                } else if (class_name.equals("sub_county")) {
+                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createQuery("select sc from Sub_county sc ORDER BY sc.county.district.region.region_name,sc.county.district.district_name,sc.county.county_name,sc.sub_county_name").list();
+                } else if (class_name.equals("parish")) {
+                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createQuery("select p from Parish p ORDER BY p.sub_county.county.district.region.region_name,p.sub_county.county.district.district_name,p.sub_county.county.county_name,p.parish_name").list();
+                } else if (class_name.equals("health_facility")) {
+                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createQuery("select hf from Health_facility hf ORDER BY hf.parish.sub_county.county.district.region.region_name,hf.parish.sub_county.county.district.district_name,hf.parish.sub_county.county.county_name,hf.parish.parish_name,hf.health_facility_name").list();
                 } else {
-                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.ne("is_deleted", 1)).list();                    
+                    ts = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.ne("is_deleted", 1)).list();
                 }
             } else {
                 ts = new ArrayList<>();
@@ -75,7 +87,7 @@ public abstract class AbstractBean<T> {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void clearCache(T t) {
         try {
             EIHDMSPersistentManager.instance().getSession().evict(t);
@@ -88,7 +100,7 @@ public abstract class AbstractBean<T> {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void evictObject(T t) {
         try {
             EIHDMSPersistentManager.instance().getSession().evict(t);
@@ -98,23 +110,23 @@ public abstract class AbstractBean<T> {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public Class<T> getEntityClass() {
         return entityClass;
     }
-    
+
     public void setEntityClass(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
-    
+
     public List<T> getFilteredTs() {
         return filteredTs;
     }
-    
+
     public void setFilteredTs(List<T> filteredTs) {
         this.filteredTs = filteredTs;
     }
-    
+
     public List<T> getTsDeleted() {
         try {
             tsDeleted = (List<T>) EIHDMSPersistentManager.instance().getSession().createCriteria(entityClass).add(Restrictions.eq("is_deleted", 1)).list();
@@ -123,11 +135,11 @@ public abstract class AbstractBean<T> {
         }
         return tsDeleted;
     }
-    
+
     public void setTsDeleted(List<T> tsDeleted) {
         this.tsDeleted = tsDeleted;
     }
-    
+
     public List<T> getTsAll() {
         try {
             if (entityClass != null) {
@@ -138,18 +150,18 @@ public abstract class AbstractBean<T> {
         } catch (PersistentException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return tsAll;
     }
-    
+
     public void setTsAll(List<T> tsAll) {
         this.tsAll = tsAll;
     }
-    
+
     public List<T> getTs() {
         return ts;
     }
-    
+
     public List<T> getTsActive() {
         try {
             if (entityClass != null) {
@@ -162,40 +174,40 @@ public abstract class AbstractBean<T> {
         }
         return tsActive;
     }
-    
+
     public void setTsActive(List<T> tsActive) {
         this.tsActive = tsActive;
     }
-    
+
     public void setTs(List<T> ts) {
         this.ts = ts;
     }
-    
+
     public T getSelected() {
         return selected;
     }
-    
+
     public void setSelected(T selected) {
         this.selected = selected;
     }
-    
+
     public AbstractBean(Class<T> entityClass) {
         this.entityClass = entityClass;
         add();
     }
-    
+
     public String getFormstate() {
         return formstate;
     }
-    
+
     public void setFormstate(String formstate) {
         this.formstate = formstate;
     }
-    
+
     public void createLicense() {
-        
+
     }
-    
+
     public void add() {
         try {
             selected = entityClass.newInstance();
@@ -206,7 +218,7 @@ public abstract class AbstractBean<T> {
         }
         formstate = "add";
     }
-    
+
     public void edit(T t) {
         try {
             //no paramater
@@ -229,17 +241,17 @@ public abstract class AbstractBean<T> {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void view(T t) {
         selected = t;
         formstate = "view";
     }
-    
+
     public void cancel() {
         add();
         //formstate = "view";
     }
-    
+
     public void delete(T t) {
         try {
             //no paramater
@@ -279,7 +291,7 @@ public abstract class AbstractBean<T> {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void save(int aUserDetailId) {
         //no paramater
         Class noparams[] = {};
@@ -337,7 +349,7 @@ public abstract class AbstractBean<T> {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void delete() {
         try {
             PersistentTransaction t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
@@ -356,7 +368,7 @@ public abstract class AbstractBean<T> {
                     .addMessage("Delete", new FacesMessage(ex.getMessage()));
         }
     }
-    
+
     private void saveMessage() {
         LoginBean loginBean = new LoginBean();
         loginBean.saveMessage();
