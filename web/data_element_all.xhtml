@@ -22,10 +22,33 @@
                 </p:panelGrid>
             </p:fieldset>
             <p:fieldset legend="Report Form Data Elements">
-                <p:dataTable var="de" value="#{data_elementBean.data_elementList}" draggableRows="true">
+                <p:dataTable id="table_data_elements" var="de" value="#{data_elementBean.data_elementList}" draggableRows="false" 
+                             paginator="true" 
+                             paginatorTemplate="{Exporters}">
                     <p:ajax event="rowReorder" listener="#{data_elementBean.onRowReorder}" update="@form:msgs" />
                     <f:facet name="header">
                         #{uploadBean.report_form.report_form_name}
+                    </f:facet>
+                    <f:facet name="{Exporters}">
+                        <h:commandLink>
+                            <p:graphicImage name="images/excel.png" width="24"/>
+                            <p:dataExporter type="xls" target="table_data_elements" fileName="data_elements" />
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="images/pdf.png" width="24"/>
+                            <p:dataExporter type="pdf" target="table_data_elements" fileName="data_elements"/>
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="images/csv.png" width="24"/>
+                            <p:dataExporter type="csv" target="table_data_elements" fileName="data_elements" />
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="images/xml.png" width="24"/>
+                            <p:dataExporter type="xml" target="table_data_elements" fileName="data_elements" />
+                        </h:commandLink>
                     </f:facet>
                     <p:column headerText="Section">
                         <h:outputText value="#{de.section.section_name}" />
@@ -36,8 +59,17 @@
                     <p:column headerText="Data Element Name">
                         <h:outputText value="#{de.data_element_name}" />
                     </p:column>
-                    <p:column headerText="Group">
+                    <p:column headerText="Section Order">
+                        <h:outputText value="#{de.section_column_number}" />
+                    </p:column>
+                    <p:column headerText="Group Order">
+                        <h:outputText value="#{de.group_column_number}" />
+                    </p:column>
+                    <p:column headerText="Report Form Group">
                         <h:outputText value="#{de.report_form_group.report_form_group_name}" />
+                    </p:column>
+                    <p:column headerText="Technical Area">
+                        <h:outputText value="#{de.technical_area.technical_area_name}" />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
