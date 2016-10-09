@@ -99,6 +99,7 @@ public class UploadBean implements Serializable {
     private String database_type = "MY SQL";
 
     private List<ValidationReport> validationReportList;
+    private List<ValidationReport> validationReportListAll;
     private List<ValidationReport> validationReportSelected;
     private List<ValidationReport> validationReportFiltered;
 
@@ -117,6 +118,16 @@ public class UploadBean implements Serializable {
 
     String BaseDataStr = "";
 
+    public List<ValidationReport> getValidationReportListAll() {
+        return validationReportListAll;
+    }
+
+    public void setValidationReportListAll(List<ValidationReport> validationReportListAll) {
+        this.validationReportListAll = validationReportListAll;
+    }
+
+    
+    
     public String getBaseDataStr() {
         return BaseDataStr;
     }
@@ -1093,8 +1104,8 @@ public class UploadBean implements Serializable {
                     i.setAdd_date(new Timestamp(new Date().getTime()));
                     i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
                     i.setIs_deleted(0);
-                    i.setStatus_u("Pass");
-                    i.setStatus_u_desc("Uploaded To interface");
+                    //i.setStatus_u("Pass");
+                    //i.setStatus_u_desc("Uploaded To interface");
                     i.save();
                     if (counter % 20 == 0) { //20, same as the JDBC batch size
                         //flush a batch of inserts and release memory:
@@ -1134,7 +1145,7 @@ public class UploadBean implements Serializable {
             batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
             batchDetails.setBatch(b);
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc FROM interface_data where batch_id=" + batch_id).list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc FROM validation_report where batch_id=" + batch_id).list();
             int counter = 1;
             failed = 0;
             passed = 0;
@@ -1209,7 +1220,8 @@ public class UploadBean implements Serializable {
                 tempValidationReports.add(vr);
                 counter++;
             }
-            validationReportList = new ArrayList<>(tempValidationReports);
+            validationReportListAll=new ArrayList<>(tempValidationReports);
+            //validationReportList = new ArrayList<>(tempValidationReports);
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1219,7 +1231,7 @@ public class UploadBean implements Serializable {
         validationReportList = new ArrayList<>();
         try {
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT interface_data.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date FROM interface_data INNER JOIN user_detail ON user_detail.user_detail_id = interface_data.add_by INNER JOIN batch ON interface_data.batch_id = batch.batch_id order by batch_id desc").list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT validation_report.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date FROM validation_report INNER JOIN user_detail ON user_detail.user_detail_id = validation_report.add_by INNER JOIN batch ON validation_report.batch_id = batch.batch_id order by batch_id desc").list();
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
                 vr.setBatch_id(Integer.parseInt(objects[0].toString()));
@@ -1423,6 +1435,7 @@ public class UploadBean implements Serializable {
         interface_data.setData_element((Data_element) pair.getValue());
         interface_data.setReport_period_from_date(report_period_from_date);
         interface_data.setReport_form(report_form);
+        interface_data.setReport_form_group_id(report_form_group.getReport_form_group_id());
         interface_data.setReport_period_to_date(report_period_to_date);
         interface_data.setFinancial_year(financial_year);
         interface_data.setReport_period_quarter(report_period_quarter);

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -46,6 +46,7 @@ public class Base_data_deletedDetachedCriteria extends AbstractORMDetachedCriter
 	public final IntegerExpression report_form_id;
 	public final IntegerExpression deleted_by;
 	public final TimestampExpression delete_date;
+	public final IntegerExpression report_form_group_id;
 	
 	public Base_data_deletedDetachedCriteria() {
 		super(eihdms.Base_data_deleted.class, eihdms.Base_data_deletedCriteria.class);
@@ -76,6 +77,7 @@ public class Base_data_deletedDetachedCriteria extends AbstractORMDetachedCriter
 		report_form_id = new IntegerExpression("report_form_id", this.getDetachedCriteria());
 		deleted_by = new IntegerExpression("deleted_by", this.getDetachedCriteria());
 		delete_date = new TimestampExpression("delete_date", this.getDetachedCriteria());
+		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 	}
 	
 	public Base_data_deletedDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -107,6 +109,7 @@ public class Base_data_deletedDetachedCriteria extends AbstractORMDetachedCriter
 		report_form_id = new IntegerExpression("report_form_id", this.getDetachedCriteria());
 		deleted_by = new IntegerExpression("deleted_by", this.getDetachedCriteria());
 		delete_date = new TimestampExpression("delete_date", this.getDetachedCriteria());
+		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 	}
 	
 	public Base_data_deleted uniqueBase_data_deleted(PersistentSession session) {

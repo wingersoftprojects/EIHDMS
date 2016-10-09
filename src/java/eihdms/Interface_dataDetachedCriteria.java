@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -58,6 +58,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final IntegerExpression report_period_bi_month;
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
+	public final IntegerExpression report_form_group_id;
 	
 	public Interface_dataDetachedCriteria() {
 		super(eihdms.Interface_data.class, eihdms.Interface_dataCriteria.class);
@@ -100,6 +101,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
+		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 	}
 	
 	public Interface_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -143,6 +145,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
+		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {

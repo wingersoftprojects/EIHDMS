@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -449,6 +449,9 @@ public class Base_data_deleted implements Serializable {
 	@Column(name="delete_date", nullable=false)	
 	private java.sql.Timestamp delete_date;
 	
+	@Column(name="report_form_group_id", nullable=true, length=11)	
+	private Integer report_form_group_id;
+	
 	private void setBase_data_deleted_id(int value) {
 		this.base_data_deleted_id = value;
 	}
@@ -727,6 +730,18 @@ public class Base_data_deleted implements Serializable {
 	
 	public int getBase_data_id() {
 		return base_data_id;
+	}
+	
+	public void setReport_form_group_id(int value) {
+		setReport_form_group_id(new Integer(value));
+	}
+	
+	public void setReport_form_group_id(Integer value) {
+		this.report_form_group_id = value;
+	}
+	
+	public Integer getReport_form_group_id() {
+		return report_form_group_id;
 	}
 	
 	public String toString() {

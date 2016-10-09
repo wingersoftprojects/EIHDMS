@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -52,6 +52,7 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_period_bi_month;
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
+	public final IntegerExpression report_form_group_id;
 	
 	public Base_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -88,6 +89,7 @@ public class Base_dataCriteria extends AbstractORMCriteria {
 		report_period_bi_month = new IntegerExpression("report_period_bi_month", this);
 		report_formId = new IntegerExpression("report_form.report_form_id", this);
 		report_form = new AssociationExpression("report_form", this);
+		report_form_group_id = new IntegerExpression("report_form_group_id", this);
 	}
 	
 	public Base_dataCriteria(PersistentSession session) {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -46,6 +46,7 @@ public class Base_data_deletedCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_form_id;
 	public final IntegerExpression deleted_by;
 	public final TimestampExpression delete_date;
+	public final IntegerExpression report_form_group_id;
 	
 	public Base_data_deletedCriteria(Criteria criteria) {
 		super(criteria);
@@ -76,6 +77,7 @@ public class Base_data_deletedCriteria extends AbstractORMCriteria {
 		report_form_id = new IntegerExpression("report_form_id", this);
 		deleted_by = new IntegerExpression("deleted_by", this);
 		delete_date = new TimestampExpression("delete_date", this);
+		report_form_group_id = new IntegerExpression("report_form_group_id", this);
 	}
 	
 	public Base_data_deletedCriteria(PersistentSession session) {

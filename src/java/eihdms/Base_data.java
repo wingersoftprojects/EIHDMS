@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -555,6 +555,9 @@ public class Base_data implements Serializable {
 	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") })	
 	private eihdms.Report_form report_form;
 	
+	@Column(name="report_form_group_id", nullable=true, length=11)	
+	private Integer report_form_group_id;
+	
 	private void setBase_data_id(int value) {
 		this.base_data_id = value;
 	}
@@ -705,6 +708,18 @@ public class Base_data implements Serializable {
 	
 	public Integer getReport_period_bi_month() {
 		return report_period_bi_month;
+	}
+	
+	public void setReport_form_group_id(int value) {
+		setReport_form_group_id(new Integer(value));
+	}
+	
+	public void setReport_form_group_id(Integer value) {
+		this.report_form_group_id = value;
+	}
+	
+	public Integer getReport_form_group_id() {
+		return report_form_group_id;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

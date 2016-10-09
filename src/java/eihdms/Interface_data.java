@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -538,6 +538,9 @@ public class Interface_data implements Serializable {
 	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") })	
 	private eihdms.Report_form report_form;
 	
+	@Column(name="report_form_group_id", nullable=true, length=11)	
+	private Integer report_form_group_id;
+	
 	private void setInterface_data_id(int value) {
 		this.interface_data_id = value;
 	}
@@ -836,6 +839,18 @@ public class Interface_data implements Serializable {
 	
 	public Integer getCounty_id() {
 		return county_id;
+	}
+	
+	public void setReport_form_group_id(int value) {
+		setReport_form_group_id(new Integer(value));
+	}
+	
+	public void setReport_form_group_id(Integer value) {
+		this.report_form_group_id = value;
+	}
+	
+	public Integer getReport_form_group_id() {
+		return report_form_group_id;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

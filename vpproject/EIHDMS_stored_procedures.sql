@@ -10,46 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-09-29 22:10:53
+Date: 2016-10-09 14:52:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- View structure for vw_base_data
--- ----------------------------
-DROP VIEW IF EXISTS `vw_base_data`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER  VIEW `vw_base_data` AS select `r`.`region_name` AS `region_name`,`d`.`district_name` AS `district_name`,`c`.`county_name` AS `county_name`,`sc`.`sub_county_name` AS `sub_county_name`,`p`.`parish_name` AS `parish_name`,`h`.`health_facility_name` AS `health_facility_name`,`bd`.`base_data_id` AS `base_data_id`,`bd`.`data_element_id` AS `data_element_id`,`bd`.`data_element_value` AS `data_element_value`,`bd`.`health_facility_id` AS `health_facility_id`,`bd`.`parish_id` AS `parish_id`,`bd`.`district_id` AS `district_id`,`bd`.`report_period_from_date` AS `report_period_from_date`,`bd`.`report_period_to_date` AS `report_period_to_date`,`bd`.`is_deleted` AS `is_deleted`,`bd`.`is_active` AS `is_active`,`bd`.`add_date` AS `add_date`,`bd`.`add_by` AS `add_by`,`bd`.`last_edit_date` AS `last_edit_date`,`bd`.`last_edit_by` AS `last_edit_by`,`bd`.`financial_year_id` AS `financial_year_id`,`bd`.`report_period_quarter` AS `report_period_quarter`,`bd`.`sub_county_id` AS `sub_county_id`,`bd`.`batch_id` AS `batch_id`,`bd`.`report_period_month` AS `report_period_month`,`bd`.`report_period_week` AS `report_period_week`,`bd`.`report_period_year` AS `report_period_year`,`bd`.`report_period_bi_month` AS `report_period_bi_month`,`de`.`data_element_name` AS `data_element_name`,`de`.`data_element_code` AS `data_element_code`,`de`.`age_category` AS `age_category`,`de`.`sex_category` AS `sex_category`,`de`.`other_category` AS `other_category`,`de`.`data_element_context` AS `data_element_context`,`rf`.`report_form_name` AS `report_form_name`,`rfg`.`report_form_group_name` AS `report_form_group_name`,`de`.`report_form_id` AS `report_form_id`,`de`.`report_form_group_id` AS `report_form_group_id`,`r`.`region_id` AS `region_id`,`c`.`county_id` AS `county_id` from (((((((((`base_data` `bd` join `district` `d` on((`bd`.`district_id` = `d`.`district_id`))) join `region` `r` on((`d`.`region_id` = `r`.`region_id`))) left join `sub_county` `sc` on((`bd`.`sub_county_id` = `sc`.`sub_county_id`))) left join `county` `c` on((`c`.`county_id` = `bd`.`county_id`))) left join `parish` `p` on((`bd`.`parish_id` = `p`.`parish_id`))) left join `health_facility` `h` on((`bd`.`health_facility_id` = `h`.`health_facility_id`))) join `data_element` `de` on((`bd`.`data_element_id` = `de`.`data_element_id`))) join `report_form` `rf` on((`de`.`report_form_id` = `rf`.`report_form_id`))) join `report_form_group` `rfg` on((`de`.`report_form_group_id` = `rfg`.`report_form_group_id`))) ;
-
--- ----------------------------
--- View structure for vw_interface_data
--- ----------------------------
-DROP VIEW IF EXISTS `vw_interface_data`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER  VIEW `vw_interface_data` AS select `interface_data`.`interface_data_id` AS `interface_data_id`,`interface_data`.`data_element_id` AS `data_element_id`,`interface_data`.`data_element_value` AS `data_element_value`,`interface_data`.`health_facility_name` AS `health_facility_name`,`interface_data`.`parish_name` AS `parish_name`,`interface_data`.`district_name` AS `district_name`,`interface_data`.`report_period_from_date` AS `report_period_from_date`,`interface_data`.`report_period_to_date` AS `report_period_to_date`,`interface_data`.`is_deleted` AS `is_deleted`,`interface_data`.`is_active` AS `is_active`,`interface_data`.`add_date` AS `add_date`,`interface_data`.`add_by` AS `add_by`,`interface_data`.`last_edit_date` AS `last_edit_date`,`interface_data`.`last_edit_by` AS `last_edit_by`,`interface_data`.`financial_year_id` AS `financial_year_id`,`interface_data`.`report_period_quarter` AS `report_period_quarter`,`data_element`.`data_element_name` AS `data_element_name`,`report_form`.`report_form_id` AS `report_form_id`,`report_form_group`.`report_form_group_id` AS `report_form_group_id`,`interface_data`.`sub_county_name` AS `sub_county_name`,`interface_data`.`batch_id` AS `batch_id`,`interface_data`.`county_name` AS `county_name` from (((`interface_data` join `data_element` on((`interface_data`.`data_element_id` = `data_element`.`data_element_id`))) join `report_form` on((`report_form`.`report_form_id` = `data_element`.`report_form_id`))) join `report_form_group` on(((`report_form_group`.`report_form_id` = `report_form`.`report_form_id`) and (`report_form_group`.`report_form_group_id` = `data_element`.`report_form_group_id`)))); ;
-
--- ----------------------------
--- View structure for vw_location
--- ----------------------------
-DROP VIEW IF EXISTS `vw_location`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER  VIEW `vw_location` AS SELECT
-hf.health_facility_id,
-hf.health_facility_name,
-hf.parish_id,
-p.parish_name,
-hf.sub_county_id,
-sc.sub_county_name,
-hf.county_id,
-c.county_name,
-hf.district_id,
-d.district_name,
-hf.is_active AS hf_is_active,
-p.is_active AS p_is_active,
-d.is_active AS d_is_active
-FROM health_facility hf 
-inner join parish p on hf.parish_id=p.parish_id 
-inner join sub_county sc on hf.sub_county_id=sc.sub_county_id 
-inner join county c on hf.county_id=c.county_id 
-inner join district d on hf.district_id=d.district_id ;
 
 -- ----------------------------
 -- Procedure structure for sp_check_duplicate_temp_data_elements
@@ -143,6 +107,32 @@ prepare stmt from @sql;
 execute stmt;
 
 END IF;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_delete_login_session_id
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_delete_login_session_id`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_login_session_id`(IN in_user_detail_id int,IN in_session_id varchar(100))
+BEGIN
+	SET @nw=Now();
+	UPDATE login_session SET  is_deleted=1,last_edit_date=@nw, last_edit_by=in_user_detail_id where session_id=in_session_id;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_delete_login_session_unlogged_out
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_delete_login_session_unlogged_out`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_login_session_unlogged_out`(IN in_user_detail_id int)
+BEGIN
+	SET @nw=Now();
+	UPDATE login_session SET  is_deleted=1,last_edit_date=@nw, last_edit_by=in_user_detail_id where timediff(@nw,add_date)>'12:00:00';
 END
 ;;
 DELIMITER ;
@@ -577,8 +567,9 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_move_data_from_interface_to_base`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_move_data_from_interface_to_base`(IN in_batch_id int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_move_data_from_interface_to_base`(IN in_batch_id int,IN reporting_level varchar(100),IN in_frequency varchar(50),IN in_report_form_group_id int,IN in_week int , IN in_month int ,IN in_bi_month int, IN in_quarter int,IN in_calendar_year int)
 BEGIN
+IF reporting_level='Facility' THEN 
 INSERT INTO base_data (data_element_id,
 data_element_value,
 health_facility_id,
@@ -592,14 +583,37 @@ add_date,
 add_by,
 last_edit_date,
 last_edit_by,
-financial_year_id,
 report_period_quarter,
 sub_county_id,
 batch_id,
 report_period_month,
 report_period_week,
-report_period_year,report_period_bi_month,report_form_id,county_id) SELECT 
-data_element_id,
+report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id) SELECT 
+id.data_element_id,
+id.data_element_value,
+id.health_facility_id,
+id.parish_id,
+id.district_id,
+id.report_period_from_date,
+id.report_period_to_date,
+id.is_deleted,
+id.is_active,
+id.add_date,
+id.add_by,
+id.last_edit_date,
+id.last_edit_by,
+id.report_period_quarter,
+id.sub_county_id,
+id.batch_id,
+id.report_period_month,
+id.report_period_week,
+id.report_period_year,
+id.report_period_bi_month,
+id.report_form_id,
+id.county_id,id.report_form_group_id
+FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.health_facility_id=id.health_facility_id where vr.batch_id=in_batch_id AND vr.status_v='Pass';
+ELSEIF reporting_level='Parish' THEN 
+INSERT INTO base_data (data_element_id,
 data_element_value,
 health_facility_id,
 parish_id,
@@ -612,22 +626,210 @@ add_date,
 add_by,
 last_edit_date,
 last_edit_by,
-financial_year_id,
 report_period_quarter,
 sub_county_id,
 batch_id,
 report_period_month,
 report_period_week,
-report_period_year,
-report_period_bi_month,
-report_form_id,
-county_id
-FROM interface_data where batch_id=in_batch_id AND status_v='Pass';
+report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id) SELECT 
+id.data_element_id,
+id.data_element_value,
+id.health_facility_id,
+id.parish_id,
+id.district_id,
+id.report_period_from_date,
+id.report_period_to_date,
+id.is_deleted,
+id.is_active,
+id.add_date,
+id.add_by,
+id.last_edit_date,
+id.last_edit_by,
+id.report_period_quarter,
+id.sub_county_id,
+id.batch_id,
+id.report_period_month,
+id.report_period_week,
+id.report_period_year,
+id.report_period_bi_month,
+id.report_form_id,
+id.county_id,id.report_form_group_id
+FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.parish_id=id.parish_id where vr.batch_id=in_batch_id AND vr.status_v='Pass';
+ELSEIF reporting_level='District' THEN 
+INSERT INTO base_data (data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+district_id,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+report_period_quarter,
+sub_county_id,
+batch_id,
+report_period_month,
+report_period_week,
+report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id) SELECT 
+id.data_element_id,
+id.data_element_value,
+id.health_facility_id,
+id.parish_id,
+id.district_id,
+id.report_period_from_date,
+id.report_period_to_date,
+id.is_deleted,
+id.is_active,
+id.add_date,
+id.add_by,
+id.last_edit_date,
+id.last_edit_by,
+id.report_period_quarter,
+id.sub_county_id,
+id.batch_id,
+id.report_period_month,
+id.report_period_week,
+id.report_period_year,
+id.report_period_bi_month,
+id.report_form_id,
+id.county_id,id.report_form_group_id
+FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.district_id=id.district_id where vr.batch_id=in_batch_id AND vr.status_v='Pass';
+END IF;
 
 
 -- BEGIN Update STATUS
-UPDATE interface_data set status_m='Pass',status_m_desc='Moved Successfully' WHERE  batch_id=in_batch_id AND status_v='Pass';
+UPDATE validation_report set status_m='Pass',status_m_desc='Moved Successfully' WHERE  batch_id=in_batch_id AND status_v='Pass';
+UPDATE validation_report set status_m='Fail',status_m_desc='Not Moved' WHERE  batch_id=in_batch_id AND status_v='Fail';
 -- END Update STATUS
+
+-- BEGIN loaded_data_summary
+IF in_frequency='Weekly' THEN
+SELECT * FROM loaded_data_summary WHERE report_period_week=in_week AND report_period_month=in_month AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()=0 THEN
+INSERT INTO loaded_data_summary (report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date) SELECT DISTINCT report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
+END IF;
+ELSEIF in_frequency='Monthly' THEN
+SELECT * FROM loaded_data_summary WHERE report_period_month=in_month AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()=0 THEN
+INSERT INTO loaded_data_summary (report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date) SELECT DISTINCT report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
+END IF;
+ELSEIF in_frequency='Bi-Monthly' THEN
+SELECT * FROM loaded_data_summary WHERE report_period_bi_month=in_bi_month AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()=0 THEN
+INSERT INTO loaded_data_summary (report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date) SELECT DISTINCT report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
+END IF;
+ELSEIF in_frequency='Quarterly' THEN
+SELECT * FROM loaded_data_summary WHERE report_period_quarter=in_quarter AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()=0 THEN
+INSERT INTO loaded_data_summary (report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date) SELECT DISTINCT report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
+END IF;
+ELSEIF in_frequency='Annually' THEN
+SELECT * FROM loaded_data_summary WHERE report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()=0 THEN
+INSERT INTO loaded_data_summary (report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date) SELECT DISTINCT report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+report_period_bi_month,
+report_form_group_id,
+report_form_id,
+batch_id,
+add_by,
+add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
+END IF;
+END IF;
+-- END loaded_data_summary
+
+
+-- Delete from interface_data
+-- DELETE from interface_data WHERE batch_id=in_batch_id;
+-- Delete from interface_data
+
 END
 ;;
 DELIMITER ;
@@ -894,7 +1096,10 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_location_id`(IN in_reporting_level varchar(50), IN in_batch_id int)
 BEGIN
 
+SET @sql = NULL;
+
 IF in_reporting_level='Facility' THEN
+
 
 UPDATE interface_data id 
 set id.district_id=(SELECT DISTINCT district_id from vw_location 
@@ -912,11 +1117,35 @@ AND health_facility_name=id.health_facility_name),
 id.health_facility_id=(SELECT DISTINCT health_facility_id from vw_location 
 where district_name=id.district_name AND sub_county_name=id.sub_county_name 
 AND health_facility_name=id.health_facility_name) WHERE batch_id=in_batch_id;
+
+
+
+
+UPDATE validation_report id 
+set id.district_id=(SELECT DISTINCT district_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.county_id=(SELECT DISTINCT county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.county_name=(SELECT DISTINCT county_name from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.health_facility_id=(SELECT DISTINCT health_facility_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name) WHERE batch_id=in_batch_id;
+
+
+
 -- Updates status on fail
-UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Health Facility ',district_name,'/',sub_county_name,'/',health_facility_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
+UPDATE validation_report set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Health Facility ',district_name,'/',sub_county_name,'/',health_facility_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
+
 ELSEIF in_reporting_level='Parish' THEN
 
-UPDATE interface_data id 
+SET @sql=CONCAT('UPDATE interface_data id 
 set id.district_id=(SELECT DISTINCT district_id from vw_location 
 where district_name=id.district_name AND sub_county_name=id.sub_county_name 
 AND health_facility_name=id.health_facility_name),
@@ -931,17 +1160,52 @@ where district_name=id.district_name AND sub_county_name=id.sub_county_name
 AND health_facility_name=id.health_facility_name),
 id.parish_id=(SELECT DISTINCT parish_id from vw_location 
 where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND parish_name=id.parish_name) WHERE batch_id=in_batch_id;
+AND parish_name=id.parish_name) WHERE batch_id=',in_batch_id);
+prepare stmt from @sql;
+execute stmt;
+
+
+SET @sql=CONCAT('UPDATE validation_report id 
+set id.district_id=(SELECT DISTINCT district_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.county_id=(SELECT DISTINCT county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND parish_name=id.parish_name),
+id.county_name=(SELECT DISTINCT county_name from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND parish_name=id.parish_name),
+id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND health_facility_name=id.health_facility_name),
+id.parish_id=(SELECT DISTINCT parish_id from vw_location 
+where district_name=id.district_name AND sub_county_name=id.sub_county_name 
+AND parish_name=id.parish_name) WHERE batch_id=',in_batch_id);
+prepare stmt from @sql;
+execute stmt;
+
 -- Updates status on fail
-UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Parish ',district_name,'/',sub_county_name,'/',parish_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
+UPDATE validation_report set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Parish ',district_name,'/',sub_county_name,'/',parish_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
 
 ELSEIF in_reporting_level='District' THEN
-UPDATE interface_data id 
+
+
+SET @sql=CONCAT('UPDATE interface_data id 
 set id.district_id=(SELECT DISTINCT district_id from vw_location 
-where district_name=id.district_name) WHERE batch_id=in_batch_id;
+where district_name=id.district_name) WHERE batch_id=',in_batch_id);
+prepare stmt from @sql;
+execute stmt;
+
+
+SET @sql=CONCAT('UPDATE validation_report id 
+set id.district_id=(SELECT DISTINCT district_id from vw_location 
+where district_name=id.district_name) WHERE batch_id=',in_batch_id);
+prepare stmt from @sql;
+execute stmt;
+
 
 -- Updates status on fail
-UPDATE interface_data set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because District ',district_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
+UPDATE validation_report set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because District ',district_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
 
 END IF;
 END
@@ -955,13 +1219,21 @@ DROP PROCEDURE IF EXISTS `sp_validate_batch`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_batch`(IN in_batch_id int,IN reporting_level_name varchar(500), IN in_validation_formula varchar(200),IN in_reporting_name varchar(200))
 BEGIN
-	SET SESSION group_concat_max_len = 18446744073709551615;
+SET SESSION group_concat_max_len = 18446744073709551615;
 SET @sql = NULL;
-SELECT
+SET @sql_text=NULL;
+
+SET @sql_text=CONCAT('SELECT
   GROUP_CONCAT(DISTINCT
-    CONCAT('max(case when data_element_id = ',data_element_id,' then data_element_value end) AS ','DE',data_element_id,' ')
-  ) INTO @sql
-FROM  vw_interface_data where batch_id=in_batch_id;
+    CONCAT(''max(case when data_element_id = '',data_element_id,'' then data_element_value end) AS '',''DE'',data_element_id,'' '')
+  )  FROM ', 'vw_interface_data' ,' where batch_id=',in_batch_id,' INTO @sql');
+
+
+prepare stmt from @sql_text;
+execute stmt;
+
+-- SELECT @sql;
+
 
 SET @sql = CONCAT('SELECT batch_id,',reporting_level_name,' AS ReportingName, ', @sql, ' FROM vw_interface_data GROUP BY batch_id,',reporting_level_name,' having (',in_validation_formula,') AND ReportingName =''',in_reporting_name,''' AND batch_id=',in_batch_id);
 
@@ -1010,6 +1282,43 @@ DECLARE cur_location CURSOR FOR SELECT DISTINCT district_name,county_name,sub_co
 DECLARE cur_interface_data CURSOR FOR SELECT DISTINCT CONCAT(district_name,CASE WHEN county_name IS NULL THEN '' ELSE county_name END,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END ,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END) AS reporting_hierarchy,report_period_week,report_period_month,report_period_bi_month,report_period_quarter,report_period_year FROM interface_data where batch_id=in_batch_id;
 -- For Existing DATA
 
+-- Load validation_report
+INSERT INTO validation_report (district_name,
+county_name,
+sub_county_name,
+parish_name,
+health_facility_name,
+district_id,
+county_id,
+sub_county_id,
+parish_id,
+health_facility_id,
+report_form_group_id,
+report_form_id,
+report_period_bi_month,
+report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+batch_id,add_by,add_date) SELECT DISTINCT district_name,
+county_name,
+sub_county_name,
+parish_name,
+health_facility_name,
+district_id,
+county_id,
+sub_county_id,
+parish_id,
+health_facility_id,
+report_form_group_id,
+report_form_id,
+report_period_bi_month,
+report_period_month,
+report_period_week,
+report_period_year,
+report_period_quarter,
+batch_id,add_by,NOW() FROM interface_data where batch_id=in_batch_id;
+-- Load validation_report
 
 SET sub_county_name_v ='';
 SET parish_name_v ='';
@@ -1051,9 +1360,9 @@ END IF;
 END IF;
 END LOOP;
 IF LENGTH(validation_text)>0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v;
+UPDATE validation_report set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v;
 ELSE
-UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v;
+UPDATE validation_report set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v;
 END IF;
 END;
 CLOSE cur_validation_rules;
@@ -1088,9 +1397,9 @@ END IF;
 END IF;
 	END LOOP;
 if LENGTH(validation_text)>0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
+UPDATE validation_report set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
 ELSE
-UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
+UPDATE validation_report set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND parish_name=parish_name_v;
 END IF;
 END;
 CLOSE cur_validation_rules;
@@ -1126,9 +1435,9 @@ END IF;
 END IF;
 	END LOOP;
 if LENGTH(validation_text)>0 THEN
-UPDATE interface_data set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
+UPDATE validation_report set status_v='Fail',status_v_desc=validation_text where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
 ELSE
-UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
+UPDATE validation_report set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id and district_name=district_name_v AND county_name=county_name_v AND sub_county_name=sub_county_name_v AND health_facility_name=health_facility_name_v;
 END IF;
 END;
 CLOSE cur_validation_rules;
@@ -1143,7 +1452,7 @@ CLOSE cur_district_level;
 CLOSE cur_parish_level;
 CLOSE cur_facility_level;
 ELSE
-UPDATE interface_data set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id;
+UPDATE validation_report set status_v='Pass',status_v_desc='=>Passed Validation Rules' where batch_id=in_batch_id;
 END IF;
 -- End Validation rules
 
@@ -1155,11 +1464,11 @@ END IF;
  -- BEGIN Validate Existing Data
 select report_form_frequency from report_form where report_form_id in (select report_form_id from report_form_group where report_form_group_id=in_report_form_group_id) LIMIT 1 into frequency_v;
 select distinct report_period_week,report_period_month,report_period_bi_month,report_period_quarter,report_period_year from interface_data where batch_id=in_batch_id into week_v,month_v,bi_month_v,quarter_v,year_v;
-CALL sp_validate_existing_data (frequency_v ,in_batch_id,week_v,month_v,bi_month_v,quarter_v,year_v);
+CALL sp_validate_existing_data (frequency_v ,in_batch_id,week_v,month_v,bi_month_v,quarter_v,year_v,in_report_form_group_id,in_reporting_level);
 -- END Validate Existing Data
 
 -- BEGIN Move DATA
-CALL sp_move_data_from_interface_to_base(in_batch_id);
+CALL sp_move_data_from_interface_to_base(in_batch_id,in_reporting_level,frequency_v,in_report_form_group_id,week_v,month_v,bi_month_v,quarter_v,year_v);
 -- END Move DATA
 
 END
@@ -1171,36 +1480,101 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_validate_existing_data`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_existing_data`(IN in_frequency varchar(50),IN in_batch_id int,IN in_week int , IN in_month int ,IN in_bi_month int, IN in_quarter int,IN in_calendar_year int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_existing_data`(IN in_frequency varchar(50),IN in_batch_id int,IN in_week int , IN in_month int ,IN in_bi_month int, IN in_quarter int,IN in_calendar_year int,IN in_report_form_group_id int,IN in_reporting_level varchar(100))
 BEGIN
 
 IF in_frequency='Weekly' THEN
-UPDATE interface_data
+SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_month=in_month and report_period_week=in_week and report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()>0 THEN
+IF in_reporting_level='Facility' THEN
+UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Week:',report_period_week,'/Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE data_element_id in (select data_element_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month AND report_period_week=in_week) and batch_id=in_batch_id;
+WHERE health_facility_id in (select DISTINCT health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month AND report_period_week=in_week) and batch_id=in_batch_id;
+ELSEIF in_reporting_level='Parish' THEN
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Week:',report_period_week,'/Month:',report_period_month,'/Year:',report_period_year,') already exists')
+WHERE parish_id in (select DISTINCT parish_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month AND report_period_week=in_week) and batch_id=in_batch_id;
+ ELSEIF in_reporting_level='District' THEN 
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Week:',report_period_week,'/Month:',report_period_month,'/Year:',report_period_year,') already exists')
+WHERE district_id in (select DISTINCT district_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month AND report_period_week=in_week) and batch_id=in_batch_id;
+END IF;
+END IF;
 END IF;
 
 IF in_frequency='Monthly' THEN
-UPDATE interface_data
+SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_month=in_month and report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()>0 THEN
+IF in_reporting_level='Facility' THEN
+UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE data_element_id in (select data_element_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month) and batch_id=in_batch_id;
+WHERE health_facility_id in (select DISTINCT health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month) and batch_id=in_batch_id;
+ELSEIF in_reporting_level='Parish' THEN
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Month:',report_period_month,'/Year:',report_period_year,') already exists')
+WHERE parish_id in (select DISTINCT parish_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month) and batch_id=in_batch_id;
+ ELSEIF in_reporting_level='District' THEN 
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Month:',report_period_month,'/Year:',report_period_year,') already exists')
+WHERE district_id in (select DISTINCT district_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month) and batch_id=in_batch_id;
+END IF;
+END IF;
 END IF;
 
 IF in_frequency='Bi-Monthly' THEN
-UPDATE interface_data
+SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_bi_month=in_bi_month and report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()>0 THEN
+IF in_reporting_level='Facility' THEN
+UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Bi-Month:',report_period_bi_month,'/Year:',report_period_year,') already exists')
-WHERE data_element_id in (select data_element_id from base_data where report_period_year=in_calendar_year AND report_period_bi_month=in_bi_month) and batch_id=in_batch_id;
+WHERE health_facility_id in (select health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_bi_month=in_bi_month) and batch_id=in_batch_id;
+ELSEIF in_reporting_level='Parish' THEN
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Bi-Month:',report_period_bi_month,'/Year:',report_period_year,') already exists')
+WHERE parish_id in (select parish_id from base_data where report_period_year=in_calendar_year AND report_period_bi_month=in_bi_month) and batch_id=in_batch_id;
+ ELSEIF in_reporting_level='District' THEN 
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Bi-Month:',report_period_bi_month,'/Year:',report_period_year,') already exists')
+WHERE district_id in (select district_id from base_data where report_period_year=in_calendar_year AND report_period_bi_month=in_bi_month) and batch_id=in_batch_id;
+END IF;
+END IF;
 END IF;
 IF in_frequency='Quarterly' THEN
-UPDATE interface_data
+SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_quarter=in_quarter and report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()>0 THEN
+IF in_reporting_level='Facility' THEN
+UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Quarter:',report_period_quarter,'/Year:',report_period_year,') already exists')
-WHERE data_element_id in (select data_element_id from base_data where report_period_year=in_calendar_year AND report_period_quarter=in_quarter) and batch_id=in_batch_id;
+WHERE health_facility_id in (select health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_quarter=in_quarter) and batch_id=in_batch_id;
+ELSEIF in_reporting_level='Parish' THEN
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Quarter:',report_period_quarter,'/Year:',report_period_year,') already exists')
+WHERE parish_id in (select parish_id from base_data where report_period_year=in_calendar_year AND report_period_quarter=in_quarter) and batch_id=in_batch_id;
+ ELSEIF in_reporting_level='District' THEN 
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Quarter:',report_period_quarter,'/Year:',report_period_year,') already exists')
+WHERE district_id in (select district_id from base_data where report_period_year=in_calendar_year AND report_period_quarter=in_quarter) and batch_id=in_batch_id;
+END IF;
+END IF;
 END IF;
 
 IF in_frequency='Annually' THEN
-UPDATE interface_data
+SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_form_group_id=in_report_form_group_id;
+IF FOUND_ROWS()>0 THEN
+IF in_reporting_level='Facility' THEN
+UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Year:',report_period_year,') already exists')
-WHERE data_element_id in (select data_element_id from base_data where report_period_year=in_calendar_year) and batch_id=in_batch_id;
+WHERE health_facility_id in (select health_facility_id from base_data where report_period_year=in_calendar_year) and batch_id=in_batch_id;
+ELSEIF in_reporting_level='Parish' THEN
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Year:',report_period_year,') already exists')
+WHERE parish_id in (select parish_id from base_data where report_period_year=in_calendar_year) and batch_id=in_batch_id;
+ ELSEIF in_reporting_level='District' THEN 
+UPDATE validation_report
+set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Year:',report_period_year,') already exists')
+WHERE district_id in (select district_id from base_data where report_period_year=in_calendar_year) and batch_id=in_batch_id;
+END IF;
+END IF;
 END IF;
 
 END
@@ -1265,8 +1639,6 @@ END
 ;;
 DELIMITER ;
 
-SET GLOBAL log_bin_trust_function_creators = 1;
-
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------
@@ -1278,31 +1650,6 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `SPLIT_STR`(x LONGTEXT,
 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
        delim, '')
-;;
-DELIMITER ;
-
--- ----------------------------
--- Procedure structure for sp_delete_login_session_unlogged_out
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_delete_login_session_unlogged_out`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_login_session_unlogged_out`(IN in_user_detail_id int)
-BEGIN
-	SET @nw=Now();
-	UPDATE login_session SET  is_deleted=1,last_edit_date=@nw, last_edit_by=in_user_detail_id where timediff(@nw,add_date)>'12:00:00';
-END
-;;
-DELIMITER ;
-
--- ----------------------------
--- Procedure structure for sp_delete_login_session_id
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_delete_login_session_id`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_login_session_id`(IN in_user_detail_id int,IN in_session_id varchar(100))
-BEGIN
-	SET @nw=Now();
-	UPDATE login_session SET  is_deleted=1,last_edit_date=@nw, last_edit_by=in_user_detail_id where session_id=in_session_id;
-END
+;
 ;;
 DELIMITER ;
