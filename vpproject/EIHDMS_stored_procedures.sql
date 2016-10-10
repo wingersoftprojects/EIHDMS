@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-10-10 10:43:49
+Date: 2016-10-10 10:48:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1543,7 +1543,6 @@ execute stmt;
 END
 ;;
 DELIMITER ;
-
 
 SET GLOBAL log_bin_trust_function_creators = 1;
 -- ----------------------------
