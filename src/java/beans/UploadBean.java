@@ -118,6 +118,16 @@ public class UploadBean implements Serializable {
 
     String BaseDataStr = "";
 
+    private List<LocationHierarchy> locationHierarchyList;
+
+    public List<LocationHierarchy> getLocationHierarchyList() {
+        return locationHierarchyList;
+    }
+
+    public void setLocationHierarchyList(List<LocationHierarchy> locationHierarchyList) {
+        this.locationHierarchyList = locationHierarchyList;
+    }
+
     public List<ValidationReport> getValidationReportListAll() {
         return validationReportListAll;
     }
@@ -126,8 +136,6 @@ public class UploadBean implements Serializable {
         this.validationReportListAll = validationReportListAll;
     }
 
-    
-    
     public String getBaseDataStr() {
         return BaseDataStr;
     }
@@ -1107,7 +1115,7 @@ public class UploadBean implements Serializable {
                     //i.setStatus_u("Pass");
                     //i.setStatus_u_desc("Uploaded To interface");
                     i.save();
-                    if (counter % 20 == 0) { //20, same as the JDBC batch size
+                    if (counter % 200 == 0) { //20, same as the JDBC batch size
                         //flush a batch of inserts and release memory:
                         EIHDMSPersistentManager.instance().getSession().flush(); //line1
                         EIHDMSPersistentManager.instance().getSession().clear();
@@ -1220,7 +1228,7 @@ public class UploadBean implements Serializable {
                 tempValidationReports.add(vr);
                 counter++;
             }
-            validationReportListAll=new ArrayList<>(tempValidationReports);
+            validationReportListAll = new ArrayList<>(tempValidationReports);
             //validationReportList = new ArrayList<>(tempValidationReports);
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -1466,6 +1474,7 @@ public class UploadBean implements Serializable {
             default:
                 break;
         }
+        setlocationids(interface_data);
     }
 
     public void generate_insertstring(InputStream inputStream) {
@@ -1992,6 +2001,161 @@ public class UploadBean implements Serializable {
             this.BatchUserName = BatchUserName;
         }
 
+    }
+
+    public void setlocationids(Interface_data id) {
+        for (LocationHierarchy lh : locationHierarchyList) {
+            if (report_form.getLowest_report_form_level().equals("Facility")) {
+                if (id.getDistrict_name().toUpperCase().equals(lh.getDistrict_name().toUpperCase()) && id.getSub_county_name().toUpperCase().equals(lh.getSub_county_name().toUpperCase()) && id.getHealth_facility_name().toUpperCase().equals(lh.getHealth_facility_name().toUpperCase())) {
+                    id.setDistrict_id(lh.getDistrict_id());
+                    id.setCounty_id(lh.getCounty_id());
+                    id.setSub_county_id(lh.getSub_county_id());
+                    id.setHealth_facility_id(lh.getHealth_facility_id());
+                    break;
+                }
+            }
+            if (report_form.getLowest_report_form_level().equals("Parish")) {
+                if (id.getDistrict_name().toUpperCase().equals(lh.getDistrict_name().toUpperCase()) && id.getSub_county_name().toUpperCase().equals(lh.getSub_county_name().toUpperCase()) && id.getParish_name().toUpperCase().equals(lh.getParish_name().toUpperCase())) {
+                    id.setDistrict_id(lh.getDistrict_id());
+                    id.setCounty_id(lh.getCounty_id());
+                    id.setSub_county_id(lh.getSub_county_id());
+                    id.setParish_id(lh.getParish_id());
+                    break;
+                }
+            }
+            if (report_form.getLowest_report_form_level().equals("District")) {
+                if (id.getDistrict_name().toUpperCase().equals(lh.getDistrict_name().toUpperCase())) {
+                    id.setDistrict_id(lh.getDistrict_id());
+                    break;
+                }
+            }
+        }
+    }
+
+    public void load_location_hierarchy() {
+        String sql = "SELECT * FROM vw_location;";
+        ResultSet rs = null;
+        try {
+            Connection conn = DBConnection.getMySQLConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            locationHierarchyList = new ArrayList<>();
+            while (rs.next()) {
+                LocationHierarchy locationHierarchy = new LocationHierarchy();
+                locationHierarchy.setDistrict_id(rs.getInt("district_id"));
+                locationHierarchy.setCounty_id(rs.getInt("county_id"));
+                locationHierarchy.setSub_county_id(rs.getInt("sub_county_id"));
+                locationHierarchy.setParish_id(rs.getInt("parish_id"));
+                locationHierarchy.setHealth_facility_id(rs.getInt("health_facility_id"));
+                locationHierarchy.setDistrict_name(rs.getString("district_name"));
+                locationHierarchy.setCounty_name(rs.getString("county_name"));
+                locationHierarchy.setSub_county_name(rs.getString("sub_county_name"));
+                locationHierarchy.setParish_name(rs.getString("parish_name"));
+                locationHierarchy.setHealth_facility_name(rs.getString("health_facility_name"));
+                locationHierarchyList.add(locationHierarchy);
+            }
+            //FacesContext context = FacesContext.getCurrentInstance();
+            //context.addMessage(null, new FacesMessage("Deleted successfully", "Deleted successfully"));
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+            //FacesContext context = FacesContext.getCurrentInstance();
+            //context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
+        }
+
+    }
+
+    public class LocationHierarchy {
+
+        private int district_id;
+        private int county_id;
+        private int sub_county_id;
+        private int parish_id;
+        private int health_facility_id;
+        private String district_name;
+        private String county_name;
+        private String sub_county_name;
+        private String parish_name;
+        private String health_facility_name;
+
+        public int getDistrict_id() {
+            return district_id;
+        }
+
+        public void setDistrict_id(int district_id) {
+            this.district_id = district_id;
+        }
+
+        public int getCounty_id() {
+            return county_id;
+        }
+
+        public void setCounty_id(int county_id) {
+            this.county_id = county_id;
+        }
+
+        public int getSub_county_id() {
+            return sub_county_id;
+        }
+
+        public void setSub_county_id(int sub_county_id) {
+            this.sub_county_id = sub_county_id;
+        }
+
+        public int getParish_id() {
+            return parish_id;
+        }
+
+        public void setParish_id(int parish_id) {
+            this.parish_id = parish_id;
+        }
+
+        public int getHealth_facility_id() {
+            return health_facility_id;
+        }
+
+        public void setHealth_facility_id(int health_facility_id) {
+            this.health_facility_id = health_facility_id;
+        }
+
+        public String getDistrict_name() {
+            return district_name;
+        }
+
+        public void setDistrict_name(String district_name) {
+            this.district_name = district_name;
+        }
+
+        public String getCounty_name() {
+            return county_name;
+        }
+
+        public void setCounty_name(String county_name) {
+            this.county_name = county_name;
+        }
+
+        public String getSub_county_name() {
+            return sub_county_name;
+        }
+
+        public void setSub_county_name(String sub_county_name) {
+            this.sub_county_name = sub_county_name;
+        }
+
+        public String getParish_name() {
+            return parish_name;
+        }
+
+        public void setParish_name(String parish_name) {
+            this.parish_name = parish_name;
+        }
+
+        public String getHealth_facility_name() {
+            return health_facility_name;
+        }
+
+        public void setHealth_facility_name(String health_facility_name) {
+            this.health_facility_name = health_facility_name;
+        }
     }
 
 }

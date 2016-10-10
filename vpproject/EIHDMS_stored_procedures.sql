@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-10-09 14:52:28
+Date: 2016-10-10 10:43:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -827,7 +827,7 @@ END IF;
 
 
 -- Delete from interface_data
--- DELETE from interface_data WHERE batch_id=in_batch_id;
+DELETE from interface_data WHERE batch_id=in_batch_id;
 -- Delete from interface_data
 
 END
@@ -1099,110 +1099,15 @@ BEGIN
 SET @sql = NULL;
 
 IF in_reporting_level='Facility' THEN
-
-
-UPDATE interface_data id 
-set id.district_id=(SELECT DISTINCT district_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.county_id=(SELECT DISTINCT county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.county_name=(SELECT DISTINCT county_name from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.health_facility_id=(SELECT DISTINCT health_facility_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name) WHERE batch_id=in_batch_id;
-
-
-
-
-UPDATE validation_report id 
-set id.district_id=(SELECT DISTINCT district_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.county_id=(SELECT DISTINCT county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.county_name=(SELECT DISTINCT county_name from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.health_facility_id=(SELECT DISTINCT health_facility_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name) WHERE batch_id=in_batch_id;
-
-
-
 -- Updates status on fail
 UPDATE validation_report set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Health Facility ',district_name,'/',sub_county_name,'/',health_facility_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
 
 ELSEIF in_reporting_level='Parish' THEN
 
-SET @sql=CONCAT('UPDATE interface_data id 
-set id.district_id=(SELECT DISTINCT district_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.county_id=(SELECT DISTINCT county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND parish_name=id.parish_name),
-id.county_name=(SELECT DISTINCT county_name from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND parish_name=id.parish_name),
-id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.parish_id=(SELECT DISTINCT parish_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND parish_name=id.parish_name) WHERE batch_id=',in_batch_id);
-prepare stmt from @sql;
-execute stmt;
-
-
-SET @sql=CONCAT('UPDATE validation_report id 
-set id.district_id=(SELECT DISTINCT district_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.county_id=(SELECT DISTINCT county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND parish_name=id.parish_name),
-id.county_name=(SELECT DISTINCT county_name from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND parish_name=id.parish_name),
-id.sub_county_id=(SELECT DISTINCT sub_county_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND health_facility_name=id.health_facility_name),
-id.parish_id=(SELECT DISTINCT parish_id from vw_location 
-where district_name=id.district_name AND sub_county_name=id.sub_county_name 
-AND parish_name=id.parish_name) WHERE batch_id=',in_batch_id);
-prepare stmt from @sql;
-execute stmt;
-
 -- Updates status on fail
 UPDATE validation_report set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because Parish ',district_name,'/',sub_county_name,'/',parish_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
 
 ELSEIF in_reporting_level='District' THEN
-
-
-SET @sql=CONCAT('UPDATE interface_data id 
-set id.district_id=(SELECT DISTINCT district_id from vw_location 
-where district_name=id.district_name) WHERE batch_id=',in_batch_id);
-prepare stmt from @sql;
-execute stmt;
-
-
-SET @sql=CONCAT('UPDATE validation_report id 
-set id.district_id=(SELECT DISTINCT district_id from vw_location 
-where district_name=id.district_name) WHERE batch_id=',in_batch_id);
-prepare stmt from @sql;
-execute stmt;
-
 
 -- Updates status on fail
 UPDATE validation_report set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Failed validation because District ',district_name,' Does not exist!') where batch_id=in_batch_id and district_id is null;
@@ -1639,6 +1544,8 @@ END
 ;;
 DELIMITER ;
 
+
+SET GLOBAL log_bin_trust_function_creators = 1;
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------

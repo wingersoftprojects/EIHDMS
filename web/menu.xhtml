@@ -19,7 +19,7 @@
                         <div class="ui-grid-col-10" style="padding-top: 7px;">
                             <p:menubar>
                                 <p:submenu label="Data" icon="ui-icon-circle-plus">
-                                    <p:menuitem value="Data Upload"  action="upload?faces-redirect=true" icon="ui-icon-arrowthick-1-n"/>
+                                    <p:menuitem value="Data Upload"  action="upload?faces-redirect=true" icon="ui-icon-arrowthick-1-n" actionListener="#{uploadBean.load_location_hierarchy()}"/>
                                     <p:menuitem value="Data Entry"  action="dataentry?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
                                 </p:submenu>
                                 <p:submenu label="Settings" icon="ui-icon-gear">
