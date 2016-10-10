@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-10-10 10:48:05
+Date: 2016-10-10 19:12:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -107,6 +107,29 @@ prepare stmt from @sql;
 execute stmt;
 
 END IF;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_delete_from_interface_data_by_batch_id
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_delete_from_interface_data_by_batch_id`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_from_interface_data_by_batch_id`(IN in_batch_id int)
+BEGIN
+	DECLARE max_interface_data_id int;
+  DECLARE min_interface_data_id int;
+	DECLARE counter int;
+
+	SELECT min(interface_data_id),max(interface_data_id) from interface_data where batch_id=in_batch_id into min_interface_data_id,max_interface_data_id;
+SET counter=min_interface_data_id+600;
+
+WHILE(min_interface_data_id < (max_interface_data_id+1200)) DO
+delete from interface_data where batch_id=in_batch_id AND interface_data_id>=min_interface_data_id AND interface_data_id<=counter;
+SET min_interface_data_id=min_interface_data_id+600;
+SET counter=counter+600;
+END WHILE;
 END
 ;;
 DELIMITER ;
@@ -827,7 +850,8 @@ END IF;
 
 
 -- Delete from interface_data
-DELETE from interface_data WHERE batch_id=in_batch_id;
+-- DELETE from interface_data WHERE batch_id=in_batch_id;
+CALL sp_delete_from_interface_data_by_batch_id(in_batch_id);
 -- Delete from interface_data
 
 END
