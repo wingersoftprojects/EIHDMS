@@ -1639,6 +1639,8 @@ END
 ;;
 DELIMITER ;
 
+SET GLOBAL log_bin_trust_function_creators = 1;
+
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------
