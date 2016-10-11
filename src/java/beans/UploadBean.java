@@ -51,6 +51,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.hibernate.HibernateException;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
@@ -1132,14 +1133,16 @@ public class UploadBean implements Serializable {
                      */
                     loginBean.saveMessage();
                     generate_validation_report(batch.getBatch_id());
-                    interface_datas = new ArrayList<>();
-                    Map<String, Object> options = new HashMap<>();
-                    options.put("draggable", false);
-                    options.put("resizable", false);
-                    options.put("height", 400);
-                    options.put("width", 700);
-                    options.put("modal", true);
-                    org.primefaces.context.RequestContext.getCurrentInstance().openDialog("dialog_validationreport2", options, null);
+//                    interface_datas = new ArrayList<>();
+//                    Map<String, Object> options = new HashMap<>();
+//                    options.put("draggable", false);
+//                    options.put("resizable", false);
+//                    options.put("contentHeight", 530);
+//                    options.put("height", 550);
+//                    options.put("width", 800);
+//                    options.put("modal", true);
+//                    org.primefaces.context.RequestContext.getCurrentInstance().openDialog("dialog_validationreport2", options, null);
+                    RequestContext.getCurrentInstance().execute("PF('validationReport').show();");
                 } catch (PersistentException ex) {
                     transaction.rollback();
                     FacesContext context = FacesContext.getCurrentInstance();
