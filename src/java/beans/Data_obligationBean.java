@@ -131,10 +131,8 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
     public void update_data_obligation_monthly(int year_value, int month_value) {
         String sql = "{call sp_update_data_obligation_monthly(?,?)}";
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, year_value);
             ps.setInt(2, month_value);
             rs = ps.executeQuery();
@@ -146,10 +144,8 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
     public void update_data_obligation_bi_monthly(int year_value, int bi_month_value) {
         String sql = "{call sp_update_data_obligation_bi_monthly(?,?)}";
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, year_value);
             ps.setInt(2, bi_month_value);
             rs = ps.executeQuery();
@@ -161,10 +157,8 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
     public void update_data_obligation_quarterly(int year_value, int quarter_value) {
         String sql = "{call sp_update_data_obligation_quarterly(?,?)}";
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, year_value);
             ps.setInt(2, quarter_value);
             rs = ps.executeQuery();
@@ -176,10 +170,8 @@ public class Data_obligationBean extends AbstractBean<Data_obligation> implement
     public void update_data_obligation_weekly(int year_value, int month_value, int week_value) {
         String sql = "{call sp_update_data_obligation_weekly(?,?,?)}";
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, year_value);
             ps.setInt(2, month_value);
             ps.setInt(3, week_value);

@@ -296,9 +296,8 @@ public class GeneralUtilities implements Serializable {
     public void load_data_element_dependancies_from_procedure(String report_form_name) {
         String sql = "{call sp_load_data_element(?)}";
         ResultSet rs = null;
-        try {
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, report_form_name);
             rs = ps.executeQuery();
             execute_success();
@@ -312,9 +311,8 @@ public class GeneralUtilities implements Serializable {
         String sql = "{call sp_check_duplicate_temp_data_elements(?)}";
         temp_data_elements = new ArrayList<>();
         ResultSet rs = null;
-        try {
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, report_form_name);
             rs = ps.executeQuery();
             int i = 0;
@@ -336,9 +334,8 @@ public class GeneralUtilities implements Serializable {
     public void execute_insert_string(String insert_string) {
         String sql = "{call sp_execute_insert_string(?)}";
         ResultSet rs = null;
-        try {
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, insert_string);
             rs = ps.executeQuery();
             execute_success();
@@ -361,9 +358,8 @@ public class GeneralUtilities implements Serializable {
     public void load_health_facility_dependancies_from_procedure() {
         String sql = "{call sp_load_health_facility()}";
         ResultSet rs = null;
-        try {
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             rs = ps.executeQuery();
             execute_success();
         } catch (SQLException se) {

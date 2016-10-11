@@ -958,10 +958,8 @@ public class UploadBean implements Serializable {
             String sql = "{call sp_validate_batch(?,?,?,?)}";
             ResultSet rs = null;
             for (Validation_rule v : validation_temps) {
-                try {
-
-                    Connection conn = DBConnection.getMySQLConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql);
+                try (Connection conn = DBConnection.getMySQLConnection();
+                        PreparedStatement ps = conn.prepareStatement(sql);) {
                     ps.setInt(1, batch_id);
                     ps.setString(2, reporting_level_name);
                     ps.setString(3, v.getValidation_rule_formula());
@@ -1010,10 +1008,8 @@ public class UploadBean implements Serializable {
                 + " INNER JOIN data_element ON b.data_element_id = data_element.data_element_id "
                 + " INNER JOIN report_form_group AS rg ON data_element.report_form_group_id = rg.report_form_group_id WHERE " + condition + " AND rg.report_form_group_id=" + report_form_group.getReport_form_group_id();
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             rs = ps.executeQuery();
             if (rs.next()) {
                 validation_rule_name += "\n" + "Data for the same period has already been uploaded Location:" + reporting_hierarchy + ",FY:" + this.financial_year.getFinancial_year_name() + ",Quarter:" + quarter + ",Month:" + month + ",Week:" + week + "";
@@ -1039,10 +1035,8 @@ public class UploadBean implements Serializable {
     public void validate_and_load_data_to_base(int batch_id) {
         String sql = "{call sp_validate_data(?,?,?)}";
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, report_form_group.getReport_form_group_id());
             ps.setInt(2, batch_id);
             ps.setString(3, report_form.getLowest_report_form_level());
@@ -1060,9 +1054,8 @@ public class UploadBean implements Serializable {
         }
         String sql = "{call sp_delete_base_data(?,?)}";
         ResultSet rs = null;
-        try {
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, BaseDataStr);
             ps.setInt(2, loginBean.getUser_detail().getUser_detail_id());
             rs = ps.executeQuery();
@@ -2035,9 +2028,8 @@ public class UploadBean implements Serializable {
     public void load_location_hierarchy() {
         String sql = "SELECT * FROM vw_location;";
         ResultSet rs = null;
-        try {
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             rs = ps.executeQuery();
             locationHierarchyList = new ArrayList<>();
             while (rs.next()) {

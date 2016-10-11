@@ -76,10 +76,8 @@ public class Validation_ruleBean extends AbstractBean<Validation_rule> implement
     public void save(int aUserDetailId) {
         String sql = "{call sp_validate_formula(?)}";
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, this.getSelected().getValidation_rule_formula());
             rs = ps.executeQuery();
         } catch (SQLException se) {

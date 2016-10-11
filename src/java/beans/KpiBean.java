@@ -122,8 +122,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         }
         String sql = "{call sp_select_kpi(?,?,?,?,?)}";
         ResultSet rs = null;
-        try (
-                Connection conn = DBConnection.getMySQLConnection();
+        try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, selectedKPI.getKpi_id());
             ps.setString(2, loginBean.getUser_detail().getUser_name());
@@ -145,7 +144,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         }
 
     }
-    
+
     public String getYearString() {
         String YearsStr = "";
         //get 1016,2015,2013 string format for selected years
@@ -158,9 +157,9 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 YearsStr = "" + this.selectedYears[i];
             }
         }
-        return  YearsStr;
+        return YearsStr;
     }
-    
+
     public String getDistrictString() {
         String DistrictsStr = "";
         //get 1,2,3 string format for selected districts
@@ -173,7 +172,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
             }
         }
-        return  DistrictsStr;
+        return DistrictsStr;
     }
 
     private Report_form report_form;
@@ -190,10 +189,8 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     public void save(int aUserDetailId) {
         String sql = "{call sp_validate_kpi_summary_function(?,?)}";
         ResultSet rs = null;
-        try {
-
-            Connection conn = DBConnection.getMySQLConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, this.getSelected().getKpi_summary_function());
             ps.setInt(2, this.getSelected().getReport_form().getReport_form_id());
             rs = ps.executeQuery();
