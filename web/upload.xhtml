@@ -92,7 +92,7 @@
                     <p:outputLabel value="Upload"/>
                     <p:fileUpload id="upload" fileUploadListener="#{uploadBean.handleFileUpload}" mode="advanced"
                                   auto="true" allowTypes="/(\.|\/)(xls|xlsx)$/" update="@form" multiple="false" process="upload_panel_grid" />
-                    <p:commandButton value="LOAD DATA" rendered="#{uploadBean.interface_datas.size()>0}" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" oncomplete="PF('validationReport').show();"/>
+                    <p:commandButton value="LOAD DATA" rendered="#{uploadBean.interface_datas.size()>0}" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog"/>
                 </p:panelGrid>
                 <!-- 1. Create a DIV container to insert the component -->
                 <div id="pivotContainer"></div>

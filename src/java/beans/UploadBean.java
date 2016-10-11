@@ -1085,56 +1085,72 @@ public class UploadBean implements Serializable {
                 /**
                  * Generate Batch
                  */
-                Batch batch = new Batch();
-                batch.setAdd_date(new Timestamp(new Date().getTime()));
-                batch.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
-                batch.setIs_deleted(0);
-                batch.setIs_active(1);
-                batch.save();
-                /**
-                 * End Batch
-                 */
-                /**
-                 * Load Interface
-                 */
-                int counter = 0;
-                for (Interface_data i : interface_datas) {
-                    //interface_dataBean.setSelected(i);
-                    i.setBatch(batch);
-                    i.setIs_active(1);
-                    i.setAdd_date(new Timestamp(new Date().getTime()));
-                    i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
-                    i.setIs_deleted(0);
-                    //i.setStatus_u("Pass");
-                    //i.setStatus_u_desc("Uploaded To interface");
-                    i.save();
-                    if (counter % 200 == 0) { //20, same as the JDBC batch size
+                try {
+                    Batch batch = new Batch();
+                    batch.setAdd_date(new Timestamp(new Date().getTime()));
+                    batch.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                    batch.setIs_deleted(0);
+                    batch.setIs_active(1);
+                    batch.save();
+                    /**
+                     * End Batch
+                     */
+                    /**
+                     * Load Interface
+                     */
+                    //int counter = 0;
+                    for (Interface_data i : interface_datas) {
+                        //interface_dataBean.setSelected(i);
+                        i.setBatch(batch);
+                        i.setIs_active(1);
+                        i.setAdd_date(new Timestamp(new Date().getTime()));
+                        i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+                        i.setIs_deleted(0);
+                        //i.setStatus_u("Pass");
+                        //i.setStatus_u_desc("Uploaded To interface");
+                        i.save();
+                        //if (counter % 200 == 0) { //20, same as the JDBC batch size
                         //flush a batch of inserts and release memory:
-                        EIHDMSPersistentManager.instance().getSession().flush(); //line1
-                        EIHDMSPersistentManager.instance().getSession().clear();
+                        //EIHDMSPersistentManager.instance().getSession().flush(); //line1
+                        //EIHDMSPersistentManager.instance().getSession().clear();
+                        //}
+                        //counter++;
+                        //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
                     }
-                    counter++;
-                    //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
+                    transaction.commit();
+
+                    /**
+                     * End load interface
+                     */
+                    /**
+                     * Load Base Data
+                     */
+                    validate_and_load_data_to_base(batch.getBatch_id());
+
+                    /**
+                     * Validate Data
+                     */
+                    loginBean.saveMessage();
+                    generate_validation_report(batch.getBatch_id());
+                    interface_datas = new ArrayList<>();
+                    Map<String, Object> options = new HashMap<>();
+                    options.put("draggable", false);
+                    options.put("resizable", false);
+                    options.put("height", 400);
+                    options.put("width", 700);
+                    options.put("modal", true);
+                    org.primefaces.context.RequestContext.getCurrentInstance().openDialog("dialog_validationreport2", options, null);
+                } catch (PersistentException ex) {
+                    transaction.rollback();
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
+                    Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                transaction.commit();
-                /**
-                 * End load interface
-                 */
-                /**
-                 * Load Base Data
-                 */
-
-                validate_and_load_data_to_base(batch.getBatch_id());
-
-                /**
-                 * Validate Data
-                 */
-                loginBean.saveMessage();
-                generate_validation_report(batch.getBatch_id());
             } catch (PersistentException ex) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            interface_datas = new ArrayList<>();
         }
     }
 
