@@ -7,10 +7,8 @@ package beans;
 
 import eihdms.Group_right;
 import eihdms.Login_session;
-import eihdms.Report_form;
 import eihdms.User_detail;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +20,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.orm.PersistentException;
+import org.orm.PersistentManager;
+import utilities.EIHDMSPersistentManager2;
 import utilities.Security;
 
 /**
@@ -40,6 +40,15 @@ public class LoginBean implements Serializable {
     private User_detail user_detail;
     private List<Group_right> group_rights;
     private String login_session_id;
+    private PersistentManager _instance;
+
+    public PersistentManager getInstance() {
+        return _instance;
+    }
+
+    public void setInstance(PersistentManager _instance) {
+        this._instance = _instance;
+    }
 
     public LoginBean() {
     }
@@ -196,6 +205,11 @@ public class LoginBean implements Serializable {
             lsb.setSelected(ls);
             lsb.save(user_detail.getUser_detail_id());
 
+            try {
+                _instance = new EIHDMSPersistentManager2();
+            } catch (PersistentException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
             //FacesContext fc = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
             nav.performNavigation("home?faces-redirect=true");
@@ -229,6 +243,12 @@ public class LoginBean implements Serializable {
         setPassword("");
         setIsloggedin(false);
         prelogout();
+        try {
+            //_instance.getSession().close();
+            _instance.disposePersistentManager();
+        } catch (PersistentException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "login?faces-redirect=true";
     }
 

@@ -50,11 +50,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.hibernate.HibernateException;
 import org.orm.PersistentException;
+import org.orm.PersistentManager;
 import org.orm.PersistentTransaction;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
+import utilities.EIHDMSPersistentManager2;
 import utilities.GeneralUtilities;
 
 /**
@@ -1082,7 +1084,7 @@ public class UploadBean implements Serializable {
                 /**
                  * Load Interface Data
                  */
-                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                PersistentTransaction transaction = loginBean.getInstance().getSession().beginTransaction();
                 /**
                  * Generate Batch
                  */
@@ -1112,8 +1114,8 @@ public class UploadBean implements Serializable {
                         i.save();
                         if (counter % 20 == 0) { //20, same as the JDBC batch size
                             //flush a batch of inserts and release memory:
-                            EIHDMSPersistentManager.instance().getSession().flush(); //line1
-                            EIHDMSPersistentManager.instance().getSession().clear();
+                            loginBean.getInstance().getSession().flush(); //line1
+                            loginBean.getInstance().getSession().clear();
                         }
                         counter++;
                         //interface_dataBean.save(loginBean.getUser_detail().getUser_detail_id());
