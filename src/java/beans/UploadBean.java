@@ -1133,7 +1133,7 @@ public class UploadBean implements Serializable {
                      */
                     loginBean.saveMessage();
                     generate_validation_report(batch.getBatch_id());
-//                    interface_datas = new ArrayList<>();
+                    interface_datas = new ArrayList<>();
 //                    Map<String, Object> options = new HashMap<>();
 //                    options.put("draggable", false);
 //                    options.put("resizable", false);
