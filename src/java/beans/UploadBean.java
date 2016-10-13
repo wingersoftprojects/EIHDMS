@@ -1165,8 +1165,9 @@ public class UploadBean implements Serializable {
         PersistentSession session;
         PersistentTransaction transaction;
         Batch batch = null;
+        //System.out.println("START-BATCH:" + new Date());
         try {
-            session = EIHDMSPersistentManager.instance().getSession();
+            session = loginBean.getInstance().getSession();
             transaction = session.beginTransaction();
             batch = new Batch();
             batch.setAdd_date(new Timestamp(new Date().getTime()));
@@ -1179,6 +1180,7 @@ public class UploadBean implements Serializable {
             context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //System.out.println("END-BATCH:" + new Date());
         return batch;
     }
 
@@ -1207,6 +1209,7 @@ public class UploadBean implements Serializable {
             try (
                     Connection connection = DBConnection.getMySQLConnection();
                     PreparedStatement ps = connection.prepareStatement(sql);) {
+                //connection.setAutoCommit(false);
                 int j = 0;
                 for (Interface_data i : interface_datas) {
                     try {
@@ -1336,10 +1339,15 @@ public class UploadBean implements Serializable {
                     }
                     ps.addBatch();
                     j++;
+                    if (j % 500 == 0 || j == interface_datas.size()) {
+                        //System.out.println("--execute-J--:" + j);
+                        ps.executeBatch();
+                        //connection.commit();
+                    }
                 }
-                if (j % 500 == 0 || j == interface_datas.size()) {
-                    ps.executeBatch(); // Execute every 500 items.
-                }
+                //System.out.println("--final-J1--:" + j);
+                
+                //System.out.println("--final-J2--:" + j);
                 interface_datas.clear();
                 //System.out.println("END-INSERT-INTERFACE:" + new Date());
 
@@ -1608,9 +1616,9 @@ public class UploadBean implements Serializable {
                                     Map.Entry pair = (Map.Entry) it.next();
                                     Interface_data interface_data = new Interface_data();
                                     if (cellindex > 0 && (int) pair.getKey() == cellindex && report_form.getLowest_report_form_level().equals("District")) {
-                                        if(district_name.contains("''") || !district_name.contains("'")){
+                                        if (district_name.contains("''") || !district_name.contains("'")) {
                                             interface_data.setDistrict_name(district_name);
-                                        }else{
+                                        } else {
                                             interface_data.setDistrict_name(district_name.replace("'", "''"));
                                         }
                                         //interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
@@ -1627,27 +1635,27 @@ public class UploadBean implements Serializable {
                                     }
                                     if (cellindex > 2 && (int) pair.getKey() == cellindex && (report_form.getLowest_report_form_level().equals("Parish") || report_form.getLowest_report_form_level().equals("Facility"))) {
                                         //interface_data.setDistrict_name(district_name.replace("'", "''"));
-                                        if(district_name.contains("''") || !district_name.contains("'")){
+                                        if (district_name.contains("''") || !district_name.contains("'")) {
                                             interface_data.setDistrict_name(district_name);
-                                        }else{
+                                        } else {
                                             interface_data.setDistrict_name(district_name.replace("'", "''"));
                                         }
                                         //interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
-                                        if(sub_county_name.contains("''") || !sub_county_name.contains("'")){
+                                        if (sub_county_name.contains("''") || !sub_county_name.contains("'")) {
                                             interface_data.setSub_county_name(sub_county_name);
-                                        }else{
+                                        } else {
                                             interface_data.setSub_county_name(sub_county_name.replace("'", "''"));
                                         }
                                         //interface_data.setParish_name(parish_name.replace("'", "''"));
-                                        if(parish_name.contains("''") || !parish_name.contains("'")){
+                                        if (parish_name.contains("''") || !parish_name.contains("'")) {
                                             interface_data.setParish_name(parish_name);
-                                        }else{
+                                        } else {
                                             interface_data.setParish_name(parish_name.replace("'", "''"));
                                         }
                                         //interface_data.setHealth_facility_name(facility_name.replace("'", "''"));
-                                        if(facility_name.contains("''") || !facility_name.contains("'")){
+                                        if (facility_name.contains("''") || !facility_name.contains("'")) {
                                             interface_data.setHealth_facility_name(facility_name);
-                                        }else{
+                                        } else {
                                             interface_data.setHealth_facility_name(facility_name.replace("'", "''"));
                                         }
                                         /**
