@@ -1209,7 +1209,7 @@ public class UploadBean implements Serializable {
             try (
                     Connection connection = DBConnection.getMySQLConnection();
                     PreparedStatement ps = connection.prepareStatement(sql);) {
-                //connection.setAutoCommit(false);
+                connection.setAutoCommit(false);
                 int j = 0;
                 for (Interface_data i : interface_datas) {
                     try {
@@ -1342,11 +1342,10 @@ public class UploadBean implements Serializable {
                     if (j % 500 == 0 || j == interface_datas.size()) {
                         //System.out.println("--execute-J--:" + j);
                         ps.executeBatch();
-                        //connection.commit();
                     }
                 }
                 //System.out.println("--final-J1--:" + j);
-                
+                connection.commit();
                 //System.out.println("--final-J2--:" + j);
                 interface_datas.clear();
                 //System.out.println("END-INSERT-INTERFACE:" + new Date());
