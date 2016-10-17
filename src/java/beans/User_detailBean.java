@@ -7,12 +7,15 @@ package beans;
 
 import eihdms.User_detail;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.orm.PersistentException;
 import utilities.Security;
 
 /**
@@ -110,6 +113,17 @@ public class User_detailBean extends AbstractBean<User_detail> implements Serial
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
             nav.performNavigation("login?faces-redirect=true");
         }
+    }
+    
+    public User_detail getUser_detail_by_ID(int udi){
+        User_detail ud=new User_detail();
+        try {
+            ud=User_detail.getUser_detailByORMID(udi);
+        } catch (PersistentException ex) {
+            ud=null;
+            Logger.getLogger(User_detailBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ud;
     }
 
     /**

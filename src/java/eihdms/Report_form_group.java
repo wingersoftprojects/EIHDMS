@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -442,7 +442,7 @@ public class Report_form_group implements Serializable {
 	private java.sql.Timestamp add_date;
 	
 	@Column(name="add_by", nullable=true, length=10)	
-	private int add_by;
+	private Integer add_by;
 	
 	@Column(name="last_edit_date", nullable=true)	
 	private java.sql.Timestamp last_edit_date;
@@ -504,6 +504,14 @@ public class Report_form_group implements Serializable {
 		return is_active;
 	}
 	
+	public void setGroup_order(int value) {
+		this.group_order = value;
+	}
+	
+	public int getGroup_order() {
+		return group_order;
+	}
+	
 	public void setAdd_date(java.sql.Timestamp value) {
 		this.add_date = value;
 	}
@@ -513,10 +521,14 @@ public class Report_form_group implements Serializable {
 	}
 	
 	public void setAdd_by(int value) {
+		setAdd_by(new Integer(value));
+	}
+	
+	public void setAdd_by(Integer value) {
 		this.add_by = value;
 	}
 	
-	public int getAdd_by() {
+	public Integer getAdd_by() {
 		return add_by;
 	}
 	
@@ -538,14 +550,6 @@ public class Report_form_group implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
-	}
-	
-	public void setGroup_order(int value) {
-		this.group_order = value;
-	}
-	
-	public int getGroup_order() {
-		return group_order;
 	}
 	
 	public void setReport_form(eihdms.Report_form value) {
@@ -573,21 +577,6 @@ public class Report_form_group implements Serializable {
 		return validation_rule;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Report_form_group object = (Report_form_group) obj;
-				        return (this.getReport_form_group_id() == object.getReport_form_group_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getReport_form_group_id());

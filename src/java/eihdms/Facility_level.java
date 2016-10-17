@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -520,21 +520,6 @@ public class Facility_level implements Serializable {
 		return health_facility;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Facility_level object = (Facility_level) obj;
-				        return (this.getFacility_level_id() == object.getFacility_level_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getFacility_level_id());

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -457,14 +457,6 @@ public class Login_session implements Serializable {
 		return session_id;
 	}
 	
-	public void setAdd_date(java.sql.Timestamp value) {
-		this.add_date = value;
-	}
-	
-	public java.sql.Timestamp getAdd_date() {
-		return add_date;
-	}
-	
 	public void setRemote_ip(String value) {
 		this.remote_ip = value;
 	}
@@ -487,6 +479,30 @@ public class Login_session implements Serializable {
 	
 	public String getRemote_user() {
 		return remote_user;
+	}
+	
+	public void setIs_deleted(int value) {
+		this.is_deleted = value;
+	}
+	
+	public int getIs_deleted() {
+		return is_deleted;
+	}
+	
+	public void setIs_active(int value) {
+		this.is_active = value;
+	}
+	
+	public int getIs_active() {
+		return is_active;
+	}
+	
+	public void setAdd_date(java.sql.Timestamp value) {
+		this.add_date = value;
+	}
+	
+	public java.sql.Timestamp getAdd_date() {
+		return add_date;
 	}
 	
 	public void setAdd_by(int value) {
@@ -515,22 +531,6 @@ public class Login_session implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
-	}
-	
-	public void setIs_deleted(int value) {
-		this.is_deleted = value;
-	}
-	
-	public int getIs_deleted() {
-		return is_deleted;
-	}
-	
-	public void setIs_active(int value) {
-		this.is_active = value;
-	}
-	
-	public int getIs_active() {
-		return is_active;
 	}
 	
 	public void setUser_detail(eihdms.User_detail value) {

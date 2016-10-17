@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -36,6 +36,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 	@Override
 	public Configuration createConfiguration() {
 		Configuration configuration = new Configuration();
+		configuration.addAnnotatedClass(eihdms.Group_right.class);
 		configuration.addAnnotatedClass(eihdms.Region.class);
 		configuration.addAnnotatedClass(eihdms.District.class);
 		configuration.addAnnotatedClass(eihdms.Sub_district.class);
@@ -51,11 +52,11 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Base_data.class);
 		configuration.addAnnotatedClass(eihdms.Validation_rule.class);
 		configuration.addAnnotatedClass(eihdms.Standard_rule.class);
-		configuration.addAnnotatedClass(eihdms.Group_right.class);
 		configuration.addAnnotatedClass(eihdms.User_detail.class);
 		configuration.addAnnotatedClass(eihdms.Group_user.class);
 		configuration.addAnnotatedClass(eihdms.User_category.class);
 		configuration.addAnnotatedClass(eihdms.Group_detail.class);
+		configuration.addAnnotatedClass(eihdms.Login_session.class);
 		configuration.addAnnotatedClass(eihdms.User_action.class);
 		configuration.addAnnotatedClass(eihdms.Technical_area.class);
 		configuration.addAnnotatedClass(eihdms.Sub_section.class);
@@ -68,10 +69,10 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Kpi.class);
 		configuration.addAnnotatedClass(eihdms.Data_obligation.class);
 		configuration.addAnnotatedClass(eihdms.Base_data_deleted.class);
-		configuration.addAnnotatedClass(eihdms.Login_session.class);
 		configuration.addAnnotatedClass(eihdms.Interface_data_temp.class);
 		configuration.addAnnotatedClass(eihdms.Validation_report.class);
 		configuration.addAnnotatedClass(eihdms.Loaded_data_summary.class);
+		configuration.addAnnotatedClass(eihdms.App_db_user_map.class);
 		configuration.buildMappings();
 		return configuration;
 	}

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -577,12 +577,76 @@ public class Interface_data implements Serializable {
 		return parish_name;
 	}
 	
+	public void setSub_county_name(String value) {
+		this.sub_county_name = value;
+	}
+	
+	public String getSub_county_name() {
+		return sub_county_name;
+	}
+	
+	public void setCounty_name(String value) {
+		this.county_name = value;
+	}
+	
+	public String getCounty_name() {
+		return county_name;
+	}
+	
 	public void setDistrict_name(String value) {
 		this.district_name = value;
 	}
 	
 	public String getDistrict_name() {
 		return district_name;
+	}
+	
+	public void setReport_period_month(int value) {
+		setReport_period_month(new Integer(value));
+	}
+	
+	public void setReport_period_month(Integer value) {
+		this.report_period_month = value;
+	}
+	
+	public Integer getReport_period_month() {
+		return report_period_month;
+	}
+	
+	public void setReport_period_week(int value) {
+		setReport_period_week(new Integer(value));
+	}
+	
+	public void setReport_period_week(Integer value) {
+		this.report_period_week = value;
+	}
+	
+	public Integer getReport_period_week() {
+		return report_period_week;
+	}
+	
+	public void setReport_period_year(int value) {
+		setReport_period_year(new Integer(value));
+	}
+	
+	public void setReport_period_year(Integer value) {
+		this.report_period_year = value;
+	}
+	
+	public Integer getReport_period_year() {
+		return report_period_year;
+	}
+	
+	public void setReport_period_quarter(int value) {
+		setReport_period_quarter(new Integer(value));
+	}
+	
+	public void setReport_period_quarter(Integer value) {
+		this.report_period_quarter = value;
+	}
+	
+	public Integer getReport_period_quarter() {
+		return report_period_quarter;
 	}
 	
 	public void setReport_period_from_date(java.util.Date value) {
@@ -657,26 +721,6 @@ public class Interface_data implements Serializable {
 		return last_edit_by;
 	}
 	
-	public void setReport_period_quarter(int value) {
-		setReport_period_quarter(new Integer(value));
-	}
-	
-	public void setReport_period_quarter(Integer value) {
-		this.report_period_quarter = value;
-	}
-	
-	public Integer getReport_period_quarter() {
-		return report_period_quarter;
-	}
-	
-	public void setSub_county_name(String value) {
-		this.sub_county_name = value;
-	}
-	
-	public String getSub_county_name() {
-		return sub_county_name;
-	}
-	
 	public void setStatus_u(String value) {
 		this.status_u = value;
 	}
@@ -725,42 +769,6 @@ public class Interface_data implements Serializable {
 		return status_m_desc;
 	}
 	
-	public void setReport_period_month(int value) {
-		setReport_period_month(new Integer(value));
-	}
-	
-	public void setReport_period_month(Integer value) {
-		this.report_period_month = value;
-	}
-	
-	public Integer getReport_period_month() {
-		return report_period_month;
-	}
-	
-	public void setReport_period_week(int value) {
-		setReport_period_week(new Integer(value));
-	}
-	
-	public void setReport_period_week(Integer value) {
-		this.report_period_week = value;
-	}
-	
-	public Integer getReport_period_week() {
-		return report_period_week;
-	}
-	
-	public void setReport_period_year(int value) {
-		setReport_period_year(new Integer(value));
-	}
-	
-	public void setReport_period_year(Integer value) {
-		this.report_period_year = value;
-	}
-	
-	public Integer getReport_period_year() {
-		return report_period_year;
-	}
-	
 	public void setHealth_facility_id(int value) {
 		setHealth_facility_id(new Integer(value));
 	}
@@ -797,6 +805,18 @@ public class Interface_data implements Serializable {
 		return sub_county_id;
 	}
 	
+	public void setCounty_id(int value) {
+		setCounty_id(new Integer(value));
+	}
+	
+	public void setCounty_id(Integer value) {
+		this.county_id = value;
+	}
+	
+	public Integer getCounty_id() {
+		return county_id;
+	}
+	
 	public void setDistrict_id(int value) {
 		setDistrict_id(new Integer(value));
 	}
@@ -819,26 +839,6 @@ public class Interface_data implements Serializable {
 	
 	public Integer getReport_period_bi_month() {
 		return report_period_bi_month;
-	}
-	
-	public void setCounty_name(String value) {
-		this.county_name = value;
-	}
-	
-	public String getCounty_name() {
-		return county_name;
-	}
-	
-	public void setCounty_id(int value) {
-		setCounty_id(new Integer(value));
-	}
-	
-	public void setCounty_id(Integer value) {
-		this.county_id = value;
-	}
-	
-	public Integer getCounty_id() {
-		return county_id;
 	}
 	
 	public void setReport_form_group_id(int value) {
@@ -883,21 +883,6 @@ public class Interface_data implements Serializable {
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
-	}
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Interface_data object = (Interface_data) obj;
-				        return (this.getInterface_data_id() == object.getInterface_data_id());
 	}
 	
 	public String toString() {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -523,21 +523,6 @@ public class Batch implements Serializable {
 		return base_data;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Batch object = (Batch) obj;
-				        return (this.getBatch_id() == object.getBatch_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getBatch_id());

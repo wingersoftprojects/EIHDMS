@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -567,21 +567,6 @@ public class Temp_data_element implements Serializable {
 	
 	public String getData_element_context() {
 		return data_element_context;
-	}
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Temp_data_element object = (Temp_data_element) obj;
-				        return (this.getTemp_data_element_id() == object.getTemp_data_element_id());
 	}
 	
 	public String toString() {

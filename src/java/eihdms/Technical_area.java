@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -426,7 +426,7 @@ public class Technical_area implements Serializable {
 	private java.sql.Timestamp add_date;
 	
 	@Column(name="add_by", nullable=true, length=10)	
-	private int add_by;
+	private Integer add_by;
 	
 	@Column(name="last_edit_date", nullable=true)	
 	private java.sql.Timestamp last_edit_date;
@@ -497,10 +497,14 @@ public class Technical_area implements Serializable {
 	}
 	
 	public void setAdd_by(int value) {
+		setAdd_by(new Integer(value));
+	}
+	
+	public void setAdd_by(Integer value) {
 		this.add_by = value;
 	}
 	
-	public int getAdd_by() {
+	public Integer getAdd_by() {
 		return add_by;
 	}
 	
@@ -541,21 +545,6 @@ public class Technical_area implements Serializable {
 		return kpi;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Technical_area object = (Technical_area) obj;
-				        return (this.getTechnical_area_id() == object.getTechnical_area_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getTechnical_area_id());

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -593,6 +593,14 @@ public class Data_element implements Serializable {
 		return data_element_name;
 	}
 	
+	public void setData_element_context(String value) {
+		this.data_element_context = value;
+	}
+	
+	public String getData_element_context() {
+		return data_element_context;
+	}
+	
 	public void setData_type(String value) {
 		this.data_type = value;
 	}
@@ -611,6 +619,30 @@ public class Data_element implements Serializable {
 	
 	public Integer getData_size() {
 		return data_size;
+	}
+	
+	public void setAge_category(String value) {
+		this.age_category = value;
+	}
+	
+	public String getAge_category() {
+		return age_category;
+	}
+	
+	public void setSex_category(String value) {
+		this.sex_category = value;
+	}
+	
+	public String getSex_category() {
+		return sex_category;
+	}
+	
+	public void setOther_category(String value) {
+		this.other_category = value;
+	}
+	
+	public String getOther_category() {
+		return other_category;
 	}
 	
 	public void setDescription(String value) {
@@ -685,38 +717,6 @@ public class Data_element implements Serializable {
 		return data_element_code;
 	}
 	
-	public void setAge_category(String value) {
-		this.age_category = value;
-	}
-	
-	public String getAge_category() {
-		return age_category;
-	}
-	
-	public void setSex_category(String value) {
-		this.sex_category = value;
-	}
-	
-	public String getSex_category() {
-		return sex_category;
-	}
-	
-	public void setOther_category(String value) {
-		this.other_category = value;
-	}
-	
-	public String getOther_category() {
-		return other_category;
-	}
-	
-	public void setData_element_context(String value) {
-		this.data_element_context = value;
-	}
-	
-	public String getData_element_context() {
-		return data_element_context;
-	}
-	
 	public void setReport_form(eihdms.Report_form value) {
 		this.report_form = value;
 	}
@@ -783,21 +783,6 @@ public class Data_element implements Serializable {
 		return standard_rule;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Data_element object = (Data_element) obj;
-				        return (this.getData_element_id() == object.getData_element_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getData_element_id());

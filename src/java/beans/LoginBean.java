@@ -5,10 +5,15 @@
  */
 package beans;
 
+import connections.DBConnection;
+import eihdms.App_db_user_map;
 import eihdms.Group_right;
 import eihdms.Login_session;
 import eihdms.User_detail;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +46,7 @@ public class LoginBean implements Serializable {
     private List<Group_right> group_rights;
     private String login_session_id;
     private PersistentManager _instance;
+    private App_db_user_map app_db_user_map;
 
     public PersistentManager getInstance() {
         return _instance;
@@ -162,6 +168,14 @@ public class LoginBean implements Serializable {
             setIsloggedin(true);
             messageString = "";
 
+            try {
+                //get app_db_user_map
+                app_db_user_map = (App_db_user_map) App_db_user_map.queryApp_db_user_map("user_detail_id=" + user_detail.getUser_detail_id(), null).get(0);
+            } catch (Exception ex) {
+                app_db_user_map = null;
+                //Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             //create seesion
             FacesContext context = FacesContext.getCurrentInstance();
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -218,6 +232,20 @@ public class LoginBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("EIHDMS Login Failure", messageString));
             //return "login?faces-redirect=true";
         }
+    }
+
+    public Connection getMySQLConnection() {
+        Connection conn = null;
+        try {
+            Class.forName(DBConnection.getMySQL_JDBC_DRIVER());
+            if (app_db_user_map == null) {
+                conn = DriverManager.getConnection(DBConnection.getMySQL_DB_URL(), DBConnection.getMySQL_USER(), DBConnection.getMySQL_PASSWORD());
+            } else {
+                conn = DriverManager.getConnection(DBConnection.getMySQL_DB_URL(), app_db_user_map.getDb_user(), Security.Decrypt(app_db_user_map.getDb_password()));
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        }
+        return conn;
     }
 
     public boolean IsAllowed(int form_id, String role) {
@@ -314,6 +342,20 @@ public class LoginBean implements Serializable {
      */
     public void setLogin_session_id(String login_session_id) {
         this.login_session_id = login_session_id;
+    }
+
+    /**
+     * @return the app_db_user_map
+     */
+    public App_db_user_map getApp_db_user_map() {
+        return app_db_user_map;
+    }
+
+    /**
+     * @param app_db_user_map the app_db_user_map to set
+     */
+    public void setApp_db_user_map(App_db_user_map app_db_user_map) {
+        this.app_db_user_map = app_db_user_map;
     }
 
 }

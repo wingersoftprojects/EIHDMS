@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -505,6 +505,18 @@ public class Validation_report implements Serializable {
 		return district_name;
 	}
 	
+	public void setHealth_facility_id(int value) {
+		setHealth_facility_id(new Integer(value));
+	}
+	
+	public void setHealth_facility_id(Integer value) {
+		this.health_facility_id = value;
+	}
+	
+	public Integer getHealth_facility_id() {
+		return health_facility_id;
+	}
+	
 	public void setParish_id(int value) {
 		setParish_id(new Integer(value));
 	}
@@ -645,18 +657,6 @@ public class Validation_report implements Serializable {
 		return report_period_bi_month;
 	}
 	
-	public void setReport_form_group_id(int value) {
-		setReport_form_group_id(new Integer(value));
-	}
-	
-	public void setReport_form_group_id(Integer value) {
-		this.report_form_group_id = value;
-	}
-	
-	public Integer getReport_form_group_id() {
-		return report_form_group_id;
-	}
-	
 	public void setReport_form_id(int value) {
 		setReport_form_id(new Integer(value));
 	}
@@ -669,16 +669,16 @@ public class Validation_report implements Serializable {
 		return report_form_id;
 	}
 	
-	public void setHealth_facility_id(int value) {
-		setHealth_facility_id(new Integer(value));
+	public void setReport_form_group_id(int value) {
+		setReport_form_group_id(new Integer(value));
 	}
 	
-	public void setHealth_facility_id(Integer value) {
-		this.health_facility_id = value;
+	public void setReport_form_group_id(Integer value) {
+		this.report_form_group_id = value;
 	}
 	
-	public Integer getHealth_facility_id() {
-		return health_facility_id;
+	public Integer getReport_form_group_id() {
+		return report_form_group_id;
 	}
 	
 	public void setAdd_date(java.sql.Timestamp value) {

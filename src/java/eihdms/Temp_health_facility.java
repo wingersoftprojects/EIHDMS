@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -533,21 +533,6 @@ public class Temp_health_facility implements Serializable {
 	
 	public String getIs_active() {
 		return is_active;
-	}
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Temp_health_facility object = (Temp_health_facility) obj;
-				        return (this.getTemp_health_facility_id() == object.getTemp_health_facility_id());
 	}
 	
 	public String toString() {

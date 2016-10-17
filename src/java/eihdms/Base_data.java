@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -578,6 +578,54 @@ public class Base_data implements Serializable {
 		return data_element_value;
 	}
 	
+	public void setReport_period_month(int value) {
+		setReport_period_month(new Integer(value));
+	}
+	
+	public void setReport_period_month(Integer value) {
+		this.report_period_month = value;
+	}
+	
+	public Integer getReport_period_month() {
+		return report_period_month;
+	}
+	
+	public void setReport_period_week(int value) {
+		setReport_period_week(new Integer(value));
+	}
+	
+	public void setReport_period_week(Integer value) {
+		this.report_period_week = value;
+	}
+	
+	public Integer getReport_period_week() {
+		return report_period_week;
+	}
+	
+	public void setReport_period_year(int value) {
+		setReport_period_year(new Integer(value));
+	}
+	
+	public void setReport_period_year(Integer value) {
+		this.report_period_year = value;
+	}
+	
+	public Integer getReport_period_year() {
+		return report_period_year;
+	}
+	
+	public void setReport_period_quarter(int value) {
+		setReport_period_quarter(new Integer(value));
+	}
+	
+	public void setReport_period_quarter(Integer value) {
+		this.report_period_quarter = value;
+	}
+	
+	public Integer getReport_period_quarter() {
+		return report_period_quarter;
+	}
+	
 	public void setReport_period_from_date(java.util.Date value) {
 		this.report_period_from_date = value;
 	}
@@ -648,54 +696,6 @@ public class Base_data implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
-	}
-	
-	public void setReport_period_quarter(int value) {
-		setReport_period_quarter(new Integer(value));
-	}
-	
-	public void setReport_period_quarter(Integer value) {
-		this.report_period_quarter = value;
-	}
-	
-	public Integer getReport_period_quarter() {
-		return report_period_quarter;
-	}
-	
-	public void setReport_period_month(int value) {
-		setReport_period_month(new Integer(value));
-	}
-	
-	public void setReport_period_month(Integer value) {
-		this.report_period_month = value;
-	}
-	
-	public Integer getReport_period_month() {
-		return report_period_month;
-	}
-	
-	public void setReport_period_week(int value) {
-		setReport_period_week(new Integer(value));
-	}
-	
-	public void setReport_period_week(Integer value) {
-		this.report_period_week = value;
-	}
-	
-	public Integer getReport_period_week() {
-		return report_period_week;
-	}
-	
-	public void setReport_period_year(int value) {
-		setReport_period_year(new Integer(value));
-	}
-	
-	public void setReport_period_year(Integer value) {
-		this.report_period_year = value;
-	}
-	
-	public Integer getReport_period_year() {
-		return report_period_year;
 	}
 	
 	public void setReport_period_bi_month(int value) {
@@ -792,21 +792,6 @@ public class Base_data implements Serializable {
 	
 	public eihdms.County getCounty() {
 		return county;
-	}
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Base_data object = (Base_data) obj;
-				        return (this.getBase_data_id() == object.getBase_data_id());
 	}
 	
 	public String toString() {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -534,21 +534,6 @@ public class Financial_year implements Serializable {
 		return base_data;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Financial_year object = (Financial_year) obj;
-				        return (this.getFinancial_year_id() == object.getFinancial_year_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getFinancial_year_id());

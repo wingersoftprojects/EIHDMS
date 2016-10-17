@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -607,21 +607,6 @@ public class District implements Serializable {
 		return base_data;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        District object = (District) obj;
-				        return (this.getDistrict_id() == object.getDistrict_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getDistrict_id());

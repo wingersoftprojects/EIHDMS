@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -475,6 +475,14 @@ public class Kpi implements Serializable {
 		return kpi_summary_function;
 	}
 	
+	public void setData_elements_involved(String value) {
+		this.data_elements_involved = value;
+	}
+	
+	public String getData_elements_involved() {
+		return data_elements_involved;
+	}
+	
 	public void setIs_deleted(int value) {
 		this.is_deleted = value;
 	}
@@ -531,14 +539,6 @@ public class Kpi implements Serializable {
 		return last_edit_by;
 	}
 	
-	public void setData_elements_involved(String value) {
-		this.data_elements_involved = value;
-	}
-	
-	public String getData_elements_involved() {
-		return data_elements_involved;
-	}
-	
 	public void setReport_form(eihdms.Report_form value) {
 		this.report_form = value;
 	}
@@ -553,21 +553,6 @@ public class Kpi implements Serializable {
 	
 	public eihdms.Technical_area getTechnical_area() {
 		return technical_area;
-	}
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Kpi object = (Kpi) obj;
-				        return (this.getKpi_id() == object.getKpi_id());
 	}
 	
 	public String toString() {

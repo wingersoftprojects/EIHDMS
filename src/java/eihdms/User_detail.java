@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -376,13 +376,13 @@ public class User_detail implements Serializable {
 			for(int i = 0; i < lGroup_users.length; i++) {
 				lGroup_users[i].setUser_detail(null);
 			}
-			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
-			for(int i = 0; i < lUser_actions.length; i++) {
-				lUser_actions[i].setUser_detail(null);
-			}
 			eihdms.Login_session[] lLogin_sessions = (eihdms.Login_session[])getLogin_session().toArray(new eihdms.Login_session[getLogin_session().size()]);
 			for(int i = 0; i < lLogin_sessions.length; i++) {
 				lLogin_sessions[i].setUser_detail(null);
+			}
+			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
+			for(int i = 0; i < lUser_actions.length; i++) {
+				lUser_actions[i].setUser_detail(null);
 			}
 			return delete();
 		}
@@ -402,13 +402,13 @@ public class User_detail implements Serializable {
 			for(int i = 0; i < lGroup_users.length; i++) {
 				lGroup_users[i].setUser_detail(null);
 			}
-			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
-			for(int i = 0; i < lUser_actions.length; i++) {
-				lUser_actions[i].setUser_detail(null);
-			}
 			eihdms.Login_session[] lLogin_sessions = (eihdms.Login_session[])getLogin_session().toArray(new eihdms.Login_session[getLogin_session().size()]);
 			for(int i = 0; i < lLogin_sessions.length; i++) {
 				lLogin_sessions[i].setUser_detail(null);
+			}
+			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
+			for(int i = 0; i < lUser_actions.length; i++) {
+				lUser_actions[i].setUser_detail(null);
 			}
 			try {
 				session.delete(this);
@@ -465,7 +465,7 @@ public class User_detail implements Serializable {
 	private java.sql.Timestamp add_date;
 	
 	@Column(name="add_by", nullable=true, length=11)	
-	private int add_by;
+	private Integer add_by;
 	
 	@Column(name="last_edit_date", nullable=true)	
 	private java.sql.Timestamp last_edit_date;
@@ -478,15 +478,15 @@ public class User_detail implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set group_user = new java.util.HashSet();
 	
-	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.User_action.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
-	private java.util.Set user_action = new java.util.HashSet();
-	
 	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.Login_session.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
 	private java.util.Set login_session = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.User_action.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	private java.util.Set user_action = new java.util.HashSet();
 	
 	private void setUser_detail_id(int value) {
 		this.user_detail_id = value;
@@ -581,10 +581,14 @@ public class User_detail implements Serializable {
 	}
 	
 	public void setAdd_by(int value) {
+		setAdd_by(new Integer(value));
+	}
+	
+	public void setAdd_by(Integer value) {
 		this.add_by = value;
 	}
 	
-	public int getAdd_by() {
+	public Integer getAdd_by() {
 		return add_by;
 	}
 	
@@ -625,15 +629,6 @@ public class User_detail implements Serializable {
 	}
 	
 	
-	public void setUser_action(java.util.Set value) {
-		this.user_action = value;
-	}
-	
-	public java.util.Set getUser_action() {
-		return user_action;
-	}
-	
-	
 	public void setLogin_session(java.util.Set value) {
 		this.login_session = value;
 	}
@@ -643,20 +638,14 @@ public class User_detail implements Serializable {
 	}
 	
 	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
+	public void setUser_action(java.util.Set value) {
+		this.user_action = value;
 	}
 	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        User_detail object = (User_detail) obj;
-				        return (this.getUser_detail_id() == object.getUser_detail_id());
+	public java.util.Set getUser_action() {
+		return user_action;
 	}
+	
 	
 	public String toString() {
 		return String.valueOf(getUser_detail_id());

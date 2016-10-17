@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -36,8 +36,8 @@ public class User_detailCriteria extends AbstractORMCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression group_user;
-	public final CollectionExpression user_action;
 	public final CollectionExpression login_session;
+	public final CollectionExpression user_action;
 	
 	public User_detailCriteria(Criteria criteria) {
 		super(criteria);
@@ -58,8 +58,8 @@ public class User_detailCriteria extends AbstractORMCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		group_user = new CollectionExpression("group_user", this);
-		user_action = new CollectionExpression("user_action", this);
 		login_session = new CollectionExpression("login_session", this);
+		user_action = new CollectionExpression("user_action", this);
 	}
 	
 	public User_detailCriteria(PersistentSession session) {
@@ -78,12 +78,12 @@ public class User_detailCriteria extends AbstractORMCriteria {
 		return new Group_userCriteria(createCriteria("group_user"));
 	}
 	
-	public User_actionCriteria createUser_actionCriteria() {
-		return new User_actionCriteria(createCriteria("user_action"));
-	}
-	
 	public Login_sessionCriteria createLogin_sessionCriteria() {
 		return new Login_sessionCriteria(createCriteria("login_session"));
+	}
+	
+	public User_actionCriteria createUser_actionCriteria() {
+		return new User_actionCriteria(createCriteria("user_action"));
 	}
 	
 	public User_detail uniqueUser_detail() {

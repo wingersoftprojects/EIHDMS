@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -475,6 +475,14 @@ public class Validation_rule implements Serializable {
 		return validation_rule_formula;
 	}
 	
+	public void setData_elements_involved(String value) {
+		this.data_elements_involved = value;
+	}
+	
+	public String getData_elements_involved() {
+		return data_elements_involved;
+	}
+	
 	public void setIs_deleted(int value) {
 		this.is_deleted = value;
 	}
@@ -531,14 +539,6 @@ public class Validation_rule implements Serializable {
 		return last_edit_by;
 	}
 	
-	public void setData_elements_involved(String value) {
-		this.data_elements_involved = value;
-	}
-	
-	public String getData_elements_involved() {
-		return data_elements_involved;
-	}
-	
 	public void setReport_form_group(eihdms.Report_form_group value) {
 		this.report_form_group = value;
 	}
@@ -553,21 +553,6 @@ public class Validation_rule implements Serializable {
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
-	}
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        Validation_rule object = (Validation_rule) obj;
-				        return (this.getValidation_rule_id() == object.getValidation_rule_id());
 	}
 	
 	public String toString() {

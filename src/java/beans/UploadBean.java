@@ -1041,7 +1041,7 @@ public class UploadBean implements Serializable {
     public void validate_and_load_data_to_base(int batch_id) {
         String sql = "{call sp_validate_data(?,?,?)}";
         ResultSet rs = null;
-        try (Connection conn = DBConnection.getMySQLConnection();
+        try (Connection conn = loginBean.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, report_form_group.getReport_form_group_id());
             ps.setInt(2, batch_id);
@@ -1207,7 +1207,7 @@ public class UploadBean implements Serializable {
                     + "?,?,?,?,"
                     + "?,?,?,?)";
             try (
-                    Connection connection = DBConnection.getMySQLConnection();
+                    Connection connection = loginBean.getMySQLConnection();
                     PreparedStatement ps = connection.prepareStatement(sql);) {
                 connection.setAutoCommit(false);
                 int j = 0;

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: btwesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -508,21 +508,6 @@ public class User_category implements Serializable {
 		return user_detail;
 	}
 	
-	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-				            return false;
-				        }
-				        User_category object = (User_category) obj;
-				        return (this.getUser_category_id() == object.getUser_category_id());
-	}
 	
 	public String toString() {
 		return String.valueOf(getUser_category_id());
