@@ -5,15 +5,22 @@
  */
 package beans;
 
+import connections.DBConnection;
 import eihdms.Report_form;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.orm.PersistentException;
 
 /**
@@ -48,6 +55,30 @@ public class Report_formBean extends AbstractBean<Report_form> implements Serial
         this.loginBean = loginBean;
     }
 
+    public void save_report_form(int aUserDetailId) {
+        if (this.getSelected().getReport_form_id() > 0) {
+            this.save(aUserDetailId);
+        } else {
+            int i_d = 0;
+            i_d = this.save_return_entity_id(aUserDetailId);
+            if (i_d > 0) {
+                create_report_form_base_data(i_d);
+            }
+        }
+    }
+
+    public void create_report_form_base_data(int report_form_id) {
+        String sql = "{call sp_create_report_form_base_data(?)}";
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            ps.setInt(1, report_form_id);
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, se);
+        }
+    }
+
     public List<Report_form> getReport_forms(Report_form report_form) {
         List<Report_form> report_forms = new ArrayList<>();
         if (null != report_form) {
@@ -74,16 +105,16 @@ public class Report_formBean extends AbstractBean<Report_form> implements Serial
             return null;
         }
     }
-    
-    public List<Report_form> getReport_forms_by_user(String allow,String mode_col_name) {
+
+    public List<Report_form> getReport_forms_by_user(String allow, String mode_col_name) {
         try {
             if (loginBean.getUser_detail().getIs_user_gen_admin() == 1) {
-                return Report_form.queryReport_form("is_active=1 and is_deleted=0 and "+ mode_col_name +"=1", null);
+                return Report_form.queryReport_form("is_active=1 and is_deleted=0 and " + mode_col_name + "=1", null);
             } else {
                 String RFIDs = "";
                 RFIDs = loginBean.getUser_report_form_str(allow);
                 if (RFIDs.length() > 0) {
-                    return Report_form.queryReport_form("is_active=1 and is_deleted=0 and "+ mode_col_name +"=1 and report_form_id IN(" + RFIDs + ")", null);
+                    return Report_form.queryReport_form("is_active=1 and is_deleted=0 and " + mode_col_name + "=1 and report_form_id IN(" + RFIDs + ")", null);
                 } else {
                     return null;
                 }

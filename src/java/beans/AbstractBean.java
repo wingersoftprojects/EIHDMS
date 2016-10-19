@@ -350,6 +350,65 @@ public abstract class AbstractBean<T> {
         }
     }
 
+    public int save_return_entity_id(int aUserDetailId) {
+        int entity_id = 0;
+        //no paramater
+        Class noparams[] = {};
+
+        //String parameter
+        Class[] paramUser_detail = new Class[1];
+        paramUser_detail[0] = User_detail.class;
+
+        //Timestamp parameter
+        Class[] paramTimestamp = new Class[1];
+        paramTimestamp[0] = Timestamp.class;
+
+        //int parameter
+        Class[] paramInteger = new Class[1];
+        paramInteger[0] = int.class;
+        try {
+            PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+            if (formstate.equals("add")) {
+//                Method method = selected.getClass().getMethod("setCreatedby", paramUser_detail);
+//                method.invoke(selected, loginBean.getUser_detail());
+
+                Method method = selected.getClass().getMethod("setAdd_date", paramTimestamp);
+                method.invoke(selected, new Timestamp(new Date().getTime()));
+                method = selected.getClass().getMethod("setIs_deleted", paramInteger);
+                method.invoke(selected, 0);
+                method = selected.getClass().getMethod("setAdd_by", paramInteger);
+                method.invoke(selected, aUserDetailId);
+            }
+            if (formstate.equals("edit")) {
+//                Method method = selected.getClass().getMethod("setModifiedby", paramUser_detail);
+//                method.invoke(selected, loginBean.getUser_detail());
+                Method method = selected.getClass().getMethod("setLast_edit_date", paramTimestamp);
+                method.invoke(selected, new Timestamp(new Date().getTime()));
+                method = selected.getClass().getMethod("setLast_edit_by", paramInteger);
+                method.invoke(selected, aUserDetailId);
+            }
+            Method method = selected.getClass().getMethod("get" + entityClass.getSimpleName() + "_id", noparams);
+            int id = (int) method.invoke(selected);
+            if (id > 0) {
+                EIHDMSPersistentManager.instance().getSession().merge(selected);
+            } else {
+                Method methodsave = selected.getClass().getMethod("save", noparams);
+                methodsave.invoke(selected);
+            }
+            transaction.commit();
+            entity_id = (int) method.invoke(selected);
+            clearCache(selected);
+            formstate = "view";
+            add();
+            //initializelist();
+            saveMessage();
+        } catch (PersistentException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            GeneralUtilities.clearsession();
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return entity_id;
+    }
+
     public void delete() {
         try {
             PersistentTransaction t = EIHDMSPersistentManager.instance().getSession().beginTransaction();

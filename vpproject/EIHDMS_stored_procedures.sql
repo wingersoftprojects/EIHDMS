@@ -590,10 +590,11 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_move_data_from_interface_to_base`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_move_data_from_interface_to_base`(IN in_batch_id int,IN reporting_level varchar(100),IN in_frequency varchar(50),IN in_report_form_group_id int,IN in_week int , IN in_month int ,IN in_bi_month int, IN in_quarter int,IN in_calendar_year int)
-BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_move_data_from_interface_to_base`(IN in_report_form_id int,IN in_batch_id int,IN reporting_level varchar(100),IN in_frequency varchar(50),IN in_report_form_group_id int,IN in_week int , IN in_month int ,IN in_bi_month int, IN in_quarter int,IN in_calendar_year int)
+BEGIN 
 IF reporting_level='Facility' THEN 
-INSERT INTO base_data (data_element_id,
+SET @sql1=CONCAT("INSERT INTO base_data_",in_report_form_id);
+SET @sql2=CONCAT("(data_element_id,
 data_element_value,
 health_facility_id,
 parish_id,
@@ -634,9 +635,14 @@ id.report_period_year,
 id.report_period_bi_month,
 id.report_form_id,
 id.county_id,id.report_form_group_id
-FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.health_facility_id=id.health_facility_id where vr.batch_id=in_batch_id AND vr.status_v='Pass';
+FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.health_facility_id=id.health_facility_id where vr.batch_id=",in_batch_id," AND vr.status_v='Pass'");
+SET @sql_text1=CONCAT(@sql1,@sql2);
+PREPARE stmt1 FROM @sql_text1;
+EXECUTE stmt1;
+DEALLOCATE PREPARE stmt1;
 ELSEIF reporting_level='Parish' THEN 
-INSERT INTO base_data (data_element_id,
+SET @sql11=CONCAT("INSERT INTO base_data_",in_report_form_id);
+SET @sql22=CONCAT("(data_element_id,
 data_element_value,
 health_facility_id,
 parish_id,
@@ -677,9 +683,14 @@ id.report_period_year,
 id.report_period_bi_month,
 id.report_form_id,
 id.county_id,id.report_form_group_id
-FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.parish_id=id.parish_id where vr.batch_id=in_batch_id AND vr.status_v='Pass';
+FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.parish_id=id.parish_id where vr.batch_id=",in_batch_id," AND vr.status_v='Pass'");
+SET @sql_text2=CONCAT(@sql11,@sql22);
+PREPARE stmt2 FROM @sql_text2;
+EXECUTE stmt2;
+DEALLOCATE PREPARE stmt2;
 ELSEIF reporting_level='District' THEN 
-INSERT INTO base_data (data_element_id,
+SET @sql111=CONCAT("INSERT INTO base_data_",in_report_form_id);
+SET @sql222=CONCAT("(data_element_id,
 data_element_value,
 health_facility_id,
 parish_id,
@@ -720,7 +731,11 @@ id.report_period_year,
 id.report_period_bi_month,
 id.report_form_id,
 id.county_id,id.report_form_group_id
-FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.district_id=id.district_id where vr.batch_id=in_batch_id AND vr.status_v='Pass';
+FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.district_id=id.district_id where vr.batch_id=",in_batch_id," AND vr.status_v='Pass'");
+SET @sql_text3=CONCAT(@sql111,@sql222);
+PREPARE stmt3 FROM @sql_text3;
+EXECUTE stmt3;
+DEALLOCATE PREPARE stmt3;
 END IF;
 
 
@@ -1178,7 +1193,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_validate_data`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_data`(IN in_report_form_group_id int, IN in_batch_id int,IN in_reporting_level varchar(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_data`(IN in_report_form_id int,IN in_report_form_group_id int, IN in_batch_id int,IN in_reporting_level varchar(255))
 BEGIN
 	
 DECLARE validation_rule_formula_v varchar(200);
@@ -1393,11 +1408,11 @@ END IF;
  -- BEGIN Validate Existing Data
 select report_form_frequency from report_form where report_form_id in (select report_form_id from report_form_group where report_form_group_id=in_report_form_group_id) LIMIT 1 into frequency_v;
 select distinct report_period_week,report_period_month,report_period_bi_month,report_period_quarter,report_period_year from interface_data where batch_id=in_batch_id into week_v,month_v,bi_month_v,quarter_v,year_v;
-CALL sp_validate_existing_data (frequency_v ,in_batch_id,week_v,month_v,bi_month_v,quarter_v,year_v,in_report_form_group_id,in_reporting_level);
+CALL sp_validate_existing_data (in_report_form_id,frequency_v ,in_batch_id,week_v,month_v,bi_month_v,quarter_v,year_v,in_report_form_group_id,in_reporting_level);
 -- END Validate Existing Data
 
 -- BEGIN Move DATA
-CALL sp_move_data_from_interface_to_base(in_batch_id,in_reporting_level,frequency_v,in_report_form_group_id,week_v,month_v,bi_month_v,quarter_v,year_v);
+CALL sp_move_data_from_interface_to_base(in_report_form_id,in_batch_id,in_reporting_level,frequency_v,in_report_form_group_id,week_v,month_v,bi_month_v,quarter_v,year_v);
 -- END Move DATA
 
 END
@@ -1409,43 +1424,67 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_validate_existing_data`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_existing_data`(IN in_frequency varchar(50),IN in_batch_id int,IN in_week int , IN in_month int ,IN in_bi_month int, IN in_quarter int,IN in_calendar_year int,IN in_report_form_group_id int,IN in_reporting_level varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_existing_data`(IN in_report_form_id int,IN in_frequency varchar(50),IN in_batch_id int,IN in_week int , IN in_month int ,IN in_bi_month int, IN in_quarter int,IN in_calendar_year int,IN in_report_form_group_id int,IN in_reporting_level varchar(100))
 BEGIN
 
 IF in_frequency='Weekly' THEN
 SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_month=in_month and report_period_week=in_week and report_form_group_id=in_report_form_group_id;
 IF FOUND_ROWS()>0 THEN
-IF in_reporting_level='Facility' THEN
+IF in_reporting_level='Facility' THEN 
+SET @sql1=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Week:',report_period_week,'/Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE health_facility_id in (select DISTINCT health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month AND report_period_week=in_week) and batch_id=in_batch_id;
+WHERE health_facility_id in (select DISTINCT health_facility_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_month=",in_month," AND report_period_week=",in_week,") and batch_id=",in_batch_id);
+PREPARE stmt1 FROM @sql1;
+EXECUTE stmt1;
+DEALLOCATE PREPARE stmt1;
 ELSEIF in_reporting_level='Parish' THEN
+SET @sql2=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Week:',report_period_week,'/Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE parish_id in (select DISTINCT parish_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month AND report_period_week=in_week) and batch_id=in_batch_id;
+WHERE parish_id in (select DISTINCT parish_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_month=",in_month," AND report_period_week=",in_week,") and batch_id=",in_batch_id);
+PREPARE stmt2 FROM @sql2;
+EXECUTE stmt2;
+DEALLOCATE PREPARE stmt2;
  ELSEIF in_reporting_level='District' THEN 
+SET @sql3=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Week:',report_period_week,'/Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE district_id in (select DISTINCT district_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month AND report_period_week=in_week) and batch_id=in_batch_id;
+WHERE district_id in (select DISTINCT district_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_month=",in_month," AND report_period_week=",in_week,") and batch_id=",in_batch_id);
+PREPARE stmt3 FROM @sql3;
+EXECUTE stmt3;
+DEALLOCATE PREPARE stmt3;
 END IF;
 END IF;
 END IF;
 
-IF in_frequency='Monthly' THEN
+IF in_frequency='Monthly' THEN 
 SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_month=in_month and report_form_group_id=in_report_form_group_id;
-IF FOUND_ROWS()>0 THEN
-IF in_reporting_level='Facility' THEN
+IF FOUND_ROWS()>0 THEN 
+IF in_reporting_level='Facility' THEN 
+SET @sql4=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE health_facility_id in (select DISTINCT health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month) and batch_id=in_batch_id;
-ELSEIF in_reporting_level='Parish' THEN
+WHERE health_facility_id in (select DISTINCT health_facility_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_month=",in_month,") and batch_id=",in_batch_id);
+PREPARE stmt4 FROM @sql4;
+EXECUTE stmt4;
+DEALLOCATE PREPARE stmt4;
+ELSEIF in_reporting_level='Parish' THEN 
+SET @sql5=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE parish_id in (select DISTINCT parish_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month) and batch_id=in_batch_id;
+WHERE parish_id in (select DISTINCT parish_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_month=",in_month,") and batch_id=",in_batch_id);
+PREPARE stmt5 FROM @sql5;
+EXECUTE stmt5;
+DEALLOCATE PREPARE stmt5;
  ELSEIF in_reporting_level='District' THEN 
+SET @sql6=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Month:',report_period_month,'/Year:',report_period_year,') already exists')
-WHERE district_id in (select DISTINCT district_id from base_data where report_period_year=in_calendar_year AND report_period_month=in_month) and batch_id=in_batch_id;
+WHERE district_id in (select DISTINCT district_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_month=",in_month,") and batch_id=",in_batch_id);
+PREPARE stmt6 FROM @sql6;
+EXECUTE stmt6;
+DEALLOCATE PREPARE stmt6;
 END IF;
 END IF;
 END IF;
@@ -1453,36 +1492,61 @@ END IF;
 IF in_frequency='Bi-Monthly' THEN
 SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_bi_month=in_bi_month and report_form_group_id=in_report_form_group_id;
 IF FOUND_ROWS()>0 THEN
-IF in_reporting_level='Facility' THEN
+IF in_reporting_level='Facility' THEN 
+SET @sql7=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Bi-Month:',report_period_bi_month,'/Year:',report_period_year,') already exists')
-WHERE health_facility_id in (select health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_bi_month=in_bi_month) and batch_id=in_batch_id;
-ELSEIF in_reporting_level='Parish' THEN
+WHERE health_facility_id in (select health_facility_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_bi_month=",in_bi_month,") and batch_id=",in_batch_id);
+PREPARE stmt7 FROM @sql7;
+EXECUTE stmt7;
+DEALLOCATE PREPARE stmt7;
+ELSEIF in_reporting_level='Parish' THEN 
+SET @sql8=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Bi-Month:',report_period_bi_month,'/Year:',report_period_year,') already exists')
-WHERE parish_id in (select parish_id from base_data where report_period_year=in_calendar_year AND report_period_bi_month=in_bi_month) and batch_id=in_batch_id;
+WHERE parish_id in (select parish_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_bi_month=",in_bi_month,") and batch_id=",in_batch_id);
+PREPARE stmt8 FROM @sql8;
+EXECUTE stmt8;
+DEALLOCATE PREPARE stmt8;
  ELSEIF in_reporting_level='District' THEN 
+SET @sql9=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Bi-Month:',report_period_bi_month,'/Year:',report_period_year,') already exists')
-WHERE district_id in (select district_id from base_data where report_period_year=in_calendar_year AND report_period_bi_month=in_bi_month) and batch_id=in_batch_id;
+WHERE district_id in (select district_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_bi_month=",in_bi_month,") and batch_id=",in_batch_id);
+PREPARE stmt9 FROM @sql9;
+EXECUTE stmt9;
+DEALLOCATE PREPARE stmt9;
 END IF;
 END IF;
 END IF;
+
 IF in_frequency='Quarterly' THEN
 SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_period_quarter=in_quarter and report_form_group_id=in_report_form_group_id;
-IF FOUND_ROWS()>0 THEN
+IF FOUND_ROWS()>0 THEN 
 IF in_reporting_level='Facility' THEN
+SET @sql10=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Quarter:',report_period_quarter,'/Year:',report_period_year,') already exists')
-WHERE health_facility_id in (select health_facility_id from base_data where report_period_year=in_calendar_year AND report_period_quarter=in_quarter) and batch_id=in_batch_id;
-ELSEIF in_reporting_level='Parish' THEN
+WHERE health_facility_id in (select health_facility_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_quarter=",in_quarter,") and batch_id=",in_batch_id);
+PREPARE stmt10 FROM @sql10;
+EXECUTE stmt10;
+DEALLOCATE PREPARE stmt10;
+ELSEIF in_reporting_level='Parish' THEN 
+SET @sql11=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Quarter:',report_period_quarter,'/Year:',report_period_year,') already exists')
-WHERE parish_id in (select parish_id from base_data where report_period_year=in_calendar_year AND report_period_quarter=in_quarter) and batch_id=in_batch_id;
+WHERE parish_id in (select parish_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_quarter=",in_quarter,") and batch_id=",in_batch_id);
+PREPARE stmt11 FROM @sql11;
+EXECUTE stmt11;
+DEALLOCATE PREPARE stmt11;
  ELSEIF in_reporting_level='District' THEN 
+SET @sql12=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Quarter:',report_period_quarter,'/Year:',report_period_year,') already exists')
-WHERE district_id in (select district_id from base_data where report_period_year=in_calendar_year AND report_period_quarter=in_quarter) and batch_id=in_batch_id;
+WHERE district_id in (select district_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year," AND report_period_quarter=",in_quarter,") and batch_id=",in_batch_id);
+PREPARE stmt12 FROM @sql12;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
 END IF;
 END IF;
 END IF;
@@ -1490,18 +1554,30 @@ END IF;
 IF in_frequency='Annually' THEN
 SELECT * FROM loaded_data_summary where report_period_year=in_calendar_year and report_form_group_id=in_report_form_group_id;
 IF FOUND_ROWS()>0 THEN
-IF in_reporting_level='Facility' THEN
+IF in_reporting_level='Facility' THEN 
+SET @sql13=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Year:',report_period_year,') already exists')
-WHERE health_facility_id in (select health_facility_id from base_data where report_period_year=in_calendar_year) and batch_id=in_batch_id;
-ELSEIF in_reporting_level='Parish' THEN
+WHERE health_facility_id in (select health_facility_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year,") and batch_id=",in_batch_id);
+PREPARE stmt13 FROM @sql13;
+EXECUTE stmt13;
+DEALLOCATE PREPARE stmt13;
+ELSEIF in_reporting_level='Parish' THEN 
+SET @sql14=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Year:',report_period_year,') already exists')
-WHERE parish_id in (select parish_id from base_data where report_period_year=in_calendar_year) and batch_id=in_batch_id;
+WHERE parish_id in (select parish_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year,") and batch_id=",in_batch_id);
+PREPARE stmt14 FROM @sql14;
+EXECUTE stmt14;
+DEALLOCATE PREPARE stmt14;
  ELSEIF in_reporting_level='District' THEN 
+SET @sql15=CONCAT("
 UPDATE validation_report
 set status_v='Fail',status_v_desc=CONCAT(CASE WHEN status_v_desc is null THEN '' ELSE status_v_desc END,'\n=>Data for the same period (Year:',report_period_year,') already exists')
-WHERE district_id in (select district_id from base_data where report_period_year=in_calendar_year) and batch_id=in_batch_id;
+WHERE district_id in (select district_id from base_data_",in_report_form_id," where report_period_year=",in_calendar_year,") and batch_id=",in_batch_id);
+PREPARE stmt15 FROM @sql15;
+EXECUTE stmt15;
+DEALLOCATE PREPARE stmt15;
 END IF;
 END IF;
 END IF;
@@ -1581,5 +1657,50 @@ RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
        delim, '')
 ;
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_create_report_form_base_data
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_create_report_form_base_data`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_report_form_base_data`(IN `in_report_form_id` int)
+BEGIN 
+SET @table_name=CONCAT('base_data_',in_report_form_id);
+SET @sql1=CONCAT('CREATE TABLE IF NOT EXISTS ',@table_name);
+SET @sql2="(
+  `base_data_id` int(11) NOT NULL AUTO_INCREMENT,
+  `batch_id` int(11) DEFAULT NULL,
+  `data_element_id` int(11) NOT NULL,
+  `data_element_value` varchar(100) NOT NULL,
+  `health_facility_id` int(11) DEFAULT NULL,
+  `parish_id` int(11) DEFAULT NULL,
+  `sub_county_id` int(11) DEFAULT NULL,
+  `county_id` int(11) DEFAULT NULL,
+  `district_id` int(11) DEFAULT NULL,
+  `financial_year_id` int(11) DEFAULT NULL,
+  `report_period_month` int(11) DEFAULT NULL,
+  `report_period_week` int(11) DEFAULT NULL,
+  `report_period_year` int(11) DEFAULT NULL,
+  `report_period_quarter` int(11) DEFAULT NULL,
+  `report_period_from_date` date NOT NULL,
+  `report_period_to_date` date NOT NULL,
+  `is_deleted` int(1) NOT NULL,
+  `is_active` int(1) NOT NULL,
+  `add_date` datetime DEFAULT NULL,
+  `add_by` int(10) DEFAULT NULL,
+  `last_edit_date` datetime DEFAULT NULL,
+  `last_edit_by` int(10) DEFAULT NULL,
+  `report_period_bi_month` int(11) DEFAULT NULL,
+  `report_form_id` int(11) DEFAULT NULL,
+  `report_form_group_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`base_data_id`)
+  )";
+SET @sql_text=CONCAT(@sql1,@sql2);
+PREPARE stmt FROM @sql_text;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+END
 ;;
 DELIMITER ;

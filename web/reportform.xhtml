@@ -75,7 +75,7 @@
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{report_formBean.save(loginBean.user_detail.user_detail_id)}" update="@form" process="@this,report_form_code,report_form_name,report_form_description,report_form_frequency,lowest_report_form_level,report_form_code,is_active"/>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{report_formBean.save_report_form(loginBean.user_detail.user_detail_id)}" update="@form" process="@this,report_form_code,report_form_name,report_form_description,report_form_frequency,lowest_report_form_level,report_form_code,is_active"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{report_formBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>

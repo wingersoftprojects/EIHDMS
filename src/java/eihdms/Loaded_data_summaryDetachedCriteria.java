@@ -30,6 +30,9 @@ public class Loaded_data_summaryDetachedCriteria extends AbstractORMDetachedCrit
 	public final IntegerExpression batch_id;
 	public final TimestampExpression add_date;
 	public final IntegerExpression add_by;
+	public final IntegerExpression loaded_records;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	
 	public Loaded_data_summaryDetachedCriteria() {
 		super(eihdms.Loaded_data_summary.class, eihdms.Loaded_data_summaryCriteria.class);
@@ -44,6 +47,9 @@ public class Loaded_data_summaryDetachedCriteria extends AbstractORMDetachedCrit
 		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		loaded_records = new IntegerExpression("loaded_records", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 	}
 	
 	public Loaded_data_summaryDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -59,6 +65,9 @@ public class Loaded_data_summaryDetachedCriteria extends AbstractORMDetachedCrit
 		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		loaded_records = new IntegerExpression("loaded_records", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 	}
 	
 	public Loaded_data_summary uniqueLoaded_data_summary(PersistentSession session) {

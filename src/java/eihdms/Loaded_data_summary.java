@@ -399,6 +399,15 @@ public class Loaded_data_summary implements Serializable {
 	@Column(name="add_by", nullable=true, length=10)	
 	private Integer add_by;
 	
+	@Column(name="loaded_records", nullable=true, length=11)	
+	private Integer loaded_records;
+	
+	@Column(name="last_edit_date", nullable=true)	
+	private java.sql.Timestamp last_edit_date;
+	
+	@Column(name="last_edit_by", nullable=true, length=11)	
+	private Integer last_edit_by;
+	
 	private void setLoaded_data_summary_id(int value) {
 		this.loaded_data_summary_id = value;
 	}
@@ -525,6 +534,38 @@ public class Loaded_data_summary implements Serializable {
 	
 	public Integer getAdd_by() {
 		return add_by;
+	}
+	
+	public void setLoaded_records(int value) {
+		setLoaded_records(new Integer(value));
+	}
+	
+	public void setLoaded_records(Integer value) {
+		this.loaded_records = value;
+	}
+	
+	public Integer getLoaded_records() {
+		return loaded_records;
+	}
+	
+	public void setLast_edit_date(java.sql.Timestamp value) {
+		this.last_edit_date = value;
+	}
+	
+	public java.sql.Timestamp getLast_edit_date() {
+		return last_edit_date;
+	}
+	
+	public void setLast_edit_by(int value) {
+		setLast_edit_by(new Integer(value));
+	}
+	
+	public void setLast_edit_by(Integer value) {
+		this.last_edit_by = value;
+	}
+	
+	public Integer getLast_edit_by() {
+		return last_edit_by;
 	}
 	
 	public String toString() {
