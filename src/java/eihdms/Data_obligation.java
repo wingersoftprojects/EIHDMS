@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -800,6 +800,19 @@ public class Data_obligation implements Serializable {
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Data_obligation object = (Data_obligation) obj;
+		return (this.getData_obligation_id() == object.getData_obligation_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -783,6 +783,19 @@ public class Data_element implements Serializable {
 		return standard_rule;
 	}
 	
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Data_element object = (Data_element) obj;
+		return (this.getData_element_id() == object.getData_element_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
+	}
 	
 	public String toString() {
 		return String.valueOf(getData_element_id());

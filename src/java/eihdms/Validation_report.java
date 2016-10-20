@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -699,6 +699,19 @@ public class Validation_report implements Serializable {
 	
 	public Integer getAdd_by() {
 		return add_by;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Validation_report object = (Validation_report) obj;
+		return (this.getValidation_report_id() == object.getValidation_report_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

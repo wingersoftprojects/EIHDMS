@@ -74,11 +74,12 @@ public class Validation_ruleBean extends AbstractBean<Validation_rule> implement
 
     @Override
     public void save(int aUserDetailId) {
-        String sql = "{call sp_validate_formula(?)}";
+        String sql = "{call sp_validate_formula(?,?)}";
         ResultSet rs = null;
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, this.getSelected().getValidation_rule_formula());
+            ps.setInt(2, this.getSelected().getReport_form_group().getReport_form_group_id());
             rs = ps.executeQuery();
         } catch (SQLException se) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -87,6 +88,11 @@ public class Validation_ruleBean extends AbstractBean<Validation_rule> implement
             return;
         }
         super.save(aUserDetailId); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void clear_validation_formula() {
+        this.getSelected().setValidation_rule_formula("");
+        this.getSelected().setData_elements_involved("");
     }
 
     public List<Data_element> completeData_element(String query) {

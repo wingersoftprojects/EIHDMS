@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -727,6 +727,19 @@ public class Interface_data_temp implements Serializable {
 	
 	public Integer getReport_form_group_id() {
 		return report_form_group_id;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Interface_data_temp object = (Interface_data_temp) obj;
+		return (this.getInterface_data_temp_id() == object.getInterface_data_temp_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

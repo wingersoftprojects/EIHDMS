@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -539,6 +539,19 @@ public class Login_session implements Serializable {
 	
 	public eihdms.User_detail getUser_detail() {
 		return user_detail;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Login_session object = (Login_session) obj;
+		return (this.getLogin_session_id() == object.getLogin_session_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

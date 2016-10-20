@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -792,6 +792,19 @@ public class Base_data implements Serializable {
 	
 	public eihdms.County getCounty() {
 		return county;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Base_data object = (Base_data) obj;
+		return (this.getBase_data_id() == object.getBase_data_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

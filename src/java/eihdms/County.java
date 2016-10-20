@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -585,6 +585,19 @@ public class County implements Serializable {
 		return base_data;
 	}
 	
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		County object = (County) obj;
+		return (this.getCounty_id() == object.getCounty_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
+	}
 	
 	public String toString() {
 		return String.valueOf(getCounty_id());

@@ -65,15 +65,15 @@
                                         <h:outputText value="#{data_element.sub_section.sub_section_name}">
                                         </h:outputText>
                                     </p:column>
-                                    <p:ajax event="itemSelect" listener="#{kpiBean.append_data_element()}" process="@this" update="@form"></p:ajax>
+                                    <p:ajax event="itemSelect" listener="#{kpiBean.append_data_element()}" process="@this" update="kpi_summary_function,data_elements_involved"></p:ajax>
                                     <p:ajax event="change" listener="#{kpiBean.append_data_element()}" process="@this" update="@form"></p:ajax>
                                 </p:autoComplete>
-                                <p:commandButton value="(" action="#{kpiBean.append_operand('(')}" process="@this" update="@form"/>
-                                <p:commandButton value=")" action="#{kpiBean.append_operand(')')}" process="@this" update="@form"/>
-                                <p:commandButton value="/" action="#{kpiBean.append_operand('/')}" process="@this" update="@form"/>
-                                <p:commandButton value="*" action="#{kpiBean.append_operand('*')}" process="@this" update="@form"/>
-                                <p:commandButton value="+" action="#{kpiBean.append_operand('+')}" process="@this" update="@form"/>
-                                <p:commandButton value="-" action="#{kpiBean.append_operand('-')}" process="@this" update="@form"/>
+                                <p:commandButton value="(" action="#{kpiBean.append_operand('(')}" process="@this" update="kpi_summary_function,data_elements_involved"/>
+                                <p:commandButton value=")" action="#{kpiBean.append_operand(')')}" process="@this" update="kpi_summary_function,data_elements_involved"/>
+                                <p:commandButton value="/" action="#{kpiBean.append_operand('/')}" process="@this" update="kpi_summary_function,data_elements_involved"/>
+                                <p:commandButton value="*" action="#{kpiBean.append_operand('*')}" process="@this" update="kpi_summary_function,data_elements_involved"/>
+                                <p:commandButton value="+" action="#{kpiBean.append_operand('+')}" process="@this" update="kpi_summary_function,data_elements_involved"/>
+                                <p:commandButton value="-" action="#{kpiBean.append_operand('-')}" process="@this" update="kpi_summary_function,data_elements_involved"/>
                             </p:outputPanel>
                             <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{kpiBean.save(loginBean.user_detail.user_detail_id)}" update="@form" process="@this,kpi_name,is_active,kpi_summary_function"/>
                             <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{kpiBean.cancel()}" update="@form" process="@this"/>

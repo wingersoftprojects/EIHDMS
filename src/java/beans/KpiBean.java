@@ -12,6 +12,7 @@ import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Kpi;
 import eihdms.Report_form;
+import eihdms.Report_form_group;
 import eihdms.Technical_area;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -27,6 +28,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.HibernateException;
 import org.orm.PersistentException;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
@@ -53,6 +55,15 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     private List<District> districts;
     private JSONArray jSONArray;
     private List<Object[]> base_dataList;
+    private Report_form_group report_form_group;
+
+    public Report_form_group getReport_form_group() {
+        return report_form_group;
+    }
+
+    public void setReport_form_group(Report_form_group report_form_group) {
+        this.report_form_group = report_form_group;
+    }
 
     public KpiBean() {
         super(Kpi.class);
@@ -207,13 +218,12 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         List<Data_element> filteredData_elements = new ArrayList<>();
         try {
             if (this.getSelected() != null) {
-                if (this.getSelected().getReport_form() != null) {
-                    filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND de.report_form.report_form_id=" + this.getSelected().getReport_form().getReport_form_id() + " AND de.data_element_name like '%" + query + "%'").list();
-                } else {
-                    filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND ( de.description like '%" + query + "%' OR  de.technical_area.technical_area_name '%" + query + "%' or de.report_form.report_form_name like '%" + query + "%' OR de.data_element_name like '%" + query + "%')").list();
+                if (this.getSelected().getReport_form() == null) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage("Please select the report form first!", "Please select the report form first!"));
+                    return filteredData_elements;
                 }
-            } else {
-                filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND ( de.description like '%" + query + "%' OR  de.technical_area.technical_area_name '%" + query + "%' or de.report_form.report_form_name like '%" + query + "%' OR de.data_element_name like '%" + query + "%')").list();
+                filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND de.report_form.report_form_id=" + this.getSelected().getReport_form().getReport_form_id() + " AND de.data_element_name like '%" + query + "%'").list();
             }
         } catch (PersistentException ex) {
             Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -417,6 +427,9 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             jObj.put("Facility", new JSONObject().put("type", "string"));
             jObj.put("Year", new JSONObject().put("type", "string"));
             jObj.put("Quarter", new JSONObject().put("type", "string"));
+            jObj.put("BiMonth", new JSONObject().put("type", "string"));
+            jObj.put("Month", new JSONObject().put("type", "string"));
+            jObj.put("Week", new JSONObject().put("type", "string"));
             jObj.put("Value", new JSONObject().put("type", "number"));
             jArray.put(jObj);
 
@@ -460,7 +473,22 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                     jObj.put("Quarter", "");
                 }
                 try {
-                    jObj.put("Value", rs.getInt(8));
+                    jObj.put("Month", rs.getString(8));
+                } catch (NullPointerException npe) {
+                    jObj.put("Month", "");
+                }
+                try {
+                    jObj.put("BiMonth", rs.getString(9));
+                } catch (NullPointerException npe) {
+                    jObj.put("BiMonth", "");
+                }
+                try {
+                    jObj.put("Week", rs.getString(10));
+                } catch (NullPointerException npe) {
+                    jObj.put("Week", "");
+                }
+                try {
+                    jObj.put("Value", rs.getInt(11));
                 } catch (NullPointerException npe) {
                     jObj.put("Value", 0);
                 }
@@ -478,5 +506,19 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
 
     public void setjSONArray(JSONArray jSONArray) {
         this.jSONArray = jSONArray;
+    }
+
+    public List<Report_form_group> getts(Report_form report_form) {
+        List<Report_form_group> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && report_form != null) {
+                temp = (List<Report_form_group>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Report_form_group  d where d.is_deleted<>1 AND d.report_form=" + report_form.getReport_form_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
     }
 }

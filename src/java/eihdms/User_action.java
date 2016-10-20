@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -468,6 +468,19 @@ public class User_action implements Serializable {
 	
 	public eihdms.Report_form getForm_template() {
 		return form_template;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		User_action object = (User_action) obj;
+		return (this.getUser_action_id() == object.getUser_action_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

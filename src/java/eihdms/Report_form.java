@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -795,6 +795,19 @@ public class Report_form implements Serializable {
 		return base_data;
 	}
 	
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Report_form object = (Report_form) obj;
+		return (this.getReport_form_id() == object.getReport_form_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
+	}
 	
 	public String toString() {
 		return String.valueOf(getReport_form_id());

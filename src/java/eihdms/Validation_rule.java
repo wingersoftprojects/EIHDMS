@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -553,6 +553,19 @@ public class Validation_rule implements Serializable {
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Validation_rule object = (Validation_rule) obj;
+		return (this.getValidation_rule_id() == object.getValidation_rule_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

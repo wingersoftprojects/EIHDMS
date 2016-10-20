@@ -880,20 +880,28 @@ DROP PROCEDURE IF EXISTS `sp_pivot_base_data_by_form_id_and_logged_in_user`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_pivot_base_data_by_form_id_and_logged_in_user`(IN in_report_form_id int,IN in_table_name varchar(100))
 BEGIN
-		SET SESSION group_concat_max_len = 100000000;
+SET SESSION group_concat_max_len = 18446744073709551615;
 SET @sql = NULL;
-SELECT
+
+SET @sql_text=NULL;
+
+SET @source=CONCAT('(((((((((base_data_',in_report_form_id,' `bd` join `district` `d` on((`bd`.`district_id` = `d`.`district_id`))) join `region` `r` on((`d`.`region_id` = `r`.`region_id`))) left join `sub_county` `sc` on((`bd`.`sub_county_id` = `sc`.`sub_county_id`))) left join `county` `c` on((`c`.`county_id` = `bd`.`county_id`))) left join `parish` `p` on((`bd`.`parish_id` = `p`.`parish_id`))) left join `health_facility` `h` on((`bd`.`health_facility_id` = `h`.`health_facility_id`))) join `data_element` `de` on((`bd`.`data_element_id` = `de`.`data_element_id`))) join `report_form` `rf` on((`de`.`report_form_id` = `rf`.`report_form_id`))) join `report_form_group` `rfg` on((`de`.`report_form_group_id` = `rfg`.`report_form_group_id`))) ');
+
+SET @sql_text=CONCAT('SELECT
   GROUP_CONCAT(DISTINCT
-    CONCAT('max(case when data_element_id = ',data_element_id,' then data_element_value end) AS ','DE',data_element_id,' ')
+    CONCAT(''max(case when bd.data_element_id = '',bd.data_element_id,'' then data_element_value end) AS '',''DE'',bd.data_element_id,'' '')
   ) INTO @sql
-FROM  vw_base_data where data_element_id AND report_form_id=in_report_form_id;
+FROM ',@source,'where bd.report_form_id=',in_report_form_id);
+
+prepare stmt from @sql_text;
+execute stmt;
 
 SET @sql_drop_table=CONCAT('DROP TABLE IF EXISTS ','z_temp_base_data_',in_table_name);
 
 prepare stmt_drop_table from @sql_drop_table;
 execute stmt_drop_table;
 
-SET @sql = CONCAT('CREATE TABLE ', 'z_temp_base_data_',in_table_name ,' SELECT region_id,district_id,county_id,sub_county_id,parish_id,health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id,', @sql, ' FROM vw_base_data GROUP BY region_id,district_id,county_id,sub_county_id,parish_id,health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id HAVING report_form_id=',in_report_form_id);
+SET @sql = CONCAT('CREATE TABLE ', 'z_temp_base_data_',in_table_name ,' SELECT r.region_id,d.district_id,c.county_id,sc.sub_county_id,p.parish_id,h.health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,bd.report_form_id,', @sql, ' FROM ',@source,' GROUP BY region_id,district_id,county_id,sub_county_id,parish_id,health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id HAVING report_form_id=',in_report_form_id);
 
 prepare stmt from @sql;
 execute stmt;
@@ -945,7 +953,7 @@ CALL sp_pivot_base_data_by_form_id_and_logged_in_user(in_report_form_id ,in_user
 
 SELECT kpi_summary_function FROM kpi where kpi_id=in_kpi_id into kpi_summary_function_v;
 
-SET @sql_kpi=CONCAT('SELECT district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,',kpi_summary_function_v,' AS kpi_value FROM z_temp_base_data_',in_username,' AS temp WHERE ',kpi_summary_function_v,' is not null AND ',@district_id_v,' AND ',@report_period_year_v);
+SET @sql_kpi=CONCAT('SELECT district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,',kpi_summary_function_v,' AS kpi_value FROM z_temp_base_data_',in_username,' AS temp WHERE ',kpi_summary_function_v,' is not null AND ',@district_id_v,' AND ',@report_period_year_v);
 
 prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
@@ -1591,17 +1599,17 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_validate_formula`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_formula`(IN `in_validation_formula` varchar(250))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_formula`(IN `in_validation_formula` varchar(250),IN in_report_form_group_id int)
 BEGIN
-	SET SESSION group_concat_max_len = 1000000;
+	SET SESSION group_concat_max_len = 18446744073709551615;
 SET @sql = NULL;
 SELECT
   GROUP_CONCAT(DISTINCT
-    CONCAT('max(case when data_element_id = ',data_element_id,' then data_element_id end) AS ','Col',data_element_id,' ')
+    CONCAT('max(case when data_element_id = ',data_element_id,' then data_element_id end) AS ','DE',data_element_id,' ')
   ) INTO @sql
-FROM  data_element where data_element_id;
+FROM  data_element where report_form_group_id=in_report_form_group_id;
 
-SET @sql = CONCAT('SELECT data_element_id,', @sql, ' FROM data_element GROUP BY data_element_id having (',in_validation_formula,')');
+SET @sql = CONCAT('SELECT data_element_id,', @sql, ' FROM data_element where report_form_group_id=',in_report_form_group_id,' GROUP BY data_element_id having (',in_validation_formula,')');
 
 prepare stmt from @sql;
 execute stmt;
@@ -1616,13 +1624,13 @@ DROP PROCEDURE IF EXISTS `sp_validate_kpi_summary_function`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validate_kpi_summary_function`(IN `in_kpi_summary_function` varchar(1000), IN in_report_form_id int)
 BEGIN
-SET SESSION group_concat_max_len = 100000000;
+SET SESSION group_concat_max_len = 18446744073709551615;
 SET @sql = NULL;
 SELECT
   GROUP_CONCAT(DISTINCT
     CONCAT('max(case when data_element_id = ',data_element_id,' then data_element_id end) AS ','DE',data_element_id,' ')
   ) INTO @sql
-FROM  data_element where data_element_id;
+FROM  data_element where report_form_id=in_report_form_id;
 
 -- Begin Create Temp Table
 SET @sql_drop_table=CONCAT('DROP TABLE IF EXISTS z_temp_kpi_summary_function');

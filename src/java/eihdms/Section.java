@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -566,6 +566,19 @@ public class Section implements Serializable {
 		return sub_section;
 	}
 	
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Section object = (Section) obj;
+		return (this.getSection_id() == object.getSection_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
+	}
 	
 	public String toString() {
 		return String.valueOf(getSection_id());

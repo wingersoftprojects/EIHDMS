@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -545,6 +545,19 @@ public class Technical_area implements Serializable {
 		return kpi;
 	}
 	
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Technical_area object = (Technical_area) obj;
+		return (this.getTechnical_area_id() == object.getTechnical_area_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
+	}
 	
 	public String toString() {
 		return String.valueOf(getTechnical_area_id());

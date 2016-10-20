@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -553,6 +553,19 @@ public class Kpi implements Serializable {
 	
 	public eihdms.Technical_area getTechnical_area() {
 		return technical_area;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Kpi object = (Kpi) obj;
+		return (this.getKpi_id() == object.getKpi_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

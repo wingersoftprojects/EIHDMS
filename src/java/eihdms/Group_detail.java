@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -530,6 +530,19 @@ public class Group_detail implements Serializable {
 		return group_right;
 	}
 	
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Group_detail object = (Group_detail) obj;
+		return (this.getGroup_detail_id() == object.getGroup_detail_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
+	}
 	
 	public String toString() {
 		return String.valueOf(getGroup_detail_id());

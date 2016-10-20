@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: btwesigye
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -742,6 +742,19 @@ public class Base_data_deleted implements Serializable {
 	
 	public Integer getReport_form_group_id() {
 		return report_form_group_id;
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj == null) {
+		 return false;
+		 }
+		Base_data_deleted object = (Base_data_deleted) obj;
+		return (this.getBase_data_deleted_id() == object.getBase_data_deleted_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {
