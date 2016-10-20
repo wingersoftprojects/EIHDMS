@@ -34,7 +34,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_delete_base_data`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_base_data`(IN in_base_data_id_in LONGTEXT,IN in_deleted_by int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_base_data`(IN in_base_data_id_in LONGTEXT,IN in_deleted_by int,IN in_report_form_id int)
 BEGIN
 SET SESSION group_concat_max_len = 18446744073709551615;
 SET @sql = NULL;
@@ -66,7 +66,8 @@ last_edit_by,
 batch_id,
 report_form_id,
 deleted_by,
-delete_date)
+delete_date,
+report_form_group_id)
 
 SELECT
 base_data_id,
@@ -94,14 +95,15 @@ last_edit_by,
 batch_id,
 report_form_id,',
 in_deleted_by,',
-NOW()
+NOW(),
+report_form_group_id
 FROM
-base_data  where base_data_id in (',in_base_data_id_in,')');
+base_data_',in_report_form_id,'  where base_data_id in (',in_base_data_id_in,')');
 
 prepare stmt from @sql;
 execute stmt;
 
-SET @sql= CONCAT('DELETE FROM base_data where base_data_id in (',in_base_data_id_in,')');
+SET @sql= CONCAT('DELETE FROM base_data_',in_report_form_id,' where base_data_id in (',in_base_data_id_in,')');
 
 prepare stmt from @sql;
 execute stmt;
@@ -110,6 +112,7 @@ END IF;
 END
 ;;
 DELIMITER ;
+
 
 -- ----------------------------
 -- Procedure structure for sp_delete_from_interface_data_by_batch_id

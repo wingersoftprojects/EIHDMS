@@ -631,7 +631,7 @@ public class UploadBean implements Serializable {
         String YearsStr = "";
         String DistrictsStr = "";
         JSONArray jArray = new JSONArray();
-
+        base_data_objects = new ArrayList<>();
         if (selectedYears == null || selectedDistricts == null) {
             return jArray;
         }
@@ -701,6 +701,18 @@ public class UploadBean implements Serializable {
         }
 
         jSONArray = new JSONArray();
+        load_json_array_from_base_data_array(jSONArray, jArray, "dynamic");
+        return jSONArray;
+    }
+
+    /**
+     *
+     * @param jsona
+     * @param jArray
+     * @param context is used to refer to load method that is calling this
+     * method
+     */
+    public void load_json_array_from_base_data_array(JSONArray jsona, JSONArray jArray, String context) {
         if (report_form != null) {
             JSONObject jObj = new JSONObject();
             jObj.put("DataElement", new JSONObject().put("type", "string"));
@@ -820,10 +832,19 @@ public class UploadBean implements Serializable {
                     }
                     jArray.put(jObj);
                 }
+                /**
+                 * If calling method is the delete method
+                 */
+                if (context.equals("delete_data")) {
+                    if (BaseDataStr.length() > 0) {
+                        BaseDataStr = BaseDataStr + "," + base_data[21].toString();
+                    } else {
+                        BaseDataStr = "" + base_data[21].toString();
+                    }
+                }
             }
             jSONArray = jArray;
         }
-        return jSONArray;
     }
 
     public JSONArray getjSONArray_Delete() {
@@ -854,122 +875,105 @@ public class UploadBean implements Serializable {
                     break;
             }
 
-            if (report_form.getLowest_report_form_level().equals("Parish") && selectedParishes != null) {
-                //get 1016,2015,2013 string format for selected years
-                int x = 0;
-                x = this.selectedParishes.length;
-                for (int i = 0; i < x; i++) {
-                    if (ParishesStr.length() > 0) {
-                        ParishesStr = ParishesStr + "," + this.selectedParishes[i];
-                    } else {
-                        ParishesStr = "" + this.selectedParishes[i];
+            if (report_form != null) {
+                String sql = "SELECT\n"
+                        + "d.district_name,\n"
+                        + "c.county_name,\n"
+                        + "sc.sub_county_name,\n"
+                        + "p.parish_name,\n"
+                        + "hf.health_facility_name,\n"
+                        + "b.report_period_year,\n"
+                        + "b.report_period_quarter,\n"
+                        + "b.report_period_bi_month,\n"
+                        + "b.report_period_month,\n"
+                        + "b.report_period_week,\n"
+                        + "se.section_name,\n"
+                        + "ss.sub_section_name,\n"
+                        + "de.data_element_name,\n"
+                        + "b.data_element_value,\n"
+                        + "de.data_element_context,\n"
+                        + "de.data_type,\n"
+                        + "de.data_size,\n"
+                        + "de.age_category,\n"
+                        + "de.sex_category,\n"
+                        + "de.other_category,\n"
+                        + "ta.technical_area_name,\n"
+                        + "b.base_data_id\n"
+                        + "FROM\n"
+                        + "base_data_" + report_form.getReport_form_id() + " AS b\n"
+                        + "LEFT JOIN district AS d ON d.district_id = b.district_id\n"
+                        + "LEFT JOIN county AS c ON c.county_id = b.county_id\n"
+                        + "LEFT JOIN sub_county AS sc ON sc.sub_county_id = b.sub_county_id\n"
+                        + "LEFT JOIN parish AS p ON p.parish_id = b.parish_id\n"
+                        + "LEFT JOIN health_facility AS hf ON hf.health_facility_id = b.health_facility_id\n"
+                        + "INNER JOIN data_element AS de ON de.data_element_id = b.data_element_id\n"
+                        + "INNER JOIN section AS se ON de.section_id = se.section_id\n"
+                        + "INNER JOIN sub_section AS ss ON de.sub_section_id = ss.sub_section_id\n"
+                        + "LEFT JOIN technical_area AS ta ON de.technical_area_id = ta.technical_area_id WHERE ";
+                //+ "b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ")";
+
+                if (report_form.getLowest_report_form_level().equals("Parish") && selectedParishes != null) {
+                    //get 1016,2015,2013 string format for selected years
+                    int x = 0;
+                    x = this.selectedParishes.length;
+                    for (int i = 0; i < x; i++) {
+                        if (ParishesStr.length() > 0) {
+                            ParishesStr = ParishesStr + "," + this.selectedParishes[i];
+                        } else {
+                            ParishesStr = "" + this.selectedParishes[i];
+                        }
+                    }
+                    sql = sql + "b.parish_id in(" + ParishesStr + ") AND " + period_condition;
+                    try {
+                        base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                    } catch (PersistentException ex) {
+                        base_data_objects = new ArrayList<>();
+                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                try {
-                    base_datas = Base_data.queryBase_data("report_form_id=" + report_form.getReport_form_id() + " AND parish_id in(" + ParishesStr + ") AND " + period_condition, null);
-                } catch (PersistentException ex) {
-                    Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (report_form.getLowest_report_form_level().equals("District") && selectedDistricts != null) {
-                //get 1,2,3 string format for selected districts
-                int y = 0;
-                y = this.selectedDistricts.length;
-                for (int i = 0; i < y; i++) {
-                    if (DistrictsStr.length() > 0) {
-                        DistrictsStr = DistrictsStr + "," + this.selectedDistricts[i].getDistrict_id();
-                    } else {
-                        DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
+                if (report_form.getLowest_report_form_level().equals("District") && selectedDistricts != null) {
+                    //get 1,2,3 string format for selected districts
+                    int y = 0;
+                    y = this.selectedDistricts.length;
+                    for (int i = 0; i < y; i++) {
+                        if (DistrictsStr.length() > 0) {
+                            DistrictsStr = DistrictsStr + "," + this.selectedDistricts[i].getDistrict_id();
+                        } else {
+                            DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
+                        }
+                    }
+                    sql = sql + "b.district_id in(" + DistrictsStr + ") AND " + period_condition;
+                    try {
+                        base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                    } catch (PersistentException ex) {
+                        base_data_objects = new ArrayList<>();
+                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                try {
-                    base_datas = Base_data.queryBase_data("report_form_id=" + report_form.getReport_form_id() + " AND district_id in(" + DistrictsStr + ") AND " + period_condition, null);
-                } catch (PersistentException ex) {
-                    Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (report_form.getLowest_report_form_level().equals("Facility") && selectedHealth_facilities != null) {
-                //get 1,2,3 string format for selected Health Facilities
-                int z = 0;
-                z = this.selectedHealth_facilities.length;
-                for (int i = 0; i < z; i++) {
-                    if (HealthFacilitiesStr.length() > 0) {
-                        HealthFacilitiesStr = HealthFacilitiesStr + "," + this.selectedHealth_facilities[i];
-                    } else {
-                        HealthFacilitiesStr = "" + this.selectedHealth_facilities[i];
+                if (report_form.getLowest_report_form_level().equals("Facility") && selectedHealth_facilities != null) {
+                    //get 1,2,3 string format for selected Health Facilities
+                    int z = 0;
+                    z = this.selectedHealth_facilities.length;
+                    for (int i = 0; i < z; i++) {
+                        if (HealthFacilitiesStr.length() > 0) {
+                            HealthFacilitiesStr = HealthFacilitiesStr + "," + this.selectedHealth_facilities[i];
+                        } else {
+                            HealthFacilitiesStr = "" + this.selectedHealth_facilities[i];
+                        }
                     }
-                }
-                try {
-                    base_datas = Base_data.queryBase_data("report_form_id=" + report_form.getReport_form_id() + " AND health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition, null);
-                } catch (PersistentException ex) {
-                    Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                    sql = sql + "b.health_facility_id in(" + HealthFacilitiesStr + ") AND " + period_condition;
+                    try {
+                        base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                    } catch (PersistentException ex) {
+                        base_data_objects = new ArrayList<>();
+                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
         JSONArray jArray = new JSONArray();
         jSONArray = new JSONArray();
-        if (report_form != null) {
-            JSONObject jObj = new JSONObject();
-            jObj.put("DataElement", new JSONObject().put("type", "string"));
-            if (report_form.getLowest_report_form_level().equals("Facility")) {
-                jObj.put("District", new JSONObject().put("type", "string"));
-                jObj.put("County", new JSONObject().put("type", "string"));
-                jObj.put("Subcounty", new JSONObject().put("type", "string"));
-                jObj.put("Facility", new JSONObject().put("type", "string"));
-            }
-            if (report_form.getLowest_report_form_level().equals("Parish")) {
-                jObj.put("District", new JSONObject().put("type", "string"));
-                jObj.put("County", new JSONObject().put("type", "string"));
-                jObj.put("Subcounty", new JSONObject().put("type", "string"));
-                jObj.put("Parish", new JSONObject().put("type", "string"));
-            }
-            if (report_form.getLowest_report_form_level().equals("District")) {
-                jObj.put("District", new JSONObject().put("type", "string"));
-            }
-            jObj.put("DataElementValue", new JSONObject().put("type", "number"));
-            jArray.put(jObj);
-
-            if (base_datas == null) {
-                base_datas = new ArrayList<>();
-            }
-            for (Base_data base_data : base_datas) {
-                if (base_data.getData_element().getData_type().equals("integer") || base_data.getData_element().getData_type().equals("float")) {
-                    jObj = new JSONObject();
-                    jObj.put("DataElement", String.format("%1$03d", base_data.getData_element().getGroup_column_number()) + base_data.getData_element().getData_element_name());
-                    if (report_form.getLowest_report_form_level().equals("Facility")) {
-                        jObj.put("District", base_data.getDistrict().getDistrict_name());
-                        jObj.put("County", base_data.getCounty().getCounty_name());
-                        jObj.put("Subcounty", base_data.getSub_county().getSub_county_name());
-                        jObj.put("Facility", base_data.getHealth_facility().getHealth_facility_name());
-                    }
-                    if (report_form.getLowest_report_form_level().equals("Parish")) {
-                        jObj.put("District", base_data.getDistrict().getDistrict_name());
-                        jObj.put("County", base_data.getCounty().getCounty_name());
-                        jObj.put("Subcounty", base_data.getSub_county().getSub_county_name());
-                        jObj.put("Parish", base_data.getParish().getParish_name());
-                    }
-                    if (report_form.getLowest_report_form_level().equals("District")) {
-                        jObj.put("District", base_data.getDistrict().getDistrict_name());
-                    }
-                    if (base_data.getData_element_value() == null) {
-                        jObj.put("DataElementValue", 0);
-                    } else {
-                        try {
-                            jObj.put("DataElementValue", Float.parseFloat(base_data.getData_element_value()));
-                        } catch (NumberFormatException nfe) {
-                            jObj.put("DataElementValue", 0);
-                        }
-                    }
-                    jArray.put(jObj);
-                }
-                if (BaseDataStr.length() > 0) {
-                    BaseDataStr = BaseDataStr + "," + base_data.getBase_data_id();
-                } else {
-                    BaseDataStr = "" + base_data.getBase_data_id();
-                }
-            }
-            jSONArray = jArray;
-        }
+        load_json_array_from_base_data_array(jSONArray, jArray, "delete_data");
         return jSONArray;
     }
 
@@ -1167,12 +1171,13 @@ public class UploadBean implements Serializable {
             context.addMessage(null, new FacesMessage("No Data Selected!", "No Data Selected!"));
             return;
         }
-        String sql = "{call sp_delete_base_data(?,?)}";
+        String sql = "{call sp_delete_base_data(?,?,?)}";
         ResultSet rs = null;
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, BaseDataStr);
             ps.setInt(2, loginBean.getUser_detail().getUser_detail_id());
+            ps.setInt(3, report_form.getReport_form_id());
             rs = ps.executeQuery();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Deleted successfully", "Deleted successfully"));
