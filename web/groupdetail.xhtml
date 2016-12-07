@@ -37,9 +37,9 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="group_table" value="#{group_detailBean.ts}" var="item" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,30,50,100">
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Group Name">
                         <h:outputText value="#{item.group_name}"/>
                     </p:column>
@@ -86,9 +86,9 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="group_users_table" value="#{group_userBean.ts}" var="item" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,30,50,100">
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Group Name">
                         <h:outputText value="#{item.group_detail.group_name}"/>
                     </p:column>
@@ -161,9 +161,9 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable value="#{group_rightBean.ts}" var="item" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,30,50,100">
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Group Name">
                         <h:outputText value="#{item.group_detail.group_name}"/>
                     </p:column>

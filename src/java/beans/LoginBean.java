@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.orm.PersistentException;
 import org.orm.PersistentManager;
 import utilities.EIHDMSPersistentManager2;
+import utilities.GeneralUtilities;
 import utilities.Security;
 
 /**
@@ -143,8 +144,10 @@ public class LoginBean implements Serializable {
         try {
             user_detail = User_detail.loadUser_detailByQuery("is_deleted=0 and is_active=1 and user_name='" + username + "'", null);
         } catch (PersistentException ex) {
+            GeneralUtilities.clearsession();
             Logger.getLogger(NavigationBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
+            GeneralUtilities.clearsession();
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (user_detail != null) {

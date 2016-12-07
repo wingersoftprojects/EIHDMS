@@ -658,7 +658,7 @@ public class UploadBean implements Serializable {
         }
 
         GeneralUtilities.flushandclearsession();
-        if (report_form != null) {
+        if (report_form != null && report_form_group!=null) {
             String sql = "SELECT\n"
                     + "d.district_name,\n"
                     + "c.county_name,\n"
@@ -692,7 +692,7 @@ public class UploadBean implements Serializable {
                     + "INNER JOIN section AS se ON de.section_id = se.section_id\n"
                     + "INNER JOIN sub_section AS ss ON de.sub_section_id = ss.sub_section_id\n"
                     + "LEFT JOIN technical_area AS ta ON de.technical_area_id = ta.technical_area_id WHERE "
-                    + "b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ")";
+                    + "b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ") AND b.report_form_group_id=" + report_form_group.getReport_form_group_id();
             try {
                 base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
             } catch (PersistentException ex) {
@@ -1719,6 +1719,10 @@ public class UploadBean implements Serializable {
                             if (report_form.getLowest_report_form_level().equals("District")) {
                                 district_name = row.getCell(0).getStringCellValue();
                             }
+                            district_name = district_name.trim();
+                            sub_county_name = sub_county_name.trim();
+                            parish_name = parish_name.trim();
+                            facility_name = facility_name.trim();
                         }
                         while (cellIterator2.hasNext()) {
                             Cell cell = cellIterator2.next();

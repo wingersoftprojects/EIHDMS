@@ -277,17 +277,7 @@ public abstract class AbstractBean<T> {
             saveMessage();
             add();
             initializelist();
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
-            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PersistentException ex) {
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | PersistentException ex) {
             Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -33,6 +33,7 @@ public class Loaded_data_summaryCriteria extends AbstractORMCriteria {
 	public final IntegerExpression loaded_records;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression loaded_entities;
 	
 	public Loaded_data_summaryCriteria(Criteria criteria) {
 		super(criteria);
@@ -50,6 +51,7 @@ public class Loaded_data_summaryCriteria extends AbstractORMCriteria {
 		loaded_records = new IntegerExpression("loaded_records", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		loaded_entities = new IntegerExpression("loaded_entities", this);
 	}
 	
 	public Loaded_data_summaryCriteria(PersistentSession session) {

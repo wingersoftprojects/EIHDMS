@@ -408,6 +408,9 @@ public class Loaded_data_summary implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=11)	
 	private Integer last_edit_by;
 	
+	@Column(name="loaded_entities", nullable=true, length=11)	
+	private Integer loaded_entities;
+	
 	private void setLoaded_data_summary_id(int value) {
 		this.loaded_data_summary_id = value;
 	}
@@ -566,6 +569,18 @@ public class Loaded_data_summary implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setLoaded_entities(int value) {
+		setLoaded_entities(new Integer(value));
+	}
+	
+	public void setLoaded_entities(Integer value) {
+		this.loaded_entities = value;
+	}
+	
+	public Integer getLoaded_entities() {
+		return loaded_entities;
 	}
 	
 	public boolean equals(Object obj) {
