@@ -31,6 +31,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,6 +53,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
+import org.joda.time.DateTime;
 import org.orm.PersistentException;
 import org.orm.PersistentManager;
 import org.orm.PersistentSession;
@@ -362,6 +365,92 @@ public class UploadBean implements Serializable {
         return false;
     }
 
+    public void get_date_from_other_periods() {
+        if (report_form != null) {
+            /**
+             * Weekly
+             */
+            if (report_period_year != null && report_period_week != null && report_form.getReport_form_frequency().equals("Weekly")) {
+                DateTime date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week);
+                report_period_month = date.getMonthOfYear();
+                report_period_from_date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week).withDayOfWeek(1).toDate();
+                report_period_to_date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week).withDayOfWeek(7).toDate();
+            }
+            /**
+             * Monthly
+             */
+            if (report_period_year != null && report_period_month != null && report_form.getReport_form_frequency().equals("Monthly")) {
+                DateTime date = new DateTime().withYear(report_period_year).withMonthOfYear(report_period_month);
+                DateTime start = date.withDayOfMonth(1).withTimeAtStartOfDay();
+                DateTime end = start.plusMonths(1).minusMillis(1);
+                report_period_from_date = start.toDate();
+                report_period_to_date = end.toDate();;
+            }
+            /**
+             * Quarter
+             */
+            if (report_period_year != null && report_period_quarter != null && report_form.getReport_form_frequency().equals("Quarterly")) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    if (report_period_quarter == 1) {
+                        report_period_from_date = sdf.parse(1 + "/" + 1 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(31 + "/" + 3 + "/" + report_period_year);
+                    }
+                    if (report_period_quarter == 2) {
+                        report_period_from_date = sdf.parse(1 + "/" + 4 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(30 + "/" + 6 + "/" + report_period_year);
+                    }
+                    if (report_period_quarter == 3) {
+                        report_period_from_date = sdf.parse(1 + "/" + 7 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(30 + "/" + 9 + "/" + report_period_year);
+                    }
+                    if (report_period_quarter == 4) {
+                        report_period_from_date = sdf.parse(1 + "/" + 10 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(31 + "/" + 12 + "/" + report_period_year);
+                    }
+                } catch (ParseException ex) {
+
+                }
+            }
+
+            /**
+             * Bi-Month
+             */
+            if (report_period_year != null && report_period_bi_month != null && report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    if (report_period_bi_month == 1) {
+                        report_period_from_date = sdf.parse(1 + "/" + 1 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(28 + "/" + 2 + "/" + report_period_year);
+                    }
+                    if (report_period_bi_month == 2) {
+                        report_period_from_date = sdf.parse(1 + "/" + 3 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(30 + "/" + 4 + "/" + report_period_year);
+                    }
+                    if (report_period_bi_month == 3) {
+                        report_period_from_date = sdf.parse(1 + "/" + 5 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(30 + "/" + 6 + "/" + report_period_year);
+                    }
+                    if (report_period_bi_month == 4) {
+                        report_period_from_date = sdf.parse(1 + "/" + 7 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(31 + "/" + 8 + "/" + report_period_year);
+                    }
+                    if (report_period_bi_month == 5) {
+                        report_period_from_date = sdf.parse(1 + "/" + 9 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(31 + "/" + 10 + "/" + report_period_year);
+                    }
+                    if (report_period_bi_month == 6) {
+                        report_period_from_date = sdf.parse(1 + "/" + 11 + "/" + report_period_year);
+                        report_period_to_date = sdf.parse(31 + "/" + 12 + "/" + report_period_year);
+                    }
+                } catch (ParseException ex) {
+
+                }
+            }
+
+        }
+    }
+
     public boolean showbimonthly() {
         if (report_form == null) {
             return false;
@@ -658,7 +747,7 @@ public class UploadBean implements Serializable {
         }
 
         GeneralUtilities.flushandclearsession();
-        if (report_form != null && report_form_group!=null) {
+        if (report_form != null && report_form_group != null) {
             String sql = "SELECT\n"
                     + "d.district_name,\n"
                     + "c.county_name,\n"
@@ -2520,6 +2609,195 @@ public class UploadBean implements Serializable {
         public void setHealth_facility_name(String health_facility_name) {
             this.health_facility_name = health_facility_name;
         }
+    }
+    private String report_form_frequency;
+    private List<Object[]> loaded_data_objects;
+
+    private List<Report_form_group> report_form_groupList;
+    private List<Report_form> report_formList;
+
+    public List<Report_form_group> returnReport_form_groupList(Report_form report_form) {
+        report_form_groupList = new ArrayList<>();
+        try {
+            report_form_groupList = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), "group_order ASC");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return report_form_groupList;
+    }
+
+    public void refreshGroupList(int aYear, String aFrequency, Report_form aReport_form) {
+        String sql = "";
+        base_data_objects = new ArrayList<>();
+        if (aYear == 0 || aFrequency.length() == 0) {
+            report_formList = null;
+        }
+
+        if (aReport_form != null) {
+            try {
+                report_formList = Report_form.queryReport_form("report_form_frequency='" + aFrequency + "' AND report_form_id=" + aReport_form.getReport_form_id(), "report_form_name ASC");
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                report_formList = Report_form.queryReport_form("report_form_frequency='" + aFrequency + "' AND report_form_id>0", "report_form_name ASC");
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public String getLoadedEntitiesMonthly(Report_form rf, Report_form_group fg, int y, int m) {
+        String les = "";
+        int lei = 0;
+        String sql = "select sum(l.loaded_entities) as loaded_entities from loaded_data_summary l \n"
+                + "where l.report_form_id=" + rf.getReport_form_id() + " AND report_form_group_id=" + fg.getReport_form_group_id() + " \n"
+                + "AND l.report_period_year=" + y + " AND l.report_period_month=" + m;
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                lei = rs.getInt("loaded_entities");
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        if (lei == 0) {
+            les = "";
+        } else {
+            les = Integer.toString(lei);
+        }
+        return les;
+    }
+
+    public String getLoadedEntitiesBiMonthly(Report_form rf, Report_form_group fg, int y, int bm) {
+        String les = "";
+        int lei = 0;
+        String sql = "select sum(l.loaded_entities) as loaded_entities from loaded_data_summary l \n"
+                + "where l.report_form_id=" + rf.getReport_form_id() + " AND report_form_group_id=" + fg.getReport_form_group_id() + " \n"
+                + "AND l.report_period_year=" + y + " AND l.report_period_bi_month=" + bm;
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                lei = rs.getInt("loaded_entities");
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        if (lei == 0) {
+            les = "";
+        } else {
+            les = Integer.toString(lei);
+        }
+        return les;
+    }
+
+    public String getLoadedEntitiesQuarterly(Report_form rf, Report_form_group fg, int y, int q) {
+        String les = "";
+        int lei = 0;
+        String sql = "select sum(l.loaded_entities) as loaded_entities from loaded_data_summary l \n"
+                + "where l.report_form_id=" + rf.getReport_form_id() + " AND report_form_group_id=" + fg.getReport_form_group_id() + " \n"
+                + "AND l.report_period_year=" + y + " AND l.report_period_quarter=" + q;
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                lei = rs.getInt("loaded_entities");
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        if (lei == 0) {
+            les = "";
+        } else {
+            les = Integer.toString(lei);
+        }
+        return les;
+    }
+
+    public String getLoadedEntitiesWeekly(Report_form rf, Report_form_group fg, int y, int w) {
+        String les = "";
+        int lei = 0;
+        String sql = "select sum(l.loaded_entities) as loaded_entities from loaded_data_summary l \n"
+                + "where l.report_form_id=" + rf.getReport_form_id() + " AND report_form_group_id=" + fg.getReport_form_group_id() + " \n"
+                + "AND l.report_period_year=" + y + " AND l.report_period_week=" + w;
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                lei = rs.getInt("loaded_entities");
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        if (lei == 0) {
+            les = "";
+        } else {
+            les = Integer.toString(lei);
+        }
+        return les;
+    }
+
+    /**
+     * @return the report_form_frequency
+     */
+    public String getReport_form_frequency() {
+        return report_form_frequency;
+    }
+
+    /**
+     * @param report_form_frequency the report_form_frequency to set
+     */
+    public void setReport_form_frequency(String report_form_frequency) {
+        this.report_form_frequency = report_form_frequency;
+    }
+
+    /**
+     * @return the loaded_data_objects
+     */
+    public List<Object[]> getLoaded_data_objects() {
+        return loaded_data_objects;
+    }
+
+    /**
+     * @param loaded_data_objects the loaded_data_objects to set
+     */
+    public void setLoaded_data_objects(List<Object[]> loaded_data_objects) {
+        this.loaded_data_objects = loaded_data_objects;
+    }
+
+    /**
+     * @return the report_form_groupList
+     */
+    public List<Report_form_group> getReport_form_groupList() {
+        return report_form_groupList;
+    }
+
+    /**
+     * @param report_form_groupList the report_form_groupList to set
+     */
+    public void setReport_form_groupList(List<Report_form_group> report_form_groupList) {
+        this.report_form_groupList = report_form_groupList;
+    }
+
+    /**
+     * @return the report_formList
+     */
+    public List<Report_form> getReport_formList() {
+        return report_formList;
+    }
+
+    /**
+     * @param report_formList the report_formList to set
+     */
+    public void setReport_formList(List<Report_form> report_formList) {
+        this.report_formList = report_formList;
     }
 
 }

@@ -2,211 +2,441 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./layout.xhtml"
-                xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
-        <h:form>
-            <p:growl/>
-            <p:fieldset legend="Data Loaded Status Report">
-                <h:panelGrid columns="2">
-                    <p:outputLabel for="year_value" value="Select Year:" />
-                    <p:selectOneMenu id="year_value" value="#{data_obligationBean.selected_year}" style="width:125px" required="true" requiredMessage="Year is Required">
-                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
-                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
-                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
-                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
-                        <p:ajax process="@this"/>
-                    </p:selectOneMenu>
-                    <h:commandButton value="Show Report" action="#{data_obligationBean.refreshData_obligation_all_List(data_obligationBean.selected_year)}" />
-                </h:panelGrid>
-                <p:fieldset legend="Monthly">
-                    <p:dataTable value="#{data_obligationBean.report_form_monthlyList}" var="rf">
-                        <p:column headerText="Report Form">
-                            <h:outputText value="#{rf.report_form_name}"/>
-                        </p:column>
-                        <p:column headerText="Entity">
-                            <h:outputText value="#{rf.lowest_report_form_level}"/>
-                        </p:column>
-                        <p:column headerText="Frequency">
-                            <h:outputText value="#{rf.report_form_frequency}"/>
-                        </p:column>
-                        <p:column headerText="Jan">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 1)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 1)}"/>
-                        </p:column>
-                        <p:column headerText="Feb">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 2)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 2)}"/>
-                        </p:column>
-                        <p:column headerText="Mar">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 3)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 3)}"/>
-                        </p:column>
-                        <p:column headerText="Apr">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 4)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 4)}"/>
-                        </p:column>
-                        <p:column headerText="May">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 5)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 5)}"/>
-                        </p:column>
-                        <p:column headerText="Jun">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 6)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 6)}"/>
-                        </p:column>
-                        <p:column headerText="Jul">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 7)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 7)}"/>
-                        </p:column>
-                        <p:column headerText="Aug">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 8)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 8)}"/>
-                        </p:column>
-                        <p:column headerText="Sep">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 9)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 9)}"/>
-                        </p:column>
-                        <p:column headerText="Oct">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 10)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 10)}"/>
-                        </p:column>
-                        <p:column headerText="Nov">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 11)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 11)}"/>
-                        </p:column>
-                        <p:column headerText="Dec">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsMonthly(rf.report_form_id, 12)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsMonthly(rf.report_form_id, 12)}"/>
-                        </p:column>
+        <f:view>
+            <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+                <p:growl/>
+                <p:fieldset legend="Data Loaded Report">
+                    <p:panelGrid columns="8" id="header_panel_grid">
+                        <p:outputLabel for="year_value" value="Select Year:" />
+                        <p:selectOneMenu id="year_value" value="#{data_obligationBean.selected_year}" style="width:125px" required="true" requiredMessage="Year is Required">
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="report_frequency" value="Report Form Frequency:" />
+                        <p:selectOneMenu id="report_frequency" value="#{uploadBean.report_form_frequency}" style="width:125px" required="true" requiredMessage="Report Form Frequcny field is Required">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
+                            <f:selectItem itemLabel="Weekly" itemValue="Weekly" />
+                            <f:selectItem itemLabel="Quarterly" itemValue="Quarterly" />
+                            <f:selectItem itemLabel="Bi-Monthly" itemValue="Bi-Monthly" />
+                            <p:ajax process="@this" update="report_form_id"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="report_form_id" value="Report Form:" />
+                        <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="false" requiredMessage="Field Form is Required" converter="report_formConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_formBean.getReport_forms_by_frequency(uploadBean.report_form_frequency)}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <h:commandButton value="SHOW REPORT" action="#{uploadBean.refreshGroupList(data_obligationBean.selected_year,uploadBean.report_form_frequency,uploadBean.report_form)}" />
+                    </p:panelGrid>
+                    
+                    <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Monthly'}">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Report Form Group" />
+                                <p:column headerText="Jan" />
+                                <p:column headerText="Feb" />
+                                <p:column headerText="Mar" />
+                                <p:column headerText="Apr" />
+                                <p:column headerText="May" />
+                                <p:column headerText="Jun" />
+                                <p:column headerText="Jul" />
+                                <p:column headerText="Aug" />
+                                <p:column headerText="Sep" />
+                                <p:column headerText="Oct" />
+                                <p:column headerText="Nov" />
+                                <p:column headerText="Dec" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:subTable value="#{uploadBean.returnReport_form_groupList(rf)}" var="fg">
+                            <f:facet name="header">
+                                <h:outputText value="#{rf.report_form_name}" />
+                            </f:facet>
+                            <p:column>
+                                <h:outputText value="#{fg.report_form_group_name}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 1)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 2)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 3)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 4)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 5)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 6)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 7)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 8)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 9)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 10)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 11)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesMonthly(rf, fg, data_obligationBean.selected_year, 12)}" />
+                            </p:column>
+                        </p:subTable>
                     </p:dataTable>
-                </p:fieldset>
-                <p:fieldset legend="Quarterly">
-                    <p:dataTable value="#{data_obligationBean.report_form_quarterlyList}" var="rf">
-                        <p:column headerText="Report Form">
-                            <h:outputText value="#{rf.report_form_name}"/>
-                        </p:column>
-                        <p:column headerText="Entity">
-                            <h:outputText value="#{rf.lowest_report_form_level}"/>
-                        </p:column>
-                        <p:column headerText="Frequency">
-                            <h:outputText value="#{rf.report_form_frequency}"/>
-                        </p:column>
-                        <p:column headerText="Q1(Jan-Mar)">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 1)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 1)}"/>
-                        </p:column>
-                        <p:column headerText="Q2(Apr-Jun)">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 2)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 2)}"/>
-                        </p:column>
-                        <p:column headerText="Q3(Jul-Sep)">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 3)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 3)}"/>
-                        </p:column>
-                        <p:column headerText="Q4(Oct-Dec)">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsQuarterly(rf.report_form_id, 4)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsQuarterly(rf.report_form_id, 4)}"/>
-                        </p:column>
+                    
+                    <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Bi-Monthly'}">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Report Form Group" />
+                                <p:column headerText="Jan-Feb" />
+                                <p:column headerText="Mar-Apr" />
+                                <p:column headerText="May-Jun" />
+                                <p:column headerText="Jul-Aug" />
+                                <p:column headerText="Sep-Oct" />
+                                <p:column headerText="Nov-Dec" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:subTable value="#{uploadBean.returnReport_form_groupList(rf)}" var="fg">
+                            <f:facet name="header">
+                                <h:outputText value="#{rf.report_form_name}" />
+                            </f:facet>
+                            <p:column>
+                                <h:outputText value="#{fg.report_form_group_name}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesBiMonthly(rf, fg, data_obligationBean.selected_year, 1)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesBiMonthly(rf, fg, data_obligationBean.selected_year, 2)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesBiMonthly(rf, fg, data_obligationBean.selected_year, 3)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesBiMonthly(rf, fg, data_obligationBean.selected_year, 4)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesBiMonthly(rf, fg, data_obligationBean.selected_year, 5)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesBiMonthly(rf, fg, data_obligationBean.selected_year, 6)}" />
+                            </p:column>
+                        </p:subTable>
                     </p:dataTable>
-                </p:fieldset>
-                <p:fieldset legend="Bi-Monthly">
-                    <p:dataTable value="#{data_obligationBean.report_form_bi_monthlyList}" var="rf">
-                        <p:column headerText="Report Form">
-                            <h:outputText value="#{rf.report_form_name}"/>
-                        </p:column>
-                        <p:column headerText="Entity">
-                            <h:outputText value="#{rf.lowest_report_form_level}"/>
-                        </p:column>
-                        <p:column headerText="Frequency">
-                            <h:outputText value="#{rf.report_form_frequency}"/>
-                        </p:column>
-                        <p:column headerText="Jan-Feb">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 1)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 1)}"/>
-                        </p:column>
-                        <p:column headerText="Mar-Apr">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 2)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 2)}"/>
-                        </p:column>
-                        <p:column headerText="May-Jun">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 3)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 3)}"/>
-                        </p:column>
-                        <p:column headerText="Jul-Aug">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 4)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 4)}"/>
-                        </p:column>
-                        <p:column headerText="Sep-Oct">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 5)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 5)}"/>
-                        </p:column>
-                        <p:column headerText="Nov-Dec">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsBiMonthly(rf.report_form_id, 6)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsBiMonthly(rf.report_form_id, 6)}"/>
-                        </p:column>
+                    
+                    <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Quarterly'}">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Report Form Group" />
+                                <p:column headerText="Q1(Jan-Mar)" />
+                                <p:column headerText="Q2(Apr-Jun)" />
+                                <p:column headerText="Q3(Jul-Sep)" />
+                                <p:column headerText="Q4(Oct-Dec)" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:subTable value="#{uploadBean.returnReport_form_groupList(rf)}" var="fg">
+                            <f:facet name="header">
+                                <h:outputText value="#{rf.report_form_name}" />
+                            </f:facet>
+                            <p:column>
+                                <h:outputText value="#{fg.report_form_group_name}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesQuarterly(rf, fg, data_obligationBean.selected_year, 1)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesQuarterly(rf, fg, data_obligationBean.selected_year, 2)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesQuarterly(rf, fg, data_obligationBean.selected_year, 3)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesQuarterly(rf, fg, data_obligationBean.selected_year, 4)}" />
+                            </p:column>
+                        </p:subTable>
                     </p:dataTable>
+                    
+                    <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Weekly'}">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Report Form Group" />
+                                <p:column headerText="W1" />
+                                <p:column headerText="W2" />
+                                <p:column headerText="W3" />
+                                <p:column headerText="W4" />
+                                <p:column headerText="W5" />
+                                <p:column headerText="W6" />
+                                <p:column headerText="W7" />
+                                <p:column headerText="W8" />
+                                <p:column headerText="W9" />
+                                <p:column headerText="W10" />
+                                <p:column headerText="W11" />
+                                <p:column headerText="W12" />
+                                <p:column headerText="W13" />
+                                <p:column headerText="W14" />
+                                <p:column headerText="W15" />
+                                <p:column headerText="W16" />
+                                <p:column headerText="W17" />
+                                <p:column headerText="W18" />
+                                <p:column headerText="W19" />
+                                <p:column headerText="W20" />
+                                <p:column headerText="W21" />
+                                <p:column headerText="W22" />
+                                <p:column headerText="W23" />
+                                <p:column headerText="W24" />
+                                <p:column headerText="W25" />
+                                <p:column headerText="W26" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:subTable value="#{uploadBean.returnReport_form_groupList(rf)}" var="fg">
+                            <f:facet name="header">
+                                <h:outputText value="#{rf.report_form_name}" />
+                            </f:facet>
+                            <p:column>
+                                <h:outputText value="#{fg.report_form_group_name}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 1)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 2)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 3)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 4)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 5)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 6)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 7)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 8)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 9)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 10)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 11)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 12)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 13)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 14)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 15)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 16)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 17)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 18)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 19)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 20)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 21)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 22)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 23)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 24)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 25)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 26)}" />
+                            </p:column>
+                        </p:subTable>
+                    </p:dataTable>
+                    <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Weekly'}">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Report Form Group" />
+                                <p:column headerText="W27" />
+                                <p:column headerText="W28" />
+                                <p:column headerText="W29" />
+                                <p:column headerText="W30" />
+                                <p:column headerText="W31" />
+                                <p:column headerText="W32" />
+                                <p:column headerText="W33" />
+                                <p:column headerText="W34" />
+                                <p:column headerText="W35" />
+                                <p:column headerText="W36" />
+                                <p:column headerText="W37" />
+                                <p:column headerText="W38" />
+                                <p:column headerText="W39" />
+                                <p:column headerText="W40" />
+                                <p:column headerText="W41" />
+                                <p:column headerText="W42" />
+                                <p:column headerText="W43" />
+                                <p:column headerText="W44" />
+                                <p:column headerText="W45" />
+                                <p:column headerText="W46" />
+                                <p:column headerText="W47" />
+                                <p:column headerText="W48" />
+                                <p:column headerText="W49" />
+                                <p:column headerText="W50" />
+                                <p:column headerText="W51" />
+                                <p:column headerText="W52" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:subTable value="#{uploadBean.returnReport_form_groupList(rf)}" var="fg">
+                            <f:facet name="header">
+                                <h:outputText value="#{rf.report_form_name}" />
+                            </f:facet>
+                            <p:column>
+                                <h:outputText value="#{fg.report_form_group_name}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 27)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 28)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 29)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 30)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 31)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 32)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 33)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 34)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 35)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 36)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 37)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 38)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 39)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 40)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 41)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 42)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 43)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 44)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 45)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 46)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 47)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 48)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 49)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 50)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 51)}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{uploadBean.getLoadedEntitiesWeekly(rf, fg, data_obligationBean.selected_year, 52)}" />
+                            </p:column>
+                        </p:subTable>
+                    </p:dataTable>
+                    
                 </p:fieldset>
-                <p:fieldset legend="Weekly">
-                    <p:dataTable value="#{data_obligationBean.report_form_weeklyList}" var="rf">
-                        <p:column headerText="Report Form">
-                            <h:outputText value="#{rf.report_form_name}"/>
-                        </p:column>
-                        <p:column headerText="Entity">
-                            <h:outputText value="#{rf.lowest_report_form_level}"/>
-                        </p:column>
-                        <p:column headerText="Frequency">
-                            <h:outputText value="#{rf.report_form_frequency}"/>
-                        </p:column>
-                        <p:column headerText="Week1">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 1)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 1)}"/>
-                        </p:column>
-                        <p:column headerText="Week2">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 2)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 2)}"/>
-                        </p:column>
-                        <p:column headerText="Week3">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 3)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 3)}"/>
-                        </p:column>
-                        <p:column headerText="Week4">
-                            <h:outputText value="#{data_obligationBean.getObligationRecordsWeekly(rf.report_form_id, 4)}"/>
-                            <f:verbatim><br/></f:verbatim>
-                            <h:outputText value="#{data_obligationBean.getObligationDEsWeekly(rf.report_form_id, 4)}"/>
-                        </p:column>
-                    </p:dataTable>  
-                </p:fieldset>
-            </p:fieldset>
-        </h:form>
+            </h:form>
+        </f:view>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
     </ui:define>
 
 </ui:composition>

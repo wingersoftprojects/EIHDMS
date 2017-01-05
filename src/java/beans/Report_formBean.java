@@ -124,4 +124,17 @@ public class Report_formBean extends AbstractBean<Report_form> implements Serial
             return null;
         }
     }
+
+    public List<Report_form> getReport_forms_by_frequency(String freqency) {
+        try {
+            if (freqency.length() > 0) {
+                return Report_form.queryReport_form("is_active=1 and is_deleted=0 and report_form_frequency='" + freqency + "'", null);
+            } else {
+                return null;
+            }
+        } catch (PersistentException | NullPointerException ex) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
