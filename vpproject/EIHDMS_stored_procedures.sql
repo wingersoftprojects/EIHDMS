@@ -748,9 +748,8 @@ UPDATE validation_report set status_m='Fail',status_m_desc='Not Moved' WHERE  ba
 -- END Update STATUS
 
 -- BEGIN loaded_data_summary
-IF in_frequency='Weekly' THEN
-SELECT * FROM loaded_data_summary WHERE report_period_week=in_week AND report_period_month=in_month AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
-IF FOUND_ROWS()=0 THEN
+SELECT * FROM validation_report where status_v='Pass' and batch_id=in_batch_id;
+IF FOUND_ROWS()>0 THEN
 INSERT INTO loaded_data_summary (report_period_month,
 report_period_week,
 report_period_year,
@@ -760,7 +759,8 @@ report_form_group_id,
 report_form_id,
 batch_id,
 add_by,
-add_date) SELECT DISTINCT report_period_month,
+add_date,
+loaded_entities) SELECT DISTINCT report_period_month,
 report_period_week,
 report_period_year,
 report_period_quarter,
@@ -769,100 +769,8 @@ report_form_group_id,
 report_form_id,
 batch_id,
 add_by,
-add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
-END IF;
-ELSEIF in_frequency='Monthly' THEN
-SELECT * FROM loaded_data_summary WHERE report_period_month=in_month AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
-IF FOUND_ROWS()=0 THEN
-INSERT INTO loaded_data_summary (report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date) SELECT DISTINCT report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
-END IF;
-ELSEIF in_frequency='Bi-Monthly' THEN
-SELECT * FROM loaded_data_summary WHERE report_period_bi_month=in_bi_month AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
-IF FOUND_ROWS()=0 THEN
-INSERT INTO loaded_data_summary (report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date) SELECT DISTINCT report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
-END IF;
-ELSEIF in_frequency='Quarterly' THEN
-SELECT * FROM loaded_data_summary WHERE report_period_quarter=in_quarter AND report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
-IF FOUND_ROWS()=0 THEN
-INSERT INTO loaded_data_summary (report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date) SELECT DISTINCT report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
-END IF;
-ELSEIF in_frequency='Annually' THEN
-SELECT * FROM loaded_data_summary WHERE report_period_year=in_calendar_year AND report_form_group_id=in_report_form_group_id;
-IF FOUND_ROWS()=0 THEN
-INSERT INTO loaded_data_summary (report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date) SELECT DISTINCT report_period_month,
-report_period_week,
-report_period_year,
-report_period_quarter,
-report_period_bi_month,
-report_form_group_id,
-report_form_id,
-batch_id,
-add_by,
-add_date FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
-END IF;
+add_date,
+(select count(*) from validation_report where status_v='Pass' and batch_id=in_batch_id) FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
 END IF;
 -- END loaded_data_summary
 
