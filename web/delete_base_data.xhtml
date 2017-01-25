@@ -79,6 +79,10 @@
                                 <p:commandButton id="cmdDeleteData2" process="@this" value="Delete Data" action="#{uploadBean.delete_base_data('period')}" update="@form">
                                     <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
                                 </p:commandButton>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
                             </p:panelGrid>
                         </p:tab>
                         <p:tab title="By Lowest Reporting Level">
@@ -189,13 +193,12 @@
                                 <p:commandButton id="cmdDeleteData" process="@this" value="Delete Data" action="#{uploadBean.delete_base_data('level')}" update="@form">
                                     <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
                                 </p:commandButton>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
                             </p:panelGrid>
                         </p:tab>
-
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog>
                     </p:tabView>
                     <p:panel id="flexMons">
                         <!-- 1. Create a DIV container to insert the component -->

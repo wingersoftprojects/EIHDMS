@@ -1504,10 +1504,10 @@ public class UploadBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
         }
-        if (delete_by == "level") {
+        if ("level".equals(delete_by)) {
             refresh_delete_data_by_level();
         }
-        if (delete_by == "period") {
+        if ("period".equals(delete_by)) {
             refresh_delete_data_by_period();
         }
     }
