@@ -113,6 +113,9 @@ public class UploadBean implements Serializable {
 
     private int passed;
     private int failed;
+    
+    private String ReportFormName;
+    private String ReportFormGroupName;
 
     private District[] selectedDistricts;
     private Parish[] selectedParishes;
@@ -124,6 +127,25 @@ public class UploadBean implements Serializable {
     private Integer[] selectedWeeks;
     private Integer[] selectedBiMonths;
 
+    public String getReportFormGroupName() {
+        return ReportFormGroupName;
+    }
+
+    public void setReportFormGroupName(String ReportFormGroupName) {
+        this.ReportFormGroupName = ReportFormGroupName;
+    }
+
+    
+    public String getReportFormName() {
+        return ReportFormName;
+    }
+
+    public void setReportFormName(String ReportFormName) {
+        this.ReportFormName = ReportFormName;
+    }
+
+    
+    
     public Integer[] getSelectedYears() {
         return selectedYears;
     }
@@ -1482,10 +1504,10 @@ public class UploadBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
         }
-        if(delete_by=="level"){
+        if (delete_by == "level") {
             refresh_delete_data_by_level();
         }
-        if(delete_by=="period"){
+        if (delete_by == "period") {
             refresh_delete_data_by_period();
         }
     }
@@ -1797,7 +1819,7 @@ public class UploadBean implements Serializable {
             batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
             batchDetails.setBatch(b);
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc FROM validation_report where batch_id=" + batch_id).list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name FROM validation_report INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON report_form_group.report_form_id = report_form.report_form_id where batch_id=" + batch_id).list();
             int counter = 1;
             failed = 0;
             passed = 0;
@@ -1868,6 +1890,8 @@ public class UploadBean implements Serializable {
                 } catch (NullPointerException ex) {
                     vr.setValidationDescription("");
                 }
+                ReportFormName=objects[8].toString();
+                ReportFormGroupName=objects[9].toString();
                 vr.setReportId(counter);
                 tempValidationReports.add(vr);
                 counter++;
@@ -1885,12 +1909,15 @@ public class UploadBean implements Serializable {
         validationReportList = new ArrayList<>();
         try {
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT validation_report.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date FROM validation_report INNER JOIN user_detail ON user_detail.user_detail_id = validation_report.add_by INNER JOIN batch ON validation_report.batch_id = batch.batch_id order by batch_id desc").list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT validation_report.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name FROM validation_report INNER JOIN user_detail ON user_detail.user_detail_id = validation_report.add_by INNER JOIN batch ON validation_report.batch_id = batch.batch_id INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON report_form_group.report_form_id = report_form.report_form_id order by batch_id desc").list();
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
                 vr.setBatch_id(Integer.parseInt(objects[0].toString()));
                 vr.AddedBy = objects[1].toString();
                 vr.setAddDate(objects[2].toString());
+                vr.setReportFormId(Integer.parseInt(objects[3].toString()));
+                vr.setReportFormName(objects[4].toString());
+                vr.setReportFormGroupName(objects[5].toString());
                 //tempValidationReports.add(vr);
                 validationReportList.add(vr);
 
@@ -2581,6 +2608,34 @@ public class UploadBean implements Serializable {
         private int batch_id;
         private String AddDate;
         private int ReportId;
+
+        private int ReportFormId;
+        private String ReportFormName;
+        private String ReportFormGroupName;
+
+        public String getReportFormGroupName() {
+            return ReportFormGroupName;
+        }
+
+        public void setReportFormGroupName(String ReportFormGroupName) {
+            this.ReportFormGroupName = ReportFormGroupName;
+        }
+
+        public int getReportFormId() {
+            return ReportFormId;
+        }
+
+        public void setReportFormId(int ReportFormId) {
+            this.ReportFormId = ReportFormId;
+        }
+
+        public String getReportFormName() {
+            return ReportFormName;
+        }
+
+        public void setReportFormName(String ReportFormName) {
+            this.ReportFormName = ReportFormName;
+        }
 
         public int getReportId() {
             return ReportId;

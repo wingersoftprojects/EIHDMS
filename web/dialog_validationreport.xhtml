@@ -16,13 +16,17 @@
             <h:form id="validationreportdialog">
                 <!-- selection="#{uploadBean.validationReportSelected}" rowKey="#{item.reportId}"-->
                 <p:panel header="Validation Summary" style="border-style: solid;">
-                    <p:panelGrid columns="5">
+                    <p:panelGrid columns="7">
                         <p:outputLabel value="Batch No." style="font-size: 16px; font-weight: bold;"/>
+                        <p:outputLabel value="Report Form" style="font-size: 16px; font-weight: bold;"/>
+                        <p:outputLabel value="Report Form Group" style="font-size: 16px; font-weight: bold;"/>
                         <p:outputLabel value="Uploaded By" style="font-size: 16px; font-weight: bold;"/>
                         <p:outputLabel value="Date Uploaded" style="font-size: 16px; font-weight: bold;"/>
                         <p:outputLabel value="Passed" style="font-size: 16px; font-weight: bold;"/>
                         <p:outputLabel value="Failed" style="font-size: 16px; font-weight: bold;"/>
                         <p:outputLabel value="#{uploadBean.batchDetails.batch.batch_id}" style="font-size: 16px;"/>
+                        <p:outputLabel value="#{uploadBean.reportFormName}" style="font-size: 16px;"/>
+                        <p:outputLabel value="#{uploadBean.reportFormGroupName}" style="font-size: 16px;"/>
                         <p:outputLabel value="#{uploadBean.batchDetails.batchUserName}" style="font-size: 16px;"/>
                         <p:outputLabel value="#{uploadBean.batchDetails.batch.add_date}" style="font-size: 16px;">
                             <f:convertDateTime pattern="dd/MM/yyyy H:mm:ss" timeZone="EAT"/>
