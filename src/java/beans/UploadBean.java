@@ -51,18 +51,14 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.jdbc.Work;
 import org.joda.time.DateTime;
 import org.orm.PersistentException;
-import org.orm.PersistentManager;
 import org.orm.PersistentSession;
 import org.orm.PersistentTransaction;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
-import utilities.EIHDMSPersistentManager2;
 import utilities.GeneralUtilities;
 
 /**
@@ -121,6 +117,52 @@ public class UploadBean implements Serializable {
     private District[] selectedDistricts;
     private Parish[] selectedParishes;
     private Health_facility[] selectedHealth_facilities;
+
+    private Integer[] selectedYears;
+    private Integer[] selectedMonths;
+    private Integer[] selectedQuarters;
+    private Integer[] selectedWeeks;
+    private Integer[] selectedBiMonths;
+
+    public Integer[] getSelectedYears() {
+        return selectedYears;
+    }
+
+    public void setSelectedYears(Integer[] selectedYears) {
+        this.selectedYears = selectedYears;
+    }
+
+    public Integer[] getSelectedMonths() {
+        return selectedMonths;
+    }
+
+    public void setSelectedMonths(Integer[] selectedMonths) {
+        this.selectedMonths = selectedMonths;
+    }
+
+    public Integer[] getSelectedQuarters() {
+        return selectedQuarters;
+    }
+
+    public void setSelectedQuarters(Integer[] selectedQuarters) {
+        this.selectedQuarters = selectedQuarters;
+    }
+
+    public Integer[] getSelectedWeeks() {
+        return selectedWeeks;
+    }
+
+    public void setSelectedWeeks(Integer[] selectedWeeks) {
+        this.selectedWeeks = selectedWeeks;
+    }
+
+    public Integer[] getSelectedBiMonths() {
+        return selectedBiMonths;
+    }
+
+    public void setSelectedBiMonths(Integer[] selectedBiMonths) {
+        this.selectedBiMonths = selectedBiMonths;
+    }
 
     private List<Interface_data> interface_datas;
     private List<Base_data> base_datas;
@@ -363,6 +405,23 @@ public class UploadBean implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public boolean showmonthly2() {
+        if (report_form == null) {
+            return false;
+        } else if (report_form.getReport_form_frequency().equals("Monthly")) {
+            return true;
+        }
+        return false;
+    }
+
+    public List<Integer> weeks() {
+        List<Integer> temp = new ArrayList<>();
+        for (int x = 1; x < 54; x++) {
+            temp.add(x);
+        }
+        return temp;
     }
 
     public void get_date_from_other_periods() {
@@ -936,7 +995,140 @@ public class UploadBean implements Serializable {
         }
     }
 
-    public JSONArray getjSONArray_Delete() {
+    /**
+     * To refresh when deleting by period
+     */
+    public void refresh_delete_data_by_period() {
+        String QuarterStr = "";
+        String BiMonthStr = "";
+        String MonthStr = "";
+        String WeekStr = "";
+        BaseDataStr = "";
+        GeneralUtilities.flushandclearsession();
+
+        if (report_form != null) {
+            String sql = "SELECT\n"
+                    + "d.district_name,\n"
+                    + "c.county_name,\n"
+                    + "sc.sub_county_name,\n"
+                    + "p.parish_name,\n"
+                    + "hf.health_facility_name,\n"
+                    + "b.report_period_year,\n"
+                    + "b.report_period_quarter,\n"
+                    + "b.report_period_bi_month,\n"
+                    + "b.report_period_month,\n"
+                    + "b.report_period_week,\n"
+                    + "se.section_name,\n"
+                    + "ss.sub_section_name,\n"
+                    + "de.data_element_name,\n"
+                    + "b.data_element_value,\n"
+                    + "de.data_element_context,\n"
+                    + "de.data_type,\n"
+                    + "de.data_size,\n"
+                    + "de.age_category,\n"
+                    + "de.sex_category,\n"
+                    + "de.other_category,\n"
+                    + "ta.technical_area_name,\n"
+                    + "b.base_data_id\n"
+                    + "FROM\n"
+                    + "base_data_" + report_form.getReport_form_id() + " AS b\n"
+                    + "LEFT JOIN district AS d ON d.district_id = b.district_id\n"
+                    + "LEFT JOIN county AS c ON c.county_id = b.county_id\n"
+                    + "LEFT JOIN sub_county AS sc ON sc.sub_county_id = b.sub_county_id\n"
+                    + "LEFT JOIN parish AS p ON p.parish_id = b.parish_id\n"
+                    + "LEFT JOIN health_facility AS hf ON hf.health_facility_id = b.health_facility_id\n"
+                    + "INNER JOIN data_element AS de ON de.data_element_id = b.data_element_id\n"
+                    + "INNER JOIN section AS se ON de.section_id = se.section_id\n"
+                    + "INNER JOIN sub_section AS ss ON de.sub_section_id = ss.sub_section_id\n"
+                    + "LEFT JOIN technical_area AS ta ON de.technical_area_id = ta.technical_area_id WHERE ";
+            //+ "b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ")";
+
+            switch (report_form.getReport_form_frequency()) {
+                case "Weekly":
+                    int x = 0;
+                    x = this.selectedWeeks.length;
+                    for (int i = 0; i < x; i++) {
+                        if (WeekStr.length() > 0) {
+                            WeekStr = WeekStr + "," + this.selectedWeeks[i];
+                        } else {
+                            WeekStr = "" + this.selectedWeeks[i];
+                        }
+                    }
+                    sql = sql + "b.report_period_week in(" + WeekStr + ") AND report_period_year=" + report_period_year;
+                    try {
+                        base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                    } catch (PersistentException ex) {
+                        base_data_objects = new ArrayList<>();
+                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case "Monthly":
+                    x = 0;
+                    x = this.selectedMonths.length;
+                    for (int i = 0; i < x; i++) {
+                        if (MonthStr.length() > 0) {
+                            MonthStr = MonthStr + "," + this.selectedMonths[i];
+                        } else {
+                            MonthStr = "" + this.selectedMonths[i];
+                        }
+                    }
+                    sql = sql + "b.report_period_month in(" + MonthStr + ") AND report_period_year=" + report_period_year;
+                    try {
+                        base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                    } catch (PersistentException ex) {
+                        base_data_objects = new ArrayList<>();
+                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case "Bi-Monthly":
+                    x = 0;
+                    x = this.selectedBiMonths.length;
+                    for (int i = 0; i < x; i++) {
+                        if (BiMonthStr.length() > 0) {
+                            BiMonthStr = BiMonthStr + "," + this.selectedBiMonths[i];
+                        } else {
+                            BiMonthStr = "" + this.selectedBiMonths[i];
+                        }
+                    }
+                    sql = sql + "b.report_period_bi_month in(" + BiMonthStr + ") AND report_period_year=" + report_period_year;
+                    try {
+                        base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                    } catch (PersistentException ex) {
+                        base_data_objects = new ArrayList<>();
+                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case "Quarterly":
+                    x = 0;
+                    x = this.selectedQuarters.length;
+                    for (int i = 0; i < x; i++) {
+                        if (QuarterStr.length() > 0) {
+                            QuarterStr = QuarterStr + "," + this.selectedQuarters[i];
+                        } else {
+                            QuarterStr = "" + this.selectedQuarters[i];
+                        }
+                    }
+                    sql = sql + "b.report_period_quarter in(" + QuarterStr + ") AND report_period_year=" + report_period_year;
+                    try {
+                        base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                    } catch (PersistentException ex) {
+                        base_data_objects = new ArrayList<>();
+                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        JSONArray jArray = new JSONArray();
+        jSONArray = new JSONArray();
+        load_json_array_from_base_data_array(jSONArray, jArray, "delete_data");
+    }
+
+    /**
+     * To refresh when deleting by level
+     */
+    public void refresh_delete_data_by_level() {
         String ParishesStr = "";
         String HealthFacilitiesStr = "";
         String DistrictsStr = "";
@@ -1017,7 +1209,9 @@ public class UploadBean implements Serializable {
                         base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
                     } catch (PersistentException ex) {
                         base_data_objects = new ArrayList<>();
-                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger
+                                .getLogger(UploadBean.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 if (report_form.getLowest_report_form_level().equals("District") && selectedDistricts != null) {
@@ -1036,7 +1230,9 @@ public class UploadBean implements Serializable {
                         base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
                     } catch (PersistentException ex) {
                         base_data_objects = new ArrayList<>();
-                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger
+                                .getLogger(UploadBean.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 if (report_form.getLowest_report_form_level().equals("Facility") && selectedHealth_facilities != null) {
@@ -1055,7 +1251,9 @@ public class UploadBean implements Serializable {
                         base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
                     } catch (PersistentException ex) {
                         base_data_objects = new ArrayList<>();
-                        Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger
+                                .getLogger(UploadBean.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -1063,6 +1261,9 @@ public class UploadBean implements Serializable {
         JSONArray jArray = new JSONArray();
         jSONArray = new JSONArray();
         load_json_array_from_base_data_array(jSONArray, jArray, "delete_data");
+    }
+
+    public JSONArray getjSONArray_Delete() {
         return jSONArray;
     }
 
@@ -1092,9 +1293,11 @@ public class UploadBean implements Serializable {
                 report_form_groups = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), null);
             } else {
                 report_form_groups = new ArrayList<>();
+
             }
         } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return report_form_groups;
     }
@@ -1106,8 +1309,10 @@ public class UploadBean implements Serializable {
     public List<Report_form> getReport_forms() {
         try {
             report_forms = Report_form.queryReport_form(null, null);
+
         } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return report_forms;
     }
@@ -1179,10 +1384,12 @@ public class UploadBean implements Serializable {
                     }
                 } catch (SQLException se) {
                     System.err.println(se.getMessage());
+
                 }
             }
         } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return validation_rule_name;
     }
@@ -1254,7 +1461,7 @@ public class UploadBean implements Serializable {
         }
     }
 
-    public void delete_base_data() {
+    public void delete_base_data(String delete_by) {
         if (BaseDataStr.length() == 0) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("No Data Selected!", "No Data Selected!"));
@@ -1274,6 +1481,12 @@ public class UploadBean implements Serializable {
             System.err.println(se.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
+        }
+        if(delete_by=="level"){
+            refresh_delete_data_by_level();
+        }
+        if(delete_by=="period"){
+            refresh_delete_data_by_period();
         }
     }
 
@@ -1381,7 +1594,9 @@ public class UploadBean implements Serializable {
         } catch (PersistentException ex) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger
+                    .getLogger(UploadBean.class
+                            .getName()).log(Level.SEVERE, null, ex);
         }
         //System.out.println("END-BATCH:" + new Date());
         return batch;
@@ -1567,7 +1782,9 @@ public class UploadBean implements Serializable {
             } catch (SQLException ex) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
-                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger
+                        .getLogger(UploadBean.class
+                                .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -1657,8 +1874,10 @@ public class UploadBean implements Serializable {
             }
             validationReportListAll = new ArrayList<>(tempValidationReports);
             //validationReportList = new ArrayList<>(tempValidationReports);
+
         } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1674,10 +1893,12 @@ public class UploadBean implements Serializable {
                 vr.setAddDate(objects[2].toString());
                 //tempValidationReports.add(vr);
                 validationReportList.add(vr);
+
             }
             //validationReportList = new ArrayList<>(tempValidationReports);
         } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return validationReportList;
     }
@@ -1886,10 +2107,14 @@ public class UploadBean implements Serializable {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+
         } catch (InvalidFormatException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
         } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -2069,8 +2294,10 @@ public class UploadBean implements Serializable {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+
         } catch (InvalidFormatException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -2096,9 +2323,11 @@ public class UploadBean implements Serializable {
                 sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
                 data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
                 this.createInterface_datas(data_elements);
+
             }
         } catch (Exception ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -2206,8 +2435,10 @@ public class UploadBean implements Serializable {
         List<Health_facility> filteredHealth_facilities = new ArrayList<>();
         try {
             filteredHealth_facilities = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select hf FROM Health_facility  hf where hf.is_deleted<>1 AND hf.is_active<>0 AND hf.health_facility_name like '%" + query + "%'").list();
+
         } catch (PersistentException ex) {
-            Logger.getLogger(Health_facilityBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Health_facilityBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return filteredHealth_facilities;
     }
@@ -2216,8 +2447,10 @@ public class UploadBean implements Serializable {
         List<Parish> filteredParishes = new ArrayList<>();
         try {
             filteredParishes = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select p FROM Parish  p where p.is_deleted<>1 AND p.is_active<>0 AND p.parish_name like '%" + query + "%'").list();
+
         } catch (PersistentException ex) {
-            Logger.getLogger(ParishBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ParishBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return filteredParishes;
     }
@@ -2226,8 +2459,10 @@ public class UploadBean implements Serializable {
         List<District> filteredDistricts = new ArrayList<>();
         try {
             filteredDistricts = (List<District>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM District  d where d.is_deleted<>1 AND d.is_active<>0 AND d.district_name like '%" + query + "%'").list();
+
         } catch (PersistentException ex) {
-            Logger.getLogger(DistrictBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DistrictBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return filteredDistricts;
     }
@@ -2309,8 +2544,10 @@ public class UploadBean implements Serializable {
                 }
                 transaction.commit();
                 loginBean.saveMessage();
+
             } catch (PersistentException ex) {
-                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UploadBean.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
             interface_datas = new ArrayList<>();
         }
@@ -2328,6 +2565,7 @@ public class UploadBean implements Serializable {
      */
     public void setValidationReportFiltered(List<ValidationReport> validationReportFiltered) {
         this.validationReportFiltered = validationReportFiltered;
+
     }
 
     public class ValidationReport {
@@ -2513,6 +2751,7 @@ public class UploadBean implements Serializable {
             System.err.println(se.getMessage());
             //FacesContext context = FacesContext.getCurrentInstance();
             //context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
+
         }
 
     }
@@ -2620,8 +2859,10 @@ public class UploadBean implements Serializable {
         report_form_groupList = new ArrayList<>();
         try {
             report_form_groupList = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), "group_order ASC");
+
         } catch (PersistentException ex) {
-            Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Data_elementBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return report_form_groupList;
     }
@@ -2636,14 +2877,18 @@ public class UploadBean implements Serializable {
         if (aReport_form != null) {
             try {
                 report_formList = Report_form.queryReport_form("report_form_frequency='" + aFrequency + "' AND report_form_id=" + aReport_form.getReport_form_id(), "report_form_name ASC");
+
             } catch (PersistentException ex) {
-                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UploadBean.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             try {
                 report_formList = Report_form.queryReport_form("report_form_frequency='" + aFrequency + "' AND report_form_id>0", "report_form_name ASC");
+
             } catch (PersistentException ex) {
-                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UploadBean.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

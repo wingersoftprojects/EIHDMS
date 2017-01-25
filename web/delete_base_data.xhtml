@@ -13,233 +13,304 @@
             <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
                 <p:growl/>
                 <p:fieldset legend="Delete Base Data">
-                    <p:panelGrid columns="8" id="header_panel_grid">
-                        <p:outputLabel for="report_form_id" value="Report Form:" />
-                        <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_delete')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="@form"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel for="report_form_group" value="Report Form Group:" />
-                        <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Calendar Year:" for="report_period_year"/>
-                        <p:selectOneMenu id="report_period_year" value="#{uploadBean.report_period_year}" required="true" requiredMessage="Calendar year field is required">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
-                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
-                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
-                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{uploadBean.showquartery()}"/>
-                        <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" rendered="#{uploadBean.showquartery()}">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="1" />
-                            <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
-                            <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
-                            <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{uploadBean.showbimonthly()}"/>
-                        <p:selectOneMenu id="report_period_bi_month" value="#{uploadBean.report_period_bi_month}" rendered="#{uploadBean.showbimonthly()}">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="Jan-Feb" itemValue="1" />
-                            <f:selectItem itemLabel="Mar-Apr" itemValue="2" />
-                            <f:selectItem itemLabel="May-Jun" itemValue="3" />
-                            <f:selectItem itemLabel="Jul-Aug" itemValue="4" />
-                            <f:selectItem itemLabel="Sep-Oct" itemValue="5" />
-                            <f:selectItem itemLabel="Nov-Dec" itemValue="6" />
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}"/>
-                        <p:selectOneMenu id="report_period_month" value="#{uploadBean.report_period_month}" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}" required="true" requiredMessage="Month field is required!">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="Jan" itemValue="1" />
-                            <f:selectItem itemLabel="Feb" itemValue="2" />
-                            <f:selectItem itemLabel="Mar" itemValue="3" />
-                            <f:selectItem itemLabel="Apr" itemValue="4" />
-                            <f:selectItem itemLabel="May" itemValue="5" />
-                            <f:selectItem itemLabel="Jun" itemValue="6" />
-                            <f:selectItem itemLabel="Jul" itemValue="7" />
-                            <f:selectItem itemLabel="Aug" itemValue="8" />
-                            <f:selectItem itemLabel="Sep" itemValue="9" />
-                            <f:selectItem itemLabel="Oct" itemValue="10" />
-                            <f:selectItem itemLabel="Nov" itemValue="11" />
-                            <f:selectItem itemLabel="Dec" itemValue="12" />
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
-                        <p:selectOneMenu id="report_period_week" value="#{uploadBean.report_period_week}" rendered="#{uploadBean.showweekly()}">
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="Week1" itemValue="1" />
-                            <f:selectItem itemLabel="Week2" itemValue="2" />
-                            <f:selectItem itemLabel="Week3" itemValue="3" />
-                            <f:selectItem itemLabel="Week4" itemValue="4" />
-                            <p:ajax process="@this"/>
-                        </p:selectOneMenu>
+                    <p:tabView>
+                        <p:tab title="By Lowest Reporting Period">
+                            <p:panelGrid columns="8" id="header_panel_grid2">
+                                <p:outputLabel for="report_form_id2" value="Report Form:" />
+                                <p:selectOneMenu id="report_form_id2" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_delete')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                                    <p:ajax process="@this" update="header_panel_grid2"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="report_form_group2" value="Report Form Group:" />
+                                <p:selectOneMenu id="report_form_group2" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Calendar Year:" for="report_period_year2"/>
+                                <p:selectOneMenu id="report_period_year2" value="#{uploadBean.report_period_year}" required="true" requiredMessage="Calendar year field is required">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
 
-                        <p:outputLabel value="District:" for="district" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
-                        <p:selectOneMenu id="district" value="#{uploadBean.district}" style="width:125px" converter="districtConverter" required="true" requiredMessage="District Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{uploadBean.getdistricts()}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="county,sub_county,selectedParishes,selectedHealth_facilities"/>
-                        </p:selectOneMenu>
+                                <p:outputLabel value="Report Period Quarter:" for="selectedQuarters" rendered="#{uploadBean.showquartery()}"/>
+                                <p:selectCheckboxMenu id="selectedQuarters" value="#{uploadBean.selectedQuarters}" label="" panelStyle="width:150px" rendered="#{uploadBean.showquartery()}" required="true" requiredMessage="Quarter is needed!">
+                                    <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="1" />
+                                    <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
+                                    <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
+                                    <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
+                                </p:selectCheckboxMenu>
 
-                        <p:outputLabel value="County:" for="county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
-                        <p:selectOneMenu id="county" value="#{uploadBean.county}" style="width:125px" converter="countyConverter" required="true" requiredMessage="County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{uploadBean.getts_county(uploadBean.district)}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="sub_county,selectedParishes,selectedHealth_facilities"/>
-                        </p:selectOneMenu>
+                                <p:outputLabel value="Report Period Bi-Month:" for="selectedBiMonths" rendered="#{uploadBean.showbimonthly()}"/>
+                                <p:selectCheckboxMenu id="selectedBiMonths" value="#{uploadBean.selectedBiMonths}" label="" panelStyle="width:150px" rendered="#{uploadBean.showbimonthly()}" required="true" requiredMessage="Bi Month is needed!">
+                                    <f:selectItem itemLabel="Jan-Feb" itemValue="1" />
+                                    <f:selectItem itemLabel="Mar-Apr" itemValue="2" />
+                                    <f:selectItem itemLabel="May-Jun" itemValue="3" />
+                                    <f:selectItem itemLabel="Jul-Aug" itemValue="4" />
+                                    <f:selectItem itemLabel="Sep-Oct" itemValue="5" />
+                                    <f:selectItem itemLabel="Nov-Dec" itemValue="6" />
+                                </p:selectCheckboxMenu>
+                                <p:outputLabel value="Month:" for="selectedMonths" rendered="#{uploadBean.showmonthly2()}"/>
+                                <p:selectCheckboxMenu id="selectedMonths" value="#{uploadBean.selectedMonths}" label="" rendered="#{uploadBean.showmonthly2()}" required="true" requiredMessage="Month field is required!">
+                                    <f:selectItem itemLabel="Jan" itemValue="1" />
+                                    <f:selectItem itemLabel="Feb" itemValue="2" />
+                                    <f:selectItem itemLabel="Mar" itemValue="3" />
+                                    <f:selectItem itemLabel="Apr" itemValue="4" />
+                                    <f:selectItem itemLabel="May" itemValue="5" />
+                                    <f:selectItem itemLabel="Jun" itemValue="6" />
+                                    <f:selectItem itemLabel="Jul" itemValue="7" />
+                                    <f:selectItem itemLabel="Aug" itemValue="8" />
+                                    <f:selectItem itemLabel="Sep" itemValue="9" />
+                                    <f:selectItem itemLabel="Oct" itemValue="10" />
+                                    <f:selectItem itemLabel="Nov" itemValue="11" />
+                                    <f:selectItem itemLabel="Dec" itemValue="12" />
+                                    <p:ajax process="@this"/>
+                                </p:selectCheckboxMenu>
+                                <p:outputLabel value="Week:" for="selectedWeek" rendered="#{uploadBean.showweekly()}"/>
+                                <p:selectCheckboxMenu id="selectedWeek" value="#{uploadBean.selectedWeeks}" label="" rendered="#{uploadBean.showweekly()}">
+                                    <f:selectItems value="#{uploadBean.weeks()}" var="week" itemLabel="Week#{week}" itemValue="#{week}"/>
+                                </p:selectCheckboxMenu>
+                                <p:commandButton value="Retrieve Data" update="header_panel_grid2,@form:flexMons,cmdDeleteData2" action="#{uploadBean.refresh_delete_data_by_period()}"/>
+                                <p:commandButton id="cmdDeleteData2" value="Delete Data" action="#{uploadBean.delete_base_data('period')}" update="@form">
+                                    <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab title="By Lowest Reporting Level">
+                            <p:panelGrid columns="8" id="header_panel_grid">
+                                <p:outputLabel for="report_form_id" value="Report Form:" />
+                                <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_delete')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                                    <p:ajax process="@this" update="@form"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="report_form_group" value="Report Form Group:" />
+                                <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Calendar Year:" for="report_period_year"/>
+                                <p:selectOneMenu id="report_period_year" value="#{uploadBean.report_period_year}" required="true" requiredMessage="Calendar year field is required">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                                    <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{uploadBean.showquartery()}"/>
+                                <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" rendered="#{uploadBean.showquartery()}">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="1" />
+                                    <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
+                                    <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
+                                    <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{uploadBean.showbimonthly()}"/>
+                                <p:selectOneMenu id="report_period_bi_month" value="#{uploadBean.report_period_bi_month}" rendered="#{uploadBean.showbimonthly()}">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem itemLabel="Jan-Feb" itemValue="1" />
+                                    <f:selectItem itemLabel="Mar-Apr" itemValue="2" />
+                                    <f:selectItem itemLabel="May-Jun" itemValue="3" />
+                                    <f:selectItem itemLabel="Jul-Aug" itemValue="4" />
+                                    <f:selectItem itemLabel="Sep-Oct" itemValue="5" />
+                                    <f:selectItem itemLabel="Nov-Dec" itemValue="6" />
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}"/>
+                                <p:selectOneMenu id="report_period_month" value="#{uploadBean.report_period_month}" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}" required="true" requiredMessage="Month field is required!">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem itemLabel="Jan" itemValue="1" />
+                                    <f:selectItem itemLabel="Feb" itemValue="2" />
+                                    <f:selectItem itemLabel="Mar" itemValue="3" />
+                                    <f:selectItem itemLabel="Apr" itemValue="4" />
+                                    <f:selectItem itemLabel="May" itemValue="5" />
+                                    <f:selectItem itemLabel="Jun" itemValue="6" />
+                                    <f:selectItem itemLabel="Jul" itemValue="7" />
+                                    <f:selectItem itemLabel="Aug" itemValue="8" />
+                                    <f:selectItem itemLabel="Sep" itemValue="9" />
+                                    <f:selectItem itemLabel="Oct" itemValue="10" />
+                                    <f:selectItem itemLabel="Nov" itemValue="11" />
+                                    <f:selectItem itemLabel="Dec" itemValue="12" />
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
+                                <p:selectOneMenu id="report_period_week" value="#{uploadBean.report_period_week}" rendered="#{uploadBean.showweekly()}">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem itemLabel="Week1" itemValue="1" />
+                                    <f:selectItem itemLabel="Week2" itemValue="2" />
+                                    <f:selectItem itemLabel="Week3" itemValue="3" />
+                                    <f:selectItem itemLabel="Week4" itemValue="4" />
+                                    <p:ajax process="@this"/>
+                                </p:selectOneMenu>
 
-                        <p:outputLabel value="Sub County:" for="sub_county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
-                        <p:selectOneMenu id="sub_county" value="#{uploadBean.sub_county}" style="width:125px" converter="sub_countyConverter" required="true" requiredMessage="Sub County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{uploadBean.getts_sub_county(uploadBean.county)}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="selectedParishes,selectedHealth_facilities"/>
-                        </p:selectOneMenu>
+                                <p:outputLabel value="District:" for="district" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
+                                <p:selectOneMenu id="district" value="#{uploadBean.district}" style="width:125px" converter="districtConverter" required="true" requiredMessage="District Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{uploadBean.getdistricts()}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
+                                    <p:ajax process="@this" update="county,sub_county,selectedParishes,selectedHealth_facilities"/>
+                                </p:selectOneMenu>
 
-                        <p:outputLabel for="selectedDistricts" value="District:" rendered="#{uploadBean.show_district_level()}" />
-                        <p:selectCheckboxMenu id="selectedDistricts" value="#{uploadBean.selectedDistricts}" label="" panelStyle="width:150px" converter="districtConverter" rendered="#{uploadBean.show_district_level()}" required="true" requiredMessage="District is needed!">
-                            <f:selectItems value="#{uploadBean.getdistricts()}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
-                        </p:selectCheckboxMenu>
-                        <p:outputLabel for="selectedHealth_facilities" value="Health Facility:" rendered="#{uploadBean.show_facility_level()}" />
-                        <p:selectCheckboxMenu id="selectedHealth_facilities" value="#{uploadBean.selectedHealth_facilities}" label="" panelStyle="width:150px" converter="health_facilityConverter" rendered="#{uploadBean.show_facility_level()}" required="true" requiredMessage="Health facility is needed!">
-                            <f:selectItems value="#{uploadBean.getts_health_facility(uploadBean.sub_county)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.health_facility_name}" />
-                        </p:selectCheckboxMenu>
-                        <p:outputLabel for="selectedParishes" value="Parish:" rendered="#{uploadBean.show_parish_level()}" />
-                        <p:selectCheckboxMenu id="selectedParishes" value="#{uploadBean.selectedParishes}" label="" panelStyle="width:150px" converter="parishConverter" rendered="#{uploadBean.show_parish_level()}" required="true" requiredMessage="Parish is needed!">
-                            <f:selectItems value="#{uploadBean.getts_parish(uploadBean.sub_county)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.parish_name}" />
-                        </p:selectCheckboxMenu>
+                                <p:outputLabel value="County:" for="county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
+                                <p:selectOneMenu id="county" value="#{uploadBean.county}" style="width:125px" converter="countyConverter" required="true" requiredMessage="County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{uploadBean.getts_county(uploadBean.district)}" var="item" itemLabel="#{item.county_name}" itemValue="#{item}"/>
+                                    <p:ajax process="@this" update="sub_county,selectedParishes,selectedHealth_facilities"/>
+                                </p:selectOneMenu>
 
-                        <p:commandButton value="Retrieve Data" update="@form,cmdDeleteData"/>
-                        <p:commandButton id="cmdDeleteData" value="Delete Data" action="#{uploadBean.delete_base_data()}" update="@form">
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
-                        </p:commandButton>
+                                <p:outputLabel value="Sub County:" for="sub_county" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}"/>
+                                <p:selectOneMenu id="sub_county" value="#{uploadBean.sub_county}" style="width:125px" converter="sub_countyConverter" required="true" requiredMessage="Sub County Field is needed" rendered="#{uploadBean.show_facility_level() or uploadBean.show_parish_level()}">
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{uploadBean.getts_sub_county(uploadBean.county)}" var="item" itemLabel="#{item.sub_county_name}" itemValue="#{item}"/>
+                                    <p:ajax process="@this" update="selectedParishes,selectedHealth_facilities"/>
+                                </p:selectOneMenu>
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog>
-                    </p:panelGrid>
+                                <p:outputLabel for="selectedDistricts" value="District:" rendered="#{uploadBean.show_district_level()}" />
+                                <p:selectCheckboxMenu id="selectedDistricts" value="#{uploadBean.selectedDistricts}" label="" panelStyle="width:150px" converter="districtConverter" rendered="#{uploadBean.show_district_level()}" required="true" requiredMessage="District is needed!">
+                                    <f:selectItems value="#{uploadBean.getdistricts()}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
+                                </p:selectCheckboxMenu>
+                                <p:outputLabel for="selectedHealth_facilities" value="Health Facility:" rendered="#{uploadBean.show_facility_level()}" />
+                                <p:selectCheckboxMenu id="selectedHealth_facilities" value="#{uploadBean.selectedHealth_facilities}" label="" panelStyle="width:150px" converter="health_facilityConverter" rendered="#{uploadBean.show_facility_level()}" required="true" requiredMessage="Health facility is needed!">
+                                    <f:selectItems value="#{uploadBean.getts_health_facility(uploadBean.sub_county)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.health_facility_name}" />
+                                </p:selectCheckboxMenu>
+                                <p:outputLabel for="selectedParishes" value="Parish:" rendered="#{uploadBean.show_parish_level()}" />
+                                <p:selectCheckboxMenu id="selectedParishes" value="#{uploadBean.selectedParishes}" label="" panelStyle="width:150px" converter="parishConverter" rendered="#{uploadBean.show_parish_level()}" required="true" requiredMessage="Parish is needed!">
+                                    <f:selectItems value="#{uploadBean.getts_parish(uploadBean.sub_county)}" var="ds" itemValue="#{ds}" itemLabel="#{ds.parish_name}" />
+                                </p:selectCheckboxMenu>
 
+                                <p:commandButton value="Retrieve Data" update="@form,cmdDeleteData" actionListener="#{uploadBean.refresh_delete_data_by_level()}"/>
+                                <p:commandButton id="cmdDeleteData" value="Delete Data" action="#{uploadBean.delete_base_data('level')}" update="@form">
+                                    <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:tabView>
 
-                    <!-- 1. Create a DIV container to insert the component -->
-                    <div id="pivotContainer"></div>
-                    <h:outputScript name="./component/flexmonster/flexmonster.js"/>
-                    <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
-                    <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
-                        <script type="text/javascript">
-                        var jsonData = #{uploadBean.getjSONArray_Delete()};
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    <p:panel id="flexMons">
+                        <!-- 1. Create a DIV container to insert the component -->
+                        <div id="pivotContainer"></div>
+                        <h:outputScript name="./component/flexmonster/flexmonster.js"/>
+                        <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
+                        <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
+                            <script type="text/javascript">
+                                var jsonData = #{uploadBean.getjSONArray_Delete()};
                                 var report = {
-                            classicView: true,
-                                configuratorActive: false,
-                                configuratorButton: true,
-                                showTotals: false,
-                                showGrandTotals:false,
-                                dataSourceType: "json",
+                                    classicView: true,
+                                    configuratorActive: false,
+                                    configuratorButton: true,
+                                    showTotals: false,
+                                    showGrandTotals: false,
+                                    dataSourceType: "json",
                                     data: jsonData,
-                            rows: [
-                                    {uniqueName: "District"},
-                                    {uniqueName: "County"},
-                                    {uniqueName: "Subcounty"},
-                                {uniqueName: "Facility"}
+                                    rows: [
+                                        {uniqueName: "District"},
+                                        {uniqueName: "County"},
+                                        {uniqueName: "Subcounty"},
+                                        {uniqueName: "Facility"}
                                     ],
-                            columns: [
-                                {uniqueName: "DataElement", sortName: "asc"}
+                                    columns: [
+                                        {uniqueName: "DataElement", sortName: "asc"}
                                     ],
-                            measures: [
-                                {uniqueName: "DataElementValue", format: "decimal"}
+                                    measures: [
+                                        {uniqueName: "DataElementValue", format: "decimal"}
                                     ],
-                                        formats: [
+                                    formats: [
                                         {
-                                    name: "decimal",
-                                decimalPlaces: 1
-                                }
-                                ],
-                                expandAll: true,
-                            drillAll: true,
-                            licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J"
-                        };
-                            //flexmonster.expandAllData();
-                        flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-                        </script>
-                    </c:if>
-                    <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
-                        <script type="text/javascript">
-                        var jsonData = #{uploadBean.getjSONArray_Delete()};
+                                            name: "decimal",
+                                            decimalPlaces: 1
+                                        }
+                                    ],
+                                    expandAll: true,
+                                    drillAll: true,
+                                    licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J"
+                                };
+                                //flexmonster.expandAllData();
+                                flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                            </script>
+                        </c:if>
+                        <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
+                            <script type="text/javascript">
+                                var jsonData = #{uploadBean.getjSONArray_Delete()};
                                 var report = {
-                            classicView: true,
-                                configuratorActive: false,
-                                configuratorButton: true,
-                                showTotals: false,
-                                showGrandTotals:false,
-                                dataSourceType: "json",
+                                    classicView: true,
+                                    configuratorActive: false,
+                                    configuratorButton: true,
+                                    showTotals: false,
+                                    showGrandTotals: false,
+                                    dataSourceType: "json",
                                     data: jsonData,
-                            rows: [
-                                    {uniqueName: "District"},
-                                    {uniqueName: "County"},
-                                    {uniqueName: "Subcounty"},
-                                {uniqueName: "Parish"}
+                                    rows: [
+                                        {uniqueName: "District"},
+                                        {uniqueName: "County"},
+                                        {uniqueName: "Subcounty"},
+                                        {uniqueName: "Parish"}
                                     ],
-                            columns: [
-                                {uniqueName: "DataElement", sortName: "asc"}
+                                    columns: [
+                                        {uniqueName: "DataElement", sortName: "asc"}
                                     ],
-                            measures: [
-                                {uniqueName: "DataElementValue", format: "decimal"}
+                                    measures: [
+                                        {uniqueName: "DataElementValue", format: "decimal"}
                                     ],
-                                        formats: [
+                                    formats: [
                                         {
-                                    name: "decimal",
-                                decimalPlaces: 1
-                                }
-                                ],
-                                expandAll: true,
-                            drillAll: true,
-                            licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J"
-                        };
-                            //flexmonster.expandAllData();
-                        flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-                        </script>
-                    </c:if>
-                    <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
-                        <script type="text/javascript">
-                        var jsonData = #{uploadBean.getjSONArray_Delete()};
+                                            name: "decimal",
+                                            decimalPlaces: 1
+                                        }
+                                    ],
+                                    expandAll: true,
+                                    drillAll: true,
+                                    licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J"
+                                };
+                                //flexmonster.expandAllData();
+                                flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                            </script>
+                        </c:if>
+                        <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
+                            <script type="text/javascript">
+                                var jsonData = #{uploadBean.getjSONArray_Delete()};
                                 var report = {
-                            classicView: true,
-                                configuratorActive: false,
-                                configuratorButton: true,
-                                showTotals: false,
-                                showGrandTotals:false,
-                                dataSourceType: "json",
+                                    classicView: true,
+                                    configuratorActive: false,
+                                    configuratorButton: true,
+                                    showTotals: false,
+                                    showGrandTotals: false,
+                                    dataSourceType: "json",
                                     data: jsonData,
-                            rows: [
-                                {uniqueName: "District"}
+                                    rows: [
+                                        {uniqueName: "District"}
                                     ],
-                            columns: [
-                                {uniqueName: "DataElement", sortName: "asc"}
+                                    columns: [
+                                        {uniqueName: "DataElement", sortName: "asc"}
                                     ],
-                            measures: [
-                                {uniqueName: "DataElementValue", format: "decimal"}
+                                    measures: [
+                                        {uniqueName: "DataElementValue", format: "decimal"}
                                     ],
-                                        formats: [
+                                    formats: [
                                         {
-                                    name: "decimal",
-                                decimalPlaces: 1
-                                }
-                                ],
-                                expandAll: true,
-                            drillAll: true,
-                            licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J"
-                        };
-                            //flexmonster.expandAllData();
-                        flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-                        </script>
-                    </c:if>
+                                            name: "decimal",
+                                            decimalPlaces: 1
+                                        }
+                                    ],
+                                    expandAll: true,
+                                    drillAll: true,
+                                    licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J"
+                                };
+                                //flexmonster.expandAllData();
+                                flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                            </script>
+                        </c:if>
+                    </p:panel>
                 </p:fieldset>
             </h:form>
         </f:view>
