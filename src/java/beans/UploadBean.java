@@ -1819,7 +1819,7 @@ public class UploadBean implements Serializable {
             batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
             batchDetails.setBatch(b);
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name FROM validation_report INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON report_form_group.report_form_id = report_form.report_form_id where batch_id=" + batch_id).list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name FROM validation_report INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON validation_report.report_form_group_id = report_form_group.report_form_group_id where batch_id=" + batch_id).list();
             int counter = 1;
             failed = 0;
             passed = 0;
@@ -1909,7 +1909,7 @@ public class UploadBean implements Serializable {
         validationReportList = new ArrayList<>();
         try {
             List<ValidationReport> tempValidationReports = new ArrayList<>();
-            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT validation_report.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name FROM validation_report INNER JOIN user_detail ON user_detail.user_detail_id = validation_report.add_by INNER JOIN batch ON validation_report.batch_id = batch.batch_id INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON report_form_group.report_form_id = report_form.report_form_id order by batch_id desc").list();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT validation_report.batch_id,CONCAT(user_detail.second_name,' ',user_detail.third_name,' ',user_detail.first_name) AS AddedBy,DATE_FORMAT(batch.add_date,'%d %b %Y %T:%f') AS Add_Date,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name FROM validation_report INNER JOIN user_detail ON user_detail.user_detail_id = validation_report.add_by INNER JOIN batch ON validation_report.batch_id = batch.batch_id INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON validation_report.report_form_group_id = report_form_group.report_form_group_id order by batch_id desc").list();
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
                 vr.setBatch_id(Integer.parseInt(objects[0].toString()));
