@@ -51,6 +51,7 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
     public void setValidation_formula(String validation_formula) {
         this.validation_formula = validation_formula;
     }
+
     public Kpi_summary_functionBean() {
         super(Kpi_summary_function.class);
     }
@@ -71,7 +72,7 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-    
+
     public void append_operand(String operand) {
         this.getSelected().setSummary_function(this.getSelected().getSummary_function() + " " + operand);;
     }
@@ -87,16 +88,28 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
             data_elements_involved = "";
         }
         this.getSelected().setData_elements_involved(data_elements_involved + "\n" + " DE" + data_element.getData_element_id() + "=>" + data_element.getData_element_name());
+
+        String data_element_ids_involved = this.getSelected().getData_element_ids_involved();
+        if (data_element_ids_involved == null) {
+            data_element_ids_involved = "";
+        }
+
+        if ("".equals(data_element_ids_involved)) {
+            this.getSelected().setData_element_ids_involved(String.valueOf(data_element.getData_element_id()));
+        } else {
+            this.getSelected().setData_element_ids_involved(data_element_ids_involved + "," + String.valueOf(data_element.getData_element_id()));
+        }
     }
-    
+
     @Override
     public void save(int aUserDetailId) {
-        String sql = "{call sp_validate_kpi_summary_function(?,?)}";
+        String sql = "{call sp_validate_kpi_summary_function(?,?,?)}";
         ResultSet rs = null;
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, this.getSelected().getSummary_function());
             ps.setInt(2, this.getSelected().getKpi().getReport_form().getReport_form_id());
+            ps.setString(3, this.getSelected().getData_element_ids_involved());
             rs = ps.executeQuery();
         } catch (SQLException se) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -106,7 +119,7 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
         }
         super.save(aUserDetailId); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public List<Data_element> completeData_element(String query) {
         List<Data_element> filteredData_elements = new ArrayList<>();
         try {

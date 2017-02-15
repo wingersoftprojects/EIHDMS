@@ -25,6 +25,7 @@ public class Kpi_summary_functionDetachedCriteria extends AbstractORMDetachedCri
 	public final StringExpression kpi_summary_function_name;
 	public final StringExpression summary_function;
 	public final StringExpression data_elements_involved;
+	public final StringExpression data_element_ids_involved;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
 	public final TimestampExpression add_date;
@@ -40,6 +41,7 @@ public class Kpi_summary_functionDetachedCriteria extends AbstractORMDetachedCri
 		kpi_summary_function_name = new StringExpression("kpi_summary_function_name", this.getDetachedCriteria());
 		summary_function = new StringExpression("summary_function", this.getDetachedCriteria());
 		data_elements_involved = new StringExpression("data_elements_involved", this.getDetachedCriteria());
+		data_element_ids_involved = new StringExpression("data_element_ids_involved", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
@@ -56,6 +58,7 @@ public class Kpi_summary_functionDetachedCriteria extends AbstractORMDetachedCri
 		kpi_summary_function_name = new StringExpression("kpi_summary_function_name", this.getDetachedCriteria());
 		summary_function = new StringExpression("summary_function", this.getDetachedCriteria());
 		data_elements_involved = new StringExpression("data_elements_involved", this.getDetachedCriteria());
+		data_element_ids_involved = new StringExpression("data_element_ids_involved", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
 		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
 		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());

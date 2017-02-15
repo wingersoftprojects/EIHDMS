@@ -366,7 +366,7 @@ public class Kpi_summary_function implements Serializable {
 	public boolean deleteAndDissociate()throws PersistentException {
 		try {
 			if(getKpi() != null) {
-				getKpi().getKpi_summary_function_role().remove(this);
+				getKpi().getKpi_summary_function().remove(this);
 			}
 			
 			return delete();
@@ -380,7 +380,7 @@ public class Kpi_summary_function implements Serializable {
 	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
 		try {
 			if(getKpi() != null) {
-				getKpi().getKpi_summary_function_role().remove(this);
+				getKpi().getKpi_summary_function().remove(this);
 			}
 			
 			try {
@@ -415,6 +415,9 @@ public class Kpi_summary_function implements Serializable {
 	
 	@Column(name="data_elements_involved", nullable=false)	
 	private String data_elements_involved;
+	
+	@Column(name="data_element_ids_involved", nullable=true)	
+	private String data_element_ids_involved;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
@@ -524,6 +527,14 @@ public class Kpi_summary_function implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setData_element_ids_involved(String value) {
+		this.data_element_ids_involved = value;
+	}
+	
+	public String getData_element_ids_involved() {
+		return data_element_ids_involved;
 	}
 	
 	public void setKpi(eihdms.Kpi value) {

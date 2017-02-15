@@ -25,6 +25,7 @@ public class Kpi_summary_functionCriteria extends AbstractORMCriteria {
 	public final StringExpression kpi_summary_function_name;
 	public final StringExpression summary_function;
 	public final StringExpression data_elements_involved;
+	public final StringExpression data_element_ids_involved;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
 	public final TimestampExpression add_date;
@@ -40,6 +41,7 @@ public class Kpi_summary_functionCriteria extends AbstractORMCriteria {
 		kpi_summary_function_name = new StringExpression("kpi_summary_function_name", this);
 		summary_function = new StringExpression("summary_function", this);
 		data_elements_involved = new StringExpression("data_elements_involved", this);
+		data_element_ids_involved = new StringExpression("data_element_ids_involved", this);
 		is_deleted = new IntegerExpression("is_deleted", this);
 		is_active = new IntegerExpression("is_active", this);
 		add_date = new TimestampExpression("add_date", this);

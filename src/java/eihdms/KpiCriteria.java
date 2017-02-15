@@ -31,7 +31,7 @@ public class KpiCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
-	public final CollectionExpression kpi_summary_function_role;
+	public final CollectionExpression kpi_summary_function;
 	
 	public KpiCriteria(Criteria criteria) {
 		super(criteria);
@@ -47,7 +47,7 @@ public class KpiCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
-		kpi_summary_function_role = new CollectionExpression("kpi_summary_function_role", this);
+		kpi_summary_function = new CollectionExpression("kpi_summary_function", this);
 	}
 	
 	public KpiCriteria(PersistentSession session) {
@@ -66,8 +66,8 @@ public class KpiCriteria extends AbstractORMCriteria {
 		return new Report_formCriteria(createCriteria("report_form"));
 	}
 	
-	public Kpi_summary_functionCriteria createKpi_summary_function_roleCriteria() {
-		return new Kpi_summary_functionCriteria(createCriteria("kpi_summary_function_role"));
+	public Kpi_summary_functionCriteria createKpi_summary_functionCriteria() {
+		return new Kpi_summary_functionCriteria(createCriteria("kpi_summary_function"));
 	}
 	
 	public Kpi uniqueKpi() {

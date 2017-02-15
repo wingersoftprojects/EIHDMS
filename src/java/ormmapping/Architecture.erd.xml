@@ -5816,6 +5816,17 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="data_element_ids_involved">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>34</Type>
+      <Length>0</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
     <Column name="is_deleted">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>

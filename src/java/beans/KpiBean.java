@@ -6,7 +6,6 @@
 package beans;
 
 import connections.DBConnection;
-import eihdms.Base_data;
 import eihdms.Data_element;
 import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
@@ -31,6 +30,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.hibernate.HibernateException;
 import org.orm.PersistentException;
+import org.primefaces.context.RequestContext;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
 import utilities.GeneralUtilities;
@@ -57,6 +57,16 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     private JSONArray jSONArray;
     private List<Object[]> base_dataList;
     private Report_form_group report_form_group;
+
+    private String data_element_ids_involved;
+
+    public String getData_element_ids_involved() {
+        return data_element_ids_involved;
+    }
+
+    public void setData_element_ids_involved(String data_element_ids_involved) {
+        this.data_element_ids_involved = data_element_ids_involved;
+    }
 
     private List<Kpi_summary_function> kpi_summary_functionList = new ArrayList<>();
 
@@ -138,11 +148,14 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         try {
             List<Kpi_summary_function> kpi_summary_functions = Kpi_summary_function.queryKpi_summary_function("kpi_id=" + kpi.getKpi_id() + " AND is_active=1", null);
             int x = 0;
+            data_element_ids_involved = "";
             for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
                 if (x == 0) {
                     temp = kpi_summary_function.getSummary_function() + " AS " + kpi_summary_function.getKpi_summary_function_name();
+                    data_element_ids_involved = kpi_summary_function.getData_element_ids_involved();
                 } else {
                     temp = temp + "," + kpi_summary_function.getSummary_function() + " AS " + kpi_summary_function.getKpi_summary_function_name();
+                    data_element_ids_involved = data_element_ids_involved + "," + kpi_summary_function.getData_element_ids_involved();
                 }
                 x++;
             }
@@ -181,30 +194,28 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         /**
          *
          */
-        String sql = "{call sp_select_kpi(?,?,?,?,?,?)}";
+        String sql = "{call sp_select_kpi(?,?,?,?,?,?,?)}";
         ResultSet rs = null;
-        try (Connection conn = DBConnection.getMySQLConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);) {
+        try (Connection conn = DBConnection.getMySQLConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, selectedKPI.getKpi_id());
             ps.setString(2, loginBean.getUser_detail().getUser_name());
             ps.setInt(3, selectedKPI.getReport_form().getReport_form_id());
             ps.setString(4, YearsStr);
             ps.setString(5, DistrictsStr);
             ps.setString(6, get_kpi_summary_functions(selectedKPI));
-            rs = ps.executeQuery();
+            ps.setString(7, data_element_ids_involved);
+            try {
+                rs = ps.executeQuery();
+            } catch (Exception ex) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Records to return", "No Records to return!");
+                RequestContext.getCurrentInstance().showMessageInDialog(message);
+                return;
+            }
             load_jSON(rs, selectedKPI);
         } catch (SQLException se) {
             System.err.println(se.getMessage());
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                    System.err.println(ex.getMessage());
-                }
-            }
         }
-
     }
 
     public String getYearString() {

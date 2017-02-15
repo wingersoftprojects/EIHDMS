@@ -31,7 +31,7 @@ public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
-	public final CollectionExpression kpi_summary_function_role;
+	public final CollectionExpression kpi_summary_function;
 	
 	public KpiDetachedCriteria() {
 		super(eihdms.Kpi.class, eihdms.KpiCriteria.class);
@@ -47,7 +47,7 @@ public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
-		kpi_summary_function_role = new CollectionExpression("kpi_summary_function_role", this.getDetachedCriteria());
+		kpi_summary_function = new CollectionExpression("kpi_summary_function", this.getDetachedCriteria());
 	}
 	
 	public KpiDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -64,7 +64,7 @@ public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
-		kpi_summary_function_role = new CollectionExpression("kpi_summary_function_role", this.getDetachedCriteria());
+		kpi_summary_function = new CollectionExpression("kpi_summary_function", this.getDetachedCriteria());
 	}
 	
 	public Technical_areaDetachedCriteria createTechnical_areaCriteria() {
@@ -75,8 +75,8 @@ public class KpiDetachedCriteria extends AbstractORMDetachedCriteria {
 		return new Report_formDetachedCriteria(createCriteria("report_form"));
 	}
 	
-	public Kpi_summary_functionDetachedCriteria createKpi_summary_function_roleCriteria() {
-		return new Kpi_summary_functionDetachedCriteria(createCriteria("kpi_summary_function_role"));
+	public Kpi_summary_functionDetachedCriteria createKpi_summary_functionCriteria() {
+		return new Kpi_summary_functionDetachedCriteria(createCriteria("kpi_summary_function"));
 	}
 	
 	public Kpi uniqueKpi(PersistentSession session) {

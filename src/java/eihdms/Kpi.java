@@ -373,9 +373,9 @@ public class Kpi implements Serializable {
 				getReport_form().getKpi().remove(this);
 			}
 			
-			eihdms.Kpi_summary_function[] lKpi_summary_function_roles = (eihdms.Kpi_summary_function[])getKpi_summary_function_role().toArray(new eihdms.Kpi_summary_function[getKpi_summary_function_role().size()]);
-			for(int i = 0; i < lKpi_summary_function_roles.length; i++) {
-				lKpi_summary_function_roles[i].setKpi(null);
+			eihdms.Kpi_summary_function[] lKpi_summary_functions = (eihdms.Kpi_summary_function[])getKpi_summary_function().toArray(new eihdms.Kpi_summary_function[getKpi_summary_function().size()]);
+			for(int i = 0; i < lKpi_summary_functions.length; i++) {
+				lKpi_summary_functions[i].setKpi(null);
 			}
 			return delete();
 		}
@@ -395,9 +395,9 @@ public class Kpi implements Serializable {
 				getReport_form().getKpi().remove(this);
 			}
 			
-			eihdms.Kpi_summary_function[] lKpi_summary_function_roles = (eihdms.Kpi_summary_function[])getKpi_summary_function_role().toArray(new eihdms.Kpi_summary_function[getKpi_summary_function_role().size()]);
-			for(int i = 0; i < lKpi_summary_function_roles.length; i++) {
-				lKpi_summary_function_roles[i].setKpi(null);
+			eihdms.Kpi_summary_function[] lKpi_summary_functions = (eihdms.Kpi_summary_function[])getKpi_summary_function().toArray(new eihdms.Kpi_summary_function[getKpi_summary_function().size()]);
+			for(int i = 0; i < lKpi_summary_functions.length; i++) {
+				lKpi_summary_functions[i].setKpi(null);
 			}
 			try {
 				session.delete(this);
@@ -452,7 +452,7 @@ public class Kpi implements Serializable {
 	@OneToMany(mappedBy="kpi", targetEntity=eihdms.Kpi_summary_function.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set kpi_summary_function_role = new java.util.HashSet();
+	private java.util.Set kpi_summary_function = new java.util.HashSet();
 	
 	private void setKpi_id(int value) {
 		this.kpi_id = value;
@@ -546,12 +546,12 @@ public class Kpi implements Serializable {
 		return technical_area;
 	}
 	
-	public void setKpi_summary_function_role(java.util.Set value) {
-		this.kpi_summary_function_role = value;
+	public void setKpi_summary_function(java.util.Set value) {
+		this.kpi_summary_function = value;
 	}
 	
-	public java.util.Set getKpi_summary_function_role() {
-		return kpi_summary_function_role;
+	public java.util.Set getKpi_summary_function() {
+		return kpi_summary_function;
 	}
 	
 	
