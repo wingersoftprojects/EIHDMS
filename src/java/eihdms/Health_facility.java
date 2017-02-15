@@ -531,7 +531,7 @@ public class Health_facility implements Serializable {
 	
 	@OneToMany(mappedBy="health_facility", targetEntity=eihdms.Base_data.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set base_data = new java.util.HashSet();
 	
 	private void setHealth_facility_id(int value) {

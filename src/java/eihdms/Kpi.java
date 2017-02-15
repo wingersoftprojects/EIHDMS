@@ -373,6 +373,10 @@ public class Kpi implements Serializable {
 				getReport_form().getKpi().remove(this);
 			}
 			
+			eihdms.Kpi_summary_function[] lKpi_summary_function_roles = (eihdms.Kpi_summary_function[])getKpi_summary_function_role().toArray(new eihdms.Kpi_summary_function[getKpi_summary_function_role().size()]);
+			for(int i = 0; i < lKpi_summary_function_roles.length; i++) {
+				lKpi_summary_function_roles[i].setKpi(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -391,6 +395,10 @@ public class Kpi implements Serializable {
 				getReport_form().getKpi().remove(this);
 			}
 			
+			eihdms.Kpi_summary_function[] lKpi_summary_function_roles = (eihdms.Kpi_summary_function[])getKpi_summary_function_role().toArray(new eihdms.Kpi_summary_function[getKpi_summary_function_role().size()]);
+			for(int i = 0; i < lKpi_summary_function_roles.length; i++) {
+				lKpi_summary_function_roles[i].setKpi(null);
+			}
 			try {
 				session.delete(this);
 				return true;
@@ -423,12 +431,6 @@ public class Kpi implements Serializable {
 	@Column(name="kpi_name", nullable=false, length=255)	
 	private String kpi_name;
 	
-	@Column(name="kpi_summary_function", nullable=false, length=100)	
-	private String kpi_summary_function;
-	
-	@Column(name="data_elements_involved", nullable=false)	
-	private String data_elements_involved;
-	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
 	
@@ -446,6 +448,11 @@ public class Kpi implements Serializable {
 	
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
+	
+	@OneToMany(mappedBy="kpi", targetEntity=eihdms.Kpi_summary_function.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set kpi_summary_function_role = new java.util.HashSet();
 	
 	private void setKpi_id(int value) {
 		this.kpi_id = value;
@@ -465,22 +472,6 @@ public class Kpi implements Serializable {
 	
 	public String getKpi_name() {
 		return kpi_name;
-	}
-	
-	public void setKpi_summary_function(String value) {
-		this.kpi_summary_function = value;
-	}
-	
-	public String getKpi_summary_function() {
-		return kpi_summary_function;
-	}
-	
-	public void setData_elements_involved(String value) {
-		this.data_elements_involved = value;
-	}
-	
-	public String getData_elements_involved() {
-		return data_elements_involved;
 	}
 	
 	public void setIs_deleted(int value) {
@@ -554,6 +545,15 @@ public class Kpi implements Serializable {
 	public eihdms.Technical_area getTechnical_area() {
 		return technical_area;
 	}
+	
+	public void setKpi_summary_function_role(java.util.Set value) {
+		this.kpi_summary_function_role = value;
+	}
+	
+	public java.util.Set getKpi_summary_function_role() {
+		return kpi_summary_function_role;
+	}
+	
 	
 	public boolean equals(Object obj) {
 		if (obj == null) {

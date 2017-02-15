@@ -73,6 +73,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		configuration.addAnnotatedClass(eihdms.Validation_report.class);
 		configuration.addAnnotatedClass(eihdms.Loaded_data_summary.class);
 		configuration.addAnnotatedClass(eihdms.App_db_user_map.class);
+		configuration.addAnnotatedClass(eihdms.Kpi_summary_function.class);
 		configuration.buildMappings();
 		return configuration;
 	}

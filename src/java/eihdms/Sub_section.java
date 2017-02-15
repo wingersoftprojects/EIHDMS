@@ -441,7 +441,7 @@ public class Sub_section implements Serializable {
 	
 	@OneToMany(mappedBy="sub_section", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set data_element = new java.util.HashSet();
 	
 	private void setSub_section_id(int value) {

@@ -433,12 +433,12 @@ public class Group_detail implements Serializable {
 	
 	@OneToMany(mappedBy="group_detail", targetEntity=eihdms.Group_user.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set group_user = new java.util.HashSet();
 	
 	@OneToMany(mappedBy="group_detail", targetEntity=eihdms.Group_right.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set group_right = new java.util.HashSet();
 	
 	private void setGroup_detail_id(int value) {

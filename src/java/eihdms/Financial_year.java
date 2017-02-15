@@ -433,12 +433,12 @@ public class Financial_year implements Serializable {
 	
 	@OneToMany(mappedBy="financial_year", targetEntity=eihdms.Interface_data.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set interface_data = new java.util.HashSet();
 	
 	@OneToMany(mappedBy="financial_year", targetEntity=eihdms.Base_data.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set base_data = new java.util.HashSet();
 	
 	private void setFinancial_year_id(int value) {

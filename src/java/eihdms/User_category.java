@@ -425,7 +425,7 @@ public class User_category implements Serializable {
 	
 	@OneToMany(mappedBy="user_category", targetEntity=eihdms.User_detail.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set user_detail = new java.util.HashSet();
 	
 	private void setUser_category_id(int value) {

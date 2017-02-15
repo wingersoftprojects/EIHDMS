@@ -452,12 +452,12 @@ public class Report_form_group implements Serializable {
 	
 	@OneToMany(mappedBy="report_form_group", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set data_element = new java.util.HashSet();
 	
 	@OneToMany(mappedBy="report_form_group", targetEntity=eihdms.Validation_rule.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set validation_rule = new java.util.HashSet();
 	
 	private void setReport_form_group_id(int value) {

@@ -438,7 +438,7 @@ public class Sub_district implements Serializable {
 	
 	@OneToMany(mappedBy="sub_district", targetEntity=eihdms.Health_facility.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set health_facility = new java.util.HashSet();
 	
 	private void setSub_district_id(int value) {

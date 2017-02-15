@@ -436,12 +436,12 @@ public class Technical_area implements Serializable {
 	
 	@OneToMany(mappedBy="technical_area", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set data_element = new java.util.HashSet();
 	
 	@OneToMany(mappedBy="technical_area", targetEntity=eihdms.Kpi.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.EXTRA)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set kpi = new java.util.HashSet();
 	
 	private void setTechnical_area_id(int value) {

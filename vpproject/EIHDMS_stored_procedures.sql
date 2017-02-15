@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2016-10-10 19:12:05
+Date: 2017-02-15 08:55:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,6 +25,51 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_duplicate_temp_data_elemen
 )
 BEGIN 
 	SELECT report_form_name,data_element_name FROM temp_data_element WHERE report_form_name=in_report_form_name GROUP BY data_element_name HAVING count(data_element_name)>1;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_create_report_form_base_data
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_create_report_form_base_data`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_report_form_base_data`(IN `in_report_form_id` int)
+BEGIN 
+SET @table_name=CONCAT('base_data_',in_report_form_id);
+SET @sql1=CONCAT('CREATE TABLE IF NOT EXISTS ',@table_name);
+SET @sql2="(
+  `base_data_id` int(11) NOT NULL AUTO_INCREMENT,
+  `batch_id` int(11) DEFAULT NULL,
+  `data_element_id` int(11) NOT NULL,
+  `data_element_value` varchar(100) NOT NULL,
+  `health_facility_id` int(11) DEFAULT NULL,
+  `parish_id` int(11) DEFAULT NULL,
+  `sub_county_id` int(11) DEFAULT NULL,
+  `county_id` int(11) DEFAULT NULL,
+  `district_id` int(11) DEFAULT NULL,
+  `financial_year_id` int(11) DEFAULT NULL,
+  `report_period_month` int(11) DEFAULT NULL,
+  `report_period_week` int(11) DEFAULT NULL,
+  `report_period_year` int(11) DEFAULT NULL,
+  `report_period_quarter` int(11) DEFAULT NULL,
+  `report_period_from_date` date NOT NULL,
+  `report_period_to_date` date NOT NULL,
+  `is_deleted` int(1) NOT NULL,
+  `is_active` int(1) NOT NULL,
+  `add_date` datetime DEFAULT NULL,
+  `add_by` int(10) DEFAULT NULL,
+  `last_edit_date` datetime DEFAULT NULL,
+  `last_edit_by` int(10) DEFAULT NULL,
+  `report_period_bi_month` int(11) DEFAULT NULL,
+  `report_form_id` int(11) DEFAULT NULL,
+  `report_form_group_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`base_data_id`)
+  )";
+SET @sql_text=CONCAT(@sql1,@sql2);
+PREPARE stmt FROM @sql_text;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 END
 ;;
 DELIMITER ;
@@ -112,7 +157,6 @@ END IF;
 END
 ;;
 DELIMITER ;
-
 
 -- ----------------------------
 -- Procedure structure for sp_delete_from_interface_data_by_batch_id
@@ -841,7 +885,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_select_kpi`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200),IN in_report_form_id int,IN in_report_period_year varchar(1000),IN in_district_id varchar(1000))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200),IN in_report_form_id int,IN in_report_period_year varchar(1000),IN in_district_id varchar(1000), IN in_kpi_summary_functions varchar(1000))
 BEGIN
 
 DECLARE kpi_summary_function_v varchar(12000);
@@ -862,9 +906,9 @@ END IF;
 
 CALL sp_pivot_base_data_by_form_id_and_logged_in_user(in_report_form_id ,in_username);
 
-SELECT kpi_summary_function FROM kpi where kpi_id=in_kpi_id into kpi_summary_function_v;
+-- SELECT kpi_summary_function FROM kpi where kpi_id=in_kpi_id into kpi_summary_function_v;
 
-SET @sql_kpi=CONCAT('SELECT district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,',kpi_summary_function_v,' AS kpi_value FROM z_temp_base_data_',in_username,' AS temp WHERE ',kpi_summary_function_v,' is not null AND ',@district_id_v,' AND ',@report_period_year_v);
+SET @sql_kpi=CONCAT('SELECT district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,',in_kpi_summary_functions,' FROM z_temp_base_data_',in_username,' AS temp WHERE ',@district_id_v,' AND ',@report_period_year_v);
 
 prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
@@ -1563,7 +1607,6 @@ END
 ;;
 DELIMITER ;
 
-SET GLOBAL log_bin_trust_function_creators = 1;
 -- ----------------------------
 -- Function structure for SPLIT_STR
 -- ----------------------------
@@ -1575,51 +1618,5 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `SPLIT_STR`(x LONGTEXT,
 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
        delim, '')
-;
-;;
-DELIMITER ;
-
--- ----------------------------
--- Procedure structure for sp_create_report_form_base_data
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_create_report_form_base_data`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_report_form_base_data`(IN `in_report_form_id` int)
-BEGIN 
-SET @table_name=CONCAT('base_data_',in_report_form_id);
-SET @sql1=CONCAT('CREATE TABLE IF NOT EXISTS ',@table_name);
-SET @sql2="(
-  `base_data_id` int(11) NOT NULL AUTO_INCREMENT,
-  `batch_id` int(11) DEFAULT NULL,
-  `data_element_id` int(11) NOT NULL,
-  `data_element_value` varchar(100) NOT NULL,
-  `health_facility_id` int(11) DEFAULT NULL,
-  `parish_id` int(11) DEFAULT NULL,
-  `sub_county_id` int(11) DEFAULT NULL,
-  `county_id` int(11) DEFAULT NULL,
-  `district_id` int(11) DEFAULT NULL,
-  `financial_year_id` int(11) DEFAULT NULL,
-  `report_period_month` int(11) DEFAULT NULL,
-  `report_period_week` int(11) DEFAULT NULL,
-  `report_period_year` int(11) DEFAULT NULL,
-  `report_period_quarter` int(11) DEFAULT NULL,
-  `report_period_from_date` date NOT NULL,
-  `report_period_to_date` date NOT NULL,
-  `is_deleted` int(1) NOT NULL,
-  `is_active` int(1) NOT NULL,
-  `add_date` datetime DEFAULT NULL,
-  `add_by` int(10) DEFAULT NULL,
-  `last_edit_date` datetime DEFAULT NULL,
-  `last_edit_by` int(10) DEFAULT NULL,
-  `report_period_bi_month` int(11) DEFAULT NULL,
-  `report_form_id` int(11) DEFAULT NULL,
-  `report_form_group_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`base_data_id`)
-  )";
-SET @sql_text=CONCAT(@sql1,@sql2);
-PREPARE stmt FROM @sql_text;
-EXECUTE stmt;
-DEALLOCATE PREPARE stmt;
-END
 ;;
 DELIMITER ;

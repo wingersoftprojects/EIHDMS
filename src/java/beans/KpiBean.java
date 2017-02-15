@@ -11,6 +11,7 @@ import eihdms.Data_element;
 import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Kpi;
+import eihdms.Kpi_summary_function;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
 import eihdms.Technical_area;
@@ -56,6 +57,26 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     private JSONArray jSONArray;
     private List<Object[]> base_dataList;
     private Report_form_group report_form_group;
+
+    private List<Kpi_summary_function> kpi_summary_functionList = new ArrayList<>();
+
+    private String flexmonster_measures = "";
+
+    public String getFlexmonster_measures() {
+        return flexmonster_measures;
+    }
+
+    public void setFlexmonster_measures(String flexmonster_measures) {
+        this.flexmonster_measures = flexmonster_measures;
+    }
+
+    public List<Kpi_summary_function> getKpi_summary_functionList() {
+        return kpi_summary_functionList;
+    }
+
+    public void setKpi_summary_functionList(List<Kpi_summary_function> kpi_summary_functionList) {
+        this.kpi_summary_functionList = kpi_summary_functionList;
+    }
 
     public Report_form_group getReport_form_group() {
         return report_form_group;
@@ -106,6 +127,31 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         return kpiList;
     }
 
+    /**
+     * Get summary functions and alias for kpi
+     *
+     * @param kpi
+     * @return
+     */
+    public String get_kpi_summary_functions(Kpi kpi) {
+        String temp = "";
+        try {
+            List<Kpi_summary_function> kpi_summary_functions = Kpi_summary_function.queryKpi_summary_function("kpi_id=" + kpi.getKpi_id() + " AND is_active=1", null);
+            int x = 0;
+            for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
+                if (x == 0) {
+                    temp = kpi_summary_function.getSummary_function() + " AS " + kpi_summary_function.getKpi_summary_function_name();
+                } else {
+                    temp = temp + "," + kpi_summary_function.getSummary_function() + " AS " + kpi_summary_function.getKpi_summary_function_name();
+                }
+                x++;
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
     public void showReport() {
         String YearsStr = "";
         String DistrictsStr = "";
@@ -131,7 +177,11 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 DistrictsStr = "" + this.selectedDistricts[i].getDistrict_id();
             }
         }
-        String sql = "{call sp_select_kpi(?,?,?,?,?)}";
+
+        /**
+         *
+         */
+        String sql = "{call sp_select_kpi(?,?,?,?,?,?)}";
         ResultSet rs = null;
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
@@ -140,8 +190,9 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             ps.setInt(3, selectedKPI.getReport_form().getReport_form_id());
             ps.setString(4, YearsStr);
             ps.setString(5, DistrictsStr);
+            ps.setString(6, get_kpi_summary_functions(selectedKPI));
             rs = ps.executeQuery();
-            load_jSON(rs);
+            load_jSON(rs, selectedKPI);
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         } finally {
@@ -198,19 +249,19 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
 
     @Override
     public void save(int aUserDetailId) {
-        String sql = "{call sp_validate_kpi_summary_function(?,?)}";
-        ResultSet rs = null;
-        try (Connection conn = DBConnection.getMySQLConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setString(1, this.getSelected().getKpi_summary_function());
-            ps.setInt(2, this.getSelected().getReport_form().getReport_form_id());
-            rs = ps.executeQuery();
-        } catch (SQLException se) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("Invalid Summary Function!", "Invalid Summary Function!"));
-            System.err.println(se.getMessage());
-            return;
-        }
+//        String sql = "{call sp_validate_kpi_summary_function(?,?)}";
+//        ResultSet rs = null;
+//        try (Connection conn = DBConnection.getMySQLConnection();
+//                PreparedStatement ps = conn.prepareStatement(sql);) {
+//            ps.setString(1, this.getSelected().getKpi_summary_function());
+//            ps.setInt(2, this.getSelected().getReport_form().getReport_form_id());
+//            rs = ps.executeQuery();
+//        } catch (SQLException se) {
+//            FacesContext context = FacesContext.getCurrentInstance();
+//            context.addMessage(null, new FacesMessage("Invalid Summary Function!", "Invalid Summary Function!"));
+//            System.err.println(se.getMessage());
+//            return;
+//        }
         super.save(aUserDetailId); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -239,23 +290,22 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         this.data_element = data_element;
     }
 
-    public void append_operand(String operand) {
-        this.getSelected().setKpi_summary_function(this.getSelected().getKpi_summary_function() + " " + operand);;
-    }
-
-    public void append_data_element() {
-        validation_formula = this.getSelected().getKpi_summary_function();
-        if (validation_formula == null) {
-            validation_formula = "";
-        }
-        this.getSelected().setKpi_summary_function(validation_formula + " DE" + data_element.getData_element_id());;
-        String data_elements_involved = this.getSelected().getData_elements_involved();
-        if (data_elements_involved == null) {
-            data_elements_involved = "";
-        }
-        this.getSelected().setData_elements_involved(data_elements_involved + "\n" + " DE" + data_element.getData_element_id() + "=>" + data_element.getData_element_name());
-    }
-
+//    public void append_operand(String operand) {
+//        this.getSelected().setKpi_summary_function(this.getSelected().getKpi_summary_function() + " " + operand);;
+//    }
+//
+//    public void append_data_element() {
+//        validation_formula = this.getSelected().getKpi_summary_function();
+//        if (validation_formula == null) {
+//            validation_formula = "";
+//        }
+//        this.getSelected().setKpi_summary_function(validation_formula + " DE" + data_element.getData_element_id());;
+//        String data_elements_involved = this.getSelected().getData_elements_involved();
+//        if (data_elements_involved == null) {
+//            data_elements_involved = "";
+//        }
+//        this.getSelected().setData_elements_involved(data_elements_involved + "\n" + " DE" + data_element.getData_element_id() + "=>" + data_element.getData_element_name());
+//    }
     /**
      * @return the selectedKPI
      */
@@ -416,8 +466,18 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         this.base_dataList = base_dataList;
     }
 
-    private void load_jSON(ResultSet rs) {
+    private void load_jSON(ResultSet rs, Kpi kpi) {
         try {
+            List<Kpi_summary_function> kpi_summary_functions = Kpi_summary_function.queryKpi_summary_function("kpi_id=" + kpi.getKpi_id() + " AND is_active=1", null);
+            int x = 0;
+            for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
+                if (x == 0) {
+                    flexmonster_measures = "{uniqueName: '" + kpi_summary_function.getKpi_summary_function_name() + "', format: 'decimal'}";
+                } else {
+                    flexmonster_measures = flexmonster_measures + ",{uniqueName: '" + kpi_summary_function.getKpi_summary_function_name() + "', format: 'decimal'}";
+                }
+            }
+            kpi_summary_functionList = kpi_summary_functions;
             JSONArray jArray = new JSONArray();
             JSONObject jObj = new JSONObject();
             jObj.put("District", new JSONObject().put("type", "string"));
@@ -430,7 +490,9 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             jObj.put("BiMonth", new JSONObject().put("type", "string"));
             jObj.put("Month", new JSONObject().put("type", "string"));
             jObj.put("Week", new JSONObject().put("type", "string"));
-            jObj.put("Value", new JSONObject().put("type", "number"));
+            for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
+                jObj.put(kpi_summary_function.getKpi_summary_function_name(), new JSONObject().put("type", "number"));
+            }
             jArray.put(jObj);
 
             while (rs.next()) {
@@ -487,15 +549,21 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 } catch (NullPointerException npe) {
                     jObj.put("Week", "");
                 }
-                try {
-                    jObj.put("Value", rs.getInt(11));
-                } catch (NullPointerException npe) {
-                    jObj.put("Value", 0);
+
+                for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
+                    try {
+                        jObj.put(kpi_summary_function.getKpi_summary_function_name(), rs.getInt(kpi_summary_function.getKpi_summary_function_name()));
+                    } catch (NullPointerException npe) {
+                        jObj.put(kpi_summary_function.getKpi_summary_function_name(), 0);
+                    }
                 }
+
                 jArray.put(jObj);
             }
             jSONArray = jArray;
         } catch (SQLException ex) {
+            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PersistentException ex) {
             Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
