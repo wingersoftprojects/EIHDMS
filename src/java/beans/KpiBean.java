@@ -151,10 +151,10 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             data_element_ids_involved = "";
             for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
                 if (x == 0) {
-                    temp = kpi_summary_function.getSummary_function() + " AS " + kpi_summary_function.getKpi_summary_function_name();
+                    temp = kpi_summary_function.getSummary_function() + " AS `" + kpi_summary_function.getKpi_summary_function_name() + "`";
                     data_element_ids_involved = kpi_summary_function.getData_element_ids_involved();
                 } else {
-                    temp = temp + "," + kpi_summary_function.getSummary_function() + " AS " + kpi_summary_function.getKpi_summary_function_name();
+                    temp = temp + "," + kpi_summary_function.getSummary_function() + " AS `" + kpi_summary_function.getKpi_summary_function_name() + "`";
                     data_element_ids_involved = data_element_ids_involved + "," + kpi_summary_function.getData_element_ids_involved();
                 }
                 x++;
@@ -205,11 +205,16 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             ps.setString(5, DistrictsStr);
             ps.setString(6, get_kpi_summary_functions(selectedKPI));
             ps.setString(7, data_element_ids_involved);
+            rs = ps.executeQuery();
             try {
-                rs = ps.executeQuery();
+                if (!rs.isBeforeFirst()) {
+
+                }
             } catch (Exception ex) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Records to return", "No Records to return!");
                 RequestContext.getCurrentInstance().showMessageInDialog(message);
+                JSONArray jArray = new JSONArray();
+                jSONArray = jArray;
                 return;
             }
             load_jSON(rs, selectedKPI);
