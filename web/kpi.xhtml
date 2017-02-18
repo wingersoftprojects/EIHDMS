@@ -8,9 +8,7 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:event listener="#{kpiBean.init()}" type="preRenderView" />
-            <f:event listener="#{kpi_summary_functionBean.init()}" type="preRenderView" />
             <f:event listener="#{kpiBean.initializelist()}" type="preRenderView" />
-            <f:event listener="#{kpi_summary_functionBean.initializelist()}" type="preRenderView" />
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -79,7 +77,7 @@
                             <p:selectOneMenu id="kpi" value="#{kpi_summary_functionBean.selected.kpi}" style="width:125px" required="true" requiredMessage="KPI field is Required" converter="kpiConverter">
                                 <f:selectItem itemLabel="" />
                                 <f:selectItems value="#{kpiBean.tsActive}" var="item" itemLabel="#{item.kpi_name}" itemValue="#{item}"/>
-                                <p:ajax process="@this"/>
+                                <p:ajax process="@this" update="kpi_summary_table"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="Is Active?:" for="is_active2"/>
                             <p:selectOneMenu id="is_active2" value="#{kpi_summary_functionBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
@@ -134,7 +132,7 @@
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="district_table" value="#{kpi_summary_functionBean.ts}" var="item" rows="10"
+                <p:dataTable id="kpi_summary_table" value="#{kpi_summary_functionBean.ts}" var="item" rows="10"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15,30,50,100">

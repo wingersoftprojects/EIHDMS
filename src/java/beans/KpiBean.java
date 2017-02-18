@@ -492,6 +492,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 } else {
                     flexmonster_measures = flexmonster_measures + ",{uniqueName: '" + kpi_summary_function.getKpi_summary_function_name() + "', format: 'decimal'}";
                 }
+                x++;
             }
             kpi_summary_functionList = kpi_summary_functions;
             JSONArray jArray = new JSONArray();

@@ -120,6 +120,30 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
         super.save(aUserDetailId); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<Kpi_summary_function> getTs() {
+        if (this.getSelected() != null) {
+            if (this.getSelected().getKpi() == null) {
+                this.init();
+                this.initializelist();
+                return super.getTs(); //To change body of generated methods, choose Tools | Templates.
+            } else {
+                try {
+                    super.setTs(Kpi_summary_function.queryKpi_summary_function("kpi_id=" + this.getSelected().getKpi().getKpi_id(), null));
+                } catch (PersistentException ex) {
+                    this.init();
+                    this.initializelist();
+                    Logger.getLogger(Kpi_summary_functionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return super.getTs(); //To change body of generated methods, choose Tools | Templates.
+            }
+        } else {
+            this.init();
+            this.initializelist();
+            return super.getTs(); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
+
     public List<Data_element> completeData_element(String query) {
         List<Data_element> filteredData_elements = new ArrayList<>();
         try {
