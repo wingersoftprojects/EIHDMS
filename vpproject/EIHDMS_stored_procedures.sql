@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2017-02-15 20:21:19
+Date: 2017-02-18 09:38:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -856,7 +856,7 @@ SET @sql_drop_table=CONCAT('DROP TABLE IF EXISTS ','z_temp_base_data_',in_table_
 prepare stmt_drop_table from @sql_drop_table;
 execute stmt_drop_table;
 
-SET @sql = CONCAT('CREATE TABLE ', 'z_temp_base_data_',in_table_name ,' SELECT r.region_id,d.district_id,c.county_id,sc.sub_county_id,p.parish_id,h.health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,bd.report_form_id,', @sql, ' FROM ',@source,' GROUP BY region_id,district_id,county_id,sub_county_id,parish_id,health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id HAVING report_form_id=',in_report_form_id,' AND bd.data_element_id in (',in_data_element_ids_involved,')');
+SET @sql = CONCAT('CREATE TABLE ', 'z_temp_base_data_',in_table_name ,' SELECT r.region_id,d.district_id,c.county_id,sc.sub_county_id,p.parish_id,h.health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,bd.report_form_id,', @sql, ' FROM ',@source,' GROUP BY region_id,district_id,county_id,sub_county_id,parish_id,health_facility_id,region_name,district_name,county_name,sub_county_name,parish_name,health_facility_name,report_period_year,report_period_quarter,report_period_month,report_period_bi_month,report_period_week,report_form_id HAVING report_form_id=',in_report_form_id);
 
 prepare stmt from @sql;
 execute stmt;
@@ -904,6 +904,15 @@ ELSE
 SET @district_id_v ='1=1';
 END IF;
 
+SET @count_data =0;
+SET @sql=CONCAT('SELECT count(*) FROM base_data_',3,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' INTO @count_data');
+
+prepare stmt from @sql;
+execute stmt;
+
+
+IF @count_data>0 THEN 
+
 CALL sp_pivot_base_data_by_form_id_and_logged_in_user(in_report_form_id ,in_username,in_data_element_ids_involved);
 
 -- SELECT kpi_summary_function FROM kpi where kpi_id=in_kpi_id into kpi_summary_function_v;
@@ -913,6 +922,11 @@ SET @sql_kpi=CONCAT('SELECT district_name,county_name,sub_county_name,parish_nam
 prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
 
+ELSE
+SET @sql=CONCAT('SELECT count(*) FROM base_data_',3,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' INTO @count_data');
+prepare stmt from @sql;
+execute stmt;
+END IF;
 END
 ;;
 DELIMITER ;
