@@ -40,10 +40,6 @@
                 </p:panelGrid>
                 <!-- 1. Create a DIV container to insert the component -->
                 <p:panelGrid columns="2" id="pivotarea">
-
-                    <p:panel>
-                        <div id="pivotContainer"></div>
-                    </p:panel>
                     <p:panel>
                         <div id="pivotContainerKPI"></div>
                     </p:panel>
@@ -53,7 +49,8 @@
                 <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
                 <script type="text/javascript">
                     var jsonData = #{kpiBean.getjSONArray()};
-                    var report = {
+                    var report2 = {
+                        viewType: "grid_charts",
                         classicView: true,
                         configuratorActive: false,
                         configuratorButton: true,
@@ -61,15 +58,15 @@
                         showGrandTotals: false,
                         dataSourceType: "json",
                         data: jsonData,
+                        pages: [],
                         rows: [
                             {uniqueName: "District"}
                         ],
                         columns: [
-                            {uniqueName: "Year", sortName: "asc"}
+                            {uniqueName: "Year"}
                         ],
                         measures: [
-                            //{uniqueName: "Value", format: "decimal"}
-                            #{kpiBean.flexmonster_measures}
+                    #{kpiBean.flexmonster_measures}
                         ],
                         formats: [
                             {
@@ -77,37 +74,23 @@
                                 decimalPlaces: 1
                             }
                         ],
-                        licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J",
-                        expandAll: true,
-                        drillAll: true
+                        chart: {
+                            type: "bar",
+                            showFilter: true,
+                            multipleMeasures: true,
+                            oneLevel: false,
+                            autoRange: false,
+                            reversedAxes: false,
+                            showLegendButton: false,
+                            showAllLabels: false,
+                            showMeasures: true,
+                            showOneMeasureSelection: true,
+                            showWarning: true,
+                            showAggregationLabels: false
+                        },
+                        licenseKey: "Z7HC-XI1C6H-415B37-0B5F0D-333R1E-1W192J-6X041O-492A41-5J664V-1D6E6O-4Q"
                     };
-
-                    var report2 = {
-                        viewType: "charts",
-                        chartType: "bar",
-                        configuratorActive: false,
-                        configuratorButton: true,
-                        showChartMeasures: true,
-                        showFilterInCharts: true,
-                        //dataSourceType: "csv",
-                        //filename: "http://www.flexmonster.com/flexmonster/data/dashboard.ocsv",
-                        dataSourceType: "json",
-                        data: jsonData,
-                        pages: [],
-                        columns: [
-                            {uniqueName: "Year"},
-                            {uniqueName: "District"}
-                        ],
-                        rows: [],
-                        measures: [
-                            //{uniqueName: "Value"}
-                            #{kpiBean.flexmonster_measures}
-                        ],
-                        licenseKey: "Z561-6G2LE5-5Q37-6C6V-103K-5D22-2X5J-390P-5730-1J"
-
-                    };
-
-                    flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                    //flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
                     var pivot2 = flexmonster.embedPivotComponent("flexmonster/", "pivotContainerKPI", "100%", "500", report2, true);
 
                 </script>

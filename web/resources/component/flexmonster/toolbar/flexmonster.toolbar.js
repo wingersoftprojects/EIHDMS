@@ -1,114 +1,8 @@
-FlexmonsterLoader.prototype.getToolbar = function () {/**
+/**
  * 	Toolbar for Flexmonster Pivot Table & Charts Component
- *	Version 2.2
+ *	Version 2.3
  **/
-var DefaultLabels = {
-	// Menu
-	CONNECT: "Connect",
-	CONNECT_LOCAL_CSV: "To local CSV",
-	CONNECT_LOCAL_OCSV: "To local OCSV",
-	CONNECT_LOCAL_JSON: "To local JSON",
-	CONNECT_REMOTE_CSV: "To remote CSV",
-	CONNECT_REMOTE_CSV_MOBILE: "CSV",
-	CONNECT_OLAP: "To OLAP (XMLA)",
-	CONNECT_OLAP_MOBILE: "OLAP",
-	OPEN: "Open",
-	LOCAL_REPORT: "Local report",
-	REMOTE_REPORT: "Remote report",
-	REMOTE_REPORT_MOBILE: "Report",
-	SAVE: "Save",
-	GRID: "Grid",
-	CHARTS: "Charts",
-	CHARTS_BAR: "Bar",
-	CHARTS_LINE: "Line",
-	CHARTS_SCATTER: "Scatter",
-	CHARTS_PIE: "Pie",
-	CHARTS_BAR_STACK: "Bar stack",
-	CHARTS_BAR_LINE: "Bar line",
-	CHARTS_MULTIPLE: "Multiple values",
-	FORMAT: "Format",
-	FORMAT_CELLS: "Format cells",
-	FORMAT_CELLS_MOBILE: "Format",
-	CONDITIONAL_FORMATTING: "Conditional formatting",
-	CONDITIONAL_FORMATTING_MOBILE: "Conditional",
-	OPTIONS: "Options",
-	FULLSCREEN: "Fullscreen",
-	EXPORT: "Export",
-	EXPORT_PRINT: "Print",
-	EXPORT_HTML: "To HTML",
-	EXPORT_CSV: "To CSV",
-	EXPORT_EXCEL: "To Excel",
-	EXPORT_IMAGE: "To Image",
-	EXPORT_PDF: "To PDF",
-	FIELDS: "Fields",
-	// General
-	OK: "OK",
-	APPLY: "Apply",
-	CANCEL: "Cancel",
-	VALUE: "Value",
-	// Connect
-	OPEN_REMOTE_CSV: "Open remote CSV",
-	OLAP_CONNECTION_TOOL: "OLAP connection tool",
-	SELECT_DATA_SOURCE: "Select data source",
-	SELECT_CATALOG: "Select catalog",
-	SELECT_CUBE: "Select cube",
-	PROXY_URL: "Proxy URL",
-	DATA_SOURCE_INFO: "Data Source Info",
-	CATALOG: "Catalog",
-	CUBE: "Cube",
-	CREDENTIALS: "credentials",
-	USERNAME: "Username",
-	PASSWORD: "Password",
-	// Report
-	OPEN_REMOTE_REPORT: "Open remote report",
-	// Format
-	TEXT_ALIGN: "Text align",
-	ALIGN_LEFT: "left",
-	ALIGN_RIGHT: "right",
-	NONE: "None",
-	SPACE: "(Space)",
-	THOUSAND_SEPARATOR: "Thousand separator",
-	DECIMAL_SEPARATOR: "Decimal separator",
-	DECIMAL_PLACES: "Decimal places",
-	CURRENCY_SYMBOL: "Currency symbol",
-	CURRENCY_ALIGN: "Currency align",
-	NULL_VALUE: "Null value",
-	// Conditional
-	ADD_CONDITION: "Add condition",
-	LESS_THAN: "Less than",
-	LESS_THAN_OR_EQUAL: "Less than or equal to",
-	GREATER_THAN: "Greater than",
-	GREATER_THAN_OR_EQUAL: "Greater than or equal to",
-	EQUAL_TO: "Equal to",
-	NOT_EQUAL_TO: "Not equal to",
-	BETWEEN: "Between",
-	ALL_VALUES: "All values",
-	AND: "and",
-	// Options
-	LAYOUT_OPTIONS: "Layout options",
-	LAYOUT: "Layout",
-	COMPACT_VIEW: "Compact form",
-	CLASSIC_VIEW: "Classic form",
-	FLAT_VIEW: "Flat form",
-	GRAND_TOTALS: "Grand totals",
-	SUBTOTALS: "Subtotals",
-	OFF_FOR_ROWS_AND_COLUMNS: "Off for rows and columns",
-	ON_FOR_ROWS_AND_COLUMNS: "On for rows and columns",
-	ON_FOR_ROWS: "On for rows only",
-	ON_FOR_COLUMNS: "On for columns only",
-	DO_NOT_SHOW_SUBTOTALS: "Do not show subtotals",
-	SHOW_ALL_SUBTOTALS: "Show all subtotals",
-	// Export PDF
-	CHOOSE_PAGE_ORIENTATION: "Choose page orientation",
-	LANDSCAPE: "Landscape",
-	PORTRAIT: "Portrait"
-};
-
-/*
- *	Toolbar
- */
-
-var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, labels) {
+var FlexmonsterToolbar = function(pivotContainer, pivot, _, width, labels) {
 	var self = this;
 
 	var isIOS = navigator.userAgent.match(/iPhone|iPad|iPod/i) || navigator.platform.match(/iPhone|iPad|iPod/i) ? true : false;
@@ -116,133 +10,147 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	var isAndroid = navigator.userAgent.match(/Android/i) ? true : false;
 	var isBlackBerry = /BlackBerry/i.test(navigator.platform);
 	var isMobile = isIOS || isAndroid || isBlackBerry;
-	var isFlash = !isHTML5;
-	var isFlatTable = false;
-	var Labels = (labels != null) ? labels : DefaultLabels;
+	var isMultipleValuesDissabled = false;
+	var Labels = labels;
 	
 	if (typeof width == "number" || (width.indexOf("px") < 0 && width.indexOf("%") < 0)) {
 		width += "px";
 	}
 
+	self.updateLabels = function (labels) {
+	    Labels = labels;
+
+	    self.setText(document.querySelector("#fm-tab-connect > a > span"), Labels.connect);
+	    self.setText(document.querySelector("#fm-tab-connect-local-csv > a > span"), Labels.connect_local_csv);
+	    self.setText(document.querySelector("#fm-tab-connect-local-json > a > span"), Labels.connect_local_json);
+	    self.setText(document.querySelector("#fm-tab-connect-remote-csv > a > span"), isMobile ? Labels.connect_remote_csv_mobile : Labels.connect_remote_csv);
+	    self.setText(document.querySelector("#fm-tab-connect-olap > a > span"), isMobile ? Labels.connect_olap_mobile : Labels.connect_olap);
+        
+	    self.setText(document.querySelector("#fm-tab-open > a > span"), Labels.open);
+	    self.setText(document.querySelector("#fm-tab-open-local-report > a > span"), Labels.local_report);
+	    self.setText(document.querySelector("#fm-tab-open-remote-report > a > span"), isMobile ? Labels.remote_report_mobile : Labels.remote_report);
+
+	    self.setText(document.querySelector("#fm-tab-save > a > span"), Labels.save);
+
+	    self.setText(document.querySelector("#fm-tab-grid > a > span"), Labels.grid);
+
+	    self.setText(document.querySelector("#fm-tab-charts > a > span"), Labels.charts);
+	    self.setText(document.querySelector("#fm-tab-charts-bar > a > span"), Labels.charts_bar);
+	    self.setText(document.querySelector("#fm-tab-charts-line > a > span"), Labels.charts_line);
+	    self.setText(document.querySelector("#fm-tab-charts-scatter > a > span"), Labels.charts_scatter);
+	    self.setText(document.querySelector("#fm-tab-charts-pie > a > span"), Labels.charts_pie);
+	    self.setText(document.querySelector("#fm-tab-charts-bar-stack > a > span"), Labels.charts_bar_stack);
+	    self.setText(document.querySelector("#fm-tab-charts-bar-line > a > span"), Labels.charts_bar_line);
+	    self.setText(document.querySelector("#fm-tab-charts-multiple > a > span"), Labels.charts_multiple);
+
+	    self.setText(document.querySelector("#fm-tab-format > a > span"), Labels.format);
+	    self.setText(document.querySelector("#fm-tab-format-cells > a > span"), Labels.format_cells_mobile);
+	    self.setText(document.querySelector("#fm-tab-format-conditional > a > span"), Labels.conditional_formatting_mobile);
+
+	    self.setText(document.querySelector("#fm-tab-options > a > span"), Labels.options);
+	    self.setText(document.querySelector("#fm-tab-fullscreen > a > span"), Labels.fullscreen);
+
+	    self.setText(document.querySelector("#fm-tab-export > a > span"), Labels.export);
+	    self.setText(document.querySelector("#fm-tab-export-print > a > span"), Labels.export_print);
+	    self.setText(document.querySelector("#fm-tab-export-html > a > span"), Labels.export_html);
+	    self.setText(document.querySelector("#fm-tab-export-csv > a > span"), Labels.export_csv);
+	    self.setText(document.querySelector("#fm-tab-export-excel > a > span"), Labels.export_excel);
+	    self.setText(document.querySelector("#fm-tab-export-image > a > span"), Labels.export_image);
+	    self.setText(document.querySelector("#fm-tab-export-pdf > a > span"), Labels.export_pdf);
+
+	    self.setText(document.querySelector("#fm-tab-fields > a > span"), Labels.fields);
+	}
+
+
 	// TABS
 	var dataProvider = [];
 	// Connect tab
-	dataProvider.push({ title: Labels.CONNECT, id: "fm-tab-connect",
+	dataProvider.push({ title: Labels.connect, id: "fm-tab-connect",
 		menu: [
-			{ title: Labels.CONNECT_LOCAL_CSV, id: "fm-tab-connect-local-csv", handler: "connectLocalCSVHandler", mobile: false },
-			{ title: Labels.CONNECT_LOCAL_OCSV, id: "fm-tab-connect-local-ocsv", handler: "connectLocalOCSVHandler", mobile: false },
-			{ title: Labels.CONNECT_LOCAL_JSON, id: "fm-tab-connect-local-json", handler: "connectLocalJSONHandler", mobile: false },
-			{ title: isMobile ? Labels.CONNECT_REMOTE_CSV_MOBILE : Labels.CONNECT_REMOTE_CSV, id: "fm-tab-connect-remote-csv", handler: "connectRemoteCSV" },
-			{ title: isMobile ? Labels.CONNECT_OLAP_MOBILE : Labels.CONNECT_OLAP, id: "fm-tab-connect-olap", handler: "connectOLAP", flat: false }
+			{ title: Labels.connect_local_csv, id: "fm-tab-connect-local-csv", handler: "connectLocalCSVHandler", mobile: false },
+			{ title: Labels.connect_local_json, id: "fm-tab-connect-local-json", handler: "connectLocalJSONHandler", mobile: false },
+			{ title: isMobile ? Labels.connect_remote_csv_mobile : Labels.connect_remote_csv, id: "fm-tab-connect-remote-csv", handler: "connectRemoteCSV" },
+			{ title: isMobile ? Labels.connect_olap_mobile : Labels.connect_olap, id: "fm-tab-connect-olap", handler: "connectOLAP", flat: false }
 		]
 	});
 
 	// Open tab
-	dataProvider.push({ title: Labels.OPEN, id: "fm-tab-open", 
+	dataProvider.push({ title: Labels.open, id: "fm-tab-open", 
 		menu: [
-			{ title: Labels.LOCAL_REPORT, id: "fm-tab-open-local-report", handler: "openLocalReport", mobile: false },
-			{ title: isMobile ? Labels.REMOTE_REPORT_MOBILE : Labels.REMOTE_REPORT, id: "fm-tab-open-remote-report", handler: "openRemoteReport" }
+			{ title: Labels.local_report, id: "fm-tab-open-local-report", handler: "openLocalReport", mobile: false },
+			{ title: isMobile ? Labels.remote_report_mobile : Labels.remote_report, id: "fm-tab-open-remote-report", handler: "openRemoteReport" }
 		] 
 	});
 	
 	// Save tab
-	dataProvider.push({ title: Labels.SAVE, id: "fm-tab-save", handler: "saveHandler", mobile: false });
+	dataProvider.push({ title: Labels.save, id: "fm-tab-save", handler: "saveHandler", mobile: false });
+
 	dataProvider.push({ divider: true });
 
 	// Grid tab
-	dataProvider.push({ title: Labels.GRID, id: "fm-tab-grid", handler: "gridHandler" });
+	dataProvider.push({ title: Labels.grid, id: "fm-tab-grid", handler: "gridHandler" });
 
 	// Charts tab
-	dataProvider.push({ title: Labels.CHARTS, id: "fm-tab-charts", onShowHandler: "checkChartMultipleMeasures",
+	dataProvider.push({ title: Labels.charts, id: "fm-tab-charts", onShowHandler: "checkChartMultipleMeasures",
 		menu: [
-			{ title: Labels.CHARTS_BAR, id: "fm-tab-charts-bar", handler: "chartsHandler", args: "bar" },
-			{ title: Labels.CHARTS_LINE, id: "fm-tab-charts-line", handler: "chartsHandler", args: "line" },
-			{ title: Labels.CHARTS_SCATTER, id: "fm-tab-charts-scatter", handler: "chartsHandler", args: "scatter" },
-			{ title: Labels.CHARTS_PIE, id: "fm-tab-charts-pie", handler: "chartsHandler", args: "pie" },
-			{ title: Labels.CHARTS_BAR_STACK, id: "fm-tab-charts-bar-stack", handler: "chartsHandler", args: "bar_stack", flat: false },
-			{ title: Labels.CHARTS_BAR_LINE, id: "fm-tab-charts-bar-line", handler: "chartsHandler", args: "bar_line", flat: false },
+			{ title: Labels.charts_bar, id: "fm-tab-charts-bar", handler: "chartsHandler", args: "bar" },
+			{ title: Labels.charts_line, id: "fm-tab-charts-line", handler: "chartsHandler", args: "line" },
+			{ title: Labels.charts_scatter, id: "fm-tab-charts-scatter", handler: "chartsHandler", args: "scatter" },
+			{ title: Labels.charts_pie, id: "fm-tab-charts-pie", handler: "chartsHandler", args: "pie" },
+			{ title: Labels.charts_bar_stack, id: "fm-tab-charts-bar-stack", handler: "chartsHandler", args: "bar_stack", flat: false },
+			{ title: Labels.charts_bar_line, id: "fm-tab-charts-bar-line", handler: "chartsHandler", args: "bar_line", flat: false },
 			{ divider: true, flat: false, mobile: false },
-			{ title: Labels.CHARTS_MULTIPLE, id: "fm-tab-charts-multiple", handler: "chartsMultipleHandler", flat: false, mobile: false }
+			{ title: Labels.charts_multiple, id: "fm-tab-charts-multiple", handler: "chartsMultipleHandler", flat: false, mobile: false }
 		]
 	});
 	dataProvider.push({ divider: true });
 
 	// Format tab
-	dataProvider.push({ title: Labels.FORMAT, id: "fm-tab-format", 
+	dataProvider.push({ title: Labels.format, id: "fm-tab-format", 
 		menu: [
-			{ title: isMobile ? Labels.FORMAT_CELLS_MOBILE : Labels.FORMAT_CELLS, id: "fm-tab-format-cells", handler: "formatCellsHandler" },
-			{ title: isMobile ? Labels.CONDITIONAL_FORMATTING_MOBILE : Labels.CONDITIONAL_FORMATTING, id: "fm-tab-format-conditional", handler: "conditionalFormattingHandler" }
+			{ title: isMobile ? Labels.format_cells_mobile : Labels.format_cells, id: "fm-tab-format-cells", handler: "formatCellsHandler" },
+			{ title: isMobile ? Labels.conditional_formatting_mobile : Labels.conditional_formatting, id: "fm-tab-format-conditional", handler: "conditionalFormattingHandler" }
 		]
 	});
 
 	// Options tab
-	dataProvider.push({ title: Labels.OPTIONS, id: "fm-tab-options", handler: "optionsHandler" });
+	dataProvider.push({ title: Labels.options, id: "fm-tab-options", handler: "optionsHandler" });
 
 	// Right-aligned tabs should go in reversed order due to float: right
 
 	// Fullscreen tab
 	if (document["addEventListener"] != undefined) { // For IE8
-		dataProvider.push({ title: Labels.FULLSCREEN, id: "fm-tab-fullscreen", handler: "fullscreenHandler", mobile: false });
+		dataProvider.push({ title: Labels.fullscreen, id: "fm-tab-fullscreen", handler: "fullscreenHandler", mobile: false });
 	}
 
 	// Export tab
-	dataProvider.push({ title: Labels.EXPORT, id: "fm-tab-export", mobile: false,
+	dataProvider.push({ title: Labels.export, id: "fm-tab-export", mobile: false,
 		menu: [
-			{ title: Labels.EXPORT_PRINT, id: "fm-tab-export-print", handler: "printHandler" },
-			{ title: Labels.EXPORT_HTML, id: "fm-tab-export-html", handler: "exportHandler", args: "html" },
-			{ title: Labels.EXPORT_CSV, id: "fm-tab-export-csv", handler: "exportHandler", args: "csv" },
-			{ title: Labels.EXPORT_EXCEL, id: "fm-tab-export-excel", handler: "exportHandler", args: "excel" },
-			{ title: Labels.EXPORT_IMAGE, id: "fm-tab-export-image", handler: "exportHandler", args: "image" },
-			{ title: Labels.EXPORT_PDF, id: "fm-tab-export-pdf", handler: "exportHandler", args: "pdf" },
+			{ title: Labels.export_print, id: "fm-tab-export-print", handler: "printHandler" },
+			{ title: Labels.export_html, id: "fm-tab-export-html", handler: "exportHandler", args: "html" },
+			{ title: Labels.export_csv, id: "fm-tab-export-csv", handler: "exportHandler", args: "csv" },
+			{ title: Labels.export_excel, id: "fm-tab-export-excel", handler: "exportHandler", args: "excel" },
+			{ title: Labels.export_image, id: "fm-tab-export-image", handler: "exportHandler", args: "image" },
+			{ title: Labels.export_pdf, id: "fm-tab-export-pdf", handler: "exportHandler", args: "pdf" },
 		]
 	});
 
 	// Fields tab
-	dataProvider.push({ title: Labels.FIELDS, id: "fm-tab-fields", handler: "fieldsHandler" });
+	dataProvider.push({ title: Labels.fields, id: "fm-tab-fields", handler: "fieldsHandler" });
 
 	// HANDLERS
 
 	// Connect tab
 	self.connectLocalCSVHandler = function() {
-		isFlatTable = self.pivot.getOptions()["flatView"];
-		self.pivot.connectTo({ dataSourceType: "csv", browseForFile: true }, function () {
-			if (isFlatTable) {
-				var options = {
-					flatView: true
-				};
-				self.pivot.setOptions(options);
-				self.pivot.refresh();
-			}
-		});
-	}
-	self.connectLocalOCSVHandler = function() {
-		isFlatTable = self.pivot.getOptions()["flatView"];
-		self.pivot.connectTo({ dataSourceType: "ocsv", browseForFile: true }, function () {
-			if (isFlatTable) {
-				var options = {
-					flatView: true
-				};
-				self.pivot.setOptions(options);
-				self.pivot.refresh();
-			}
-		});
+		self.pivot.connectTo({ dataSourceType: "csv", browseForFile: true });
 	}
 	self.connectLocalJSONHandler = function() {
-		isFlatTable = self.pivot.getOptions()["flatView"];
-		self.pivot.connectTo({ dataSourceType: "json", browseForFile: true }, function () {
-			if (isFlatTable) {
-				var options = {
-					flatView: true
-				};
-				self.pivot.setOptions(options);
-				self.pivot.refresh();
-			}
-		});
+		self.pivot.connectTo({ dataSourceType: "json", browseForFile: true });
 	}
 	self.connectRemoteCSV = function() {
 		self.showConnectToRemoteCSVDialog();
 	}
-	self.connectOLAP = function() {
+	self.connectOLAP = function () {
 		self.showConnectToOLAPDialog();
 	}
 
@@ -256,30 +164,73 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 
 	// Save tab
 	self.saveHandler = function() {
-		self.pivot.save("report.xml", 'file');
+		self.pivot.save("report.json", 'file');
 	}
+
+    ////Save JSON
+	//self.saveJSONHandler = function () {
+	//    self.pivot.saveJSON("report.js", 'file');
+	//}
 
 	// Grid tab
 	self.gridHandler = function() {
-		self.pivot.showGrid();
+	    self.pivot.showGrid();
 	}
 
 	// Charts tab
-	self.chartsHandler = function(type) {
-		var multiple = self.pivot.getOptions()['chartMultipleMeasures'];
+	self.chartsHandler = function (type) {
+	    var options = self.pivot.getOptions() || {};
+	    var multiple = options['chart']['multipleMeasures'];
+	    var node = document.getElementById("fm-tab-charts-multiple");
+	    if(node != null) self.disableMultyValues(type, multiple, node);
 		self.pivot.showCharts(type, multiple);
 	}
-	self.chartsMultipleHandler = function() {
-		var type = self.pivot.getOptions()['chartType'];
-		var multiple = !self.pivot.getOptions()['chartMultipleMeasures'];
-		var node = document.getElementById("fm-tab-charts-multiple");
-		multiple ? self.addClass(node, "fm-selected") : self.removeClass(node, "fm-selected");
-		self.pivot.showCharts(type, multiple);
+	self.chartsMultipleHandler = function () {
+	    var options = self.pivot.getOptions() || {};
+	    var type = options['chart']['type'];
+	    var multiple = !options['chart']['multipleMeasures'];
+	    var node = document.getElementById("fm-tab-charts-multiple");
+	    multiple ? self.addClass(node, "fm-selected") : self.removeClass(node, "fm-selected");
+	    if (type == "pie" || type == "bar_stack" || type == "bar_line") {
+	        self.removeClass(node, "fm-selected");
+	    } else self.pivot.showCharts(type, multiple);
 	}
-	self.checkChartMultipleMeasures = function() {
-		var multiple = self.pivot.getOptions()['chartMultipleMeasures'];
+	self.checkChartMultipleMeasures = function () {
+	    var options = self.pivot.getOptions() || {};
+	    if (options === undefined) return;
+		var multiple = options['chart']['multipleMeasures'];
 		var node = document.getElementById("fm-tab-charts-multiple");
-		multiple ? self.addClass(node, "fm-selected") : self.removeClass(node, "fm-selected");
+		if (node != null) self.disableMultyValues(options['chart']['type'], multiple, node);
+	}
+
+	self.disableMultyValues = function (type, multiple, node) {
+	    if (type == "pie" || type == "bar_stack" || type == "bar_line") {
+	        var chartType = "";
+	        switch (type) {
+	            case ("pie"):
+	                chartType = Labels.charts_pie;
+	                break;
+	            case ("bar_stack"):
+	                chartType = Labels.charts_bar_stack;
+	                break;
+	            case ("bar_line"):
+	                chartType = Labels.charts_bar_line;
+	                break;
+	        }
+	        self.removeClass(node, "fm-selected");
+	        self.addClass(node, "fm-multdisabled");
+	        isMultipleValDisabled = true;
+	        node.innerHTML = "<abbr title=\"" + Labels.charts_multiple_disabled + chartType.toLocaleLowerCase() + " " + Labels.charts.toLocaleLowerCase() + "\"> <a href=\"javascript:void(0)\"><span>" + Labels.charts_multiple + "</span></a></abbr>";
+	    } else if (multiple) {
+	        self.addClass(node, "fm-selected");
+	        self.removeClass(node, "fm-multdisabled");
+	        node.innerHTML = "<a href=\"javascript:void(0)\"><span>" + Labels.charts_multiple + "</span></a>";
+	        node.addEventListener("click", self.chartsMultipleHandler);
+	    } else {
+	        self.removeClass(node, "fm-multdisabled");
+	        node.innerHTML = "<a href=\"javascript:void(0)\"><span>" + Labels.charts_multiple + "</span></a>";
+	        node.addEventListener("click", self.chartsMultipleHandler);
+	    }
 	}
 
 	// Format tab
@@ -302,7 +253,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 
 	// Export tab
 	self.printHandler = function() {
-		(isFlash) ? self.showPrintingDialog() : self.pivot.print();
+		self.pivot.print();
 	}
 	self.exportHandler = function(type) {
 		(type == "pdf") ? self.showExportPdfDialog() : self.pivot.exportTo(type);
@@ -318,32 +269,25 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	// Connect to remote CSV
 	self.showConnectToRemoteCSVDialog = function() {
 		var applyHandler = function() {
-			if (textInput.value.length > 0) {
-				isFlatTable = self.pivot.getOptions()["flatView"];
-				self.pivot.connectTo({ filename: textInput.value, dataSourceType: "csv" }, function () {
-					if (isFlatTable) {
-						var options = {
-							flatView: true
-						};
-						self.pivot.setOptions(options);
-						self.pivot.refresh();
-					}
-				});
+		    if (textInput.value.length > 0) {
+				self.pivot.connectTo({ filename: textInput.value, dataSourceType: "csv" });
 			}
 		}
-		var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.OPEN_REMOTE_CSV);
+		var dialog = isMobile ? new PopUpWindowMobile() : new PopUpWindow();
+		dialog.setTitle(isMobile ? Labels.csv : Labels.open_remote_csv);
 		dialog.setToolbar([
-			{ label: Labels.OPEN, handler: applyHandler, isPositive: true },
-			{ label: Labels.CANCEL }
+			{ id: "fm-btn-open", label: Labels.open, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
 		]);
 		
 		var content = document.createElement("table");
+		content.id = isMobile ? "fm-remote-csv-mobile" : "fm-popup-remote-csv";
 		content.className = "fm-form";
 
-        var textInput = document.createElement("input");
+		var textInput = document.createElement("input");
+		textInput.id = "fm-inp-file-url";
         textInput.type = "text";
-        textInput.style.width = "280px";
+        textInput.style.width = isMobile ? "99%" : "280px";
         textInput.value = "http://www.flexmonster.com/download/data.csv";
         
         var tr = document.createElement("tr");
@@ -356,50 +300,49 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 		PopUpManager.addPopUp(dialog.content);
 	}
 
+
 	// Connect to OLAP (XMLA)
 	self.showConnectToOLAPDialog = function() {
 		var onConnectBtnClick = function() {
 			if (proxyUrlInput.value.length == 0) return;
-			if (isFlash) window["dataSourcesHandler"] = dataSourcesHandler;
 			var credentialsCeckBox = document.getElementById("fm-credentials-checkbox");
 			self.pivot.getXMLADataSources(proxyUrlInput.value, 
-				isHTML5 ? dataSourcesHandler : "dataSourcesHandler",
+				dataSourcesHandler,
                 credentialsCeckBox && credentialsCeckBox.checked ? document.getElementById("fm-username-input").value : null,
                 credentialsCeckBox && credentialsCeckBox.checked ? document.getElementById("fm-password-input").value : null);
 		};
 		var dataSourcesHandler = function(dataProvider) {
 	    	if (dataProvider != null && dataProvider.length > 0) {
-	    		fillList(olapDataSourcesList, dataProvider, Labels.SELECT_DATA_SOURCE);
+	    		fillList(olapDataSourcesList, dataProvider, Labels.select_data_source);
 	    	}
     	};
 		var onOlapDataSourcesListChange = function() {
-		    if (isFlash) window["catalogsHandler"] = catalogsHandler;
 		    var credentialsCeckBox = document.getElementById("fm-credentials-checkbox");
-			self.pivot.getXMLACatalogs(proxyUrlInput.value, olapDataSourcesList.value, 
-				isHTML5 ? catalogsHandler : "catalogsHandler",
+			self.pivot.getXMLACatalogs(proxyUrlInput.value, 
+				olapDataSourcesList.value, 
+				catalogsHandler,
                 credentialsCeckBox && credentialsCeckBox.checked ? document.getElementById("fm-username-input").value : null,
                 credentialsCeckBox && credentialsCeckBox.checked ? document.getElementById("fm-password-input").value : null);
 		};
 		var catalogsHandler = function(dataProvider) {
 			if (dataProvider != null && dataProvider.length > 0) {
-				fillList(olapCatalogsList, dataProvider, Labels.SELECT_CATALOG);
+				fillList(olapCatalogsList, dataProvider, Labels.select_catalog);
 			}
 		};
 		var onOlapCatalogsListChange = function() {
-		    if (isFlash) window["cubesHandler"] = cubesHandler;
 		    var credentialsCeckBox = document.getElementById("fm-credentials-checkbox");
-			self.pivot.getXMLACubes(proxyUrlInput.value, olapDataSourcesList.value, olapCatalogsList.value,
-				isHTML5 ? cubesHandler : "cubesHandler",
+			self.pivot.getXMLACubes(proxyUrlInput.value, olapDataSourcesList.value, olapCatalogsList.value, 
+				cubesHandler,
                 credentialsCeckBox && credentialsCeckBox.checked ? document.getElementById("fm-username-input").value : null,
                 credentialsCeckBox && credentialsCeckBox.checked ? document.getElementById("fm-password-input").value : null);
 		};
 		var cubesHandler = function(dataProvider) {
 			if (dataProvider != null && dataProvider.length > 0) {
-				fillList(olapCubesList, dataProvider, Labels.SELECT_CUBE);
+				fillList(olapCubesList, dataProvider, Labels.select_cube);
 			}
 		};
 		var onOlapCubesListChange = function() {
-			self.removeClass(document.getElementById("fm-ok-btn"), "fm-disabled");
+			self.removeClass(document.getElementById("fm-btn-open"), "fm-disabled");
 		};
 		var okHandler = function() {
 		    var provider = pivot.getXMLAProviderName(proxyUrlInput.value, '');
@@ -439,30 +382,35 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 		    document.getElementById("fm-credentials").style.display = useCredentials ? "inline" : "none";
 		}
 
-		var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.OLAP_CONNECTION_TOOL);
-		dialog.setToolbar([
-			{ label: Labels.OK, id: "fm-ok-btn", handler: okHandler, disabled: true, isPositive: true },
-			{ label: Labels.CANCEL }
+		var dialog = isMobile? new PopUpWindowMobile() : new PopUpWindow();
+		dialog.setTitle(isMobile ? Labels.connect_olap_mobile : Labels.olap_connection_tool);
+		dialog.setToolbar(isMobile ? [
+			{ id: "fm-btn-open", label: Labels.open, handler: okHandler, disabled: true, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
+		] : [
+			{ id: "fm-btn-open", label: Labels.ok, handler: okHandler, disabled: true, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
 		]);
 
 		var content = document.createElement("table");
-		content.id = "fm-popup-connect-olap";
+		content.id = isMobile ? "fm-popup-connect-olap-mobile" : "fm-popup-connect-olap";
 		content.className = "fm-form";
 		
 		var proxyInputLabel = document.createElement("tr");
-		proxyInputLabel.innerHTML = '<th colspan="2">' + Labels.PROXY_URL + '</th>';
+		proxyInputLabel.innerHTML = '<th colspan="2">' + Labels.proxy_url + '</th>';
 		content.appendChild(proxyInputLabel);
 
         proxyUrlInput = document.createElement("input");
+        proxyUrlInput.id = "fm-inp-proxy-url";
         proxyUrlInput.type = "text";
         proxyUrlInput.className = "fm-half-input";
         proxyUrlInput.value = "http://olap.flexmonster.com/olap/msmdpump.dll";
 
         connectBtn = document.createElement("a");
+        connectBtn.id = "fm-btn-connect";
         connectBtn.setAttribute("href", "javascript:void(0)");
         connectBtn.className = "fm-half-button";
-        self.setText(connectBtn, Labels.CONNECT);
+        self.setText(connectBtn, Labels.connect);
         connectBtn.onclick = onConnectBtnClick;
 
 		var tr = document.createElement("tr");
@@ -471,49 +419,17 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         td.appendChild(proxyUrlInput);
         td.appendChild(connectBtn);
         content.appendChild(tr);
-
-	    // credentials
-        if (isFlash) {
-            var useCredentialsCheckBox = document.createElement("div");
-            useCredentialsCheckBox.id = "fm-credentials-checkbox";
-            td.appendChild(useCredentialsCheckBox);
-            var credentialsLabel = document.createElement("span");
-            credentialsLabel.id = "fm-credentials-label";
-            self.setText(credentialsLabel, Labels.CREDENTIALS);
-            td.appendChild(credentialsLabel);
-
-            var usernameLabel = document.createElement("span");
-            self.setText(usernameLabel, Labels.USERNAME + ":");
-            var usernameInput = document.createElement("input");
-            usernameInput.id = "fm-username-input";
-            usernameInput.type = "text";
-            var passwordLabel = document.createElement("span");
-            self.setText(passwordLabel, Labels.PASSWORD + ":");
-            var passwordInput = document.createElement("input");
-            passwordInput.id = "fm-password-input";
-            passwordInput.type = "password";
-
-            var div = document.createElement("div");
-            div.id = "fm-credentials";
-            div.innerHTML += "</br>";
-            div.appendChild(usernameLabel);
-            div.appendChild(usernameInput);
-            div.innerHTML += "</br>";
-            div.appendChild(passwordLabel);
-            div.appendChild(passwordInput);
-            td.appendChild(div);
-            div.style.display = "none";
-        }
         
         // ds info
         var dsListLabel = document.createElement("tr");
-        dsListLabel.innerHTML = '<th colspan="2">' + Labels.DATA_SOURCE_INFO + '</th>';
+        dsListLabel.innerHTML = '<th colspan="2">' + Labels.data_source_info + '</th>';
         content.appendChild(dsListLabel);
         
         olapDataSourcesList = document.createElement("select");
+        olapDataSourcesList.id = "fm-lst-dsinfo";
         olapDataSourcesList.disabled = true;
         olapDataSourcesList.innerHTML = '<option value="" class="placeholder" disabled selected>'
-        	+ Labels.SELECT_DATA_SOURCE + '</option>';
+        	+ Labels.select_data_source + '</option>';
         olapDataSourcesList.onchange = onOlapDataSourcesListChange;
         
         var tr = document.createElement("tr");
@@ -523,13 +439,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         content.appendChild(tr);
 
         var catalogsListLabel = document.createElement("tr");
-        catalogsListLabel.innerHTML = '<th>' + Labels.CATALOG + '</th>';
+        catalogsListLabel.innerHTML = '<th>' + Labels.catalog + '</th>';
         content.appendChild(catalogsListLabel);
 
         olapCatalogsList = document.createElement("select");
+        olapCatalogsList.id = "fm-lst-catalogs";
         olapCatalogsList.disabled = true;
         olapCatalogsList.innerHTML = '<option value="" class="placeholder" disabled selected>'
-        	+ Labels.SELECT_CATALOG + '</option>';
+        	+ Labels.select_catalog + '</option>';
         olapCatalogsList.onchange = onOlapCatalogsListChange;
 
         var tr = document.createElement("tr");
@@ -539,13 +456,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         content.appendChild(tr);
         
         var olapCubesLabel = document.createElement("tr");
-        olapCubesLabel.innerHTML = '<th colspan="2">' + Labels.CUBE + '</th>';
+        olapCubesLabel.innerHTML = '<th colspan="2">' + Labels.cube + '</th>';
         content.appendChild(olapCubesLabel);
 
         olapCubesList = document.createElement("select");
+        olapCubesList.id = "fm-lst-cubes";
         olapCubesList.disabled = true;
         olapCubesList.innerHTML = '<option value="" class="placeholder" disabled selected>'
-        	+ Labels.SELECT_CUBE + '</option>';
+        	+ Labels.select_cube + '</option>';
         olapCubesList.onchange = onOlapCubesListChange;
 
         var tr = document.createElement("tr");
@@ -569,18 +487,21 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 				self.pivot.load(textInput.value);
 			}
 		}
-		var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.OPEN_REMOTE_REPORT);
+		var dialog = isMobile ? new PopUpWindowMobile() : new PopUpWindow();
+		dialog.setTitle(Labels.open_remote_report);
 		dialog.setToolbar([
-			{ label: Labels.OPEN, handler: applyHandler, isPositive: true },
-			{ label: Labels.CANCEL }
+			{ id: "fm-btn-open", label: Labels.open, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
 		]);
 		var content = document.createElement("table");
+		content.id = isMobile ? "fm-remote-csv-mobile" : content.id;
 		content.className = "fm-form";
 
         var textInput = document.createElement("input");
         textInput.type = "text";
-        textInput.style.width = "280px";
+        textInput.style.width = isMobile ? "99%" : "280px";
+        var options = self.pivot.getOptions() || {};
+        var isFlatTable = (options.grid && options.grid.type == "flat");
         textInput.value = isFlatTable ? "http://www.flexmonster.com/reports/report-flat.xml" : "http://www.flexmonster.com/download/report.xml";
         
         var tr = document.createElement("tr");
@@ -604,6 +525,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 			currencySymbInput.value = formatVO.currencySymbol;
 			currencyAlignDropDown.value = formatVO.currencySymbolAlign;
 			nullValueInput.value = formatVO.nullValue;
+			isPercentDropdown.value = (formatVO.isPercent == true) ? true : false;
 		}
 		var applyHandler = function() {
 			var formatVO = {};
@@ -614,54 +536,68 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 			formatVO.currencySymbol = currencySymbInput.value;
 			formatVO.currencySymbolAlign = currencyAlignDropDown.value;
 			formatVO.nullValue = nullValueInput.value;
+			formatVO.isPercent = isPercentDropdown.value == "true" ? true : false;
 			self.pivot.setFormat(formatVO, valuesDropDown.value);
 			self.pivot.refresh();
 		}
 
-		var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.FORMAT_CELLS);
-		dialog.setToolbar([
-			{ label: Labels.APPLY, handler: applyHandler, isPositive: true }, 
-			{ label: Labels.CANCEL }
+		var dialog = isMobile? new PopUpWindowMobile() : new PopUpWindow();
+		dialog.setTitle(isMobile ? Labels.format : Labels.format_cells);
+		dialog.setToolbar(isMobile ? [
+			{ id: "fm-btn-apply", label: Labels.done, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
+		]  : [
+			{ id: "fm-btn-apply", label: Labels.apply, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
 		]);
 
 		var content = document.createElement("table");
-		content.id = "fm-popup-format-cells";
+		content.id = isMobile ? "fm-popup-format-cells-mobile" : "fm-popup-format-cells";
 		content.className = "fm-form";
 
-        var valuesDropDown = document.createElement("select");
+		var valuesDropDown = document.createElement("select");
         valuesDropDown.onchange = valuesDropDownChangeHandler;
         var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.VALUE);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.value);
+        tr.appendChild(isMobile ? th : td);
+        if(isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(valuesDropDown);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
 
         var textAlignDropDown = document.createElement("select");
-        textAlignDropDown.options[0] = new Option(Labels.ALIGN_LEFT, "left");
-        textAlignDropDown.options[1] = new Option(Labels.ALIGN_RIGHT, "right");
+        textAlignDropDown.options[0] = new Option(Labels.align_left, "left");
+        textAlignDropDown.options[1] = new Option(Labels.align_right, "right");
         var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.TEXT_ALIGN);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.text_align);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(textAlignDropDown);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
 
         var thousandsSepDropDown = document.createElement("select");
-        thousandsSepDropDown.options[0] = new Option(Labels.NONE, "");
-        thousandsSepDropDown.options[1] = new Option(Labels.SPACE, " ");
+        thousandsSepDropDown.options[0] = new Option(Labels.none, "");
+        thousandsSepDropDown.options[1] = new Option(Labels.space, " ");
         thousandsSepDropDown.options[2] = new Option(",", ",");
+        thousandsSepDropDown.options[3] = new Option(".", ".");
         var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.THOUSAND_SEPARATOR);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.thousand_separator);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(thousandsSepDropDown);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
 
@@ -669,58 +605,88 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         decimalSepDropDown.options[0] = new Option(".", ".");
         decimalSepDropDown.options[1] = new Option(",", ",");
         var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.DECIMAL_SEPARATOR);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.decimal_separator);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(decimalSepDropDown);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
         
         var decimalPlacesDropDown = document.createElement("select");
         for (var i = 0; i < 11; i++) {
-        	decimalPlacesDropDown.options[i] = new Option(i === 0 ? Labels.NONE : (i - 1), i - 1);
+        	decimalPlacesDropDown.options[i] = new Option(i === 0 ? Labels.none : (i - 1), i - 1);
         }
         var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.DECIMAL_PLACES);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.decimal_places);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(decimalPlacesDropDown);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
 
         var currencySymbInput = document.createElement("input");
         currencySymbInput.type = "text";
         var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.CURRENCY_SYMBOL);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.currency_symbol);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(currencySymbInput);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
 
         var currencyAlignDropDown = document.createElement("select");
-        currencyAlignDropDown.options[0] = new Option(Labels.ALIGN_LEFT, "left");
-        currencyAlignDropDown.options[1] = new Option(Labels.ALIGN_RIGHT, "right");
-		var tr = document.createElement("tr");
+        currencyAlignDropDown.options[0] = new Option(Labels.align_left, "left");
+        currencyAlignDropDown.options[1] = new Option(Labels.align_right, "right");
+        var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.CURRENCY_ALIGN);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.currency_align);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(currencyAlignDropDown);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
         
         var nullValueInput = document.createElement("input");
         nullValueInput.type = "text";
         var tr = document.createElement("tr");
+        var th = document.createElement("th");
         var td = document.createElement("td");
-        self.setText(td, Labels.NULL_VALUE);
-        tr.appendChild(td);
+        self.setText(isMobile ? th : td, Labels.null_value);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
         td = document.createElement("td");
         td.appendChild(nullValueInput);
+        if (isMobile) tr = document.createElement("tr");
+        tr.appendChild(td);
+        content.appendChild(tr);
+
+        var isPercentDropdown = document.createElement("select");
+        isPercentDropdown.options[0] = new Option(Labels.true_value, true);
+        isPercentDropdown.options[1] = new Option(Labels.false_value, false);
+        var tr = document.createElement("tr");
+        var th = document.createElement("th");
+        var td = document.createElement("td");
+        self.setText(isMobile ? th : td, Labels.is_percent);
+        tr.appendChild(isMobile ? th : td);
+        if (isMobile) content.appendChild(tr);
+        td = document.createElement("td");
+        td.appendChild(isPercentDropdown);
+        if (isMobile) tr = document.createElement("tr");
         tr.appendChild(td);
         content.appendChild(tr);
 
@@ -830,24 +796,31 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	        if (input == "background-color") return "backgroundColor";
 	        return input;
 	    };
-		var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.CONDITIONAL_FORMATTING);
-		dialog.setToolbar([
-			{ label: Labels.APPLY, handler: applyHandler, isPositive: true }, 
-			{ label: Labels.CANCEL }
+		var dialog = isMobile ? new PopUpWindowMobile() : new PopUpWindow();
+		dialog.setTitle(isMobile ? Labels.conditional : Labels.conditional_formatting);
+		dialog.setToolbar(isMobile ? [
+			{ id: "fm-btn-apply", label: Labels.done, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
+		] : [
+			{ id: "fm-btn-apply", label: Labels.apply, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
 		]);
 		var content = document.createElement("div");
 		content.id = "fm-popup-conditional";
 
-        var conditionsList = document.createElement("ul");
-        conditionsList.id = "fm-conditions-list";
+		var conditionsList = document.createElement("ul");
+		if(isMobile) content.style.marginBottom = "23px";
+		conditionsList.id = isMobile ? "fm-conditions-list-mobile" : "fm-conditions-list";
         content.appendChild(conditionsList);
+        var addConditionDiv = document.createElement("div");
         var addConditionBtn = document.createElement("a");
+        addConditionDiv.style.paddingTop = "21px";
         addConditionBtn.setAttribute("href", "javascript:void(0)");
-        addConditionBtn.className = "fm-link-button";
-        self.setText(addConditionBtn, Labels.ADD_CONDITION);
+        addConditionBtn.className = isMobile ? "fm-link-button-mobile" : "fm-link-button";
+        self.setText(addConditionBtn, Labels.add_condition);
         addConditionBtn.onclick = onAddConditionBtnClick;
-        content.appendChild(addConditionBtn);
+        addConditionDiv.appendChild(addConditionBtn);
+        content.appendChild(isMobile ? addConditionDiv : addConditionBtn);
         
         for (var i = 0; i < conditions.length; i++) {
 			var formula = parseFormula(conditions[i].formula);
@@ -866,17 +839,19 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	var DEFAULT_FONT_SIZES = [ "8px", "9px", "10px", "11px", "12px", "13px", "14px" ];
     var DEFAULT_FONTS = [ 'Arial', 'Lucida Sans Unicode', 'Verdana', 'Courier New', 'Palatino Linotype', 'Tahoma', 'Impact', 'Trebuchet MS', 'Georgia', 'Times New Roman' ];
     var DEFAULT_CONDITIONS = [
-    	{ label: Labels.LESS_THAN, sign: '<' }, 
-    	{ label: Labels.LESS_THAN_OR_EQUAL, sign: '<=' }, 
-    	{ label: Labels.GREATER_THAN, sign: '>' }, 
-    	{ label: Labels.GREATER_THAN_OR_EQUAL, sign: '>=' },
-    	{ label: Labels.EQUAL_TO, sign: '=' }, 
-    	{ label: Labels.NOT_EQUAL_TO, sign: '!=' }, 
-    	{ label: Labels.BETWEEN, sign: '><'}
+    	{ label: Labels.less_than, sign: '<' }, 
+    	{ label: Labels.less_than_or_equal, sign: '<=' }, 
+    	{ label: Labels.greater_than, sign: '>' }, 
+    	{ label: Labels.greater_than_or_equal, sign: '>=' },
+    	{ label: Labels.equal_to, sign: '=' }, 
+    	{ label: Labels.not_equal_to, sign: '!=' }, 
+    	{ label: Labels.between, sign: '><'}
     ];
     self.createConditionalFormattingItem = function (data, allConditions) {
 		var fillValuesDropDown = function(measures, selectedMeasure) {
-			valuesDropDown[0] = new Option(Labels.ALL_VALUES, "");
+		    valuesDropDown[0] = new Option(Labels.all_values, "");
+		    var options = self.pivot.getOptions() || {};
+			var isFlatTable = (options.grid && options.grid.type == "flat");
 	        for (var i = 0; i < measures.length; i++) {
 	        	if (isFlatTable && measures[i].type == 7) { // count measure
 	        		continue;
@@ -1013,18 +988,18 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         firstRow.appendChild(conditionsDropDown);
 
         var input1 = document.createElement("input");
-        input1.type = "text";
+        input1.type = "number";
         input1.value = ('value1' in data ? data.value1 : "0");
         input1.onchange = onInput1Changed;
         firstRow.appendChild(input1);
 
         var andLabel = document.createElement("span");
         andLabel.id = "fm-and-label";
-        self.setText(andLabel, Labels.AND);
+        self.setText(andLabel, isMobile ? Labels.and_symbole : Labels.and);
         firstRow.appendChild(andLabel);
 
         var input2 = document.createElement("input");
-        input2.type = "text";
+        input2.type = "number";
         input2.value = ('value2' in data ? data.value2 : "0");
         input2.onchange = onInput2Changed;
         firstRow.appendChild(input2);
@@ -1044,14 +1019,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
        	secondRow.appendChild(fontSizesDropDown);
 
         var textColorPicker = document.createElement("div");
-        textColorPicker.className = "fm-colorPicker";
+        textColorPicker.className = isMobile ? "fm-colorPicker-mobile" : "fm-colorPicker";
         textColorPicker.color = new ColorPicker.color(textColorPicker);
         textColorPicker.color.changeHandler = onTextColorChanged;
         textColorPicker.color.setValue((data.hasOwnProperty('trueStyle')) && (data.trueStyle.hasOwnProperty('color')) ? data.trueStyle.color : '0x000000');
         secondRow.appendChild(textColorPicker);
 
         var bgColorPicker = document.createElement("div");
-        bgColorPicker.className = "fm-colorPicker fm-bgColorPicker";
+        bgColorPicker.className = (isMobile ? "fm-colorPicker-mobile" : "fm-colorPicker") + " fm-bgColorPicker";
         bgColorPicker.color = new ColorPicker.color(bgColorPicker);
         bgColorPicker.color.changeHandler = onBgColorChanged;
         bgColorPicker.color.setValue((data.hasOwnProperty('trueStyle')) && (data.trueStyle.hasOwnProperty('backgroundColor')) ? data.trueStyle.backgroundColor : '0xFFFFFF');
@@ -1059,19 +1034,58 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 
         var sample = document.createElement("div");
         sample.className = "fm-sample";
+        if (isMobile) {
+            sample.style.height = "28px";
+            sample.style.lineHeight = "28px";
+            sample.style.width = "78px";
+            sample.style.border = "1px solid #999";
+        }
         self.setText(sample, "73.93");
         secondRow.appendChild(sample);
         drawSample();
 
+        var labelThenDiv = document.createElement("div");
+        labelThenDiv.style.fontWeight = "bold";
+        labelThenDiv.style.marginBottom = "10px";
+        var labelThen = document.createElement("label");
+        self.setText(labelThen, Labels.then);
+        labelThenDiv.appendChild(labelThen);
+
         leftContainer.appendChild(firstRow);
+        if (isMobile) leftContainer.appendChild(labelThenDiv);
         leftContainer.appendChild(secondRow);
 
-        var removeBtn = document.createElement("a");
-        removeBtn.className = "fm-remove-condition";
-        removeBtn.onclick = onRemoveBtnClick;
+        
+        var labelIfDiv = document.createElement("div");
+        labelIfDiv.style.marginBottom = "10px";
+        labelIfDiv.style.textIndent = "15px";
+        labelIfDiv.style.fontWeight = "bold";
+        var labelIF = document.createElement("label");
+        labelIfDiv.appendChild(labelIF);
+        self.setText(labelIF, Labels.if);        
 
-        itemRenderer.appendChild(leftContainer);
-        itemRenderer.appendChild(removeBtn);
+        var removeDiv = document.createElement("div");
+        removeDiv.style.marginBottom = "15px";
+        var removeBtn = document.createElement("a");
+        if (isMobile) {
+            self.setText(removeBtn, Labels.delete);
+            removeBtn.style.position = "absolute";
+            removeBtn.style.right = "38px";
+        }
+        removeBtn.className = isMobile ? "fm-remove-condition-mobile" : "fm-remove-condition";
+        removeBtn.onclick = onRemoveBtnClick;
+        removeDiv.appendChild(removeBtn);
+
+        if (isMobile) {
+            itemRenderer.appendChild(removeDiv);
+            itemRenderer.appendChild(labelIfDiv);
+            itemRenderer.appendChild(leftContainer);
+        } else {
+            itemRenderer.appendChild(leftContainer);
+            itemRenderer.appendChild(removeBtn);
+            
+        }
+        
 
         return itemRenderer;
 	};
@@ -1097,10 +1111,10 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 			}
 			var flatView;
 			var classicView;
-			if (classicViewCbx.checked) {
+			if (classicViewCbx && classicViewCbx.checked) {
 				classicView = true;
 				flatView = false;
-			} else if (flatViewCbx.checked) {
+			} else if (flatViewCbx && flatViewCbx.checked) {
 				flatView = true;
 				classicView = false;
 			} else {
@@ -1116,41 +1130,45 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	        self.pivot.setOptions(options);
 	        self.pivot.refresh();
 		}
-		var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.LAYOUT_OPTIONS);
-		dialog.setToolbar([
-			{ label: Labels.APPLY, handler: applyHandler, isPositive: true }, 
-			{ label: Labels.CANCEL }
+		var dialog = isMobile ? new PopUpWindowMobile() : new PopUpWindow();
+		dialog.setTitle(isMobile ? Labels.options : Labels.layout_options);
+		dialog.setToolbar(isMobile ?  [
+			{ id: "fm-btn-apply", label: Labels.done, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }] : [
+			{ id: "fm-btn-apply", label: Labels.apply, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
 		]);
         var grandTotalsForm = document.createElement("table");
         grandTotalsForm.className = "fm-form";
         var th = document.createElement("th");
-        self.setText(th, Labels.GRAND_TOTALS);
+        self.setText(th, Labels.grand_totals);
         grandTotalsForm.appendChild(th);
-
-        var layoutForm = document.createElement("table");
-        layoutForm.className = "fm-form";
-        var th = document.createElement("th");
-        self.setText(th, Labels.LAYOUT);
-        layoutForm.appendChild(th);
 
         var subTotalsForm = document.createElement("table");
         subTotalsForm.className = "fm-form";
         var th = document.createElement("th");
-        self.setText(th, Labels.SUBTOTALS);
+        self.setText(th, Labels.subtotals);
         subTotalsForm.appendChild(th);
+
+        var layoutForm = document.createElement("table");
+        layoutForm.className = "fm-form";
+        var th = document.createElement("th");
+        self.setText(th, Labels.layout);
+        layoutForm.appendChild(th);
 
         var compactViewCbx = document.createElement("input");
         compactViewCbx.type = "radio";
         compactViewCbx.name = "layout";
         compactViewCbx.id = "compactViewCbx";
         compactViewCbx.value = "true";
+        compactViewCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(compactViewCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "compactViewCbx");
-        self.setText(label, Labels.COMPACT_VIEW);
+        self.setText(label, Labels.compact_view);
         td.appendChild(label);
         tr.appendChild(td);
         layoutForm.appendChild(tr);
@@ -1160,42 +1178,55 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         classicViewCbx.name = "layout";
         classicViewCbx.id = "classicViewCbx";
         classicViewCbx.value = "false";
+        classicViewCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(classicViewCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "classicViewCbx");
-        self.setText(label, Labels.CLASSIC_VIEW);
+        self.setText(label, Labels.classic_view);
         td.appendChild(label);
         tr.appendChild(td);
         layoutForm.appendChild(tr);
 
-        var flatViewCbx = document.createElement("input");
-        flatViewCbx.type = "radio";
-        flatViewCbx.name = "layout";
-        flatViewCbx.id = "flatViewCbx";
-        flatViewCbx.value = "false";
-        var tr = document.createElement("tr");
-        var td = document.createElement("td");
-        td.appendChild(flatViewCbx);
-        var label = document.createElement("label");
-        label.setAttribute("for", "flatViewCbx");
-        self.setText(label, Labels.FLAT_VIEW);
-        td.appendChild(label);
-        tr.appendChild(td);
-        layoutForm.appendChild(tr);
+        var options = self.pivot.getReport();
+
+        if (!(options["dataSource"]["dataSourceType"] == "microsoft analysis services"
+            || options["dataSource"]["dataSourceType"] == "mondrian" 
+            || options["dataSource"]["dataSourceType"] == "iccube")) {
+            var flatViewCbx = document.createElement("input");
+            flatViewCbx.type = "radio";
+            flatViewCbx.name = "layout";
+            flatViewCbx.id = "flatViewCbx";
+            flatViewCbx.value = "false";
+            flatViewCbx.className = "fm-check-with-label";
+            var tr = document.createElement("tr");
+            var td = document.createElement("td");
+            td.appendChild(flatViewCbx);
+            var label = document.createElement("label");
+            label.className = "fm-label-for-check";
+            label.setAttribute("for", "flatViewCbx");
+            self.setText(label, Labels.flat_view);
+            td.appendChild(label);
+            tr.appendChild(td);
+            layoutForm.appendChild(tr);
+        }
+        
 
         var offRowsColsCbx = document.createElement("input");
         offRowsColsCbx.type = "radio";
         offRowsColsCbx.name = "grandTotals";
         offRowsColsCbx.id = "offRowsColsChBox";
         offRowsColsCbx.value = "off";
+        offRowsColsCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(offRowsColsCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "offRowsColsChBox");
-        self.setText(label, Labels.OFF_FOR_ROWS_AND_COLUMNS);
+        self.setText(label, Labels.off_for_rows_and_columns);
         td.appendChild(label);
         tr.appendChild(td);
         grandTotalsForm.appendChild(tr);
@@ -1205,12 +1236,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         onRowsColsCbx.name = "grandTotals";
         onRowsColsCbx.id = "onRowsColsChBox";
         onRowsColsCbx.value = "on";
+        onRowsColsCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(onRowsColsCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "onRowsColsChBox");
-        self.setText(label, Labels.ON_FOR_ROWS_AND_COLUMNS);
+        self.setText(label, Labels.on_for_rows_and_columns);
         td.appendChild(label);
         tr.appendChild(td);
         grandTotalsForm.appendChild(tr);
@@ -1220,12 +1253,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         onRowsCbx.name = "grandTotals";
         onRowsCbx.id = "onRowsChBox";
         onRowsCbx.value = "rows";
+        onRowsCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(onRowsCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "onRowsChBox");
-        self.setText(label, Labels.ON_FOR_ROWS);
+        self.setText(label, Labels.on_for_rows);
         td.appendChild(label);
         tr.appendChild(td);
         grandTotalsForm.appendChild(tr);
@@ -1235,12 +1270,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         onColsCbx.name = "grandTotals";
         onColsCbx.id = "onColsChBox";
         onColsCbx.value = "columns";
+        onColsCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(onColsCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "onColsChBox");
-        self.setText(label, Labels.ON_FOR_COLUMNS);
+        self.setText(label, Labels.on_for_columns);
         td.appendChild(label);
         tr.appendChild(td);
         grandTotalsForm.appendChild(tr);
@@ -1250,12 +1287,14 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         noSubTotalsCbx.name = "subTotals";
         noSubTotalsCbx.id = "noSubtotalsChBox";
         noSubTotalsCbx.value = "false";
+        noSubTotalsCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(noSubTotalsCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "noSubtotalsChBox");
-        self.setText(label, Labels.DO_NOT_SHOW_SUBTOTALS);
+        self.setText(label, Labels.do_not_show_subtotals);
         td.appendChild(label);
         tr.appendChild(td);
         subTotalsForm.appendChild(tr);
@@ -1265,18 +1304,20 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         showSubTotalsCbx.name = "subTotals";
         showSubTotalsCbx.id = "allSubtotalsChBox";
         showSubTotalsCbx.value = "false";
+        showSubTotalsCbx.className = "fm-check-with-label";
         var tr = document.createElement("tr");
         var td = document.createElement("td");
         td.appendChild(showSubTotalsCbx);
         var label = document.createElement("label");
+        label.className = "fm-label-for-check";
         label.setAttribute("for", "allSubtotalsChBox");
-        self.setText(label, Labels.SHOW_ALL_SUBTOTALS);
+        self.setText(label, Labels.show_all_subtotals);
         td.appendChild(label);
         tr.appendChild(td);
         subTotalsForm.appendChild(tr);
 
         var content = document.createElement("div");
-        content.id = "fm-popup-options";
+        content.id = isMobile ? "fm-popup-options-mobile" : "fm-popup-options";
 
 		var optionsTable = document.createElement("table");
         optionsTable.className = "fm-form";
@@ -1300,29 +1341,30 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         dialog.setContent(content);
 		PopUpManager.addPopUp(dialog.content);
 
-		var options = self.pivot.getOptions();
+		var options = self.pivot.getOptions() || {};
+		var optionsGrid = options.grid || {};
 		
-		if (options.showGrandTotals == "off" || options.showGrandTotals == false) {
+		if (optionsGrid.showGrandTotals == "off" || optionsGrid.showGrandTotals == false) {
 			offRowsColsCbx.checked = true;
-		} else if (options.showGrandTotals == "on" || options.showGrandTotals == true) {
+		} else if (optionsGrid.showGrandTotals == "on" || optionsGrid.showGrandTotals == true) {
 			onRowsColsCbx.checked = true;
-		} else if (options.showGrandTotals == "rows") {
+		} else if (optionsGrid.showGrandTotals == "rows") {
 			onRowsCbx.checked = true;
-		} else if (options.showGrandTotals == "columns") {
+		} else if (optionsGrid.showGrandTotals == "columns") {
 			onColsCbx.checked = true;
 		}
 
-		if (options.showTotals == false) {
+		if (optionsGrid.showTotals == false) {
 			noSubTotalsCbx.checked = true;
-		} else if (options.showTotals == true) {
+		} else if (optionsGrid.showTotals == true) {
 			showSubTotalsCbx.checked = true;
 		}
 
-		if (options.flatView == true) {
+		if (optionsGrid.type == "flat" && flatViewCbx) {
 			flatViewCbx.checked = true;
-		} else if (options.classicView == true) {
+		} else if (optionsGrid.type == "classic" && classicViewCbx) {
 			classicViewCbx.checked = true;
-		} else {
+		} else if (compactViewCbx) {
 			compactViewCbx.checked = true;
 		}
 	}
@@ -1337,10 +1379,10 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 			self.pivot.exportTo('pdf', { pageOrientation: orientation });
 		}
         var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.CHOOSE_PAGE_ORIENTATION);
+		dialog.setTitle(Labels.choose_page_orientation);
 		dialog.setToolbar([
-			{ label: Labels.APPLY, handler: applyHandler, isPositive: true }, 
-			{ label: Labels.CANCEL }
+			{ id: "fm-btn-apply", label: Labels.apply, handler: applyHandler, isPositive: true },
+			{ id: "fm-btn-cancel", label: Labels.cancel }
 		]);
 
 		var content = document.createElement("table");
@@ -1353,7 +1395,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 		portraitRadio.checked = true;
 		var label = document.createElement("label");
 		label.setAttribute("for", "fm-portrait-radio");
-		self.setText(label, Labels.PORTRAIT);
+		self.setText(label, Labels.portrait);
 		var tr = document.createElement("tr");
 		var td = document.createElement("td");
 		td.appendChild(portraitRadio);
@@ -1367,59 +1409,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 		landscapeRadio.name = "pdfOrientation";
 		var label = document.createElement("label");
 		label.setAttribute("for", "fm-landscape-radio");
-		self.setText(label, Labels.LANDSCAPE);
-		var tr = document.createElement("tr");
-		var td = document.createElement("td");
-		td.appendChild(landscapeRadio);
-		td.appendChild(label);
-		tr.appendChild(td);
-		content.appendChild(tr);
-
-        dialog.setContent(content);
-        PopUpManager.addPopUp(dialog.content);
-	}
-
-	// Printing
-	self.showPrintingDialog = function() {
-		var applyHandler = function() {
-			var orientation = 'PORTRAIT';
-			if (landscapeRadio.checked) {
-				orientation = 'LANDSCAPE';
-			}
-			self.pivot.print({orientation: orientation,shrinkToPage: false});
-		}
-        var dialog = new PopUpWindow();
-		dialog.setTitle(Labels.CHOOSE_PAGE_ORIENTATION);
-		dialog.setToolbar([
-			{ label: Labels.APPLY, handler: applyHandler, isPositive: true }, 
-			{ label: Labels.CANCEL }
-		]);
-
-		var content = document.createElement("table");
-		content.className = "fm-form";
-
-		var portraitRadio = document.createElement("input");
-		portraitRadio.id = "fm-portrait-radio";
-		portraitRadio.type = "radio";
-		portraitRadio.name = "pdfOrientation";
-		portraitRadio.checked = true;
-		var label = document.createElement("label");
-		label.setAttribute("for", "fm-portrait-radio");
-		self.setText(label, Labels.PORTRAIT);
-		var tr = document.createElement("tr");
-		var td = document.createElement("td");
-		td.appendChild(portraitRadio);
-		td.appendChild(label);
-		tr.appendChild(td);
-		content.appendChild(tr);
-
-		var landscapeRadio = document.createElement("input");
-		landscapeRadio.id = "fm-landscape-radio";
-		landscapeRadio.type = "radio";
-		landscapeRadio.name = "pdfOrientation";
-		var label = document.createElement("label");
-		label.setAttribute("for", "fm-landscape-radio");
-		self.setText(label, Labels.LANDSCAPE);
+		self.setText(label, Labels.landscape);
 		var tr = document.createElement("tr");
 		var td = document.createElement("td");
 		td.appendChild(landscapeRadio);
@@ -1459,12 +1449,6 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	    	self.container.style.right = 0;
 	    	
     		self.toolbarWrapper.style.width = screen.width + "px";
-    		if (isFlash) {
-    			self.pivotContainerWidth = self.pivotContainer.style.width;
-	    		self.pivotContainerHeight = self.pivotContainer.style.height; 
-	    		self.pivotContainer.style.width = screen.width + "px";
-	    		self.pivotContainer.style.height = screen.height - self.toolbarWrapper.getBoundingClientRect().height + "px";
-    		}
     	}
     	
         if (element.requestFullscreen) {
@@ -1515,10 +1499,6 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 				self.toolbarWrapper.style.width = width;
 				self.containerStyle = null;
 			}
-	    	if (isFlash) {
-	    		self.pivotContainer.style.width = self.pivotContainerWidth;
-	    		self.pivotContainer.style.height = self.pivotContainerHeight;
-	    	}
     	}
     }
 
@@ -1549,6 +1529,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
     	}
     }
     self.setText = function(target, text) {
+    	if (!target) return;
     	if (target.innerText !== undefined) {
 	        target.innerText = text;
 	    }
@@ -1557,21 +1538,10 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	    }
     }
 	self.init = function(dataProvider) {
-		if (!document.getElementById(pivotContainerId)) {
-			window.setTimeout(function() { self.init(dataProvider); }, 10);
-			return;
-		}
-		self.pivotContainer = document.getElementById(pivotContainerId);
-		if (isFlash) {
-			self.container = document.createElement("div");
-			self.container.id = "fm-container";
-			self.container.style.width = self.pivotContainer.style.width;
-			self.pivotContainer.parentNode.insertBefore(self.container, self.pivotContainer);
-			self.container.style.position = "relative";
-			self.container.appendChild(self.pivotContainer);
-		} else {
-			self.container = this.pivotContainer;
-		}
+
+	    self.pivotContainer = pivotContainer;
+	    self.container = this.pivotContainer;
+	    self.container.style.position = (self.container.style.position == "") ? "relative" : self.container.style.position;
 
 		self.toolbarWrapper = document.createElement("div");
 		self.toolbarWrapper.id = "fm-toolbar-wrapper";
@@ -1579,6 +1549,8 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 		if (isMobile) {
 			self.addClass(self.toolbarWrapper, "fm-mobile");
 		}
+		self.addClass(self.toolbarWrapper, "fm-toolbar-ui");
+		self.toolbarWrapper.style.width = width;
         var toolbar = document.createElement("ul");
         toolbar.id = "fm-toolbar";
         for (var i = 0; i < dataProvider.length; i++) {
@@ -1669,25 +1641,30 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	}
 	self.isDisabled = function(data) {
 		if (self.nullOrUndefined(data)) return true;
-		return (data.ios === false && isIOS) || (data.android === false && isAndroid) || (data.mobile === false && isMobile)
-			|| (data.html5 === false && isHTML5) || (data.flash === false && isFlash) || (data.flat === false && isFlatTable);
+		return (data.ios === false && isIOS) || (data.android === false && isAndroid) || (data.mobile === false && isMobile);
 	}
 	var PopUpManager = {
 		activePopUp: null,
 		addPopUp: function(popup) {
 			if (popup == null) return;
-	        this.removePopUp();
+			this.removePopUp();
+			var listener = PopUpManager.addModalOverlay();			
 	        this.activePopUp = popup;
-	        self.container.appendChild(popup);            
-	        var containerRect = this.getBoundingRect(self.container);            
+	        self.container.appendChild(popup);
+	        self.container.appendChild(listener);
+	        var containerRect = this.getBoundingRect(self.container);
 			var popupRect = this.getBoundingRect(popup);
 			var toolbarRect = this.getBoundingRect(self.toolbarWrapper);
+			popup.style.zIndex = parseInt(listener.style.zIndex) + 1;
+			listener.style.top = toolbarRect.height + "px";
+			listener.style.height = containerRect.height - toolbarRect.height + "px";
 			popup.style.left = (toolbarRect.width - popupRect.width) / 2 + "px";
-			popup.style.top = (containerRect.height - popupRect.height ) / 2 + "px";
+			popup.style.top = isMobile ? toolbarRect.height + "px" : (containerRect.height - popupRect.height) / 2 + "px";
 		},
 		removePopUp: function(popup) {
-			var popup = (popup || this.activePopUp);
-			if (popup != null) {
+		    var popup = (popup || this.activePopUp);
+		    if (popup != null) {
+		        self.container.removeChild(document.getElementById("fm-popUp-modal-overlay"));
 			    self.container.removeChild(popup);
 				this.activePopUp = null;
 			}
@@ -1702,8 +1679,83 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 				width: rect.width || target.clientWidth,
 				height: rect.height || target.clientHeight 
 			};
+		},
+		addModalOverlay: function () {
+		    var listener = document.createElement("div");
+		    listener.className = "fm-modal-overlay";
+		    listener.id = "fm-popUp-modal-overlay";
+		    listener.addEventListener('click',function (e) {
+		        PopUpManager.removePopUp(PopUpManager.activePopUp);
+		    });
+		    return listener;
 		}
 	}
+
+
+	var PopUpWindowMobile = function () {	    
+	    var container = document.createElement("div");
+	    container.className = "fm-ui-container-mobile";
+	    var contentPanel = document.createElement("div");
+	    contentPanel.className = "fm-panel-content";
+	    var toolbar = document.createElement("div");
+	    toolbar.className = "fm-ui-toolbar-mobile";
+	    var titleLabel = document.createElement("span");
+	    titleLabel.className = "fm-ui-header-display";	    
+	    this.content = document.createElement("div");
+	    this.content.className = "fm-popup-mobile fm-border-conf";
+
+
+	    this.content.appendChild(container);
+	    container.appendChild(toolbar);
+	    toolbar.appendChild(titleLabel);
+	    container.appendChild(contentPanel);
+
+        
+	    this.setTitle = function (title) {
+	        titleLabel.innerText = title;
+	    }
+
+	    this.setContent = function (content) {
+	        contentPanel.appendChild(content);
+	        //while (content.firstChild) {
+	        //    contentPanel.appendChild(content.firstChild);
+	        //}	      
+	    }
+
+	    this.setToolbar = function (buttons) {
+	        className = "fm-toolbar-ui fm-ui-btn fm-ui-mobile fm-header-btn ";
+	        for (var i = buttons.length - 1; i >= 0; i--) {
+	            var button = document.createElement("a");
+	            button.setAttribute("href", "javascript:void(0)");
+	            button.className = (i != 0) ? className + "fm-ui-left" : className + "fm-ui-right";
+                if (buttons[i].id) button.id = buttons[i].id;
+	            self.setText(button, buttons[i].label);
+	            button.onclick =
+    				function (handler) {
+    				    return function () {
+    				        if (handler != null) {
+    				            handler.call();
+    				        }
+    				        PopUpManager.removePopUp();
+    				    }
+    				}(buttons[i].handler);
+	            if (buttons[i].disabled === true) {
+	                self.addClass(button, "fm-disabled");
+	            } else {
+	                self.removeClass(button, "fm-disabled");
+	            }
+	            if (buttons[i].isPositive && (isMac || isIOS)) {
+	                toolbar.insertBefore(button, toolbar.firstChild);
+	            } else {
+	                toolbar.appendChild(button);
+	            }
+	        }	        
+	    }
+
+	    return this;
+	}
+
+
 	var PopUpWindow = function() {
         var shadow = document.createElement("div");
         shadow.className = "fm-shadow-container";
@@ -1719,7 +1771,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
         var toolbar = document.createElement("div");
         toolbar.className = "fm-toolbox";
 		this.content = document.createElement("div");
-		this.content.className = "fm-popup fm-panel";
+		this.content.className = "fm-popup fm-panel fm-toolbar-ui";
 
         this.content.appendChild(shadow);
         shadow.appendChild(contentPanel);
@@ -1740,7 +1792,7 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
     			var button = document.createElement("a");
     			button.setAttribute("href", "javascript:void(0)");
     			button.className = "fm-button";
-    			button.id = buttons[i].id;
+    			if (buttons[i].id) button.id = buttons[i].id;
     			self.setText(button, buttons[i].label);
     			button.onclick = 
     				function(handler) {
@@ -1862,12 +1914,12 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	        var THIS = this;
 	        this.colorPickerButton = target;
 	        this.dropDownBox = document.createElement('div');
-	        this.dropDownBox.className = 'fm-swatchPanel';
+	        this.dropDownBox.className = isMobile ? 'fm-swatchPanel-mobile' : 'fm-swatchPanel';
 	        this.dropDownBox.onclick = function (event) {
 	            ColorPicker.stopEventPropagation(event);
 	        };
 	        this.colorPreview = document.createElement('span');
-	        this.colorPreview.className = 'fm-colorPreview';
+	        this.colorPreview.className = isMobile ? 'fm-colorPreview-mobile' : 'fm-colorPreview';
 	        this.dropDownBox.appendChild(this.colorPreview); /* end */
 	        this.colorInput = document.createElement('input');
 	        this.colorInput.type = 'text';
@@ -2029,14 +2081,3 @@ var FlexmonsterToolbar = function(pivotContainerId, pivot, isHTML5, width, label
 	    }
 	}
 }
-
-		this.toolbar = new FlexmonsterToolbar(this.containerId, this._parent, this.isHTML5, this._width, this._parent.toolbarLabels);
-		this.hasToolbar = true;
-	}
-	for(var i = 0; i < FlexmonsterLoader.instances.length; i++) {
-		var instance = FlexmonsterLoader.instances[i];
-		if (instance.hasToolbar === undefined) {
-			instance.getToolbar.call(instance);
-		}
-	}
-		
