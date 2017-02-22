@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2017-02-22 19:55:58
+Date: 2017-02-22 20:11:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -905,10 +905,12 @@ SET @district_id_v ='1=1';
 END IF;
 
 SET @count_data =0;
+IF LENGTH(in_data_element_ids_involved )>0 THEN
 SET @sql=CONCAT('SELECT count(*) FROM base_data_',in_report_form_id,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' AND data_element_id IN (',in_data_element_ids_involved,') INTO @count_data');
 
 prepare stmt from @sql;
 execute stmt;
+END IF;
 
 
 IF @count_data>0 THEN 
@@ -923,7 +925,7 @@ prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
 
 ELSE
-SET @sql=CONCAT('SELECT * FROM base_data_',in_report_form_id,' WHERE ',@report_period_year_v,' AND ',@district_id_v ,' AND data_element_id IN (',in_data_element_ids_involved ,')');
+SET @sql=CONCAT('SELECT * FROM base_data_',in_report_form_id,' WHERE ',@report_period_year_v,' AND ',@district_id_v ,' AND data_element_id IN (0)');
 prepare stmt from @sql;
 execute stmt;
 END IF;
