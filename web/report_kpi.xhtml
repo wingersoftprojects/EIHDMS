@@ -39,7 +39,7 @@
                     <p:commandButton value="Show Report" action="#{kpiBean.showReport()}" update="@form" />
                 </p:panelGrid>
                 <!-- 1. Create a DIV container to insert the component -->
-                <p:panelGrid columns="2" id="pivotarea">
+                <p:panelGrid columns="1" id="pivotarea" style="width: 100%;">
                     <p:panel>
                         <div id="pivotContainerKPI"></div>
                     </p:panel>
@@ -50,12 +50,6 @@
                 <script type="text/javascript">
                     var jsonData = #{kpiBean.getjSONArray()};
                     var report2 = {
-                        viewType: "grid_charts",
-                        classicView: true,
-                        configuratorActive: false,
-                        configuratorButton: true,
-                        showTotals: false,
-                        showGrandTotals: false,
                         dataSourceType: "json",
                         data: jsonData,
                         pages: [],
@@ -74,19 +68,18 @@
                                 decimalPlaces: 1
                             }
                         ],
-                        chart: {
-                            type: "bar",
-                            showFilter: true,
-                            multipleMeasures: true,
-                            oneLevel: false,
-                            autoRange: false,
-                            reversedAxes: false,
-                            showLegendButton: false,
-                            showAllLabels: false,
-                            showMeasures: true,
-                            showOneMeasureSelection: true,
-                            showWarning: true,
-                            showAggregationLabels: false
+                        options: {
+                            viewType: "grid_charts",
+                            configuratorButton: true,
+                            showTotals: false,
+                            showGrandTotals: false,
+                            chart: {
+                                multipleMeasures: true,
+                                position: "right",
+                                type: "bar"
+                            },
+                            showAggregationLabels: false,
+                            configuratorActive: false
                         },
                         licenseKey: "Z7HC-XI1C6H-415B37-0B5F0D-333R1E-1W192J-6X041O-492A41-5J664V-1D6E6O-4Q"
                     };
