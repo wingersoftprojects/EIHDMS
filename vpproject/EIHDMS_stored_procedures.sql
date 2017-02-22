@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2017-02-22 18:19:29
+Date: 2017-02-22 19:22:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -923,7 +923,7 @@ prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
 
 ELSE
-SET @sql=CONCAT('SELECT count(*) FROM base_data_',3,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' INTO @count_data');
+SET @sql=CONCAT('SELECT * FROM base_data_',in_report_form_id,' WHERE ',@report_period_year_v,' AND ',@district_id_v);
 prepare stmt from @sql;
 execute stmt;
 END IF;
