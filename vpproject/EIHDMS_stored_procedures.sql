@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2017-02-22 20:11:25
+Date: 2017-03-13 19:04:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,6 +25,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_duplicate_temp_data_elemen
 )
 BEGIN 
 	SELECT report_form_name,data_element_name FROM temp_data_element WHERE report_form_name=in_report_form_name GROUP BY data_element_name HAVING count(data_element_name)>1;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_check_kpi_summary_function_data_exists
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_check_kpi_summary_function_data_exists`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_kpi_summary_function_data_exists`(IN in_involved_element_ids text,IN in_Years text,IN in_Districts text)
+BEGIN
+	#Routine body goes here...
+DECLARE report_form_id_v varchar(200);
+
+SELECT DISTINCT report_form_id FROM data_element where data_element_id in(in_involved_element_ids) into report_form_id_v;
+
+SET @sql1=CONCAT("select count(*) as count_elements from base_data_", report_form_id_v ," where data_element_id in (" , in_involved_element_ids , ") and report_period_year in (", in_Years ,") and district_id in (" , in_Districts , ")");
+PREPARE stmt1 FROM @sql1;
+EXECUTE stmt1;
+DEALLOCATE PREPARE stmt1;
+
 END
 ;;
 DELIMITER ;
@@ -840,7 +861,7 @@ SET @sql = NULL;
 
 SET @sql_text=NULL;
 
-SET @source=CONCAT('(((((((((base_data_',in_report_form_id,' `bd` join `district` `d` on((`bd`.`district_id` = `d`.`district_id`))) join `region` `r` on((`d`.`region_id` = `r`.`region_id`))) left join `sub_county` `sc` on((`bd`.`sub_county_id` = `sc`.`sub_county_id`))) left join `county` `c` on((`c`.`county_id` = `bd`.`county_id`))) left join `parish` `p` on((`bd`.`parish_id` = `p`.`parish_id`))) left join `health_facility` `h` on((`bd`.`health_facility_id` = `h`.`health_facility_id`))) join `data_element` `de` on((`bd`.`data_element_id` = `de`.`data_element_id`))) join `report_form` `rf` on((`de`.`report_form_id` = `rf`.`report_form_id`))) join `report_form_group` `rfg` on((`de`.`report_form_group_id` = `rfg`.`report_form_group_id`))) ');
+SET @source=CONCAT('(((((((((z_temp_vw_union_',in_table_name,' `bd` join `district` `d` on((`bd`.`district_id` = `d`.`district_id`))) join `region` `r` on((`d`.`region_id` = `r`.`region_id`))) left join `sub_county` `sc` on((`bd`.`sub_county_id` = `sc`.`sub_county_id`))) left join `county` `c` on((`c`.`county_id` = `bd`.`county_id`))) left join `parish` `p` on((`bd`.`parish_id` = `p`.`parish_id`))) left join `health_facility` `h` on((`bd`.`health_facility_id` = `h`.`health_facility_id`))) join `data_element` `de` on((`bd`.`data_element_id` = `de`.`data_element_id`))) join `report_form` `rf` on((`de`.`report_form_id` = `rf`.`report_form_id`))) join `report_form_group` `rfg` on((`de`.`report_form_group_id` = `rfg`.`report_form_group_id`))) ');
 
 SET @sql_text=CONCAT('SELECT
   GROUP_CONCAT(DISTINCT
@@ -885,7 +906,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_select_kpi`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200),IN in_report_form_id int,IN in_report_period_year varchar(1000),IN in_district_id varchar(1000), IN in_kpi_summary_functions varchar(1000),IN in_data_element_ids_involved varchar(1000))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_kpi`(IN in_kpi_id int,IN in_username varchar(200),IN in_report_form_id int,IN in_report_period_year varchar(1000),IN in_district_id varchar(1000), IN in_kpi_summary_functions varchar(1000),IN in_data_element_ids_involved varchar(1000),IN in_union_string text)
 BEGIN
 
 DECLARE kpi_summary_function_v varchar(12000);
@@ -904,9 +925,22 @@ ELSE
 SET @district_id_v ='1=1';
 END IF;
 
+-- Drop if exists
+
+SET @sql_drop_table=CONCAT('DROP VIEW IF EXISTS ','z_temp_vw_union_',in_username);
+prepare stmt_drop_table from @sql_drop_table;
+execute stmt_drop_table;
+
+-- Create View
+SET @sql_union_string=CONCAT('CREATE VIEW z_temp_vw_union_',in_username,' AS ',in_union_string,';');
+prepare stmt_select_union_string from @sql_union_string;
+execute stmt_select_union_string;
+-- End Create View
+
+
 SET @count_data =0;
 IF LENGTH(in_data_element_ids_involved )>0 THEN
-SET @sql=CONCAT('SELECT count(*) FROM base_data_',in_report_form_id,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' AND data_element_id IN (',in_data_element_ids_involved,') INTO @count_data');
+SET @sql=CONCAT('SELECT count(*) FROM z_temp_vw_union_',in_username,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' AND data_element_id IN (',in_data_element_ids_involved,') INTO @count_data');
 
 prepare stmt from @sql;
 execute stmt;
@@ -1602,7 +1636,7 @@ SET @insert_into_sql =CONCAT('SELECT
   GROUP_CONCAT(DISTINCT
     CONCAT(''max(case when data_element_id = '',data_element_id,'' then data_element_id end) AS '',''DE'',data_element_id,'' '')
   ) INTO @sql
-FROM  data_element where report_form_id=',in_report_form_id,' and data_element_id in (',in_data_element_ids_involved,')');
+FROM  data_element where data_element_id in (',in_data_element_ids_involved,')');
 
 prepare stmt from @insert_into_sql;
 execute stmt;
@@ -1614,7 +1648,7 @@ prepare stmt_drop_table from @sql_drop_table;
 execute stmt_drop_table;
 -- End Create Temp Table
 
-SET @sql = CONCAT('CREATE TABLE z_temp_kpi_summary_function SELECT data_element_id,report_form_id,', @sql, ' FROM data_element having report_form_id=',in_report_form_id,' AND data_element_id in (',in_data_element_ids_involved,')');
+SET @sql = CONCAT('CREATE TABLE z_temp_kpi_summary_function SELECT data_element_id,report_form_id,', @sql, ' FROM data_element having data_element_id in (',in_data_element_ids_involved,')');
 
 prepare stmt from @sql;
 execute stmt;
