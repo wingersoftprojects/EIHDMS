@@ -20,7 +20,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -59,6 +61,16 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     private Report_form_group report_form_group;
 
     private String data_element_ids_involved;
+
+    private Map<String, Integer> summary_function_map;
+
+    public Map<String, Integer> getSummary_function_map() {
+        return summary_function_map;
+    }
+
+    public void setSummary_function_map(Map<String, Integer> summary_function_map) {
+        this.summary_function_map = summary_function_map;
+    }
 
     public String getData_element_ids_involved() {
         return data_element_ids_involved;
@@ -141,23 +153,27 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
      * Get summary functions and alias for kpi
      *
      * @param kpi
+     * @param Years
+     * @param Districts
      * @return
      */
-    public String get_kpi_summary_functions(Kpi kpi) {
+    public String get_kpi_summary_functions(Kpi kpi, String Years, String Districts) {
         String temp = "";
         try {
-            List<Kpi_summary_function> kpi_summary_functions = Kpi_summary_function.queryKpi_summary_function("kpi_id=" + kpi.getKpi_id() + " AND is_active=1", null);
+            List<Kpi_summary_function> kpi_summary_functions = Kpi_summary_function.queryKpi_summary_function("kpi_id=" + kpi.getKpi_id() + " AND is_active=1 AND is_deleted=0", null);
             int x = 0;
             data_element_ids_involved = "";
             for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
-                if (x == 0) {
-                    temp = kpi_summary_function.getSummary_function() + " AS `" + kpi_summary_function.getKpi_summary_function_name() + "`";
-                    data_element_ids_involved = kpi_summary_function.getData_element_ids_involved();
-                } else {
-                    temp = temp + "," + kpi_summary_function.getSummary_function() + " AS `" + kpi_summary_function.getKpi_summary_function_name() + "`";
-                    data_element_ids_involved = data_element_ids_involved + "," + kpi_summary_function.getData_element_ids_involved();
+                if (get_count_from_base_data_by_data_element_id(kpi_summary_function.getData_element_ids_involved(), Years, Districts) != 0) {
+                    if (x == 0) {
+                        temp = kpi_summary_function.getSummary_function() + " AS `" + kpi_summary_function.getKpi_summary_function_name() + "`";
+                        data_element_ids_involved = kpi_summary_function.getData_element_ids_involved();
+                    } else {
+                        temp = temp + "," + kpi_summary_function.getSummary_function() + " AS `" + kpi_summary_function.getKpi_summary_function_name() + "`";
+                        data_element_ids_involved = data_element_ids_involved + "," + kpi_summary_function.getData_element_ids_involved();
+                    }
+                    x++;
                 }
-                x++;
             }
         } catch (PersistentException ex) {
             Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -165,9 +181,37 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         return temp;
     }
 
+    public int get_count_from_base_data_by_data_element_id(String involved_element_ids, String Years, String Districts) {
+        int count = 0;
+        String sql = "{call sp_check_kpi_summary_function_data_exists(?,?,?)}";
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getMySQLConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, involved_element_ids);
+            ps.setString(2, Years);
+            ps.setString(3, Districts);
+            rs = ps.executeQuery();
+            rs.first();
+            count = rs.getInt("count_elements");
+//            if (!rs.next()) {
+//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Records to return", "No Records to return!");
+//                RequestContext.getCurrentInstance().showMessageInDialog(message);
+//                JSONArray jArray = new JSONArray();
+//                jSONArray = jArray;
+//                return;
+//            }
+//            load_jSON(rs, selectedKPI, YearsStr, DistrictsStr);
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        summary_function_map.put(involved_element_ids, count);
+        return count;
+    }
+
     public void showReport() {
         String YearsStr = "";
         String DistrictsStr = "";
+        summary_function_map = new HashMap<String, Integer>();
 
         //get 1016,2015,2013 string format for selected years
         int x = 0;
@@ -194,7 +238,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         /**
          *
          */
-        String sql = "{call sp_select_kpi(?,?,?,?,?,?,?)}";
+        String sql = "{call sp_select_kpi(?,?,?,?,?,?,?,?)}";
         ResultSet rs = null;
         try (Connection conn = DBConnection.getMySQLConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -203,8 +247,9 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             ps.setInt(3, selectedKPI.getReport_form().getReport_form_id());
             ps.setString(4, YearsStr);
             ps.setString(5, DistrictsStr);
-            ps.setString(6, get_kpi_summary_functions(selectedKPI));
+            ps.setString(6, get_kpi_summary_functions(selectedKPI, YearsStr, DistrictsStr));
             ps.setString(7, data_element_ids_involved);
+            ps.setString(8, union_string(data_element_ids_involved, YearsStr, DistrictsStr));
             rs = ps.executeQuery();
             if (!rs.next()) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Records to return", "No Records to return!");
@@ -213,10 +258,29 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 jSONArray = jArray;
                 return;
             }
-            load_jSON(rs, selectedKPI);
+            load_jSON(rs, selectedKPI, YearsStr, DistrictsStr);
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
+    }
+
+    public String union_string(String ids_involved, String Years, String Districts) {
+        String temp = "";
+        try {
+            List<Object[]> objects = EIHDMSPersistentManager.instance().getSession().createSQLQuery("select distinct report_form_id,data_element_name from data_element where data_element_id in (" + ids_involved + ")").list();
+            int counter = 0;
+            for (Object[] object_array : objects) {
+                if (counter == 0) {
+                    temp += "select * from base_data_" + object_array[0].toString() + " where data_element_id in (" + ids_involved + ") AND report_period_year in (" + Years + ") AND district_id in (" + Districts + ")";
+                } else {
+                    temp += " UNION select * from base_data_" + object_array[0].toString() + " where data_element_id in (" + ids_involved + ") AND report_period_year in (" + Years + ") AND district_id in (" + Districts + ")";
+                }
+                counter++;
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(KpiBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
     }
 
     public String getYearString() {
@@ -478,17 +542,20 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         this.base_dataList = base_dataList;
     }
 
-    private void load_jSON(ResultSet rs, Kpi kpi) {
+    private void load_jSON(ResultSet rs, Kpi kpi, String Years, String Districts) {
         try {
-            List<Kpi_summary_function> kpi_summary_functions = Kpi_summary_function.queryKpi_summary_function("kpi_id=" + kpi.getKpi_id() + " AND is_active=1", null);
+            List<Kpi_summary_function> kpi_summary_functions = Kpi_summary_function.queryKpi_summary_function("kpi_id=" + kpi.getKpi_id() + " AND is_active=1 AND is_deleted=0", null);
             int x = 0;
             for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
-                if (x == 0) {
-                    flexmonster_measures = "{uniqueName: '" + kpi_summary_function.getKpi_summary_function_name() + "', format: 'decimal'}";
-                } else {
-                    flexmonster_measures = flexmonster_measures + ",{uniqueName: '" + kpi_summary_function.getKpi_summary_function_name() + "', format: 'decimal'}";
+                if (summary_function_map.get(kpi_summary_function.getData_element_ids_involved()) != 0) {
+                    //if (get_count_from_base_data_by_data_element_id(kpi_summary_function.getData_element_ids_involved(), Years, Districts) != 0) {
+                    if (x == 0) {
+                        flexmonster_measures = "{uniqueName: '" + kpi_summary_function.getKpi_summary_function_name() + "', format: 'decimal'}";
+                    } else {
+                        flexmonster_measures = flexmonster_measures + ",{uniqueName: '" + kpi_summary_function.getKpi_summary_function_name() + "', format: 'decimal'}";
+                    }
+                    x++;
                 }
-                x++;
             }
             kpi_summary_functionList = kpi_summary_functions;
             JSONArray jArray = new JSONArray();
@@ -564,10 +631,13 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
                 }
 
                 for (Kpi_summary_function kpi_summary_function : kpi_summary_functions) {
-                    try {
-                        jObj.put(kpi_summary_function.getKpi_summary_function_name(), rs.getInt(kpi_summary_function.getKpi_summary_function_name()));
-                    } catch (NullPointerException npe) {
-                        jObj.put(kpi_summary_function.getKpi_summary_function_name(), 0);
+                    if (summary_function_map.get(kpi_summary_function.getData_element_ids_involved()) != 0) {
+                        //if (get_count_from_base_data_by_data_element_id(kpi_summary_function.getData_element_ids_involved(), Years, Districts) != 0) {
+                        try {
+                            jObj.put(kpi_summary_function.getKpi_summary_function_name(), rs.getInt(kpi_summary_function.getKpi_summary_function_name()));
+                        } catch (NullPointerException npe) {
+                            jObj.put(kpi_summary_function.getKpi_summary_function_name(), 0);
+                        }
                     }
                 }
 

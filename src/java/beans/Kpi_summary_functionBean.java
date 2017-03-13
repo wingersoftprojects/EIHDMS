@@ -9,6 +9,7 @@ import connections.DBConnection;
 import eihdms.Data_element;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Kpi_summary_function;
+import eihdms.Report_form;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,6 +36,16 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
 
     private String validation_formula = "";
     private Data_element data_element;
+
+    private Report_form report_form;
+
+    public Report_form getReport_form() {
+        return report_form;
+    }
+
+    public void setReport_form(Report_form report_form) {
+        this.report_form = report_form;
+    }
 
     public Data_element getData_element() {
         return data_element;
@@ -121,6 +132,14 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
     }
 
     @Override
+    public void add() {
+        this.setReport_form(null);
+        super.add(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
+    @Override
     public List<Kpi_summary_function> getTs() {
         if (this.getSelected() != null) {
             if (this.getSelected().getKpi() == null) {
@@ -148,12 +167,12 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
         List<Data_element> filteredData_elements = new ArrayList<>();
         try {
             if (this.getSelected() != null) {
-                if (this.getSelected().getKpi().getReport_form() == null) {
+                if (this.getReport_form() == null) {
                     FacesContext context = FacesContext.getCurrentInstance();
-                    context.addMessage(null, new FacesMessage("Please select the kpi first!", "Please select the kpi first!"));
+                    context.addMessage(null, new FacesMessage("Please select the report form first!", "Please select the report form first!"));
                     return filteredData_elements;
                 }
-                filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND de.report_form.report_form_id=" + this.getSelected().getKpi().getReport_form().getReport_form_id() + " AND de.data_element_name like '%" + query + "%'").list();
+                filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND de.report_form.report_form_id=" + this.getReport_form().getReport_form_id() + " AND de.data_element_name like '%" + query + "%'").list();
             }
         } catch (PersistentException ex) {
             Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);

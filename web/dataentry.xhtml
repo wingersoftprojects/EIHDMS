@@ -139,12 +139,24 @@
                     </p:panel>
                     <p:commandButton value="Retrieve Entry Form" action="#{uploadBean.refreshData_elements(uploadBean.report_form,uploadBean.report_form_group)}" update="@form"/>
                 </p:panelGrid>
-                <p:panelGrid id="detail_panel_grid" columns="2">
-                    <c:forEach var="var" items="#{uploadBean.interface_datas}" >
-                        <p:outputLabel value="#{var.data_element.data_element_name}"/>
-                        <p:inputText value="#{var.data_element_value}"/>
+                <p:accordionPanel multiple="true" id="detail_panel_grid">
+                    <c:forEach var="sec" items="#{uploadBean.returnSections(uploadBean.report_form,uploadBean.report_form_group)}" >
+                        <p:tab title="#{sec.section_name}">
+                            <c:forEach var="subsec" items="#{uploadBean.returnSub_sections(uploadBean.report_form,uploadBean.report_form_group,sec)}" >
+                                <p:fieldset legend="#{subsec.sub_section_name}">
+                                    <p:panelGrid columns="4">
+                                        <c:forEach var="var" items="#{uploadBean.interface_datas}" >
+                                            <c:if test="#{var.data_element.sub_section.sub_section_id==subsec.sub_section_id}">
+                                                <h:outputLabel value="#{var.data_element.data_element_name}"/>
+                                                <h:inputText value="#{var.data_element_value}"/>
+                                            </c:if>
+                                        </c:forEach>
+                                    </p:panelGrid>
+                                </p:fieldset>
+                            </c:forEach>
+                        </p:tab>
                     </c:forEach>
-                </p:panelGrid>
+                </p:accordionPanel>
                 <p:commandButton value="SAVE FORM DATA" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" icon="ui-icon-disk" rendered="#{uploadBean.interface_datas.size()>0}" oncomplete="PF('validationReport').show();"/>
             </p:fieldset>
         </h:form>

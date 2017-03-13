@@ -19,7 +19,9 @@ import eihdms.Parish;
 import eihdms.Region;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
+import eihdms.Section;
 import eihdms.Sub_county;
+import eihdms.Sub_section;
 import eihdms.User_detail;
 import eihdms.Validation_rule;
 import java.io.FileNotFoundException;
@@ -113,7 +115,7 @@ public class UploadBean implements Serializable {
 
     private int passed;
     private int failed;
-    
+
     private String ReportFormName;
     private String ReportFormGroupName;
 
@@ -127,6 +129,25 @@ public class UploadBean implements Serializable {
     private Integer[] selectedWeeks;
     private Integer[] selectedBiMonths;
 
+    List<Section> sections;
+    List<Sub_section> sub_sections;
+
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+
+    public List<Sub_section> getSub_sections() {
+        return sub_sections;
+    }
+
+    public void setSub_sections(List<Sub_section> sub_sections) {
+        this.sub_sections = sub_sections;
+    }
+
     public String getReportFormGroupName() {
         return ReportFormGroupName;
     }
@@ -135,7 +156,6 @@ public class UploadBean implements Serializable {
         this.ReportFormGroupName = ReportFormGroupName;
     }
 
-    
     public String getReportFormName() {
         return ReportFormName;
     }
@@ -144,8 +164,6 @@ public class UploadBean implements Serializable {
         this.ReportFormName = ReportFormName;
     }
 
-    
-    
     public Integer[] getSelectedYears() {
         return selectedYears;
     }
@@ -1804,9 +1822,7 @@ public class UploadBean implements Serializable {
             } catch (SQLException ex) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
-                Logger
-                        .getLogger(UploadBean.class
-                                .getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -1890,8 +1906,8 @@ public class UploadBean implements Serializable {
                 } catch (NullPointerException ex) {
                     vr.setValidationDescription("");
                 }
-                ReportFormName=objects[8].toString();
-                ReportFormGroupName=objects[9].toString();
+                ReportFormName = objects[8].toString();
+                ReportFormGroupName = objects[9].toString();
                 vr.setReportId(counter);
                 tempValidationReports.add(vr);
                 counter++;
@@ -2361,14 +2377,16 @@ public class UploadBean implements Serializable {
     public void createInterface_datas(List<Data_element> aData_elements) {
         Interface_data interface_data;
         if (null != aData_elements) {
-            interface_datas = new ArrayList<Interface_data>();
+            interface_datas = new ArrayList<>();
             for (Data_element data_element : aData_elements) {
                 interface_data = new Interface_data();
                 interface_data.setData_element(data_element);
                 interface_data.setData_element_value("");
                 try {
+                    interface_data.setHealth_facility_id(this.getHealth_facility().getHealth_facility_id());
                     interface_data.setHealth_facility_name(this.getHealth_facility().getHealth_facility_name());
                 } catch (NullPointerException npe) {
+                    interface_data.setHealth_facility_id(null);
                     interface_data.setHealth_facility_name(null);
                 }
                 try {
@@ -2410,6 +2428,7 @@ public class UploadBean implements Serializable {
                 interface_data.setIs_deleted(0);
                 interface_data.setIs_active(1);
                 interface_data.setReport_form(report_form);
+                interface_data.setReport_form_group_id(report_form_group.getReport_form_group_id());
                 if (report_form.getLowest_report_form_level().equals("Facility")) {
                     this.parish = this.getHealth_facility().getParish();
                     interface_data.setParish_id(this.parish.getParish_id());
@@ -3098,6 +3117,37 @@ public class UploadBean implements Serializable {
      */
     public void setReport_formList(List<Report_form> report_formList) {
         this.report_formList = report_formList;
+    }
+
+    public List<Section> returnSections(Report_form report_form, Report_form_group report_form_group) {
+        String sql = "";
+        sections = new ArrayList<Section>();
+        try {
+            if (report_form != null && report_form_group != null) {
+                sql = "select distinct de.section from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
+                sections = (List<Section>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
+                //this.createInterface_datas(data_elements);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return sections;
+    }
+
+    public List<Sub_section> returnSub_sections(Report_form report_form, Report_form_group report_form_group, Section section) {
+        String sql = "";
+        sub_sections = new ArrayList<Sub_section>();
+        try {
+            if (report_form != null && report_form_group != null && section != null) {
+                sql = "select distinct de.sub_section from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " and de.section=" + section + " order by fg.group_order,de.group_column_number ASC";
+                sub_sections = (List<Sub_section>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return sub_sections;
     }
 
 }

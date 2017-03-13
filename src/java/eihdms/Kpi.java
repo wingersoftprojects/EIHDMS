@@ -425,14 +425,11 @@ public class Kpi implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) })	
+	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") })	
 	private eihdms.Report_form report_form;
 	
 	@Column(name="kpi_name", nullable=false, length=255)	
 	private String kpi_name;
-	
-	@Column(name="is_deleted", nullable=false, length=1)	
-	private int is_deleted;
 	
 	@Column(name="is_active", nullable=false, length=1)	
 	private int is_active;
@@ -445,6 +442,9 @@ public class Kpi implements Serializable {
 	
 	@Column(name="last_edit_date", nullable=true)	
 	private java.sql.Timestamp last_edit_date;
+	
+	@Column(name="is_deleted", nullable=false, length=1)	
+	private int is_deleted;
 	
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
