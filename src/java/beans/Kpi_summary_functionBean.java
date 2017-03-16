@@ -119,7 +119,7 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setString(1, this.getSelected().getSummary_function());
-            ps.setInt(2, this.getSelected().getKpi().getReport_form().getReport_form_id());
+            ps.setInt(2, report_form.getReport_form_id());
             ps.setString(3, this.getSelected().getData_element_ids_involved());
             rs = ps.executeQuery();
         } catch (SQLException se) {
