@@ -25,11 +25,11 @@ public class KpiCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
 	public final StringExpression kpi_name;
+	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
 	public final TimestampExpression add_date;
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
-	public final IntegerExpression is_deleted;
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression kpi_summary_function;
 	
@@ -41,11 +41,11 @@ public class KpiCriteria extends AbstractORMCriteria {
 		report_formId = new IntegerExpression("report_form.report_form_id", this);
 		report_form = new AssociationExpression("report_form", this);
 		kpi_name = new StringExpression("kpi_name", this);
+		is_deleted = new IntegerExpression("is_deleted", this);
 		is_active = new IntegerExpression("is_active", this);
 		add_date = new TimestampExpression("add_date", this);
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
-		is_deleted = new IntegerExpression("is_deleted", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		kpi_summary_function = new CollectionExpression("kpi_summary_function", this);
 	}
