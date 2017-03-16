@@ -238,18 +238,18 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
         /**
          *
          */
-        String sql = "{call sp_select_kpi(?,?,?,?,?,?,?,?)}";
+        String sql = "{call sp_select_kpi(?,?,?,?,?,?,?)}";
         ResultSet rs = null;
         try (Connection conn = DBConnection.getMySQLConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, selectedKPI.getKpi_id());
             ps.setString(2, loginBean.getUser_detail().getUser_name());
-            ps.setInt(3, selectedKPI.getReport_form().getReport_form_id());
-            ps.setString(4, YearsStr);
-            ps.setString(5, DistrictsStr);
-            ps.setString(6, get_kpi_summary_functions(selectedKPI, YearsStr, DistrictsStr));
-            ps.setString(7, data_element_ids_involved);
-            ps.setString(8, union_string(data_element_ids_involved, YearsStr, DistrictsStr));
+            //ps.setInt(3, selectedKPI.getReport_form().getReport_form_id());
+            ps.setString(3, YearsStr);
+            ps.setString(4, DistrictsStr);
+            ps.setString(5, get_kpi_summary_functions(selectedKPI, YearsStr, DistrictsStr));
+            ps.setString(6, data_element_ids_involved);
+            ps.setString(7, union_string(data_element_ids_involved, YearsStr, DistrictsStr));
             rs = ps.executeQuery();
             if (!rs.next()) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Records to return", "No Records to return!");
