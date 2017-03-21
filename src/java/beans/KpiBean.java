@@ -249,6 +249,13 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
             ps.setString(4, DistrictsStr);
             ps.setString(5, get_kpi_summary_functions(selectedKPI, YearsStr, DistrictsStr));
             ps.setString(6, data_element_ids_involved);
+            if (data_element_ids_involved.isEmpty()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Records to return", "No Records to return!");
+                RequestContext.getCurrentInstance().showMessageInDialog(message);
+                JSONArray jArray = new JSONArray();
+                jSONArray = jArray;
+                return;
+            }
             ps.setString(7, union_string(data_element_ids_involved, YearsStr, DistrictsStr));
             rs = ps.executeQuery();
             if (!rs.next()) {

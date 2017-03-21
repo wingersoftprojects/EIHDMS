@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50199
 File Encoding         : 65001
 
-Date: 2017-03-20 12:07:34
+Date: 2017-03-21 18:44:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -861,7 +861,7 @@ SET @sql = NULL;
 
 SET @sql_text=NULL;
 
-SET @source=CONCAT('(((((((((z_temp_vw_union_',in_table_name,' `bd` join `district` `d` on((`bd`.`district_id` = `d`.`district_id`))) join `region` `r` on((`d`.`region_id` = `r`.`region_id`))) left join `sub_county` `sc` on((`bd`.`sub_county_id` = `sc`.`sub_county_id`))) left join `county` `c` on((`c`.`county_id` = `bd`.`county_id`))) left join `parish` `p` on((`bd`.`parish_id` = `p`.`parish_id`))) left join `health_facility` `h` on((`bd`.`health_facility_id` = `h`.`health_facility_id`))) join `data_element` `de` on((`bd`.`data_element_id` = `de`.`data_element_id`))) join `report_form` `rf` on((`de`.`report_form_id` = `rf`.`report_form_id`))) join `report_form_group` `rfg` on((`de`.`report_form_group_id` = `rfg`.`report_form_group_id`))) ');
+SET @source=CONCAT('(((((((((z_temp_view_union_',in_table_name,' `bd` join `district` `d` on((`bd`.`district_id` = `d`.`district_id`))) join `region` `r` on((`d`.`region_id` = `r`.`region_id`))) left join `sub_county` `sc` on((`bd`.`sub_county_id` = `sc`.`sub_county_id`))) left join `county` `c` on((`c`.`county_id` = `bd`.`county_id`))) left join `parish` `p` on((`bd`.`parish_id` = `p`.`parish_id`))) left join `health_facility` `h` on((`bd`.`health_facility_id` = `h`.`health_facility_id`))) join `data_element` `de` on((`bd`.`data_element_id` = `de`.`data_element_id`))) join `report_form` `rf` on((`de`.`report_form_id` = `rf`.`report_form_id`))) join `report_form_group` `rfg` on((`de`.`report_form_group_id` = `rfg`.`report_form_group_id`))) ');
 
 SET @sql_text=CONCAT('SELECT
   GROUP_CONCAT(DISTINCT
@@ -927,12 +927,12 @@ END IF;
 
 -- Drop if exists
 
-SET @sql_drop_table=CONCAT('DROP VIEW IF EXISTS ','z_temp_vw_union_',in_username);
+SET @sql_drop_table=CONCAT('DROP TABLE IF EXISTS ','z_temp_view_union_',in_username);
 prepare stmt_drop_table from @sql_drop_table;
 execute stmt_drop_table;
 
 -- Create View
-SET @sql_union_string=CONCAT('CREATE VIEW z_temp_vw_union_',in_username,' AS ',in_union_string,';');
+SET @sql_union_string=CONCAT('CREATE TABLE z_temp_view_union_',in_username,' AS ',in_union_string,';');
 prepare stmt_select_union_string from @sql_union_string;
 execute stmt_select_union_string;
 -- End Create View
@@ -940,7 +940,7 @@ execute stmt_select_union_string;
 
 SET @count_data =0;
 IF LENGTH(in_data_element_ids_involved )>0 THEN
-SET @sql=CONCAT('SELECT count(*) FROM z_temp_vw_union_',in_username,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' AND data_element_id IN (',in_data_element_ids_involved,') INTO @count_data');
+SET @sql=CONCAT('SELECT count(*) FROM z_temp_view_union_',in_username,' WHERE ',@report_period_year_v,' AND ',@district_id_v,' AND data_element_id IN (',in_data_element_ids_involved,') INTO @count_data');
 
 prepare stmt from @sql;
 execute stmt;
@@ -959,7 +959,7 @@ prepare stmt_select_kpi from @sql_kpi;
 execute stmt_select_kpi;
 
 ELSE
-SET @sql=CONCAT('SELECT * FROM z_temp_vw_union_',in_username,' WHERE ',@report_period_year_v,' AND ',@district_id_v ,' AND data_element_id IN (0)');
+SET @sql=CONCAT('SELECT * FROM z_temp_view_union_',in_username,' WHERE ',@report_period_year_v,' AND ',@district_id_v ,' AND data_element_id IN (0)');
 prepare stmt from @sql;
 execute stmt;
 END IF;
