@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <f:view>
+            <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+                <p:growl/>
+                <p:fieldset legend="Data Loaded Report">
+                    <p:panelGrid columns="8" id="header_panel_grid">
+                        <p:outputLabel for="year_value" value="Select Year:" />
+                        <p:selectOneMenu id="year_value" value="#{data_obligationBean.selected_year}" style="width:125px" required="true" requiredMessage="Year is Required">
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="report_frequency" value="Report Form Frequency:" />
+                        <p:selectOneMenu id="report_frequency" value="#{uploadBean.report_form_frequency}" style="width:125px" required="true" requiredMessage="Report Form Frequcny field is Required">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
+                            <f:selectItem itemLabel="Weekly" itemValue="Weekly" />
+                            <f:selectItem itemLabel="Quarterly" itemValue="Quarterly" />
+                            <f:selectItem itemLabel="Bi-Monthly" itemValue="Bi-Monthly" />
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="report_form_id" value="Report Form:" />
+                        <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="false" requiredMessage="Field Form is Required" converter="report_formConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_view')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this" update="@form"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Show Report" update="@form"/>
+                        <h:commandButton value="Show Group Sections" action="#{uploadBean.refreshGroupList(data_obligationBean.selected_year,uploadBean.report_form_frequency,uploadBean.report_form)}" />
+                    </p:panelGrid>
+                    <p:dataTable var="rf" value="#{uploadBean.report_formList}">
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Report Form Group" />
+                            <p:column headerText="Year" />
+                            <p:column headerText="Jan" />
+                            <p:column headerText="Feb" />
+                            <p:column headerText="Mar" />
+                            <p:column headerText="Apr" />
+                            <p:column headerText="May" />
+                            <p:column headerText="Jun" />
+                            <p:column headerText="Jul" />
+                            <p:column headerText="Aug" />
+                            <p:column headerText="Sep" />
+                            <p:column headerText="Oct" />
+                            <p:column headerText="Nov" />
+                            <p:column headerText="Dec" />
+                        </p:row>
+                    </p:columnGroup>
+                    <p:subTable value="#{uploadBean.returnReport_form_groupList(rf)}" var="fg">
+                        <f:facet name="header">
+                            <h:outputText value="#{rf.report_form_name}" />
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{fg.report_form_group_name}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="2017" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="1" />
+                        </p:column>
+                    </p:subTable>
+                </p:dataTable>
+                </p:fieldset>
+            </h:form>
+        </f:view>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
