@@ -537,8 +537,8 @@ public class Access_scope implements Serializable {
 		if (obj == null) {
 		 return false;
 		 }
-		User_detail object = (User_detail) obj;
-		return (this.getUser_detail_id() == object.getUser_detail_id());
+		Access_scope object = (Access_scope) obj;
+		return (this.getAccess_scope_id() == object.getAccess_scope_id());
 	}
 	
 	public int hashCode() {
