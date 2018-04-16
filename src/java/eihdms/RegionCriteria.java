@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -49,7 +49,7 @@ public class RegionCriteria extends AbstractORMCriteria {
 	}
 	
 	public RegionCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public DistrictCriteria createDistrictCriteria() {

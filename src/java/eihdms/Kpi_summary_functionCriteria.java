@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -55,7 +55,7 @@ public class Kpi_summary_functionCriteria extends AbstractORMCriteria {
 	}
 	
 	public Kpi_summary_functionCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public KpiCriteria createKpiCriteria() {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -29,7 +29,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element loadTemp_data_elementByORMID(int temp_data_element_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadTemp_data_elementByORMID(session, temp_data_element_id);
 		}
 		catch (Exception e) {
@@ -40,7 +40,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element getTemp_data_elementByORMID(int temp_data_element_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getTemp_data_elementByORMID(session, temp_data_element_id);
 		}
 		catch (Exception e) {
@@ -51,7 +51,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element loadTemp_data_elementByORMID(int temp_data_element_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadTemp_data_elementByORMID(session, temp_data_element_id, lockMode);
 		}
 		catch (Exception e) {
@@ -62,7 +62,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element getTemp_data_elementByORMID(int temp_data_element_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getTemp_data_elementByORMID(session, temp_data_element_id, lockMode);
 		}
 		catch (Exception e) {
@@ -113,7 +113,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static List queryTemp_data_element(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryTemp_data_element(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -124,7 +124,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static List queryTemp_data_element(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryTemp_data_element(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -135,7 +135,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element[] listTemp_data_elementByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listTemp_data_elementByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -146,7 +146,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element[] listTemp_data_elementByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listTemp_data_elementByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -212,7 +212,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element loadTemp_data_elementByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadTemp_data_elementByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -223,7 +223,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static Temp_data_element loadTemp_data_elementByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadTemp_data_elementByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -250,7 +250,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static java.util.Iterator iterateTemp_data_elementByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateTemp_data_elementByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -261,7 +261,7 @@ public class Temp_data_element implements Serializable {
 	
 	public static java.util.Iterator iterateTemp_data_elementByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateTemp_data_elementByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -321,7 +321,7 @@ public class Temp_data_element implements Serializable {
 	
 	public boolean save() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().saveObject(this);
+			EIHDMSPersistentManager.instance().saveObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -332,7 +332,7 @@ public class Temp_data_element implements Serializable {
 	
 	public boolean delete() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().deleteObject(this);
+			EIHDMSPersistentManager.instance().deleteObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -343,7 +343,7 @@ public class Temp_data_element implements Serializable {
 	
 	public boolean refresh() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().refresh(this);
+			EIHDMSPersistentManager.instance().getSession().refresh(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -354,7 +354,7 @@ public class Temp_data_element implements Serializable {
 	
 	public boolean evict() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().evict(this);
+			EIHDMSPersistentManager.instance().getSession().evict(this);
 			return true;
 		}
 		catch (Exception e) {

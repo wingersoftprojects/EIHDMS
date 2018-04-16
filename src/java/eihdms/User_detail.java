@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -32,7 +32,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail loadUser_detailByORMID(int user_detail_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadUser_detailByORMID(session, user_detail_id);
 		}
 		catch (Exception e) {
@@ -43,7 +43,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail getUser_detailByORMID(int user_detail_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getUser_detailByORMID(session, user_detail_id);
 		}
 		catch (Exception e) {
@@ -54,7 +54,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail loadUser_detailByORMID(int user_detail_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadUser_detailByORMID(session, user_detail_id, lockMode);
 		}
 		catch (Exception e) {
@@ -65,7 +65,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail getUser_detailByORMID(int user_detail_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getUser_detailByORMID(session, user_detail_id, lockMode);
 		}
 		catch (Exception e) {
@@ -116,7 +116,7 @@ public class User_detail implements Serializable {
 	
 	public static List queryUser_detail(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryUser_detail(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -127,7 +127,7 @@ public class User_detail implements Serializable {
 	
 	public static List queryUser_detail(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryUser_detail(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -138,7 +138,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail[] listUser_detailByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listUser_detailByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -149,7 +149,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail[] listUser_detailByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listUser_detailByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -215,7 +215,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail loadUser_detailByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadUser_detailByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -226,7 +226,7 @@ public class User_detail implements Serializable {
 	
 	public static User_detail loadUser_detailByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadUser_detailByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -253,7 +253,7 @@ public class User_detail implements Serializable {
 	
 	public static java.util.Iterator iterateUser_detailByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateUser_detailByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -264,7 +264,7 @@ public class User_detail implements Serializable {
 	
 	public static java.util.Iterator iterateUser_detailByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateUser_detailByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -324,7 +324,7 @@ public class User_detail implements Serializable {
 	
 	public boolean save() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().saveObject(this);
+			EIHDMSPersistentManager.instance().saveObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -335,7 +335,7 @@ public class User_detail implements Serializable {
 	
 	public boolean delete() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().deleteObject(this);
+			EIHDMSPersistentManager.instance().deleteObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -346,7 +346,7 @@ public class User_detail implements Serializable {
 	
 	public boolean refresh() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().refresh(this);
+			EIHDMSPersistentManager.instance().getSession().refresh(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -357,7 +357,7 @@ public class User_detail implements Serializable {
 	
 	public boolean evict() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().evict(this);
+			EIHDMSPersistentManager.instance().getSession().evict(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -370,6 +370,10 @@ public class User_detail implements Serializable {
 		try {
 			if(getUser_category() != null) {
 				getUser_category().getUser_detail().remove(this);
+			}
+			
+			if(getOrganisation() != null) {
+				getOrganisation().getUser_detail().remove(this);
 			}
 			
 			eihdms.Group_user[] lGroup_users = (eihdms.Group_user[])getGroup_user().toArray(new eihdms.Group_user[getGroup_user().size()]);
@@ -396,6 +400,10 @@ public class User_detail implements Serializable {
 		try {
 			if(getUser_category() != null) {
 				getUser_category().getUser_detail().remove(this);
+			}
+			
+			if(getOrganisation() != null) {
+				getOrganisation().getUser_detail().remove(this);
 			}
 			
 			eihdms.Group_user[] lGroup_users = (eihdms.Group_user[])getGroup_user().toArray(new eihdms.Group_user[getGroup_user().size()]);
@@ -472,6 +480,11 @@ public class User_detail implements Serializable {
 	
 	@Column(name="last_edit_by", nullable=true, length=11)	
 	private Integer last_edit_by;
+	
+	@ManyToOne(targetEntity=eihdms.Organisation.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="organisation_id", referencedColumnName="organisation_id") })	
+	private eihdms.Organisation organisation;
 	
 	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.Group_user.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
@@ -618,6 +631,14 @@ public class User_detail implements Serializable {
 	
 	public eihdms.User_category getUser_category() {
 		return user_category;
+	}
+	
+	public void setOrganisation(eihdms.Organisation value) {
+		this.organisation = value;
+	}
+	
+	public eihdms.Organisation getOrganisation() {
+		return organisation;
 	}
 	
 	public void setGroup_user(java.util.Set value) {

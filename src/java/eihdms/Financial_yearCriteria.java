@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -49,7 +49,7 @@ public class Financial_yearCriteria extends AbstractORMCriteria {
 	}
 	
 	public Financial_yearCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public Interface_dataCriteria createInterface_dataCriteria() {

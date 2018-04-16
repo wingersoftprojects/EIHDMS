@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -59,7 +59,7 @@ public class Temp_health_facilityCriteria extends AbstractORMCriteria {
 	}
 	
 	public Temp_health_facilityCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public Temp_health_facility uniqueTemp_health_facility() {

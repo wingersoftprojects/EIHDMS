@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -85,7 +85,7 @@ public class Base_data_deletedCriteria extends AbstractORMCriteria {
 	}
 	
 	public Base_data_deletedCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public Base_data_deleted uniqueBase_data_deleted() {

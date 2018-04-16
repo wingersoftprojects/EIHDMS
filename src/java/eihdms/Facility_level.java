@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -29,7 +29,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level loadFacility_levelByORMID(int facility_level_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadFacility_levelByORMID(session, facility_level_id);
 		}
 		catch (Exception e) {
@@ -40,7 +40,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level getFacility_levelByORMID(int facility_level_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getFacility_levelByORMID(session, facility_level_id);
 		}
 		catch (Exception e) {
@@ -51,7 +51,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level loadFacility_levelByORMID(int facility_level_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadFacility_levelByORMID(session, facility_level_id, lockMode);
 		}
 		catch (Exception e) {
@@ -62,7 +62,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level getFacility_levelByORMID(int facility_level_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getFacility_levelByORMID(session, facility_level_id, lockMode);
 		}
 		catch (Exception e) {
@@ -113,7 +113,7 @@ public class Facility_level implements Serializable {
 	
 	public static List queryFacility_level(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryFacility_level(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -124,7 +124,7 @@ public class Facility_level implements Serializable {
 	
 	public static List queryFacility_level(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryFacility_level(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -135,7 +135,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level[] listFacility_levelByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listFacility_levelByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -146,7 +146,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level[] listFacility_levelByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listFacility_levelByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -212,7 +212,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level loadFacility_levelByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadFacility_levelByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -223,7 +223,7 @@ public class Facility_level implements Serializable {
 	
 	public static Facility_level loadFacility_levelByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadFacility_levelByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -250,7 +250,7 @@ public class Facility_level implements Serializable {
 	
 	public static java.util.Iterator iterateFacility_levelByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateFacility_levelByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -261,7 +261,7 @@ public class Facility_level implements Serializable {
 	
 	public static java.util.Iterator iterateFacility_levelByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateFacility_levelByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -321,7 +321,7 @@ public class Facility_level implements Serializable {
 	
 	public boolean save() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().saveObject(this);
+			EIHDMSPersistentManager.instance().saveObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -332,7 +332,7 @@ public class Facility_level implements Serializable {
 	
 	public boolean delete() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().deleteObject(this);
+			EIHDMSPersistentManager.instance().deleteObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -343,7 +343,7 @@ public class Facility_level implements Serializable {
 	
 	public boolean refresh() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().refresh(this);
+			EIHDMSPersistentManager.instance().getSession().refresh(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -354,7 +354,7 @@ public class Facility_level implements Serializable {
 	
 	public boolean evict() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().evict(this);
+			EIHDMSPersistentManager.instance().getSession().evict(this);
 			return true;
 		}
 		catch (Exception e) {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -29,7 +29,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted loadBase_data_deletedByORMID(int base_data_deleted_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadBase_data_deletedByORMID(session, base_data_deleted_id);
 		}
 		catch (Exception e) {
@@ -40,7 +40,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted getBase_data_deletedByORMID(int base_data_deleted_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getBase_data_deletedByORMID(session, base_data_deleted_id);
 		}
 		catch (Exception e) {
@@ -51,7 +51,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted loadBase_data_deletedByORMID(int base_data_deleted_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadBase_data_deletedByORMID(session, base_data_deleted_id, lockMode);
 		}
 		catch (Exception e) {
@@ -62,7 +62,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted getBase_data_deletedByORMID(int base_data_deleted_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getBase_data_deletedByORMID(session, base_data_deleted_id, lockMode);
 		}
 		catch (Exception e) {
@@ -113,7 +113,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static List queryBase_data_deleted(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryBase_data_deleted(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -124,7 +124,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static List queryBase_data_deleted(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryBase_data_deleted(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -135,7 +135,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted[] listBase_data_deletedByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listBase_data_deletedByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -146,7 +146,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted[] listBase_data_deletedByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listBase_data_deletedByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -212,7 +212,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted loadBase_data_deletedByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadBase_data_deletedByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -223,7 +223,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static Base_data_deleted loadBase_data_deletedByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadBase_data_deletedByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -250,7 +250,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static java.util.Iterator iterateBase_data_deletedByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateBase_data_deletedByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -261,7 +261,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public static java.util.Iterator iterateBase_data_deletedByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateBase_data_deletedByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -321,7 +321,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public boolean save() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().saveObject(this);
+			EIHDMSPersistentManager.instance().saveObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -332,7 +332,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public boolean delete() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().deleteObject(this);
+			EIHDMSPersistentManager.instance().deleteObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -343,7 +343,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public boolean refresh() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().refresh(this);
+			EIHDMSPersistentManager.instance().getSession().refresh(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -354,7 +354,7 @@ public class Base_data_deleted implements Serializable {
 	
 	public boolean evict() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().evict(this);
+			EIHDMSPersistentManager.instance().getSession().evict(this);
 			return true;
 		}
 		catch (Exception e) {

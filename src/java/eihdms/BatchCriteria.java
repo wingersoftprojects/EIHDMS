@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -47,7 +47,7 @@ public class BatchCriteria extends AbstractORMCriteria {
 	}
 	
 	public BatchCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public Interface_dataCriteria createInterface_dataCriteria() {

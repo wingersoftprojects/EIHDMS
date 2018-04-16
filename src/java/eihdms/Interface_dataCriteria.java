@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -59,6 +59,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
 	public final IntegerExpression report_form_group_id;
+	public final StringExpression entry_mode;
 	
 	public Interface_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -102,6 +103,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		report_formId = new IntegerExpression("report_form.report_form_id", this);
 		report_form = new AssociationExpression("report_form", this);
 		report_form_group_id = new IntegerExpression("report_form_group_id", this);
+		entry_mode = new StringExpression("entry_mode", this);
 	}
 	
 	public Interface_dataCriteria(PersistentSession session) {
@@ -109,7 +111,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	}
 	
 	public Interface_dataCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public BatchCriteria createBatchCriteria() {

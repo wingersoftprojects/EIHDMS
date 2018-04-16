@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -50,6 +50,8 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
+	public final IntegerExpression data_element_sms_positionId;
+	public final AssociationExpression data_element_sms_position;
 	
 	public Data_elementCriteria(Criteria criteria) {
 		super(criteria);
@@ -84,6 +86,8 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		interface_data = new CollectionExpression("interface_data", this);
 		base_data = new CollectionExpression("base_data", this);
 		standard_rule = new CollectionExpression("standard_rule", this);
+		data_element_sms_positionId = new IntegerExpression("data_element_sms_position.data_element_id", this);
+		data_element_sms_position = new AssociationExpression("data_element_sms_position", this);
 	}
 	
 	public Data_elementCriteria(PersistentSession session) {
@@ -91,7 +95,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	}
 	
 	public Data_elementCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public Report_formCriteria createReport_formCriteria() {
@@ -124,6 +128,10 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	
 	public Standard_ruleCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleCriteria(createCriteria("standard_rule"));
+	}
+	
+	public Data_element_sms_positionCriteria createData_element_sms_positionCriteria() {
+		return new Data_element_sms_positionCriteria(createCriteria("data_element_sms_position"));
 	}
 	
 	public Data_element uniqueData_element() {

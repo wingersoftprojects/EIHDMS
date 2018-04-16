@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -35,6 +35,8 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression organisationId;
+	public final AssociationExpression organisation;
 	public final CollectionExpression group_user;
 	public final CollectionExpression login_session;
 	public final CollectionExpression user_action;
@@ -57,6 +59,8 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		organisationId = new IntegerExpression("organisation.organisation_id", this.getDetachedCriteria());
+		organisation = new AssociationExpression("organisation", this.getDetachedCriteria());
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
 		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
@@ -80,6 +84,8 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		organisationId = new IntegerExpression("organisation.organisation_id", this.getDetachedCriteria());
+		organisation = new AssociationExpression("organisation", this.getDetachedCriteria());
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
 		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
@@ -87,6 +93,10 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public User_categoryDetachedCriteria createUser_categoryCriteria() {
 		return new User_categoryDetachedCriteria(createCriteria("user_category"));
+	}
+	
+	public OrganisationDetachedCriteria createOrganisationCriteria() {
+		return new OrganisationDetachedCriteria(createCriteria("organisation"));
 	}
 	
 	public Group_userDetachedCriteria createGroup_userCriteria() {

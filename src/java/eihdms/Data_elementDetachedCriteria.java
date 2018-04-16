@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -50,6 +50,8 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
+	public final IntegerExpression data_element_sms_positionId;
+	public final AssociationExpression data_element_sms_position;
 	
 	public Data_elementDetachedCriteria() {
 		super(eihdms.Data_element.class, eihdms.Data_elementCriteria.class);
@@ -84,6 +86,8 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
+		data_element_sms_positionId = new IntegerExpression("data_element_sms_position.data_element_id", this.getDetachedCriteria());
+		data_element_sms_position = new AssociationExpression("data_element_sms_position", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -119,6 +123,8 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
+		data_element_sms_positionId = new IntegerExpression("data_element_sms_position.data_element_id", this.getDetachedCriteria());
+		data_element_sms_position = new AssociationExpression("data_element_sms_position", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {
@@ -151,6 +157,10 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Standard_ruleDetachedCriteria createStandard_ruleCriteria() {
 		return new Standard_ruleDetachedCriteria(createCriteria("standard_rule"));
+	}
+	
+	public Data_element_sms_positionDetachedCriteria createData_element_sms_positionCriteria() {
+		return new Data_element_sms_positionDetachedCriteria(createCriteria("data_element_sms_position"));
 	}
 	
 	public Data_element uniqueData_element(PersistentSession session) {

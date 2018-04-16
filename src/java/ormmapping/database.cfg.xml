@@ -8,7 +8,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -23,7 +23,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -38,7 +38,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -53,7 +53,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -68,7 +68,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -83,7 +83,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -98,7 +98,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -113,7 +113,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -128,7 +128,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -143,7 +143,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -158,7 +158,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -173,7 +173,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -188,7 +188,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -203,7 +203,7 @@
     <DriverClass>net.sourceforge.jtds.jdbc.Driver</DriverClass>
     <URL>jdbc:jtds:sqlserver://localhost/WSP</URL>
     <UserName>sa</UserName>
-    <Password>jesus</Password>
+    <EncryptedPassword>41A30617401DA14DE4070AB56AEBA677</EncryptedPassword>
     <HostName>localhost</HostName>
     <PortNO></PortNO>
     <DBName>WSP</DBName>
@@ -218,7 +218,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -233,7 +233,7 @@
     <DriverClass>net.sourceforge.jtds.jdbc.Driver</DriverClass>
     <URL>jdbc:jtds:sqlserver://&lt;host_name&gt;:&lt;port_number&gt;/&lt;database_name&gt;</URL>
     <UserName>root</UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -248,7 +248,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -258,15 +258,30 @@
   </Setting>
   <Setting type="1048576">
     <Driver>MySQL5 (Connector/J Driver)</Driver>
-    <DriverFiles>D:\mysql-connector-java-5.1.7-bin.jar</DriverFiles>
+    <DriverFiles>D:\NetBeansProjects\InventoryEdgeHotel\lib\mysql-connector-java-5.1.7-bin.jar</DriverFiles>
     <Dialect>org.hibernate.dialect.MySQL5InnoDBDialect</Dialect>
     <DriverClass>com.mysql.jdbc.Driver</DriverClass>
     <URL>jdbc:mysql://localhost/eihdms</URL>
     <UserName>root</UserName>
-    <Password>WTLura456</Password>
+    <EncryptedPassword>5B9952576936754BD448729C65E18E38</EncryptedPassword>
     <HostName>localhost</HostName>
     <PortNO></PortNO>
     <DBName>eihdms</DBName>
+    <ServiceName></ServiceName>
+    <ServerName></ServerName>
+    <SelectedForm>true</SelectedForm>
+  </Setting>
+  <Setting type="33554432">
+    <Driver></Driver>
+    <DriverFiles></DriverFiles>
+    <Dialect></Dialect>
+    <DriverClass></DriverClass>
+    <URL></URL>
+    <UserName></UserName>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
+    <HostName></HostName>
+    <PortNO></PortNO>
+    <DBName></DBName>
     <ServiceName></ServiceName>
     <ServerName></ServerName>
     <SelectedForm>true</SelectedForm>
@@ -278,7 +293,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -293,7 +308,7 @@
     <DriverClass></DriverClass>
     <URL></URL>
     <UserName></UserName>
-    <Password></Password>
+    <EncryptedPassword>32F3ACE632ECEBAFB24DCAF99A8C6CDC</EncryptedPassword>
     <HostName></HostName>
     <PortNO></PortNO>
     <DBName></DBName>
@@ -308,7 +323,7 @@
     <DriverClass>com.mysql.jdbc.Driver</DriverClass>
     <URL>jdbc:mysql://localhost/eihdms</URL>
     <UserName>root</UserName>
-    <Password>WTLura456</Password>
+    <EncryptedPassword>5B9952576936754BD448729C65E18E38</EncryptedPassword>
     <HostName>localhost</HostName>
     <PortNO></PortNO>
     <DBName>eihdms</DBName>

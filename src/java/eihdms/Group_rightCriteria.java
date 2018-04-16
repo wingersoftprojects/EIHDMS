@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -59,7 +59,7 @@ public class Group_rightCriteria extends AbstractORMCriteria {
 	}
 	
 	public Group_rightCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public Group_detailCriteria createGroup_detailCriteria() {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -29,7 +29,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data loadInterface_dataByORMID(int interface_data_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadInterface_dataByORMID(session, interface_data_id);
 		}
 		catch (Exception e) {
@@ -40,7 +40,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data getInterface_dataByORMID(int interface_data_id) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getInterface_dataByORMID(session, interface_data_id);
 		}
 		catch (Exception e) {
@@ -51,7 +51,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data loadInterface_dataByORMID(int interface_data_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadInterface_dataByORMID(session, interface_data_id, lockMode);
 		}
 		catch (Exception e) {
@@ -62,7 +62,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data getInterface_dataByORMID(int interface_data_id, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return getInterface_dataByORMID(session, interface_data_id, lockMode);
 		}
 		catch (Exception e) {
@@ -113,7 +113,7 @@ public class Interface_data implements Serializable {
 	
 	public static List queryInterface_data(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryInterface_data(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -124,7 +124,7 @@ public class Interface_data implements Serializable {
 	
 	public static List queryInterface_data(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return queryInterface_data(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -135,7 +135,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data[] listInterface_dataByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listInterface_dataByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -146,7 +146,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data[] listInterface_dataByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return listInterface_dataByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -212,7 +212,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data loadInterface_dataByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadInterface_dataByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -223,7 +223,7 @@ public class Interface_data implements Serializable {
 	
 	public static Interface_data loadInterface_dataByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return loadInterface_dataByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -250,7 +250,7 @@ public class Interface_data implements Serializable {
 	
 	public static java.util.Iterator iterateInterface_dataByQuery(String condition, String orderBy) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateInterface_dataByQuery(session, condition, orderBy);
 		}
 		catch (Exception e) {
@@ -261,7 +261,7 @@ public class Interface_data implements Serializable {
 	
 	public static java.util.Iterator iterateInterface_dataByQuery(String condition, String orderBy, org.hibernate.LockMode lockMode) throws PersistentException {
 		try {
-			PersistentSession session = eihdms.EIHDMSPersistentManager.instance().getSession();
+			PersistentSession session = EIHDMSPersistentManager.instance().getSession();
 			return iterateInterface_dataByQuery(session, condition, orderBy, lockMode);
 		}
 		catch (Exception e) {
@@ -321,7 +321,7 @@ public class Interface_data implements Serializable {
 	
 	public boolean save() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().saveObject(this);
+			EIHDMSPersistentManager.instance().saveObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -332,7 +332,7 @@ public class Interface_data implements Serializable {
 	
 	public boolean delete() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().deleteObject(this);
+			EIHDMSPersistentManager.instance().deleteObject(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -343,7 +343,7 @@ public class Interface_data implements Serializable {
 	
 	public boolean refresh() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().refresh(this);
+			EIHDMSPersistentManager.instance().getSession().refresh(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -354,7 +354,7 @@ public class Interface_data implements Serializable {
 	
 	public boolean evict() throws PersistentException {
 		try {
-			eihdms.EIHDMSPersistentManager.instance().getSession().evict(this);
+			EIHDMSPersistentManager.instance().getSession().evict(this);
 			return true;
 		}
 		catch (Exception e) {
@@ -540,6 +540,9 @@ public class Interface_data implements Serializable {
 	
 	@Column(name="report_form_group_id", nullable=true, length=11)	
 	private Integer report_form_group_id;
+	
+	@Column(name="entry_mode", nullable=true, length=20)	
+	private String entry_mode;
 	
 	private void setInterface_data_id(int value) {
 		this.interface_data_id = value;
@@ -851,6 +854,14 @@ public class Interface_data implements Serializable {
 	
 	public Integer getReport_form_group_id() {
 		return report_form_group_id;
+	}
+	
+	public void setEntry_mode(String value) {
+		this.entry_mode = value;
+	}
+	
+	public String getEntry_mode() {
+		return entry_mode;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

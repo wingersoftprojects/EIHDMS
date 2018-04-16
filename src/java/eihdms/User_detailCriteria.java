@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -35,6 +35,8 @@ public class User_detailCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression organisationId;
+	public final AssociationExpression organisation;
 	public final CollectionExpression group_user;
 	public final CollectionExpression login_session;
 	public final CollectionExpression user_action;
@@ -57,6 +59,8 @@ public class User_detailCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		organisationId = new IntegerExpression("organisation.organisation_id", this);
+		organisation = new AssociationExpression("organisation", this);
 		group_user = new CollectionExpression("group_user", this);
 		login_session = new CollectionExpression("login_session", this);
 		user_action = new CollectionExpression("user_action", this);
@@ -67,11 +71,15 @@ public class User_detailCriteria extends AbstractORMCriteria {
 	}
 	
 	public User_detailCriteria() throws PersistentException {
-		this(eihdms.EIHDMSPersistentManager.instance().getSession());
+		this(EIHDMSPersistentManager.instance().getSession());
 	}
 	
 	public User_categoryCriteria createUser_categoryCriteria() {
 		return new User_categoryCriteria(createCriteria("user_category"));
+	}
+	
+	public OrganisationCriteria createOrganisationCriteria() {
+		return new OrganisationCriteria(createCriteria("organisation"));
 	}
 	
 	public Group_userCriteria createGroup_userCriteria() {
