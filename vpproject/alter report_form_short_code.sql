@@ -38,6 +38,7 @@ alter table user_detail modify column add_date datetime;
 alter table user_detail modify column last_edit_date datetime;
 alter table user_detail comment = 'Stores user details such as username, password, type, status, etc';
 
+alter table report_form_short_code drop column number_of_separators;
 alter table report_form_short_code add column number_of_separators int(2) not null;
 
 
