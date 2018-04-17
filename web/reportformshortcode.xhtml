@@ -21,7 +21,7 @@
                 <p:fieldset legend="Report Form Short Code">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Report Form:" for="report_form2"/>
-                        <p:selectOneMenu id="report_form2" value="#{report_form_short_codeBean.report_form}" style="width:125px" converter="report_formConverter">
+                        <p:selectOneMenu id="report_form2" value="#{report_form_short_codeBean.selected.report_form}" style="width:125px" converter="report_formConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
                             <p:ajax process="@this"/>
