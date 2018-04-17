@@ -6033,7 +6033,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6134,7 +6134,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>20</Type>
       <Length>0</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6145,7 +6145,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6214,7 +6214,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>2</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6259,7 +6259,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>20</Type>
       <Length>0</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6270,7 +6270,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6298,6 +6298,9 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <UniqueKey name="desp_data_element">
+      <Column name="data_element_id"/>
+    </UniqueKey>
   </Entity>
   <Entity name="report_form_short_code" Unlogged="false" PKClustered="0">
     <Column name="report_form_short_code_id">
@@ -6322,12 +6325,12 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="seperators">
+    <Column name="number_of_separators">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>2</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6371,7 +6374,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>20</Type>
       <Length>0</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6382,7 +6385,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6406,6 +6409,18 @@
       <Length>10</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="report_form_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>report_form.report_form_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
       <UserTypes/>
@@ -6461,7 +6476,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>20</Type>
       <Length>0</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6472,7 +6487,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6595,7 +6610,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>20</Type>
       <Length>0</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6606,7 +6621,7 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -7143,6 +7158,16 @@
     </Columns>
     <RefColumns>
       <Column>organisation_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKreport_for711820">
+    <ReferenceTable>report_form_short_code</ReferenceTable>
+    <ReferencedTable>report_form</ReferencedTable>
+    <Columns>
+      <Column>report_form_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>report_form_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>

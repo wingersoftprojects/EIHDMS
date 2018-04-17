@@ -405,6 +405,10 @@ public class Report_form implements Serializable {
 			for(int i = 0; i < lBase_datas.length; i++) {
 				lBase_datas[i].setReport_form(null);
 			}
+			eihdms.Report_form_short_code[] lReport_form_short_codes = (eihdms.Report_form_short_code[])getReport_form_short_code().toArray(new eihdms.Report_form_short_code[getReport_form_short_code().size()]);
+			for(int i = 0; i < lReport_form_short_codes.length; i++) {
+				lReport_form_short_codes[i].setReport_form(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -454,6 +458,10 @@ public class Report_form implements Serializable {
 			eihdms.Base_data[] lBase_datas = (eihdms.Base_data[])getBase_data().toArray(new eihdms.Base_data[getBase_data().size()]);
 			for(int i = 0; i < lBase_datas.length; i++) {
 				lBase_datas[i].setReport_form(null);
+			}
+			eihdms.Report_form_short_code[] lReport_form_short_codes = (eihdms.Report_form_short_code[])getReport_form_short_code().toArray(new eihdms.Report_form_short_code[getReport_form_short_code().size()]);
+			for(int i = 0; i < lReport_form_short_codes.length; i++) {
+				lReport_form_short_codes[i].setReport_form(null);
 			}
 			try {
 				session.delete(this);
@@ -565,6 +573,11 @@ public class Report_form implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set base_data = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Report_form_short_code.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set report_form_short_code = new java.util.HashSet();
 	
 	private void setReport_form_id(int value) {
 		this.report_form_id = value;
@@ -793,6 +806,15 @@ public class Report_form implements Serializable {
 	
 	public java.util.Set getBase_data() {
 		return base_data;
+	}
+	
+	
+	public void setReport_form_short_code(java.util.Set value) {
+		this.report_form_short_code = value;
+	}
+	
+	public java.util.Set getReport_form_short_code() {
+		return report_form_short_code;
 	}
 	
 	

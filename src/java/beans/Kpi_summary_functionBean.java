@@ -172,7 +172,7 @@ public class Kpi_summary_functionBean extends AbstractBean<Kpi_summary_function>
                     context.addMessage(null, new FacesMessage("Please select the report form first!", "Please select the report form first!"));
                     return filteredData_elements;
                 }
-                filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND de.report_form.report_form_id=" + this.getReport_form().getReport_form_id() + " AND de.data_element_name like '%" + query + "%'").list();
+                filteredData_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select de FROM Data_element  de where de.is_deleted<>1 AND de.report_form.report_form_id=" + this.getReport_form().getReport_form_id() + " AND (de.data_element_name like '%" + query + "%' OR de.data_element_code like '%" + query + "%')").list();
             }
         } catch (PersistentException ex) {
             Logger.getLogger(Data_elementBean.class.getName()).log(Level.SEVERE, null, ex);

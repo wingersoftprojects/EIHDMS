@@ -22,7 +22,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
-@Table(name="data_element_sms_position")
+@Table(name="data_element_sms_position", uniqueConstraints={ @UniqueConstraint(columnNames={ "data_element_id" }) })
 public class Data_element_sms_position implements Serializable {
 	public Data_element_sms_position() {
 	}
@@ -418,7 +418,7 @@ public class Data_element_sms_position implements Serializable {
 	@Column(name="value_position", nullable=false, length=2)	
 	private int value_position;
 	
-	@Column(name="code_position", nullable=false, length=2)	
+	@Column(name="code_position", nullable=true, length=2)	
 	private int code_position;
 	
 	@ManyToOne(targetEntity=eihdms.Report_form_short_code.class, fetch=FetchType.LAZY)	
@@ -432,10 +432,10 @@ public class Data_element_sms_position implements Serializable {
 	@Column(name="is_active", nullable=false, length=1)	
 	private int is_active;
 	
-	@Column(name="add_date", nullable=true)	
+	@Column(name="add_date", nullable=false)	
 	private java.sql.Timestamp add_date;
 	
-	@Column(name="add_by", nullable=true, length=10)	
+	@Column(name="add_by", nullable=false, length=10)	
 	private Integer add_by;
 	
 	@Column(name="last_edit_date", nullable=true)	

@@ -44,6 +44,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression kpi;
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
+	public final CollectionExpression report_form_short_code;
 	
 	public Report_formCriteria(Criteria criteria) {
 		super(criteria);
@@ -72,6 +73,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		kpi = new CollectionExpression("kpi", this);
 		interface_data = new CollectionExpression("interface_data", this);
 		base_data = new CollectionExpression("base_data", this);
+		report_form_short_code = new CollectionExpression("report_form_short_code", this);
 	}
 	
 	public Report_formCriteria(PersistentSession session) {
@@ -120,6 +122,10 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public Base_dataCriteria createBase_dataCriteria() {
 		return new Base_dataCriteria(createCriteria("base_data"));
+	}
+	
+	public Report_form_short_codeCriteria createReport_form_short_codeCriteria() {
+		return new Report_form_short_codeCriteria(createCriteria("report_form_short_code"));
 	}
 	
 	public Report_form uniqueReport_form() {

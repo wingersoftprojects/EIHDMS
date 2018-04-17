@@ -21,7 +21,7 @@ import org.orm.criteria.*;
 public class Report_form_short_codeCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_form_short_code_id;
 	public final StringExpression start_code;
-	public final IntegerExpression seperators;
+	public final IntegerExpression number_of_separators;
 	public final StringExpression short_code;
 	public final IntegerExpression is_deleted;
 	public final IntegerExpression is_active;
@@ -29,13 +29,15 @@ public class Report_form_short_codeCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression report_formId;
+	public final AssociationExpression report_form;
 	public final CollectionExpression data_element_sms_position;
 	
 	public Report_form_short_codeCriteria(Criteria criteria) {
 		super(criteria);
 		report_form_short_code_id = new IntegerExpression("report_form_short_code_id", this);
 		start_code = new StringExpression("start_code", this);
-		seperators = new IntegerExpression("seperators", this);
+		number_of_separators = new IntegerExpression("number_of_separators", this);
 		short_code = new StringExpression("short_code", this);
 		is_deleted = new IntegerExpression("is_deleted", this);
 		is_active = new IntegerExpression("is_active", this);
@@ -43,6 +45,8 @@ public class Report_form_short_codeCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		report_formId = new IntegerExpression("report_form.report_form_id", this);
+		report_form = new AssociationExpression("report_form", this);
 		data_element_sms_position = new CollectionExpression("data_element_sms_position", this);
 	}
 	
@@ -52,6 +56,10 @@ public class Report_form_short_codeCriteria extends AbstractORMCriteria {
 	
 	public Report_form_short_codeCriteria() throws PersistentException {
 		this(EIHDMSPersistentManager.instance().getSession());
+	}
+	
+	public Report_formCriteria createReport_formCriteria() {
+		return new Report_formCriteria(createCriteria("report_form"));
 	}
 	
 	public Data_element_sms_positionCriteria createData_element_sms_positionCriteria() {

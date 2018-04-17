@@ -44,6 +44,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression kpi;
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
+	public final CollectionExpression report_form_short_code;
 	
 	public Report_formDetachedCriteria() {
 		super(eihdms.Report_form.class, eihdms.Report_formCriteria.class);
@@ -72,6 +73,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
+		report_form_short_code = new CollectionExpression("report_form_short_code", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -101,6 +103,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
+		report_form_short_code = new CollectionExpression("report_form_short_code", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
@@ -141,6 +144,10 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Base_dataDetachedCriteria createBase_dataCriteria() {
 		return new Base_dataDetachedCriteria(createCriteria("base_data"));
+	}
+	
+	public Report_form_short_codeDetachedCriteria createReport_form_short_codeCriteria() {
+		return new Report_form_short_codeDetachedCriteria(createCriteria("report_form_short_code"));
 	}
 	
 	public Report_form uniqueReport_form(PersistentSession session) {

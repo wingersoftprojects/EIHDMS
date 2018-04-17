@@ -53,6 +53,10 @@
                                         <p:menuitem value="Map APP-DB User" action="mapuserconn?faces-redirect=true">
                                         </p:menuitem>
                                     </p:submenu>
+                                    <p:submenu label="SMS Settings" icon="ui-icon-person" rendered="#{loginBean.user_detail.is_user_gen_admin==1}">
+                                        <p:menuitem value="Report Form Short Code" action="reportformshortcode?faces-redirect=true">
+                                        </p:menuitem> 
+                                    </p:submenu>
                                     <p:menuitem value="Configurations" action="applicationconfiguration?faces-redirect=true" icon="ui-icon-gear" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/> 
                                 </p:submenu>
 

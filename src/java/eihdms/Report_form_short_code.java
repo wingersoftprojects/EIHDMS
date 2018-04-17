@@ -365,6 +365,10 @@ public class Report_form_short_code implements Serializable {
 	
 	public boolean deleteAndDissociate()throws PersistentException {
 		try {
+			if(getReport_form() != null) {
+				getReport_form().getReport_form_short_code().remove(this);
+			}
+			
 			eihdms.Data_element_sms_position[] lData_element_sms_positions = (eihdms.Data_element_sms_position[])getData_element_sms_position().toArray(new eihdms.Data_element_sms_position[getData_element_sms_position().size()]);
 			for(int i = 0; i < lData_element_sms_positions.length; i++) {
 				lData_element_sms_positions[i].setReport_form_short_code(null);
@@ -379,6 +383,10 @@ public class Report_form_short_code implements Serializable {
 	
 	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
 		try {
+			if(getReport_form() != null) {
+				getReport_form().getReport_form_short_code().remove(this);
+			}
+			
 			eihdms.Data_element_sms_position[] lData_element_sms_positions = (eihdms.Data_element_sms_position[])getData_element_sms_position().toArray(new eihdms.Data_element_sms_position[getData_element_sms_position().size()]);
 			for(int i = 0; i < lData_element_sms_positions.length; i++) {
 				lData_element_sms_positions[i].setReport_form_short_code(null);
@@ -405,8 +413,8 @@ public class Report_form_short_code implements Serializable {
 	@Column(name="start_code", nullable=false, length=50)	
 	private String start_code;
 	
-	@Column(name="seperators", nullable=true, length=2)	
-	private Integer seperators;
+	@Column(name="number_of_separators", nullable=false, length=2)	
+	private Integer number_of_separators;
 	
 	@Column(name="short_code", nullable=false, length=255)	
 	private String short_code;
@@ -417,10 +425,10 @@ public class Report_form_short_code implements Serializable {
 	@Column(name="is_active", nullable=false, length=1)	
 	private int is_active;
 	
-	@Column(name="add_date", nullable=true)	
+	@Column(name="add_date", nullable=false)	
 	private java.sql.Timestamp add_date;
 	
-	@Column(name="add_by", nullable=true, length=10)	
+	@Column(name="add_by", nullable=false, length=10)	
 	private Integer add_by;
 	
 	@Column(name="last_edit_date", nullable=true)	
@@ -428,6 +436,11 @@ public class Report_form_short_code implements Serializable {
 	
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
+	
+	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") })	
+	private eihdms.Report_form report_form;
 	
 	@OneToMany(mappedBy="report_form_short_code", targetEntity=eihdms.Data_element_sms_position.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
@@ -454,16 +467,16 @@ public class Report_form_short_code implements Serializable {
 		return start_code;
 	}
 	
-	public void setSeperators(int value) {
-		setSeperators(new Integer(value));
+	public void setNumber_of_separators(int value) {
+		setNumber_of_separators(new Integer(value));
 	}
 	
-	public void setSeperators(Integer value) {
-		this.seperators = value;
+	public void setNumber_of_separators(Integer value) {
+		this.number_of_separators = value;
 	}
 	
-	public Integer getSeperators() {
-		return seperators;
+	public Integer getNumber_of_separators() {
+		return number_of_separators;
 	}
 	
 	public void setShort_code(String value) {
@@ -528,6 +541,14 @@ public class Report_form_short_code implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setReport_form(eihdms.Report_form value) {
+		this.report_form = value;
+	}
+	
+	public eihdms.Report_form getReport_form() {
+		return report_form;
 	}
 	
 	public void setData_element_sms_position(java.util.Set value) {

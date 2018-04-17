@@ -305,6 +305,11 @@ public class LoginBean implements Serializable {
         context.addMessage(null, new FacesMessage("Completed successfully", "Completed successfully"));
     }
 
+    public void Error(String error) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Error", error));
+    }
+
     /**
      * @return the user_detail
      */

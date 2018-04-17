@@ -411,10 +411,10 @@ public class Organisation implements Serializable {
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
 	
-	@Column(name="add_date", nullable=true)	
+	@Column(name="add_date", nullable=false)	
 	private java.sql.Timestamp add_date;
 	
-	@Column(name="add_by", nullable=true, length=10)	
+	@Column(name="add_by", nullable=false, length=10)	
 	private Integer add_by;
 	
 	@Column(name="last_edit_date", nullable=true)	

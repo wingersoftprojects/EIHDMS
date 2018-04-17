@@ -396,7 +396,7 @@ public class Interface_data_sms implements Serializable {
 	@Column(name="is_active", nullable=false, length=1)	
 	private int is_active;
 	
-	@Column(name="add_by", nullable=true, length=10)	
+	@Column(name="add_by", nullable=false, length=10)	
 	private Integer add_by;
 	
 	@Column(name="last_edit_date", nullable=true)	
