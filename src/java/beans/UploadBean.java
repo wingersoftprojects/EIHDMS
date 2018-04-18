@@ -1638,9 +1638,7 @@ public class UploadBean implements Serializable {
         } catch (PersistentException ex) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
-            Logger
-                    .getLogger(UploadBean.class
-                            .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         //System.out.println("END-BATCH:" + new Date());
         return batch;
