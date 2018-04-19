@@ -70,12 +70,26 @@ public class CountyBean extends AbstractBean<County> implements Serializable {
         }
         return temp;
     }
-    
+
     public List<County> getts(District district) {
         List<County> temp = new ArrayList<>();
         try {
             if (this.getEntityClass() != null && district != null) {
                 temp = (List<County>) EIHDMSPersistentManager.instance().getSession().createQuery("select c FROM County  c where c.is_deleted<>1 AND c.district=" + district.getDistrict_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<County> getts_id(int aDistrict_id) {
+        List<County> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && aDistrict_id != 0) {
+                temp = (List<County>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM County  d where d.is_deleted<>1 AND d.district=" + aDistrict_id).list();
             } else {
                 temp = new ArrayList<>();
             }

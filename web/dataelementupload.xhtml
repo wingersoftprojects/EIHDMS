@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Upload Data Elements">
+                <p:panelGrid columns="16" id="upload_dataelement_panel_grid">
+                    <p:outputLabel for="report_form" value="Report Form:" />
+                     <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form}" itemValue="#{item}"/>
+                       
+                    </p:selectOneMenu>              
+                    <p:commandButton value="Load Data Elements" action="#{upload_dataelementBean.loadDataElements(upload_dataelementBean.report_form)}"  /><br/><br/><br/>                   
+                </p:panelGrid><br/><br/><br/> 
+                <p:panelGrid columns="8"  id="upload_healthfacility_panel_grid">
+                     <p:commandButton value="Load Health Facilities" action="#{upload_dataelementBean.loadHealthfacilities()}" /><br/><br/>                     
+                </p:panelGrid>           
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

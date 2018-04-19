@@ -9,8 +9,11 @@
         <f:metadata>
             <f:event listener="#{user_categoryBean.init()}" type="preRenderView" />
             <f:event listener="#{user_detailBean.init()}" type="preRenderView" />
-            <f:event listener="#{user_detailBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{access_scopeBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_detailBean.initializelist()}" type="preRenderView" />        
             <f:event listener="#{user_categoryBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{access_scopeBean.initializelist()}" type="preRenderView" />
+            
         </f:metadata>
     </ui:define>
     <ui:define name="content">

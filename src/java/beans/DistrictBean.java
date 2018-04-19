@@ -10,6 +10,7 @@ import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Region;
 import java.io.Serializable;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -51,9 +52,23 @@ public class DistrictBean extends AbstractBean<District> implements Serializable
 
     public List<District> getts(Region region) {
         List<District> temp = new ArrayList<>();
+        ResultSet rs = null;
         try {
             if (this.getEntityClass() != null && region != null) {
                 temp = (List<District>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM District  d where d.is_deleted<>1 AND d.region=" + region.getRegion_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+    public List<District> getts_id(int aRegion_id) {
+        List<District> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && aRegion_id != 0) {
+                temp = (List<District>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM District  d where d.is_deleted<>1 AND d.region=" + aRegion_id).list();
             } else {
                 temp = new ArrayList<>();
             }

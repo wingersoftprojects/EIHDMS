@@ -27,6 +27,7 @@
                                         <p:menuitem value="Location"  action="locationsettings?faces-redirect=true" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"  />
                                         <p:menuitem value="Facility Level" action="facilitylevel?faces-redirect=true" rendered="#{loginBean.user_detail.is_user_gen_admin==1}" />
                                         <p:menuitem value="Health Facility" action="healthfacility?faces-redirect=true" rendered="#{loginBean.user_detail.is_user_gen_admin==1}" />
+                                        <p:menuitem value="Organisation" action="organisation?faces-redirect=true" rendered="#{loginBean.user_detail.is_user_gen_admin==1}" />
                                         <p:menuitem value="Location Tree" action="locationview?faces-redirect=true" />
                                     </p:submenu>
                                     <p:submenu label="Form Settings" icon="ui-icon-document" rendered="#{loginBean.user_detail.is_user_gen_admin==1}">
@@ -50,11 +51,15 @@
                                         </p:menuitem> 
                                         <p:menuitem value="User Details" action="userdetail?faces-redirect=true">
                                         </p:menuitem>
+                                        <p:menuitem value="User Access Scope" action="access_scope?faces-redirect=true">
+                                        </p:menuitem>
                                         <p:menuitem value="Map APP-DB User" action="mapuserconn?faces-redirect=true">
                                         </p:menuitem>
                                     </p:submenu>
                                     <p:submenu label="SMS Settings" icon="ui-icon-person" rendered="#{loginBean.user_detail.is_user_gen_admin==1}">
                                         <p:menuitem value="Report Form Short Code" action="reportformshortcode?faces-redirect=true">
+                                        </p:menuitem> 
+                                        <p:menuitem value="Phone Contact" action="phonecontact?faces-redirect=true">
                                         </p:menuitem> 
                                     </p:submenu>
                                     <p:menuitem value="Configurations" action="applicationconfiguration?faces-redirect=true" icon="ui-icon-gear" rendered="#{loginBean.user_detail.is_user_gen_admin==1}"/> 

@@ -61,4 +61,18 @@ public class Sub_districtBean extends AbstractBean<Sub_district> implements Seri
         }
         return temp;
     }
+        public List<Sub_district> getts_id(int aDistrict_id) {
+        List<Sub_district> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && aDistrict_id != 0) {
+                temp = (List<Sub_district>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Sub_district  d where d.is_deleted<>1 AND d.district=" + aDistrict_id).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
 }

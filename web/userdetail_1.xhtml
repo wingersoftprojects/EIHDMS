@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{user_categoryBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_detailBean.init()}" type="preRenderView" />
+            <f:event listener="#{user_detailBean.initializelist()}" type="preRenderView" />
+            <f:event listener="#{user_categoryBean.initializelist()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="main_form" rendered="#{loginBean.IsAllowed(0, 'View')}">
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="2">
+                <p:fieldset legend="User Categories Detail">
+                    <p:panelGrid columns="2" id="user_category">
+                        <p:outputLabel value="User Category Name:" for="user_category_name"/>
+                        <p:inputText id="user_category_name" value="#{user_categoryBean.selected.user_category_name}" required="true" requiredMessage="User category required"/>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectOneMenu id="is_active" value="#{user_categoryBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" action="#{user_categoryBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="@this,user_category_name,is_active" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{user_categoryBean.cancel()}" update="user_category" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="user_category_table" value="#{user_categoryBean.ts}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
+                    <p:column headerText="User Category Name">
+                        #{item.user_category_name}
+                    </p:column>
+                    <p:column headerText="Active?">
+                        #{generalUtilities.convertYesNo(item.is_active)}
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{user_categoryBean.edit(item)}" process="@this" update="@form" icon="ui-icon-pencil" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{user_categoryBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+
+
+                <p:fieldset legend="User Detail">
+                    <p:panelGrid columns="2" id="user_detail">
+                        <p:outputLabel value="User Category:" for="user_category_id"/>
+                        <p:selectOneMenu id="user_category_id" value="#{user_detailBean.selected.user_category}" converter="user_categoryConverter" required="true" requiredMessage="User Category is required">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{user_categoryBean.tsActive}" var="item" itemLabel="#{item.user_category_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Username:" for="user_name"/>
+                        <p:inputText id="user_name" value="#{user_detailBean.selected.user_name}" required="true" requiredMessage=" is required"/>
+                        <p:outputLabel value="Override password?:" for="override_password" rendered="#{user_detailBean.selected.user_detail_id>0}"/>
+                        <p:selectBooleanCheckbox id="override_password" value="#{user_detailBean.overridePassword}" rendered="#{user_detailBean.selected.user_detail_id>0}" required="true" requiredMessage="Override password field is needed">
+                            <p:ajax process="@this" update="@form"/>
+                        </p:selectBooleanCheckbox>
+                        
+                        <p:outputLabel value="Password:" id="label_password" for="password" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
+                        <p:password id="password" value="#{user_detailBean.selected.user_password}" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
+                        
+                        <p:outputLabel value="Confirm Password:" id="label_confirm_password" for="confirm_password" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
+                        <p:password id="confirm_password" value="#{user_detailBean.confirmPassword}" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Confirm password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
+                        
+                        <p:outputLabel value="First Name:" for="first_name"/>
+                        <p:inputText id="first_name" value="#{user_detailBean.selected.first_name}" required="true" requiredMessage="First Name is required"/>
+                        <p:outputLabel value="Second Name:" for="second_name"/>
+                        <p:inputText id="second_name" value="#{user_detailBean.selected.second_name}" required="true" requiredMessage="Second Name is required"/>
+                        <p:outputLabel value="Third Name:" for="third_name"/>
+                        <p:inputText id="third_name" value="#{user_detailBean.selected.third_name}" required="false"/>
+                        <p:outputLabel value="Is General Admin?:" for="is_user_gen_admin"/>
+                        <p:selectOneMenu id="is_user_gen_admin" value="#{user_detailBean.selected.is_user_gen_admin}" required="true" requiredMessage="Is general admin field is required">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Is Active?:" for="is_active2"/>
+                        <p:selectOneMenu id="is_active2" value="#{user_detailBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" icon="ui-icon-disk" action="#{user_detailBean.save_User_detail(loginBean.user_detail.user_detail_id)}" process="user_detail" update="@form"/>
+                        <p:commandButton value="CLEAR" action="#{user_detailBean.cancel()}" icon="ui-icon-cancel" process="@this" update="@form"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="user_detail_table" value="#{user_detailBean.ts}" var="item">
+                    <p:column headerText="Username">
+                        #{item.user_name}
+                    </p:column>
+                    <p:column headerText="First Name">
+                        #{item.first_name}
+                    </p:column>
+                    <p:column headerText="Second Name">
+                        #{item.second_name}
+                    </p:column>
+                    <p:column headerText="User Category">
+                        #{item.user_category.user_category_name}
+                    </p:column>
+                    <p:column headerText="General Admin?">
+                        #{generalUtilities.convertYesNo(item.is_user_gen_admin)}
+                    </p:column>
+                    <p:column headerText="Active?">
+                        #{generalUtilities.convertYesNo(item.is_active)}
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{user_detailBean.edit(item)}" process="@this" update="@form" icon="ui-icon-pencil" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{user_detailBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

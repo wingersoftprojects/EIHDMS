@@ -7,13 +7,20 @@ package beans;
 
 import eihdms.County;
 import eihdms.District;
+import eihdms.EIHDMSPersistentManager;
 import eihdms.Health_facility;
 import eihdms.Parish;
 import eihdms.Sub_county;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import org.hibernate.HibernateException;
+import org.orm.PersistentException;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -91,6 +98,21 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
             }
         }
     }
+    public List<Health_facility> getts_id(int aParish_id) {
+        List<Health_facility> temp = new ArrayList<>();
+        
+        try {
+            if (this.getEntityClass() != null && aParish_id != 0) {
+                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Health_facility  d where d.is_deleted<>1 AND d.parish=" + aParish_id).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
 
     public void getLocationTreeNodeByDistrict_F(District aDistrict) {
         LocationTreeNode = new DefaultTreeNode("LocationTreeNode", null);

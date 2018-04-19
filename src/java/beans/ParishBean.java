@@ -6,6 +6,7 @@
 package beans;
 
 import eihdms.County;
+import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Parish;
 import eihdms.Parish;
@@ -55,6 +56,20 @@ public class ParishBean extends AbstractBean<Parish> implements Serializable {
         try {
             if (this.getEntityClass() != null && sub_county != null) {
                 temp = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select p FROM Parish  p where p.is_deleted<>1 AND p.sub_county=" + sub_county.getSub_county_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+    public List<Parish> getts_id(int aDistrict_id) {
+        List<Parish> temp = new ArrayList<>();
+        
+        try {
+            if (this.getEntityClass() != null && aDistrict_id != 0) {
+                temp = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Parish  d where d.is_deleted<>1 AND d.district=" + aDistrict_id).list();
             } else {
                 temp = new ArrayList<>();
             }

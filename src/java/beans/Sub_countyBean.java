@@ -26,6 +26,7 @@ import org.orm.PersistentException;
 @ManagedBean
 @SessionScoped
 public class Sub_countyBean extends AbstractBean<Sub_county> implements Serializable {
+    private County county = new County();
 
     public Sub_countyBean() {
         super(Sub_county.class);
@@ -48,8 +49,6 @@ public class Sub_countyBean extends AbstractBean<Sub_county> implements Serializ
         this.loginBean = loginBean;
     }
 
-    private County county;
-
     public County getCounty() {
         return county;
     }
@@ -61,8 +60,8 @@ public class Sub_countyBean extends AbstractBean<Sub_county> implements Serializ
     public List<Sub_county> getts() {
         List<Sub_county> temp = new ArrayList<>();
         try {
-            if (this.getEntityClass() != null && county != null) {
-                temp = (List<Sub_county>) EIHDMSPersistentManager.instance().getSession().createQuery("select sc FROM Sub_county  sc where sc.is_deleted<>1 AND sc.county=" + county.getCounty_id()).list();
+            if (this.getEntityClass() != null && getCounty() != null) {
+                temp = (List<Sub_county>) EIHDMSPersistentManager.instance().getSession().createQuery("select sc FROM Sub_county  sc where sc.is_deleted<>1 AND sc.county=" + getCounty().getCounty_id()).list();
             } else {
                 temp = new ArrayList<>();
             }
@@ -77,6 +76,20 @@ public class Sub_countyBean extends AbstractBean<Sub_county> implements Serializ
         try {
             if (this.getEntityClass() != null && county != null) {
                 temp = (List<Sub_county>) EIHDMSPersistentManager.instance().getSession().createQuery("select sc FROM Sub_county  sc where sc.is_deleted<>1 AND sc.county=" + county.getCounty_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<Sub_county> getts_id(int aCounty_id) {
+        List<Sub_county> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && aCounty_id != 0) {
+                temp = (List<Sub_county>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Sub_county  d where d.is_deleted<>1 AND d.county=" + aCounty_id).list();
             } else {
                 temp = new ArrayList<>();
             }

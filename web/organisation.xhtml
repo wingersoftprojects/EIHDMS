@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{organisationBean.init()}" type="preRenderView" />
+            <f:event listener="#{organisationBean.initializelist()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+            <p:growl id="messages" showDetail="true" />
+            <p:panelGrid columns="2">
+                <p:fieldset legend="Organization Detail">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Organization Name" for="organisation"/>
+                        <p:inputText id="organisation" value="#{organisationBean.selected.organisation_name}" required="true" requiredMessage="Organisation name fiels is required"/>
+                        <p:outputLabel value="Is Active?:" for="is_active"/>
+                        <p:selectOneMenu id="is_active" value="#{organisationBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
+                        <p:commandButton value="SAVE" action="#{organisationBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="organisation,@this" update="@form"/>
+                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{organisationBean.cancel()}" update="@form" process="@this"/>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:dataTable id="organisations_table" value="#{organisationBean.ts}" var="item" rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,30,50,100">
+                    <p:column headerText="Organisation Name">
+                        <h:outputText value="#{item.organisation_name}"/>
+                    </p:column>
+                    <p:column headerText="Is Active?">
+                        <h:outputText value="#{item.is_active}"/>
+                    </p:column>
+                    
+                    <p:column headerText="">
+                        <p:commandButton value="Edit" action="#{organisationBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                        <p:commandButton value="Delete" actionListener="#{organisationBean.delete(item)}" update="@form" process="@this">
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
