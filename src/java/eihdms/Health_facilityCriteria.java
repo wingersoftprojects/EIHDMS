@@ -47,6 +47,7 @@ public class Health_facilityCriteria extends AbstractORMCriteria {
 	public final StringExpression ownership;
 	public final StringExpression short_name;
 	public final CollectionExpression base_data;
+	public final CollectionExpression access_scope;
 	
 	public Health_facilityCriteria(Criteria criteria) {
 		super(criteria);
@@ -78,6 +79,7 @@ public class Health_facilityCriteria extends AbstractORMCriteria {
 		ownership = new StringExpression("ownership", this);
 		short_name = new StringExpression("short_name", this);
 		base_data = new CollectionExpression("base_data", this);
+		access_scope = new CollectionExpression("access_scope", this);
 	}
 	
 	public Health_facilityCriteria(PersistentSession session) {
@@ -118,6 +120,10 @@ public class Health_facilityCriteria extends AbstractORMCriteria {
 	
 	public Base_dataCriteria createBase_dataCriteria() {
 		return new Base_dataCriteria(createCriteria("base_data"));
+	}
+	
+	public Access_scopeCriteria createAccess_scopeCriteria() {
+		return new Access_scopeCriteria(createCriteria("access_scope"));
 	}
 	
 	public Health_facility uniqueHealth_facility() {

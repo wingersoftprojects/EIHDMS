@@ -33,6 +33,7 @@ public class DistrictCriteria extends AbstractORMCriteria {
 	public final CollectionExpression county;
 	public final CollectionExpression health_facility;
 	public final CollectionExpression base_data;
+	public final CollectionExpression access_scope;
 	
 	public DistrictCriteria(Criteria criteria) {
 		super(criteria);
@@ -50,6 +51,7 @@ public class DistrictCriteria extends AbstractORMCriteria {
 		county = new CollectionExpression("county", this);
 		health_facility = new CollectionExpression("health_facility", this);
 		base_data = new CollectionExpression("base_data", this);
+		access_scope = new CollectionExpression("access_scope", this);
 	}
 	
 	public DistrictCriteria(PersistentSession session) {
@@ -78,6 +80,10 @@ public class DistrictCriteria extends AbstractORMCriteria {
 	
 	public Base_dataCriteria createBase_dataCriteria() {
 		return new Base_dataCriteria(createCriteria("base_data"));
+	}
+	
+	public Access_scopeCriteria createAccess_scopeCriteria() {
+		return new Access_scopeCriteria(createCriteria("access_scope"));
 	}
 	
 	public District uniqueDistrict() {

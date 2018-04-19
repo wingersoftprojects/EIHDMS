@@ -29,6 +29,7 @@ public class RegionCriteria extends AbstractORMCriteria {
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression district;
 	public final CollectionExpression health_facility;
+	public final CollectionExpression access_scope;
 	
 	public RegionCriteria(Criteria criteria) {
 		super(criteria);
@@ -42,6 +43,7 @@ public class RegionCriteria extends AbstractORMCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		district = new CollectionExpression("district", this);
 		health_facility = new CollectionExpression("health_facility", this);
+		access_scope = new CollectionExpression("access_scope", this);
 	}
 	
 	public RegionCriteria(PersistentSession session) {
@@ -58,6 +60,10 @@ public class RegionCriteria extends AbstractORMCriteria {
 	
 	public Health_facilityCriteria createHealth_facilityCriteria() {
 		return new Health_facilityCriteria(createCriteria("health_facility"));
+	}
+	
+	public Access_scopeCriteria createAccess_scopeCriteria() {
+		return new Access_scopeCriteria(createCriteria("access_scope"));
 	}
 	
 	public Region uniqueRegion() {

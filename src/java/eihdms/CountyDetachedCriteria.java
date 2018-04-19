@@ -32,6 +32,7 @@ public class CountyDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression sub_county;
 	public final CollectionExpression health_facility;
 	public final CollectionExpression base_data;
+	public final CollectionExpression access_scope;
 	
 	public CountyDetachedCriteria() {
 		super(eihdms.County.class, eihdms.CountyCriteria.class);
@@ -48,6 +49,7 @@ public class CountyDetachedCriteria extends AbstractORMDetachedCriteria {
 		sub_county = new CollectionExpression("sub_county", this.getDetachedCriteria());
 		health_facility = new CollectionExpression("health_facility", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
+		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
 	}
 	
 	public CountyDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -65,6 +67,7 @@ public class CountyDetachedCriteria extends AbstractORMDetachedCriteria {
 		sub_county = new CollectionExpression("sub_county", this.getDetachedCriteria());
 		health_facility = new CollectionExpression("health_facility", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
+		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
 	}
 	
 	public DistrictDetachedCriteria createDistrictCriteria() {
@@ -81,6 +84,10 @@ public class CountyDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Base_dataDetachedCriteria createBase_dataCriteria() {
 		return new Base_dataDetachedCriteria(createCriteria("base_data"));
+	}
+	
+	public Access_scopeDetachedCriteria createAccess_scopeCriteria() {
+		return new Access_scopeDetachedCriteria(createCriteria("access_scope"));
 	}
 	
 	public County uniqueCounty(PersistentSession session) {

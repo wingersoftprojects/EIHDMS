@@ -397,6 +397,10 @@ public class Health_facility implements Serializable {
 			for(int i = 0; i < lBase_datas.length; i++) {
 				lBase_datas[i].setHealth_facility(null);
 			}
+			eihdms.Access_scope[] lAccess_scopes = (eihdms.Access_scope[])getAccess_scope().toArray(new eihdms.Access_scope[getAccess_scope().size()]);
+			for(int i = 0; i < lAccess_scopes.length; i++) {
+				lAccess_scopes[i].setHealth_facility(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -438,6 +442,10 @@ public class Health_facility implements Serializable {
 			eihdms.Base_data[] lBase_datas = (eihdms.Base_data[])getBase_data().toArray(new eihdms.Base_data[getBase_data().size()]);
 			for(int i = 0; i < lBase_datas.length; i++) {
 				lBase_datas[i].setHealth_facility(null);
+			}
+			eihdms.Access_scope[] lAccess_scopes = (eihdms.Access_scope[])getAccess_scope().toArray(new eihdms.Access_scope[getAccess_scope().size()]);
+			for(int i = 0; i < lAccess_scopes.length; i++) {
+				lAccess_scopes[i].setHealth_facility(null);
 			}
 			try {
 				session.delete(this);
@@ -533,6 +541,11 @@ public class Health_facility implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set base_data = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="health_facility", targetEntity=eihdms.Access_scope.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set access_scope = new java.util.HashSet();
 	
 	private void setHealth_facility_id(int value) {
 		this.health_facility_id = value;
@@ -720,6 +733,15 @@ public class Health_facility implements Serializable {
 	
 	public java.util.Set getBase_data() {
 		return base_data;
+	}
+	
+	
+	public void setAccess_scope(java.util.Set value) {
+		this.access_scope = value;
+	}
+	
+	public java.util.Set getAccess_scope() {
+		return access_scope;
 	}
 	
 	

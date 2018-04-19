@@ -388,6 +388,10 @@ public class User_detail implements Serializable {
 			for(int i = 0; i < lUser_actions.length; i++) {
 				lUser_actions[i].setUser_detail(null);
 			}
+			eihdms.Access_scope[] lAccess_scopes = (eihdms.Access_scope[])getAccess_scope().toArray(new eihdms.Access_scope[getAccess_scope().size()]);
+			for(int i = 0; i < lAccess_scopes.length; i++) {
+				lAccess_scopes[i].setUser_detail(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -417,6 +421,10 @@ public class User_detail implements Serializable {
 			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
 			for(int i = 0; i < lUser_actions.length; i++) {
 				lUser_actions[i].setUser_detail(null);
+			}
+			eihdms.Access_scope[] lAccess_scopes = (eihdms.Access_scope[])getAccess_scope().toArray(new eihdms.Access_scope[getAccess_scope().size()]);
+			for(int i = 0; i < lAccess_scopes.length; i++) {
+				lAccess_scopes[i].setUser_detail(null);
 			}
 			try {
 				session.delete(this);
@@ -500,6 +508,11 @@ public class User_detail implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set user_action = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.Access_scope.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set access_scope = new java.util.HashSet();
 	
 	private void setUser_detail_id(int value) {
 		this.user_detail_id = value;
@@ -665,6 +678,15 @@ public class User_detail implements Serializable {
 	
 	public java.util.Set getUser_action() {
 		return user_action;
+	}
+	
+	
+	public void setAccess_scope(java.util.Set value) {
+		this.access_scope = value;
+	}
+	
+	public java.util.Set getAccess_scope() {
+		return access_scope;
 	}
 	
 	

@@ -18,6 +18,7 @@ import org.orm.cfg.JDBCConnectionSetting;
 import org.hibernate.*;
 import java.util.Properties;
 import org.hibernate.cfg.*;
+import org.hibernate.boot.MetadataSources;
 
 public class EIHDMSPersistentManager extends PersistentManager {
 	private static final String PROJECT_NAME = "Architecture";
@@ -34,54 +35,53 @@ public class EIHDMSPersistentManager extends PersistentManager {
 	}
 	
 	@Override
-	public Configuration createConfiguration() {
-		Configuration configuration = new Configuration();
-		configuration.addAnnotatedClass(eihdms.Group_right.class);
-		configuration.addAnnotatedClass(eihdms.Region.class);
-		configuration.addAnnotatedClass(eihdms.District.class);
-		configuration.addAnnotatedClass(eihdms.Sub_district.class);
-		configuration.addAnnotatedClass(eihdms.County.class);
-		configuration.addAnnotatedClass(eihdms.Sub_county.class);
-		configuration.addAnnotatedClass(eihdms.Parish.class);
-		configuration.addAnnotatedClass(eihdms.Health_facility.class);
-		configuration.addAnnotatedClass(eihdms.Facility_level.class);
-		configuration.addAnnotatedClass(eihdms.Report_form.class);
-		configuration.addAnnotatedClass(eihdms.Section.class);
-		configuration.addAnnotatedClass(eihdms.Interface_data.class);
-		configuration.addAnnotatedClass(eihdms.Data_element.class);
-		configuration.addAnnotatedClass(eihdms.Base_data.class);
-		configuration.addAnnotatedClass(eihdms.Validation_rule.class);
-		configuration.addAnnotatedClass(eihdms.Standard_rule.class);
-		configuration.addAnnotatedClass(eihdms.User_detail.class);
-		configuration.addAnnotatedClass(eihdms.Group_user.class);
-		configuration.addAnnotatedClass(eihdms.User_category.class);
-		configuration.addAnnotatedClass(eihdms.Group_detail.class);
-		configuration.addAnnotatedClass(eihdms.Login_session.class);
-		configuration.addAnnotatedClass(eihdms.User_action.class);
-		configuration.addAnnotatedClass(eihdms.Technical_area.class);
-		configuration.addAnnotatedClass(eihdms.Sub_section.class);
-		configuration.addAnnotatedClass(eihdms.Report_form_group.class);
-		configuration.addAnnotatedClass(eihdms.Application_configuration.class);
-		configuration.addAnnotatedClass(eihdms.Temp_data_element.class);
-		configuration.addAnnotatedClass(eihdms.Temp_health_facility.class);
-		configuration.addAnnotatedClass(eihdms.Financial_year.class);
-		configuration.addAnnotatedClass(eihdms.Batch.class);
-		configuration.addAnnotatedClass(eihdms.Kpi.class);
-		configuration.addAnnotatedClass(eihdms.Data_obligation.class);
-		configuration.addAnnotatedClass(eihdms.Base_data_deleted.class);
-		configuration.addAnnotatedClass(eihdms.Interface_data_temp.class);
-		configuration.addAnnotatedClass(eihdms.Validation_report.class);
-		configuration.addAnnotatedClass(eihdms.Loaded_data_summary.class);
-		configuration.addAnnotatedClass(eihdms.App_db_user_map.class);
-		configuration.addAnnotatedClass(eihdms.Kpi_summary_function.class);
-		configuration.addAnnotatedClass(eihdms.Interface_data_sms.class);
-		configuration.addAnnotatedClass(eihdms.Phone_contact.class);
-		configuration.addAnnotatedClass(eihdms.Data_element_sms_position.class);
-		configuration.addAnnotatedClass(eihdms.Report_form_short_code.class);
-		configuration.addAnnotatedClass(eihdms.Organisation.class);
-		configuration.addAnnotatedClass(eihdms.Access_scope.class);
-		configuration.buildMappings();
-		return configuration;
+	protected void configureMetadataSources(MetadataSources aMetadataSources) {
+		super.configureMetadataSources(aMetadataSources);
+		aMetadataSources.addAnnotatedClass(eihdms.Group_right.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Region.class);
+		aMetadataSources.addAnnotatedClass(eihdms.District.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Sub_district.class);
+		aMetadataSources.addAnnotatedClass(eihdms.County.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Sub_county.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Parish.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Health_facility.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Facility_level.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Report_form.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Section.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Interface_data.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Data_element.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Base_data.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Validation_rule.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Standard_rule.class);
+		aMetadataSources.addAnnotatedClass(eihdms.User_detail.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Group_user.class);
+		aMetadataSources.addAnnotatedClass(eihdms.User_category.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Group_detail.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Login_session.class);
+		aMetadataSources.addAnnotatedClass(eihdms.User_action.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Technical_area.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Sub_section.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Report_form_group.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Application_configuration.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Temp_data_element.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Temp_health_facility.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Financial_year.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Batch.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Kpi.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Data_obligation.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Base_data_deleted.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Interface_data_temp.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Validation_report.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Loaded_data_summary.class);
+		aMetadataSources.addAnnotatedClass(eihdms.App_db_user_map.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Kpi_summary_function.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Interface_data_sms.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Phone_contact.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Data_element_sms_position.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Report_form_short_code.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Organisation.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Access_scope.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Report_form_update.class);
 	}
 	
 	public String getProjectName() {

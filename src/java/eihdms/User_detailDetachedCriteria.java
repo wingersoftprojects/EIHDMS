@@ -40,6 +40,7 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression group_user;
 	public final CollectionExpression login_session;
 	public final CollectionExpression user_action;
+	public final CollectionExpression access_scope;
 	
 	public User_detailDetachedCriteria() {
 		super(eihdms.User_detail.class, eihdms.User_detailCriteria.class);
@@ -64,6 +65,7 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
 		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
+		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
 	}
 	
 	public User_detailDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -89,6 +91,7 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
 		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
+		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
 	}
 	
 	public User_categoryDetachedCriteria createUser_categoryCriteria() {
@@ -109,6 +112,10 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public User_actionDetachedCriteria createUser_actionCriteria() {
 		return new User_actionDetachedCriteria(createCriteria("user_action"));
+	}
+	
+	public Access_scopeDetachedCriteria createAccess_scopeCriteria() {
+		return new Access_scopeDetachedCriteria(createCriteria("access_scope"));
 	}
 	
 	public User_detail uniqueUser_detail(PersistentSession session) {

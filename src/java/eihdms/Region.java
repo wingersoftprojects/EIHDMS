@@ -373,6 +373,10 @@ public class Region implements Serializable {
 			for(int i = 0; i < lHealth_facilitys.length; i++) {
 				lHealth_facilitys[i].setRegion(null);
 			}
+			eihdms.Access_scope[] lAccess_scopes = (eihdms.Access_scope[])getAccess_scope().toArray(new eihdms.Access_scope[getAccess_scope().size()]);
+			for(int i = 0; i < lAccess_scopes.length; i++) {
+				lAccess_scopes[i].setRegion(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -390,6 +394,10 @@ public class Region implements Serializable {
 			eihdms.Health_facility[] lHealth_facilitys = (eihdms.Health_facility[])getHealth_facility().toArray(new eihdms.Health_facility[getHealth_facility().size()]);
 			for(int i = 0; i < lHealth_facilitys.length; i++) {
 				lHealth_facilitys[i].setRegion(null);
+			}
+			eihdms.Access_scope[] lAccess_scopes = (eihdms.Access_scope[])getAccess_scope().toArray(new eihdms.Access_scope[getAccess_scope().size()]);
+			for(int i = 0; i < lAccess_scopes.length; i++) {
+				lAccess_scopes[i].setRegion(null);
 			}
 			try {
 				session.delete(this);
@@ -440,6 +448,11 @@ public class Region implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set health_facility = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="region", targetEntity=eihdms.Access_scope.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set access_scope = new java.util.HashSet();
 	
 	private void setRegion_id(int value) {
 		this.region_id = value;
@@ -540,6 +553,15 @@ public class Region implements Serializable {
 	
 	public java.util.Set getHealth_facility() {
 		return health_facility;
+	}
+	
+	
+	public void setAccess_scope(java.util.Set value) {
+		this.access_scope = value;
+	}
+	
+	public java.util.Set getAccess_scope() {
+		return access_scope;
 	}
 	
 	

@@ -31,6 +31,7 @@ public class ParishDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression health_facility;
 	public final CollectionExpression base_data;
+	public final CollectionExpression access_scope;
 	
 	public ParishDetachedCriteria() {
 		super(eihdms.Parish.class, eihdms.ParishCriteria.class);
@@ -46,6 +47,7 @@ public class ParishDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		health_facility = new CollectionExpression("health_facility", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
+		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
 	}
 	
 	public ParishDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -62,6 +64,7 @@ public class ParishDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		health_facility = new CollectionExpression("health_facility", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
+		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
 	}
 	
 	public Sub_countyDetachedCriteria createSub_countyCriteria() {
@@ -74,6 +77,10 @@ public class ParishDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Base_dataDetachedCriteria createBase_dataCriteria() {
 		return new Base_dataDetachedCriteria(createCriteria("base_data"));
+	}
+	
+	public Access_scopeDetachedCriteria createAccess_scopeCriteria() {
+		return new Access_scopeDetachedCriteria(createCriteria("access_scope"));
 	}
 	
 	public Parish uniqueParish(PersistentSession session) {

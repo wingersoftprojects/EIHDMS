@@ -363,26 +363,127 @@ public class Access_scope implements Serializable {
 		}
 	}
 	
+	public boolean deleteAndDissociate()throws PersistentException {
+		try {
+			if(getUser_detail() != null) {
+				getUser_detail().getAccess_scope().remove(this);
+			}
+			
+			if(getRegion() != null) {
+				getRegion().getAccess_scope().remove(this);
+			}
+			
+			if(getDistrict() != null) {
+				getDistrict().getAccess_scope().remove(this);
+			}
+			
+			if(getCounty() != null) {
+				getCounty().getAccess_scope().remove(this);
+			}
+			
+			if(getSub_county() != null) {
+				getSub_county().getAccess_scope().remove(this);
+			}
+			
+			if(getParish() != null) {
+				getParish().getAccess_scope().remove(this);
+			}
+			
+			if(getHealth_facility() != null) {
+				getHealth_facility().getAccess_scope().remove(this);
+			}
+			
+			return delete();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			throw new PersistentException(e);
+		}
+	}
+	
+	public boolean deleteAndDissociate(org.orm.PersistentSession session)throws PersistentException {
+		try {
+			if(getUser_detail() != null) {
+				getUser_detail().getAccess_scope().remove(this);
+			}
+			
+			if(getRegion() != null) {
+				getRegion().getAccess_scope().remove(this);
+			}
+			
+			if(getDistrict() != null) {
+				getDistrict().getAccess_scope().remove(this);
+			}
+			
+			if(getCounty() != null) {
+				getCounty().getAccess_scope().remove(this);
+			}
+			
+			if(getSub_county() != null) {
+				getSub_county().getAccess_scope().remove(this);
+			}
+			
+			if(getParish() != null) {
+				getParish().getAccess_scope().remove(this);
+			}
+			
+			if(getHealth_facility() != null) {
+				getHealth_facility().getAccess_scope().remove(this);
+			}
+			
+			try {
+				session.delete(this);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			throw new PersistentException(e);
+		}
+	}
+	
 	@Column(name="access_scope_id", nullable=false, length=11)	
 	@Id	
 	@GeneratedValue(generator="EIHDMS_ACCESS_SCOPE_ACCESS_SCOPE_ID_GENERATOR")	
 	@org.hibernate.annotations.GenericGenerator(name="EIHDMS_ACCESS_SCOPE_ACCESS_SCOPE_ID_GENERATOR", strategy="native")	
 	private int access_scope_id;
 	
-	@Column(name="user_detail_id", nullable=true, length=11)	
-	private Integer user_detail_id;
+	@ManyToOne(targetEntity=eihdms.User_detail.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="user_detail_id", referencedColumnName="user_detail_id", nullable=false) })	
+	private eihdms.User_detail user_detail;
 	
-	@Column(name="region_id", nullable=true, length=11)	
-	private Integer region_id;
+	@ManyToOne(targetEntity=eihdms.Region.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="region_id", referencedColumnName="region_id") })	
+	private eihdms.Region region;
 	
-	@Column(name="district_id", nullable=true, length=11)	
-	private Integer district_id;
+	@ManyToOne(targetEntity=eihdms.District.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="district_id", referencedColumnName="district_id") })	
+	private eihdms.District district;
 	
-	@Column(name="parish_id", nullable=true, length=11)	
-	private Integer parish_id;
+	@ManyToOne(targetEntity=eihdms.County.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="county_id", referencedColumnName="county_id") })	
+	private eihdms.County county;
 	
-	@Column(name="health_facility_id", nullable=true, length=11)	
-	private Integer health_facility_id;
+	@ManyToOne(targetEntity=eihdms.Sub_county.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id") })	
+	private eihdms.Sub_county sub_county;
+	
+	@ManyToOne(targetEntity=eihdms.Parish.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="parish_id", referencedColumnName="parish_id") })	
+	private eihdms.Parish parish;
+	
+	@ManyToOne(targetEntity=eihdms.Health_facility.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="health_facility_id", referencedColumnName="health_facility_id") })	
+	private eihdms.Health_facility health_facility;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	
 	private int is_deleted;
@@ -412,66 +513,6 @@ public class Access_scope implements Serializable {
 	
 	public int getORMID() {
 		return getAccess_scope_id();
-	}
-	
-	public void setUser_detail_id(int value) {
-		setUser_detail_id(new Integer(value));
-	}
-	
-	public void setUser_detail_id(Integer value) {
-		this.user_detail_id = value;
-	}
-	
-	public Integer getUser_detail_id() {
-		return user_detail_id;
-	}
-	
-	public void setRegion_id(int value) {
-		setRegion_id(new Integer(value));
-	}
-	
-	public void setRegion_id(Integer value) {
-		this.region_id = value;
-	}
-	
-	public Integer getRegion_id() {
-		return region_id;
-	}
-	
-	public void setDistrict_id(int value) {
-		setDistrict_id(new Integer(value));
-	}
-	
-	public void setDistrict_id(Integer value) {
-		this.district_id = value;
-	}
-	
-	public Integer getDistrict_id() {
-		return district_id;
-	}
-	
-	public void setParish_id(int value) {
-		setParish_id(new Integer(value));
-	}
-	
-	public void setParish_id(Integer value) {
-		this.parish_id = value;
-	}
-	
-	public Integer getParish_id() {
-		return parish_id;
-	}
-	
-	public void setHealth_facility_id(int value) {
-		setHealth_facility_id(new Integer(value));
-	}
-	
-	public void setHealth_facility_id(Integer value) {
-		this.health_facility_id = value;
-	}
-	
-	public Integer getHealth_facility_id() {
-		return health_facility_id;
 	}
 	
 	public void setIs_deleted(int value) {
@@ -528,6 +569,62 @@ public class Access_scope implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setRegion(eihdms.Region value) {
+		this.region = value;
+	}
+	
+	public eihdms.Region getRegion() {
+		return region;
+	}
+	
+	public void setCounty(eihdms.County value) {
+		this.county = value;
+	}
+	
+	public eihdms.County getCounty() {
+		return county;
+	}
+	
+	public void setSub_county(eihdms.Sub_county value) {
+		this.sub_county = value;
+	}
+	
+	public eihdms.Sub_county getSub_county() {
+		return sub_county;
+	}
+	
+	public void setParish(eihdms.Parish value) {
+		this.parish = value;
+	}
+	
+	public eihdms.Parish getParish() {
+		return parish;
+	}
+	
+	public void setHealth_facility(eihdms.Health_facility value) {
+		this.health_facility = value;
+	}
+	
+	public eihdms.Health_facility getHealth_facility() {
+		return health_facility;
+	}
+	
+	public void setDistrict(eihdms.District value) {
+		this.district = value;
+	}
+	
+	public eihdms.District getDistrict() {
+		return district;
+	}
+	
+	public void setUser_detail(eihdms.User_detail value) {
+		this.user_detail = value;
+	}
+	
+	public eihdms.User_detail getUser_detail() {
+		return user_detail;
 	}
 	
 	/**

@@ -32,6 +32,7 @@ public class CountyCriteria extends AbstractORMCriteria {
 	public final CollectionExpression sub_county;
 	public final CollectionExpression health_facility;
 	public final CollectionExpression base_data;
+	public final CollectionExpression access_scope;
 	
 	public CountyCriteria(Criteria criteria) {
 		super(criteria);
@@ -48,6 +49,7 @@ public class CountyCriteria extends AbstractORMCriteria {
 		sub_county = new CollectionExpression("sub_county", this);
 		health_facility = new CollectionExpression("health_facility", this);
 		base_data = new CollectionExpression("base_data", this);
+		access_scope = new CollectionExpression("access_scope", this);
 	}
 	
 	public CountyCriteria(PersistentSession session) {
@@ -72,6 +74,10 @@ public class CountyCriteria extends AbstractORMCriteria {
 	
 	public Base_dataCriteria createBase_dataCriteria() {
 		return new Base_dataCriteria(createCriteria("base_data"));
+	}
+	
+	public Access_scopeCriteria createAccess_scopeCriteria() {
+		return new Access_scopeCriteria(createCriteria("access_scope"));
 	}
 	
 	public County uniqueCounty() {

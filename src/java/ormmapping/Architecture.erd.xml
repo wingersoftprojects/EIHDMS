@@ -6530,10 +6530,11 @@
     </Column>
     <Column name="user_detail_id">
       <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>user_detail.user_detail_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
-      <Nullable>true</Nullable>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -6541,7 +6542,8 @@
     </Column>
     <Column name="region_id">
       <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>region.region_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
       <Nullable>true</Nullable>
@@ -6552,7 +6554,8 @@
     </Column>
     <Column name="district_id">
       <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>district.district_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
       <Nullable>true</Nullable>
@@ -6561,9 +6564,34 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="county_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>county.county_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="sub_county_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>sub_county.sub_county_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
     <Column name="parish_id">
       <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>parish.parish_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
       <Nullable>true</Nullable>
@@ -6574,7 +6602,8 @@
     </Column>
     <Column name="health_facility_id">
       <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>health_facility.health_facility_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
       <Nullable>true</Nullable>
@@ -6644,6 +6673,41 @@
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+  </Entity>
+  <Entity name="report_form_update" Unlogged="false" PKClustered="0">
+    <Column name="report_form_update_id">
+      <PrimaryKey>true</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="report_form_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="last_edit_date">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>20</Type>
+      <Length>0</Length>
+      <Nullable>false</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -7168,6 +7232,76 @@
     </Columns>
     <RefColumns>
       <Column>report_form_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKaccess_sco658777">
+    <ReferenceTable>access_scope</ReferenceTable>
+    <ReferencedTable>region</ReferencedTable>
+    <Columns>
+      <Column>region_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>region_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKaccess_sco114602">
+    <ReferenceTable>access_scope</ReferenceTable>
+    <ReferencedTable>county</ReferencedTable>
+    <Columns>
+      <Column>county_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>county_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKaccess_sco450360">
+    <ReferenceTable>access_scope</ReferenceTable>
+    <ReferencedTable>sub_county</ReferencedTable>
+    <Columns>
+      <Column>sub_county_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>sub_county_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKaccess_sco579026">
+    <ReferenceTable>access_scope</ReferenceTable>
+    <ReferencedTable>parish</ReferencedTable>
+    <Columns>
+      <Column>parish_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>parish_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKaccess_sco613427">
+    <ReferenceTable>access_scope</ReferenceTable>
+    <ReferencedTable>health_facility</ReferencedTable>
+    <Columns>
+      <Column>health_facility_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>health_facility_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKaccess_sco464218">
+    <ReferenceTable>access_scope</ReferenceTable>
+    <ReferencedTable>district</ReferencedTable>
+    <Columns>
+      <Column>district_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>district_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKaccess_sco501789">
+    <ReferenceTable>access_scope</ReferenceTable>
+    <ReferencedTable>user_detail</ReferencedTable>
+    <Columns>
+      <Column>user_detail_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>user_detail_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>
