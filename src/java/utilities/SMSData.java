@@ -71,8 +71,13 @@ public class SMSData {
                 String[] splitString = sms.split(" ");
                 interface_data_sms.setAdd_date(new Timestamp(new Date().getTime()));
                 interface_data_sms.setPhone(phone);
+                try{
                 interface_data_sms.setReport_form_code(splitString[0]);
                 interface_data_sms.setSms(splitString[1]);
+                }catch(Exception ex){
+                interface_data_sms.setReport_form_code("");
+                interface_data_sms.setSms(sms);    
+                }
                 interface_data_sms.setScode(scode);
                 interface_data_sms.setStatus_code("R");
                 interface_data_sms.setStatus_desc("Received");
@@ -87,7 +92,7 @@ public class SMSData {
                 }
 
                 transaction.commit();
-                this.decode_and_load_sms(splitString[1], phone, splitString[0]);
+                this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code());
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
