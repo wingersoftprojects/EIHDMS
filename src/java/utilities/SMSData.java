@@ -72,8 +72,8 @@ public class SMSData {
                 interface_data_sms.setAdd_date(new Timestamp(new Date().getTime()));
                 interface_data_sms.setPhone(phone);
                 try{
-                interface_data_sms.setReport_form_code(splitString[0]);
-                interface_data_sms.setSms(splitString[1]);
+                interface_data_sms.setReport_form_code(splitString[1]);
+                interface_data_sms.setSms(splitString[2]);
                 }catch(Exception ex){
                 interface_data_sms.setReport_form_code("");
                 interface_data_sms.setSms(sms);    
