@@ -5,11 +5,13 @@
  */
 package beans;
 
+import configurations.ConfigurationsFileBean;
 import connections.DBConnection;
 import eihdms.App_db_user_map;
 import eihdms.Group_right;
 import eihdms.Login_session;
 import eihdms.User_detail;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -246,6 +248,26 @@ public class LoginBean implements Serializable {
             } else {
                 conn = DriverManager.getConnection(DBConnection.getMySQL_DB_URL(), app_db_user_map.getDb_user(), Security.Decrypt(app_db_user_map.getDb_password()));
             }
+        } catch (ClassNotFoundException | SQLException e) {
+        }
+        return conn;
+    }
+
+    public Connection getMySQLConnection_System_User() {
+//        try {
+//            ConfigurationsFileBean.readConfigurationsFile();
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+//            if (app_db_user_map == null) {
+            //conn = DriverManager.getConnection(DBConnection.getMySQL_DB_URL(), DBConnection.getMySQL_USER(), DBConnection.getMySQL_PASSWORD());
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/eihdms", "eihdms_u1", "eihdms_u1");
+//            } else {
+            //conn = DriverManager.getConnection(DBConnection.getMySQL_DB_URL(), app_db_user_map.getDb_user(), Security.Decrypt(app_db_user_map.getDb_password()));
+            //}
         } catch (ClassNotFoundException | SQLException e) {
         }
         return conn;

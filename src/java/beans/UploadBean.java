@@ -1505,6 +1505,21 @@ public class UploadBean implements Serializable {
         }
     }
 
+    public void validate_and_load_data_to_base_SMS(int batch_id, Report_form report_form_SMS, Report_form_group report_form_groupSMS) {
+        String sql = "{call sp_validate_data(?,?,?,?)}";
+        ResultSet rs = null;
+        try (Connection conn = loginBean.getMySQLConnection_System_User();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            ps.setInt(1, report_form_SMS.getReport_form_id());
+            ps.setInt(2, report_form_groupSMS.getReport_form_group_id());
+            ps.setInt(3, batch_id);
+            ps.setString(4, report_form_SMS.getLowest_report_form_level());
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }
+
     public void delete_base_data(String delete_by) {
         if (BaseDataStr.length() == 0) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -1635,6 +1650,29 @@ public class UploadBean implements Serializable {
             batch.setIs_deleted(0);
             batch.setIs_active(1);
             batch.save();
+        } catch (PersistentException ex) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //System.out.println("END-BATCH:" + new Date());
+        return batch;
+    }
+
+    public Batch newBatch_SMS(PersistentTransaction transaction) {
+        //PersistentSession session;
+        Batch batch = null;
+        //System.out.println("START-BATCH:" + new Date());
+        try {
+            //session = loginBean.getInstance().getSession();
+            //transaction = session.beginTransaction();
+            batch = new Batch();
+            batch.setAdd_date(new Timestamp(new Date().getTime()));
+            batch.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+            batch.setIs_deleted(0);
+            batch.setIs_active(1);
+            batch.save();
+            transaction.commit();
         } catch (PersistentException ex) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
@@ -1826,6 +1864,217 @@ public class UploadBean implements Serializable {
                 context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    public void load_interface(List<Interface_data> interface_dataList, Report_form report_form_SMS, Report_form_group report_form_group_SMS) {
+        try {
+            PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+            Batch batch;
+            loginBean = new LoginBean();
+            try {
+                loginBean.setUser_detail(User_detail.getUser_detailByORMID(1));
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String sql = "";
+//            if (!interface_dataList.isEmpty()) {
+            batch = newBatch_SMS(transaction);
+//                try {
+//                    for (Interface_data i : interface_dataList) {
+//                        i.setStatus_u("Pass");
+//                        i.setStatus_u_desc("Uploaded");
+//                        i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+//                        i.save();
+//                    }
+//                    transaction.commit();
+            //System.out.println("START-INSERT-INTERFACE: " + new Date());
+            //3,5,5,5,2,4,4=28
+            sql = "INSERT INTO interface_data(batch_id,data_element_id,data_element_value,"
+                    + "health_facility_name,parish_name,sub_county_name,county_name,district_name,"
+                    + "health_facility_id,parish_id,sub_county_id,county_id,district_id,"
+                    + "report_period_year,report_period_quarter,report_period_bi_month,report_period_month,report_period_week,"
+                    + "report_period_from_date,report_period_to_date,"
+                    + "status_u,status_u_desc,is_deleted,is_active,"
+                    + "add_date,add_by,report_form_id,report_form_group_id,entry_mode) "
+                    + "VALUES("
+                    + "?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,"
+                    + "?,?,?,?,"
+                    + "?,?,?,?,?)";
+            try (
+                    Connection connection = loginBean.getMySQLConnection_System_User();
+                    PreparedStatement ps = connection.prepareStatement(sql);) {
+                connection.setAutoCommit(false);
+                int j = 0;
+                for (Interface_data i : interface_dataList) {
+                    try {
+                        ps.setInt(1, batch.getBatch_id());
+                    } catch (NullPointerException npe) {
+                        ps.setInt(1, 0);
+                        ps.setObject(1, null);
+                    }
+                    try {
+                        ps.setInt(2, i.getData_element().getData_element_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(2, null);
+                    }
+                    try {
+                        ps.setString(3, i.getData_element_value());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(3, null);
+                    }
+                    try {
+                        ps.setString(4, i.getHealth_facility_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(4, null);
+                    }
+                    try {
+                        ps.setString(5, i.getParish_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(5, null);
+                    }
+                    try {
+                        ps.setString(6, i.getSub_county_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(6, null);
+                    }
+                    try {
+                        ps.setString(7, i.getCounty_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(7, null);
+                    }
+                    try {
+                        ps.setString(8, i.getDistrict_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(8, null);
+                    }
+                    try {
+                        ps.setInt(9, i.getHealth_facility_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(9, null);
+                    }
+                    try {
+                        ps.setInt(10, i.getParish_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(10, null);
+                    }
+                    try {
+                        ps.setInt(11, i.getSub_county_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(11, null);
+                    }
+                    try {
+                        ps.setInt(12, i.getCounty_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(12, null);
+                    }
+                    try {
+                        ps.setInt(13, i.getDistrict_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(13, null);
+                    }
+                    try {
+                        ps.setInt(14, i.getReport_period_year());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(14, null);
+                    }
+                    try {
+                        ps.setInt(15, i.getReport_period_quarter());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(15, null);
+                    }
+                    try {
+                        ps.setInt(16, i.getReport_period_bi_month());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(16, null);
+                    }
+                    try {
+                        ps.setInt(17, i.getReport_period_month());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(17, null);
+                    }
+                    try {
+                        ps.setInt(18, i.getReport_period_week());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(18, null);
+                    }
+                    try {
+                        ps.setDate(19, new java.sql.Date(i.getReport_period_from_date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setObject(19, null);
+                    }
+                    try {
+                        ps.setDate(20, new java.sql.Date(i.getReport_period_to_date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setDate(20, null);
+                    }
+                    ps.setString(21, "Pass");
+                    ps.setString(22, "Uploaded");
+                    ps.setInt(23, 0);
+                    ps.setInt(24, 1);
+                    try {
+                        ps.setTimestamp(25, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setTimestamp(25, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    }
+                    try {
+                        /**
+                         * User Id Loading the data
+                         */
+                        ps.setInt(26, loginBean.getUser_detail().getUser_detail_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(26, null);
+                    }
+                    try {
+                        ps.setInt(27, i.getReport_form().getReport_form_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(27, null);
+                    }
+                    try {
+                        ps.setInt(28, i.getReport_form_group_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(28, null);
+                    }
+                    try {
+                        ps.setString(29, i.getEntry_mode());
+                    } catch (NullPointerException npe) {
+                        ps.setString(29, null);
+                    }
+                    ps.addBatch();
+                    j++;
+                    if (j % 500 == 0 || j == interface_dataList.size()) {
+                        //System.out.println("--execute-J--:" + j);
+                        ps.executeBatch();
+                    }
+                }
+//System.out.println("--final-J1--:" + j);
+                connection.commit();
+//System.out.println("--final-J2--:" + j);
+                interface_dataList.clear();
+//System.out.println("END-INSERT-INTERFACE:" + new Date());
+
+//Load Base Data
+//System.out.println("START-VALIDATION-LOAD-BASE:" + new Date());
+                validate_and_load_data_to_base_SMS(batch.getBatch_id(), report_form_SMS, report_form_group_SMS);
+//System.out.println("END-VALIDATION-LOAD-BASE:" + new Date());
+
+//loginBean.saveMessage();
+//System.out.println("START-VALIDATION-REPORT:" + new Date());
+                generate_validation_report(batch.getBatch_id());
+//System.out.println("END-VALIDATION-REPORT:" + new Date());
+
+//RequestContext.getCurrentInstance().execute("PF('validationReport').show();");
+            } catch (SQLException ex) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -3129,6 +3378,7 @@ public class UploadBean implements Serializable {
                 sql = "select distinct de.section from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
                 sections = (List<Section>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
                 //this.createInterface_datas(data_elements);
+
             }
         } catch (Exception ex) {
             Logger.getLogger(UploadBean.class
@@ -3144,6 +3394,7 @@ public class UploadBean implements Serializable {
             if (report_form != null && report_form_group != null && section != null) {
                 sql = "select distinct de.sub_section from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " and de.section=" + section + " order by fg.group_order,de.group_column_number ASC";
                 sub_sections = (List<Sub_section>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
+
             }
         } catch (Exception ex) {
             Logger.getLogger(UploadBean.class
@@ -3180,7 +3431,8 @@ public class UploadBean implements Serializable {
 
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
-                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UploadBean.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -3269,13 +3521,15 @@ public class UploadBean implements Serializable {
                                     break;
                                 default:
                                     break;
+
                             }
                         }
                     }
                 }
             }
         } catch (PersistentException ex) {
-            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
     District smsDistrict;
@@ -3304,9 +3558,11 @@ public class UploadBean implements Serializable {
                         break;
                     default:
                         break;
+
                 }
             } catch (PersistentException ex) {
-                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UploadBean.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -16,6 +16,7 @@ import eihdms.Interface_data_sms;
 import eihdms.Parish;
 import eihdms.Phone_contact;
 import eihdms.Report_form;
+import eihdms.Report_form_group;
 import eihdms.Report_form_short_code;
 import eihdms.Sub_county;
 import java.sql.Timestamp;
@@ -39,8 +40,8 @@ public class SMSData {
     public static void main(String[] args) {
         // TODO code application logic here
         SMSData d = new SMSData();
-        d.decode_and_load_sms("MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "107");
-        d.load_interface_data_sms("WTL MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "107");
+        d.load_interface_data_sms("107 MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "WTL");
+        //d.decode_and_load_sms("MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "107");
     }
 
     /**
@@ -69,7 +70,7 @@ public class SMSData {
                 }
 
                 transaction.commit();
-
+                this.decode_and_load_sms(splitString[1], phone, splitString[0]);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,6 +85,7 @@ public class SMSData {
             /**
              * Read form being loaded
              */
+            Report_form_group sms_report_form_group=null;
             Report_form sms_report_form = Report_form.loadReport_formByQuery("report_form_code='" + report_form_code + "'", null);
             if (sms_report_form != null) {
                 /**
@@ -131,6 +133,17 @@ public class SMSData {
                         Interface_data i = new Interface_data();
                         i.setData_element(outer.getData_element());
                         i.setData_element_value(smsStrings[outer.getCode_position() - 1]);
+                        i.setAdd_by(1);
+                        i.setAdd_date(new Timestamp(new Date().getTime()));
+                        i.setEntry_mode("SMS");
+                        //i.setFinancial_year(value);
+                        i.setIs_active(1);
+                        i.setIs_deleted(0);
+                        i.setReport_form(sms_report_form);
+                        sms_report_form_group=outer.getData_element().getReport_form_group();
+                        i.setReport_form_group_id(outer.getData_element().getReport_form_group().getReport_form_group_id());
+                        i.setReport_period_from_date(new Date());
+                        i.setReport_period_to_date(new Date());
                         if (phone_contact != null) {
                             switch (phone_contact.getEntity_type()) {
                                 case "District":
@@ -143,9 +156,9 @@ public class SMSData {
                                     i.setCounty_id(smsParish.getSub_county().getCounty().getCounty_id());
                                     i.setCounty_name(smsParish.getSub_county().getCounty().getCounty_name());
                                     i.setSub_county_id(smsParish.getSub_county().getSub_county_id());
-                                    i.setCounty_name(smsParish.getSub_county().getSub_county_name());
+                                    i.setSub_county_name(smsParish.getSub_county().getSub_county_name());
                                     i.setParish_id(smsParish.getParish_id());
-                                    i.setCounty_name(smsParish.getParish_name());
+                                    i.setParish_name(smsParish.getParish_name());
                                     break;
                                 case "Facility":
                                     i.setDistrict_id(smsHealth_facility.getDistrict().getDistrict_id());
@@ -153,9 +166,9 @@ public class SMSData {
                                     i.setCounty_id(smsHealth_facility.getSub_county().getCounty().getCounty_id());
                                     i.setCounty_name(smsHealth_facility.getSub_county().getCounty().getCounty_name());
                                     i.setSub_county_id(smsHealth_facility.getSub_county().getSub_county_id());
-                                    i.setCounty_name(smsHealth_facility.getSub_county().getSub_county_name());
+                                    i.setSub_county_name(smsHealth_facility.getSub_county().getSub_county_name());
                                     i.setParish_id(smsHealth_facility.getParish().getParish_id());
-                                    i.setCounty_name(smsHealth_facility.getParish().getParish_name());
+                                    i.setParish_name(smsHealth_facility.getParish().getParish_name());
                                     i.setHealth_facility_id(smsHealth_facility.getHealth_facility_id());
                                     i.setHealth_facility_name(smsHealth_facility.getHealth_facility_name());
                                     break;
@@ -165,7 +178,8 @@ public class SMSData {
                         }
                         interface_datas.add(i);
                     }
-
+                    UploadBean uploadBean = new UploadBean();
+                    uploadBean.load_interface(interface_datas,sms_report_form,sms_report_form_group);
                     System.out.println(interface_datas.size());
                 }
             }
