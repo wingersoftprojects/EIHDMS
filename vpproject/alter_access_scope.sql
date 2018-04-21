@@ -30,6 +30,7 @@ alter table report_form modify column add_date datetime;
 alter table report_form modify column last_edit_date datetime;
 alter table report_form_short_code modify column add_date datetime not null;
 alter table report_form_short_code modify column last_edit_date datetime;
+drop table report_form_update;
 create table report_form_update (report_form_update_id int(11) not null auto_increment, report_form_id int(11) not null, last_edit_date datetime not null, primary key (report_form_update_id)) ENGINE=InnoDB;
 alter table sub_county modify column add_date datetime;
 alter table sub_county modify column last_edit_date datetime;
