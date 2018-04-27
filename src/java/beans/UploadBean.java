@@ -3416,8 +3416,8 @@ public class UploadBean implements Serializable {
                 interface_data_sms.setReport_form_code(splitString[0]);
                 interface_data_sms.setSms(splitString[1]);
                 interface_data_sms.setScode(scode);
-                interface_data_sms.setStatus_code("R");
-                interface_data_sms.setStatus_desc("Received");
+                interface_data_sms.setStatus_f("R");
+                interface_data_sms.setStatus_f_desc("Received");
                 interface_data_sms.setIs_deleted(0);
                 interface_data_sms.setIs_active(1);
                 PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();

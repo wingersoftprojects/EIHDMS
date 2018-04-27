@@ -448,6 +448,7 @@ public class District implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Region.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="region_id", referencedColumnName="region_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Region region;
 	
 	@Column(name="is_deleted", nullable=true, length=1)	

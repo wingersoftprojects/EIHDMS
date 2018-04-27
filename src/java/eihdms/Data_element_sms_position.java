@@ -413,6 +413,7 @@ public class Data_element_sms_position implements Serializable {
 	@OneToOne(optional=false, targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="data_element_id", referencedColumnName="data_element_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Data_element data_element;
 	
 	@Column(name="value_position", nullable=false, length=2)	
@@ -424,6 +425,7 @@ public class Data_element_sms_position implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Report_form_short_code.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="report_form_short_code_id", referencedColumnName="report_form_short_code_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form_short_code report_form_short_code;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	

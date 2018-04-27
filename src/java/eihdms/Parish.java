@@ -432,6 +432,7 @@ public class Parish implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Sub_county.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_county sub_county;
 	
 	@Column(name="is_deleted", nullable=true, length=1)	

@@ -1,5 +1,5 @@
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package ormsamples;
@@ -39,8 +39,6 @@ public class DeleteArchitectureData {
 			leihdmsValidation_rule.delete();
 			eihdms.Standard_rule leihdmsStandard_rule = eihdms.Standard_rule.loadStandard_ruleByQuery(null, null);
 			leihdmsStandard_rule.delete();
-			eihdms.Group_right leihdmsGroup_right = eihdms.Group_right.loadGroup_rightByQuery(null, null);
-			leihdmsGroup_right.delete();
 			eihdms.User_detail leihdmsUser_detail = eihdms.User_detail.loadUser_detailByQuery(null, null);
 			leihdmsUser_detail.delete();
 			eihdms.Group_user leihdmsGroup_user = eihdms.Group_user.loadGroup_userByQuery(null, null);
@@ -75,6 +73,44 @@ public class DeleteArchitectureData {
 			leihdmsData_obligation.delete();
 			eihdms.Base_data_deleted leihdmsBase_data_deleted = eihdms.Base_data_deleted.loadBase_data_deletedByQuery(null, null);
 			leihdmsBase_data_deleted.delete();
+			eihdms.Interface_data_temp leihdmsInterface_data_temp = eihdms.Interface_data_temp.loadInterface_data_tempByQuery(null, null);
+			leihdmsInterface_data_temp.delete();
+			eihdms.Validation_report leihdmsValidation_report = eihdms.Validation_report.loadValidation_reportByQuery(null, null);
+			leihdmsValidation_report.delete();
+			eihdms.Loaded_data_summary leihdmsLoaded_data_summary = eihdms.Loaded_data_summary.loadLoaded_data_summaryByQuery(null, null);
+			leihdmsLoaded_data_summary.delete();
+			eihdms.App_db_user_map leihdmsApp_db_user_map = eihdms.App_db_user_map.loadApp_db_user_mapByQuery(null, null);
+			leihdmsApp_db_user_map.delete();
+			eihdms.Kpi_summary_function leihdmsKpi_summary_function = eihdms.Kpi_summary_function.loadKpi_summary_functionByQuery(null, null);
+			leihdmsKpi_summary_function.delete();
+			eihdms.Interface_data_sms leihdmsInterface_data_sms = eihdms.Interface_data_sms.loadInterface_data_smsByQuery(null, null);
+			leihdmsInterface_data_sms.delete();
+			eihdms.Phone_contact leihdmsPhone_contact = eihdms.Phone_contact.loadPhone_contactByQuery(null, null);
+			leihdmsPhone_contact.delete();
+			eihdms.Data_element_sms_position leihdmsData_element_sms_position = eihdms.Data_element_sms_position.loadData_element_sms_positionByQuery(null, null);
+			leihdmsData_element_sms_position.delete();
+			eihdms.Report_form_short_code leihdmsReport_form_short_code = eihdms.Report_form_short_code.loadReport_form_short_codeByQuery(null, null);
+			leihdmsReport_form_short_code.delete();
+			eihdms.Organisation leihdmsOrganisation = eihdms.Organisation.loadOrganisationByQuery(null, null);
+			leihdmsOrganisation.delete();
+			eihdms.Access_scope leihdmsAccess_scope = eihdms.Access_scope.loadAccess_scopeByQuery(null, null);
+			leihdmsAccess_scope.delete();
+			eihdms.Report_form_update leihdmsReport_form_update = eihdms.Report_form_update.loadReport_form_updateByQuery(null, null);
+			leihdmsReport_form_update.delete();
+			eihdms.Group_right leihdmsGroup_right = eihdms.Group_right.loadGroup_rightByQuery(null, null);
+			leihdmsGroup_right.delete();
+			eihdms.Report_form_deadline leihdmsReport_form_deadline = eihdms.Report_form_deadline.loadReport_form_deadlineByQuery(null, null);
+			leihdmsReport_form_deadline.delete();
+			eihdms.Report_form_entity leihdmsReport_form_entity = eihdms.Report_form_entity.loadReport_form_entityByQuery(null, null);
+			leihdmsReport_form_entity.delete();
+			eihdms.Deadline_extension leihdmsDeadline_extension = eihdms.Deadline_extension.loadDeadline_extensionByQuery(null, null);
+			leihdmsDeadline_extension.delete();
+			eihdms.Sms_schedule leihdmsSms_schedule = eihdms.Sms_schedule.loadSms_scheduleByQuery(null, null);
+			leihdmsSms_schedule.delete();
+			eihdms.Sent_sms_log leihdmsSent_sms_log = eihdms.Sent_sms_log.loadSent_sms_logByQuery(null, null);
+			leihdmsSent_sms_log.delete();
+			eihdms.Sms_recipient leihdmsSms_recipient = eihdms.Sms_recipient.loadSms_recipientByQuery(null, null);
+			leihdmsSms_recipient.delete();
 			t.commit();
 		}
 		catch (Exception e) {

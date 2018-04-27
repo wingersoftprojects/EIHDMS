@@ -466,6 +466,7 @@ public class User_detail implements Serializable {
 	@ManyToOne(targetEntity=eihdms.User_category.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="user_category_id", referencedColumnName="user_category_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.User_category user_category;
 	
 	@Column(name="is_user_gen_admin", nullable=false, length=1)	
@@ -492,6 +493,7 @@ public class User_detail implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Organisation.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="organisation_id", referencedColumnName="organisation_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Organisation organisation;
 	
 	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.Group_user.class)	

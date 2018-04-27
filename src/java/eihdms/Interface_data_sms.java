@@ -381,12 +381,6 @@ public class Interface_data_sms implements Serializable {
 	@Column(name="scode", nullable=true, length=11)	
 	private String scode;
 	
-	@Column(name="status_code", nullable=true, length=100)	
-	private String status_code;
-	
-	@Column(name="status_desc", nullable=true, length=250)	
-	private String status_desc;
-	
 	@Column(name="report_form_code", nullable=true, length=100)	
 	private String report_form_code;
 	
@@ -404,6 +398,24 @@ public class Interface_data_sms implements Serializable {
 	
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
+	
+	@Column(name="status_f", nullable=true, length=50)	
+	private String status_f;
+	
+	@Column(name="status_f_desc", nullable=true)	
+	private String status_f_desc;
+	
+	@Column(name="status_v", nullable=true, length=50)	
+	private String status_v;
+	
+	@Column(name="status_v_desc", nullable=true)	
+	private String status_v_desc;
+	
+	@Column(name="status_m", nullable=true, length=50)	
+	private String status_m;
+	
+	@Column(name="status_m_desc", nullable=true)	
+	private String status_m_desc;
 	
 	private void setInterface_data_sms_id(int value) {
 		this.interface_data_sms_id = value;
@@ -447,22 +459,6 @@ public class Interface_data_sms implements Serializable {
 	
 	public String getScode() {
 		return scode;
-	}
-	
-	public void setStatus_code(String value) {
-		this.status_code = value;
-	}
-	
-	public String getStatus_code() {
-		return status_code;
-	}
-	
-	public void setStatus_desc(String value) {
-		this.status_desc = value;
-	}
-	
-	public String getStatus_desc() {
-		return status_desc;
 	}
 	
 	public void setReport_form_code(String value) {
@@ -519,6 +515,54 @@ public class Interface_data_sms implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setStatus_f(String value) {
+		this.status_f = value;
+	}
+	
+	public String getStatus_f() {
+		return status_f;
+	}
+	
+	public void setStatus_f_desc(String value) {
+		this.status_f_desc = value;
+	}
+	
+	public String getStatus_f_desc() {
+		return status_f_desc;
+	}
+	
+	public void setStatus_v(String value) {
+		this.status_v = value;
+	}
+	
+	public String getStatus_v() {
+		return status_v;
+	}
+	
+	public void setStatus_v_desc(String value) {
+		this.status_v_desc = value;
+	}
+	
+	public String getStatus_v_desc() {
+		return status_v_desc;
+	}
+	
+	public void setStatus_m(String value) {
+		this.status_m = value;
+	}
+	
+	public String getStatus_m() {
+		return status_m;
+	}
+	
+	public void setStatus_m_desc(String value) {
+		this.status_m_desc = value;
+	}
+	
+	public String getStatus_m_desc() {
+		return status_m_desc;
 	}
 	
 	public boolean equals(Object obj) {

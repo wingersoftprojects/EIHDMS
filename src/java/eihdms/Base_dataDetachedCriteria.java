@@ -53,6 +53,7 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
 	public final IntegerExpression report_form_group_id;
+	public final StringExpression entry_mode;
 	
 	public Base_dataDetachedCriteria() {
 		super(eihdms.Base_data.class, eihdms.Base_dataCriteria.class);
@@ -90,6 +91,7 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
+		entry_mode = new StringExpression("entry_mode", this.getDetachedCriteria());
 	}
 	
 	public Base_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -128,6 +130,7 @@ public class Base_dataDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
+		entry_mode = new StringExpression("entry_mode", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {

@@ -419,6 +419,7 @@ public class Sub_section implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Section.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="section_id", referencedColumnName="section_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Section section;
 	
 	@Column(name="is_deleted", nullable=false, length=1)	

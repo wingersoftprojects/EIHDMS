@@ -36,7 +36,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression mode_data_entry;
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
-	public final CollectionExpression group_right;
 	public final CollectionExpression user_action;
 	public final CollectionExpression report_form_group;
 	public final CollectionExpression validation_rule;
@@ -45,6 +44,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression report_form_short_code;
+	public final CollectionExpression report_form_deadline;
+	public final CollectionExpression report_form_entity;
+	public final CollectionExpression group_right;
 	
 	public Report_formDetachedCriteria() {
 		super(eihdms.Report_form.class, eihdms.Report_formCriteria.class);
@@ -65,7 +67,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		mode_data_entry = new IntegerExpression("mode_data_entry", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
-		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
 		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
@@ -74,6 +75,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		report_form_short_code = new CollectionExpression("report_form_short_code", this.getDetachedCriteria());
+		report_form_deadline = new CollectionExpression("report_form_deadline", this.getDetachedCriteria());
+		report_form_entity = new CollectionExpression("report_form_entity", this.getDetachedCriteria());
+		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -95,7 +99,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		mode_data_entry = new IntegerExpression("mode_data_entry", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
-		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
 		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
@@ -104,6 +107,9 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		interface_data = new CollectionExpression("interface_data", this.getDetachedCriteria());
 		base_data = new CollectionExpression("base_data", this.getDetachedCriteria());
 		report_form_short_code = new CollectionExpression("report_form_short_code", this.getDetachedCriteria());
+		report_form_deadline = new CollectionExpression("report_form_deadline", this.getDetachedCriteria());
+		report_form_entity = new CollectionExpression("report_form_entity", this.getDetachedCriteria());
+		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
@@ -112,10 +118,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public SectionDetachedCriteria createSectionCriteria() {
 		return new SectionDetachedCriteria(createCriteria("section"));
-	}
-	
-	public Group_rightDetachedCriteria createGroup_rightCriteria() {
-		return new Group_rightDetachedCriteria(createCriteria("group_right"));
 	}
 	
 	public User_actionDetachedCriteria createUser_actionCriteria() {
@@ -148,6 +150,18 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Report_form_short_codeDetachedCriteria createReport_form_short_codeCriteria() {
 		return new Report_form_short_codeDetachedCriteria(createCriteria("report_form_short_code"));
+	}
+	
+	public Report_form_deadlineDetachedCriteria createReport_form_deadlineCriteria() {
+		return new Report_form_deadlineDetachedCriteria(createCriteria("report_form_deadline"));
+	}
+	
+	public Report_form_entityDetachedCriteria createReport_form_entityCriteria() {
+		return new Report_form_entityDetachedCriteria(createCriteria("report_form_entity"));
+	}
+	
+	public Group_rightDetachedCriteria createGroup_rightCriteria() {
+		return new Group_rightDetachedCriteria(createCriteria("group_right"));
 	}
 	
 	public Report_form uniqueReport_form(PersistentSession session) {

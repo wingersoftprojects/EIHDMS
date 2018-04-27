@@ -36,7 +36,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final IntegerExpression mode_data_entry;
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
-	public final CollectionExpression group_right;
 	public final CollectionExpression user_action;
 	public final CollectionExpression report_form_group;
 	public final CollectionExpression validation_rule;
@@ -45,6 +44,9 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression report_form_short_code;
+	public final CollectionExpression report_form_deadline;
+	public final CollectionExpression report_form_entity;
+	public final CollectionExpression group_right;
 	
 	public Report_formCriteria(Criteria criteria) {
 		super(criteria);
@@ -65,7 +67,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		mode_data_entry = new IntegerExpression("mode_data_entry", this);
 		data_element = new CollectionExpression("data_element", this);
 		section = new CollectionExpression("section", this);
-		group_right = new CollectionExpression("group_right", this);
 		user_action = new CollectionExpression("user_action", this);
 		report_form_group = new CollectionExpression("report_form_group", this);
 		validation_rule = new CollectionExpression("validation_rule", this);
@@ -74,6 +75,9 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		interface_data = new CollectionExpression("interface_data", this);
 		base_data = new CollectionExpression("base_data", this);
 		report_form_short_code = new CollectionExpression("report_form_short_code", this);
+		report_form_deadline = new CollectionExpression("report_form_deadline", this);
+		report_form_entity = new CollectionExpression("report_form_entity", this);
+		group_right = new CollectionExpression("group_right", this);
 	}
 	
 	public Report_formCriteria(PersistentSession session) {
@@ -90,10 +94,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public SectionCriteria createSectionCriteria() {
 		return new SectionCriteria(createCriteria("section"));
-	}
-	
-	public Group_rightCriteria createGroup_rightCriteria() {
-		return new Group_rightCriteria(createCriteria("group_right"));
 	}
 	
 	public User_actionCriteria createUser_actionCriteria() {
@@ -126,6 +126,18 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public Report_form_short_codeCriteria createReport_form_short_codeCriteria() {
 		return new Report_form_short_codeCriteria(createCriteria("report_form_short_code"));
+	}
+	
+	public Report_form_deadlineCriteria createReport_form_deadlineCriteria() {
+		return new Report_form_deadlineCriteria(createCriteria("report_form_deadline"));
+	}
+	
+	public Report_form_entityCriteria createReport_form_entityCriteria() {
+		return new Report_form_entityCriteria(createCriteria("report_form_entity"));
+	}
+	
+	public Group_rightCriteria createGroup_rightCriteria() {
+		return new Group_rightCriteria(createCriteria("group_right"));
 	}
 	
 	public Report_form uniqueReport_form() {

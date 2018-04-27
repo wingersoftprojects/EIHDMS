@@ -405,6 +405,7 @@ public class Kpi_summary_function implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Kpi.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="kpi_id", referencedColumnName="kpi_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Kpi kpi;
 	
 	@Column(name="kpi_summary_function_name", nullable=false, length=100)	

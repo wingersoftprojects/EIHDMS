@@ -1,5 +1,5 @@
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package ormsamples;
@@ -126,14 +126,6 @@ public class ListArchitectureData {
 		length = Math.min(eihdmsStandard_rules.length, ROW_COUNT);
 		for (int i = 0; i < length; i++) {
 			System.out.println(eihdmsStandard_rules[i]);
-		}
-		System.out.println(length + " record(s) retrieved.");
-		
-		System.out.println("Listing Group_right...");
-		eihdms.Group_right[] eihdmsGroup_rights = eihdms.Group_right.listGroup_rightByQuery(null, null);
-		length = Math.min(eihdmsGroup_rights.length, ROW_COUNT);
-		for (int i = 0; i < length; i++) {
-			System.out.println(eihdmsGroup_rights[i]);
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
@@ -270,6 +262,158 @@ public class ListArchitectureData {
 		length = Math.min(eihdmsBase_data_deleteds.length, ROW_COUNT);
 		for (int i = 0; i < length; i++) {
 			System.out.println(eihdmsBase_data_deleteds[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Interface_data_temp...");
+		eihdms.Interface_data_temp[] eihdmsInterface_data_temps = eihdms.Interface_data_temp.listInterface_data_tempByQuery(null, null);
+		length = Math.min(eihdmsInterface_data_temps.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsInterface_data_temps[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Validation_report...");
+		eihdms.Validation_report[] eihdmsValidation_reports = eihdms.Validation_report.listValidation_reportByQuery(null, null);
+		length = Math.min(eihdmsValidation_reports.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsValidation_reports[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Loaded_data_summary...");
+		eihdms.Loaded_data_summary[] eihdmsLoaded_data_summarys = eihdms.Loaded_data_summary.listLoaded_data_summaryByQuery(null, null);
+		length = Math.min(eihdmsLoaded_data_summarys.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsLoaded_data_summarys[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing App_db_user_map...");
+		eihdms.App_db_user_map[] eihdmsApp_db_user_maps = eihdms.App_db_user_map.listApp_db_user_mapByQuery(null, null);
+		length = Math.min(eihdmsApp_db_user_maps.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsApp_db_user_maps[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Kpi_summary_function...");
+		eihdms.Kpi_summary_function[] eihdmsKpi_summary_functions = eihdms.Kpi_summary_function.listKpi_summary_functionByQuery(null, null);
+		length = Math.min(eihdmsKpi_summary_functions.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsKpi_summary_functions[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Interface_data_sms...");
+		eihdms.Interface_data_sms[] eihdmsInterface_data_smses = eihdms.Interface_data_sms.listInterface_data_smsByQuery(null, null);
+		length = Math.min(eihdmsInterface_data_smses.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsInterface_data_smses[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Phone_contact...");
+		eihdms.Phone_contact[] eihdmsPhone_contacts = eihdms.Phone_contact.listPhone_contactByQuery(null, null);
+		length = Math.min(eihdmsPhone_contacts.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsPhone_contacts[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Data_element_sms_position...");
+		eihdms.Data_element_sms_position[] eihdmsData_element_sms_positions = eihdms.Data_element_sms_position.listData_element_sms_positionByQuery(null, null);
+		length = Math.min(eihdmsData_element_sms_positions.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsData_element_sms_positions[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Report_form_short_code...");
+		eihdms.Report_form_short_code[] eihdmsReport_form_short_codes = eihdms.Report_form_short_code.listReport_form_short_codeByQuery(null, null);
+		length = Math.min(eihdmsReport_form_short_codes.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsReport_form_short_codes[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Organisation...");
+		eihdms.Organisation[] eihdmsOrganisations = eihdms.Organisation.listOrganisationByQuery(null, null);
+		length = Math.min(eihdmsOrganisations.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsOrganisations[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Access_scope...");
+		eihdms.Access_scope[] eihdmsAccess_scopes = eihdms.Access_scope.listAccess_scopeByQuery(null, null);
+		length = Math.min(eihdmsAccess_scopes.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsAccess_scopes[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Report_form_update...");
+		eihdms.Report_form_update[] eihdmsReport_form_updates = eihdms.Report_form_update.listReport_form_updateByQuery(null, null);
+		length = Math.min(eihdmsReport_form_updates.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsReport_form_updates[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Group_right...");
+		eihdms.Group_right[] eihdmsGroup_rights = eihdms.Group_right.listGroup_rightByQuery(null, null);
+		length = Math.min(eihdmsGroup_rights.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsGroup_rights[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Report_form_deadline...");
+		eihdms.Report_form_deadline[] eihdmsReport_form_deadlines = eihdms.Report_form_deadline.listReport_form_deadlineByQuery(null, null);
+		length = Math.min(eihdmsReport_form_deadlines.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsReport_form_deadlines[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Report_form_entity...");
+		eihdms.Report_form_entity[] eihdmsReport_form_entitys = eihdms.Report_form_entity.listReport_form_entityByQuery(null, null);
+		length = Math.min(eihdmsReport_form_entitys.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsReport_form_entitys[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Deadline_extension...");
+		eihdms.Deadline_extension[] eihdmsDeadline_extensions = eihdms.Deadline_extension.listDeadline_extensionByQuery(null, null);
+		length = Math.min(eihdmsDeadline_extensions.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsDeadline_extensions[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Sms_schedule...");
+		eihdms.Sms_schedule[] eihdmsSms_schedules = eihdms.Sms_schedule.listSms_scheduleByQuery(null, null);
+		length = Math.min(eihdmsSms_schedules.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsSms_schedules[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Sent_sms_log...");
+		eihdms.Sent_sms_log[] eihdmsSent_sms_logs = eihdms.Sent_sms_log.listSent_sms_logByQuery(null, null);
+		length = Math.min(eihdmsSent_sms_logs.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsSent_sms_logs[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Sms_recipient...");
+		eihdms.Sms_recipient[] eihdmsSms_recipients = eihdms.Sms_recipient.listSms_recipientByQuery(null, null);
+		length = Math.min(eihdmsSms_recipients.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsSms_recipients[i]);
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
@@ -455,18 +599,6 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsStandard_rules[i]);
 		}
 		System.out.println(length + " Standard_rule record(s) retrieved."); 
-		
-		System.out.println("Listing Group_right by Criteria...");
-		eihdms.Group_rightCriteria leihdmsGroup_rightCriteria = new eihdms.Group_rightCriteria();
-		// Please uncomment the follow line and fill in parameter(s) 
-		//leihdmsGroup_rightCriteria.group_right_id.eq();
-		leihdmsGroup_rightCriteria.setMaxResults(ROW_COUNT);
-		eihdms.Group_right[] eihdmsGroup_rights = leihdmsGroup_rightCriteria.listGroup_right();
-		length =eihdmsGroup_rights== null ? 0 : Math.min(eihdmsGroup_rights.length, ROW_COUNT); 
-		for (int i = 0; i < length; i++) {
-			 System.out.println(eihdmsGroup_rights[i]);
-		}
-		System.out.println(length + " Group_right record(s) retrieved."); 
 		
 		System.out.println("Listing User_detail by Criteria...");
 		eihdms.User_detailCriteria leihdmsUser_detailCriteria = new eihdms.User_detailCriteria();
@@ -671,6 +803,234 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsBase_data_deleteds[i]);
 		}
 		System.out.println(length + " Base_data_deleted record(s) retrieved."); 
+		
+		System.out.println("Listing Interface_data_temp by Criteria...");
+		eihdms.Interface_data_tempCriteria leihdmsInterface_data_tempCriteria = new eihdms.Interface_data_tempCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsInterface_data_tempCriteria.interface_data_temp_id.eq();
+		leihdmsInterface_data_tempCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Interface_data_temp[] eihdmsInterface_data_temps = leihdmsInterface_data_tempCriteria.listInterface_data_temp();
+		length =eihdmsInterface_data_temps== null ? 0 : Math.min(eihdmsInterface_data_temps.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsInterface_data_temps[i]);
+		}
+		System.out.println(length + " Interface_data_temp record(s) retrieved."); 
+		
+		System.out.println("Listing Validation_report by Criteria...");
+		eihdms.Validation_reportCriteria leihdmsValidation_reportCriteria = new eihdms.Validation_reportCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsValidation_reportCriteria.validation_report_id.eq();
+		leihdmsValidation_reportCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Validation_report[] eihdmsValidation_reports = leihdmsValidation_reportCriteria.listValidation_report();
+		length =eihdmsValidation_reports== null ? 0 : Math.min(eihdmsValidation_reports.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsValidation_reports[i]);
+		}
+		System.out.println(length + " Validation_report record(s) retrieved."); 
+		
+		System.out.println("Listing Loaded_data_summary by Criteria...");
+		eihdms.Loaded_data_summaryCriteria leihdmsLoaded_data_summaryCriteria = new eihdms.Loaded_data_summaryCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsLoaded_data_summaryCriteria.loaded_data_summary_id.eq();
+		leihdmsLoaded_data_summaryCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Loaded_data_summary[] eihdmsLoaded_data_summarys = leihdmsLoaded_data_summaryCriteria.listLoaded_data_summary();
+		length =eihdmsLoaded_data_summarys== null ? 0 : Math.min(eihdmsLoaded_data_summarys.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsLoaded_data_summarys[i]);
+		}
+		System.out.println(length + " Loaded_data_summary record(s) retrieved."); 
+		
+		System.out.println("Listing App_db_user_map by Criteria...");
+		eihdms.App_db_user_mapCriteria leihdmsApp_db_user_mapCriteria = new eihdms.App_db_user_mapCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsApp_db_user_mapCriteria.app_db_user_map_id.eq();
+		leihdmsApp_db_user_mapCriteria.setMaxResults(ROW_COUNT);
+		eihdms.App_db_user_map[] eihdmsApp_db_user_maps = leihdmsApp_db_user_mapCriteria.listApp_db_user_map();
+		length =eihdmsApp_db_user_maps== null ? 0 : Math.min(eihdmsApp_db_user_maps.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsApp_db_user_maps[i]);
+		}
+		System.out.println(length + " App_db_user_map record(s) retrieved."); 
+		
+		System.out.println("Listing Kpi_summary_function by Criteria...");
+		eihdms.Kpi_summary_functionCriteria leihdmsKpi_summary_functionCriteria = new eihdms.Kpi_summary_functionCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsKpi_summary_functionCriteria.kpi_summary_function_id.eq();
+		leihdmsKpi_summary_functionCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Kpi_summary_function[] eihdmsKpi_summary_functions = leihdmsKpi_summary_functionCriteria.listKpi_summary_function();
+		length =eihdmsKpi_summary_functions== null ? 0 : Math.min(eihdmsKpi_summary_functions.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsKpi_summary_functions[i]);
+		}
+		System.out.println(length + " Kpi_summary_function record(s) retrieved."); 
+		
+		System.out.println("Listing Interface_data_sms by Criteria...");
+		eihdms.Interface_data_smsCriteria leihdmsInterface_data_smsCriteria = new eihdms.Interface_data_smsCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsInterface_data_smsCriteria.interface_data_sms_id.eq();
+		leihdmsInterface_data_smsCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Interface_data_sms[] eihdmsInterface_data_smses = leihdmsInterface_data_smsCriteria.listInterface_data_sms();
+		length =eihdmsInterface_data_smses== null ? 0 : Math.min(eihdmsInterface_data_smses.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsInterface_data_smses[i]);
+		}
+		System.out.println(length + " Interface_data_sms record(s) retrieved."); 
+		
+		System.out.println("Listing Phone_contact by Criteria...");
+		eihdms.Phone_contactCriteria leihdmsPhone_contactCriteria = new eihdms.Phone_contactCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsPhone_contactCriteria.phone_contact_id.eq();
+		leihdmsPhone_contactCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Phone_contact[] eihdmsPhone_contacts = leihdmsPhone_contactCriteria.listPhone_contact();
+		length =eihdmsPhone_contacts== null ? 0 : Math.min(eihdmsPhone_contacts.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsPhone_contacts[i]);
+		}
+		System.out.println(length + " Phone_contact record(s) retrieved."); 
+		
+		System.out.println("Listing Data_element_sms_position by Criteria...");
+		eihdms.Data_element_sms_positionCriteria leihdmsData_element_sms_positionCriteria = new eihdms.Data_element_sms_positionCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsData_element_sms_positionCriteria.data_element_sms_position_id.eq();
+		leihdmsData_element_sms_positionCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Data_element_sms_position[] eihdmsData_element_sms_positions = leihdmsData_element_sms_positionCriteria.listData_element_sms_position();
+		length =eihdmsData_element_sms_positions== null ? 0 : Math.min(eihdmsData_element_sms_positions.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsData_element_sms_positions[i]);
+		}
+		System.out.println(length + " Data_element_sms_position record(s) retrieved."); 
+		
+		System.out.println("Listing Report_form_short_code by Criteria...");
+		eihdms.Report_form_short_codeCriteria leihdmsReport_form_short_codeCriteria = new eihdms.Report_form_short_codeCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsReport_form_short_codeCriteria.report_form_short_code_id.eq();
+		leihdmsReport_form_short_codeCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Report_form_short_code[] eihdmsReport_form_short_codes = leihdmsReport_form_short_codeCriteria.listReport_form_short_code();
+		length =eihdmsReport_form_short_codes== null ? 0 : Math.min(eihdmsReport_form_short_codes.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsReport_form_short_codes[i]);
+		}
+		System.out.println(length + " Report_form_short_code record(s) retrieved."); 
+		
+		System.out.println("Listing Organisation by Criteria...");
+		eihdms.OrganisationCriteria leihdmsOrganisationCriteria = new eihdms.OrganisationCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsOrganisationCriteria.organisation_id.eq();
+		leihdmsOrganisationCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Organisation[] eihdmsOrganisations = leihdmsOrganisationCriteria.listOrganisation();
+		length =eihdmsOrganisations== null ? 0 : Math.min(eihdmsOrganisations.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsOrganisations[i]);
+		}
+		System.out.println(length + " Organisation record(s) retrieved."); 
+		
+		System.out.println("Listing Access_scope by Criteria...");
+		eihdms.Access_scopeCriteria leihdmsAccess_scopeCriteria = new eihdms.Access_scopeCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsAccess_scopeCriteria.access_scope_id.eq();
+		leihdmsAccess_scopeCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Access_scope[] eihdmsAccess_scopes = leihdmsAccess_scopeCriteria.listAccess_scope();
+		length =eihdmsAccess_scopes== null ? 0 : Math.min(eihdmsAccess_scopes.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsAccess_scopes[i]);
+		}
+		System.out.println(length + " Access_scope record(s) retrieved."); 
+		
+		System.out.println("Listing Report_form_update by Criteria...");
+		eihdms.Report_form_updateCriteria leihdmsReport_form_updateCriteria = new eihdms.Report_form_updateCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsReport_form_updateCriteria.report_form_update_id.eq();
+		leihdmsReport_form_updateCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Report_form_update[] eihdmsReport_form_updates = leihdmsReport_form_updateCriteria.listReport_form_update();
+		length =eihdmsReport_form_updates== null ? 0 : Math.min(eihdmsReport_form_updates.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsReport_form_updates[i]);
+		}
+		System.out.println(length + " Report_form_update record(s) retrieved."); 
+		
+		System.out.println("Listing Group_right by Criteria...");
+		eihdms.Group_rightCriteria leihdmsGroup_rightCriteria = new eihdms.Group_rightCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsGroup_rightCriteria.group_right_id.eq();
+		leihdmsGroup_rightCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Group_right[] eihdmsGroup_rights = leihdmsGroup_rightCriteria.listGroup_right();
+		length =eihdmsGroup_rights== null ? 0 : Math.min(eihdmsGroup_rights.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsGroup_rights[i]);
+		}
+		System.out.println(length + " Group_right record(s) retrieved."); 
+		
+		System.out.println("Listing Report_form_deadline by Criteria...");
+		eihdms.Report_form_deadlineCriteria leihdmsReport_form_deadlineCriteria = new eihdms.Report_form_deadlineCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsReport_form_deadlineCriteria.report_form_deadline_id.eq();
+		leihdmsReport_form_deadlineCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Report_form_deadline[] eihdmsReport_form_deadlines = leihdmsReport_form_deadlineCriteria.listReport_form_deadline();
+		length =eihdmsReport_form_deadlines== null ? 0 : Math.min(eihdmsReport_form_deadlines.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsReport_form_deadlines[i]);
+		}
+		System.out.println(length + " Report_form_deadline record(s) retrieved."); 
+		
+		System.out.println("Listing Report_form_entity by Criteria...");
+		eihdms.Report_form_entityCriteria leihdmsReport_form_entityCriteria = new eihdms.Report_form_entityCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsReport_form_entityCriteria.report_form_entity_id.eq();
+		leihdmsReport_form_entityCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Report_form_entity[] eihdmsReport_form_entitys = leihdmsReport_form_entityCriteria.listReport_form_entity();
+		length =eihdmsReport_form_entitys== null ? 0 : Math.min(eihdmsReport_form_entitys.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsReport_form_entitys[i]);
+		}
+		System.out.println(length + " Report_form_entity record(s) retrieved."); 
+		
+		System.out.println("Listing Deadline_extension by Criteria...");
+		eihdms.Deadline_extensionCriteria leihdmsDeadline_extensionCriteria = new eihdms.Deadline_extensionCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsDeadline_extensionCriteria.deadline_extension_id.eq();
+		leihdmsDeadline_extensionCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Deadline_extension[] eihdmsDeadline_extensions = leihdmsDeadline_extensionCriteria.listDeadline_extension();
+		length =eihdmsDeadline_extensions== null ? 0 : Math.min(eihdmsDeadline_extensions.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsDeadline_extensions[i]);
+		}
+		System.out.println(length + " Deadline_extension record(s) retrieved."); 
+		
+		System.out.println("Listing Sms_schedule by Criteria...");
+		eihdms.Sms_scheduleCriteria leihdmsSms_scheduleCriteria = new eihdms.Sms_scheduleCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsSms_scheduleCriteria.sms_schedule_id.eq();
+		leihdmsSms_scheduleCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Sms_schedule[] eihdmsSms_schedules = leihdmsSms_scheduleCriteria.listSms_schedule();
+		length =eihdmsSms_schedules== null ? 0 : Math.min(eihdmsSms_schedules.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsSms_schedules[i]);
+		}
+		System.out.println(length + " Sms_schedule record(s) retrieved."); 
+		
+		System.out.println("Listing Sent_sms_log by Criteria...");
+		eihdms.Sent_sms_logCriteria leihdmsSent_sms_logCriteria = new eihdms.Sent_sms_logCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsSent_sms_logCriteria.sent_sms_log_id.eq();
+		leihdmsSent_sms_logCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Sent_sms_log[] eihdmsSent_sms_logs = leihdmsSent_sms_logCriteria.listSent_sms_log();
+		length =eihdmsSent_sms_logs== null ? 0 : Math.min(eihdmsSent_sms_logs.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsSent_sms_logs[i]);
+		}
+		System.out.println(length + " Sent_sms_log record(s) retrieved."); 
+		
+		System.out.println("Listing Sms_recipient by Criteria...");
+		eihdms.Sms_recipientCriteria leihdmsSms_recipientCriteria = new eihdms.Sms_recipientCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsSms_recipientCriteria.sms_recipient_id.eq();
+		leihdmsSms_recipientCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Sms_recipient[] eihdmsSms_recipients = leihdmsSms_recipientCriteria.listSms_recipient();
+		length =eihdmsSms_recipients== null ? 0 : Math.min(eihdmsSms_recipients.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsSms_recipients[i]);
+		}
+		System.out.println(length + " Sms_recipient record(s) retrieved."); 
 		
 	}
 	

@@ -1,5 +1,5 @@
 /**
- * Licensee: bajuna
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package ormsamples;
@@ -54,9 +54,6 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Standard_rule leihdmsStandard_rule = eihdms.Standard_rule.loadStandard_ruleByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsStandard_rule.save();
-			eihdms.Group_right leihdmsGroup_right = eihdms.Group_right.loadGroup_rightByQuery(null, null);
-			// Update the properties of the persistent object
-			leihdmsGroup_right.save();
 			eihdms.User_detail leihdmsUser_detail = eihdms.User_detail.loadUser_detailByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsUser_detail.save();
@@ -108,6 +105,63 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Base_data_deleted leihdmsBase_data_deleted = eihdms.Base_data_deleted.loadBase_data_deletedByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsBase_data_deleted.save();
+			eihdms.Interface_data_temp leihdmsInterface_data_temp = eihdms.Interface_data_temp.loadInterface_data_tempByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsInterface_data_temp.save();
+			eihdms.Validation_report leihdmsValidation_report = eihdms.Validation_report.loadValidation_reportByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsValidation_report.save();
+			eihdms.Loaded_data_summary leihdmsLoaded_data_summary = eihdms.Loaded_data_summary.loadLoaded_data_summaryByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsLoaded_data_summary.save();
+			eihdms.App_db_user_map leihdmsApp_db_user_map = eihdms.App_db_user_map.loadApp_db_user_mapByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsApp_db_user_map.save();
+			eihdms.Kpi_summary_function leihdmsKpi_summary_function = eihdms.Kpi_summary_function.loadKpi_summary_functionByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsKpi_summary_function.save();
+			eihdms.Interface_data_sms leihdmsInterface_data_sms = eihdms.Interface_data_sms.loadInterface_data_smsByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsInterface_data_sms.save();
+			eihdms.Phone_contact leihdmsPhone_contact = eihdms.Phone_contact.loadPhone_contactByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsPhone_contact.save();
+			eihdms.Data_element_sms_position leihdmsData_element_sms_position = eihdms.Data_element_sms_position.loadData_element_sms_positionByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsData_element_sms_position.save();
+			eihdms.Report_form_short_code leihdmsReport_form_short_code = eihdms.Report_form_short_code.loadReport_form_short_codeByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsReport_form_short_code.save();
+			eihdms.Organisation leihdmsOrganisation = eihdms.Organisation.loadOrganisationByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsOrganisation.save();
+			eihdms.Access_scope leihdmsAccess_scope = eihdms.Access_scope.loadAccess_scopeByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsAccess_scope.save();
+			eihdms.Report_form_update leihdmsReport_form_update = eihdms.Report_form_update.loadReport_form_updateByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsReport_form_update.save();
+			eihdms.Group_right leihdmsGroup_right = eihdms.Group_right.loadGroup_rightByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsGroup_right.save();
+			eihdms.Report_form_deadline leihdmsReport_form_deadline = eihdms.Report_form_deadline.loadReport_form_deadlineByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsReport_form_deadline.save();
+			eihdms.Report_form_entity leihdmsReport_form_entity = eihdms.Report_form_entity.loadReport_form_entityByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsReport_form_entity.save();
+			eihdms.Deadline_extension leihdmsDeadline_extension = eihdms.Deadline_extension.loadDeadline_extensionByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsDeadline_extension.save();
+			eihdms.Sms_schedule leihdmsSms_schedule = eihdms.Sms_schedule.loadSms_scheduleByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsSms_schedule.save();
+			eihdms.Sent_sms_log leihdmsSent_sms_log = eihdms.Sent_sms_log.loadSent_sms_logByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsSent_sms_log.save();
+			eihdms.Sms_recipient leihdmsSms_recipient = eihdms.Sms_recipient.loadSms_recipientByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsSms_recipient.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -206,12 +260,6 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsStandard_ruleCriteria.standard_rule_id.eq();
 		System.out.println(leihdmsStandard_ruleCriteria.uniqueStandard_rule());
-		
-		System.out.println("Retrieving Group_right by Group_rightCriteria");
-		eihdms.Group_rightCriteria leihdmsGroup_rightCriteria = new eihdms.Group_rightCriteria();
-		// Please uncomment the follow line and fill in parameter(s)
-		//leihdmsGroup_rightCriteria.group_right_id.eq();
-		System.out.println(leihdmsGroup_rightCriteria.uniqueGroup_right());
 		
 		System.out.println("Retrieving User_detail by User_detailCriteria");
 		eihdms.User_detailCriteria leihdmsUser_detailCriteria = new eihdms.User_detailCriteria();
@@ -314,6 +362,120 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsBase_data_deletedCriteria.base_data_deleted_id.eq();
 		System.out.println(leihdmsBase_data_deletedCriteria.uniqueBase_data_deleted());
+		
+		System.out.println("Retrieving Interface_data_temp by Interface_data_tempCriteria");
+		eihdms.Interface_data_tempCriteria leihdmsInterface_data_tempCriteria = new eihdms.Interface_data_tempCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsInterface_data_tempCriteria.interface_data_temp_id.eq();
+		System.out.println(leihdmsInterface_data_tempCriteria.uniqueInterface_data_temp());
+		
+		System.out.println("Retrieving Validation_report by Validation_reportCriteria");
+		eihdms.Validation_reportCriteria leihdmsValidation_reportCriteria = new eihdms.Validation_reportCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsValidation_reportCriteria.validation_report_id.eq();
+		System.out.println(leihdmsValidation_reportCriteria.uniqueValidation_report());
+		
+		System.out.println("Retrieving Loaded_data_summary by Loaded_data_summaryCriteria");
+		eihdms.Loaded_data_summaryCriteria leihdmsLoaded_data_summaryCriteria = new eihdms.Loaded_data_summaryCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsLoaded_data_summaryCriteria.loaded_data_summary_id.eq();
+		System.out.println(leihdmsLoaded_data_summaryCriteria.uniqueLoaded_data_summary());
+		
+		System.out.println("Retrieving App_db_user_map by App_db_user_mapCriteria");
+		eihdms.App_db_user_mapCriteria leihdmsApp_db_user_mapCriteria = new eihdms.App_db_user_mapCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsApp_db_user_mapCriteria.app_db_user_map_id.eq();
+		System.out.println(leihdmsApp_db_user_mapCriteria.uniqueApp_db_user_map());
+		
+		System.out.println("Retrieving Kpi_summary_function by Kpi_summary_functionCriteria");
+		eihdms.Kpi_summary_functionCriteria leihdmsKpi_summary_functionCriteria = new eihdms.Kpi_summary_functionCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsKpi_summary_functionCriteria.kpi_summary_function_id.eq();
+		System.out.println(leihdmsKpi_summary_functionCriteria.uniqueKpi_summary_function());
+		
+		System.out.println("Retrieving Interface_data_sms by Interface_data_smsCriteria");
+		eihdms.Interface_data_smsCriteria leihdmsInterface_data_smsCriteria = new eihdms.Interface_data_smsCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsInterface_data_smsCriteria.interface_data_sms_id.eq();
+		System.out.println(leihdmsInterface_data_smsCriteria.uniqueInterface_data_sms());
+		
+		System.out.println("Retrieving Phone_contact by Phone_contactCriteria");
+		eihdms.Phone_contactCriteria leihdmsPhone_contactCriteria = new eihdms.Phone_contactCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsPhone_contactCriteria.phone_contact_id.eq();
+		System.out.println(leihdmsPhone_contactCriteria.uniquePhone_contact());
+		
+		System.out.println("Retrieving Data_element_sms_position by Data_element_sms_positionCriteria");
+		eihdms.Data_element_sms_positionCriteria leihdmsData_element_sms_positionCriteria = new eihdms.Data_element_sms_positionCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsData_element_sms_positionCriteria.data_element_sms_position_id.eq();
+		System.out.println(leihdmsData_element_sms_positionCriteria.uniqueData_element_sms_position());
+		
+		System.out.println("Retrieving Report_form_short_code by Report_form_short_codeCriteria");
+		eihdms.Report_form_short_codeCriteria leihdmsReport_form_short_codeCriteria = new eihdms.Report_form_short_codeCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsReport_form_short_codeCriteria.report_form_short_code_id.eq();
+		System.out.println(leihdmsReport_form_short_codeCriteria.uniqueReport_form_short_code());
+		
+		System.out.println("Retrieving Organisation by OrganisationCriteria");
+		eihdms.OrganisationCriteria leihdmsOrganisationCriteria = new eihdms.OrganisationCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsOrganisationCriteria.organisation_id.eq();
+		System.out.println(leihdmsOrganisationCriteria.uniqueOrganisation());
+		
+		System.out.println("Retrieving Access_scope by Access_scopeCriteria");
+		eihdms.Access_scopeCriteria leihdmsAccess_scopeCriteria = new eihdms.Access_scopeCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsAccess_scopeCriteria.access_scope_id.eq();
+		System.out.println(leihdmsAccess_scopeCriteria.uniqueAccess_scope());
+		
+		System.out.println("Retrieving Report_form_update by Report_form_updateCriteria");
+		eihdms.Report_form_updateCriteria leihdmsReport_form_updateCriteria = new eihdms.Report_form_updateCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsReport_form_updateCriteria.report_form_update_id.eq();
+		System.out.println(leihdmsReport_form_updateCriteria.uniqueReport_form_update());
+		
+		System.out.println("Retrieving Group_right by Group_rightCriteria");
+		eihdms.Group_rightCriteria leihdmsGroup_rightCriteria = new eihdms.Group_rightCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsGroup_rightCriteria.group_right_id.eq();
+		System.out.println(leihdmsGroup_rightCriteria.uniqueGroup_right());
+		
+		System.out.println("Retrieving Report_form_deadline by Report_form_deadlineCriteria");
+		eihdms.Report_form_deadlineCriteria leihdmsReport_form_deadlineCriteria = new eihdms.Report_form_deadlineCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsReport_form_deadlineCriteria.report_form_deadline_id.eq();
+		System.out.println(leihdmsReport_form_deadlineCriteria.uniqueReport_form_deadline());
+		
+		System.out.println("Retrieving Report_form_entity by Report_form_entityCriteria");
+		eihdms.Report_form_entityCriteria leihdmsReport_form_entityCriteria = new eihdms.Report_form_entityCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsReport_form_entityCriteria.report_form_entity_id.eq();
+		System.out.println(leihdmsReport_form_entityCriteria.uniqueReport_form_entity());
+		
+		System.out.println("Retrieving Deadline_extension by Deadline_extensionCriteria");
+		eihdms.Deadline_extensionCriteria leihdmsDeadline_extensionCriteria = new eihdms.Deadline_extensionCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsDeadline_extensionCriteria.deadline_extension_id.eq();
+		System.out.println(leihdmsDeadline_extensionCriteria.uniqueDeadline_extension());
+		
+		System.out.println("Retrieving Sms_schedule by Sms_scheduleCriteria");
+		eihdms.Sms_scheduleCriteria leihdmsSms_scheduleCriteria = new eihdms.Sms_scheduleCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsSms_scheduleCriteria.sms_schedule_id.eq();
+		System.out.println(leihdmsSms_scheduleCriteria.uniqueSms_schedule());
+		
+		System.out.println("Retrieving Sent_sms_log by Sent_sms_logCriteria");
+		eihdms.Sent_sms_logCriteria leihdmsSent_sms_logCriteria = new eihdms.Sent_sms_logCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsSent_sms_logCriteria.sent_sms_log_id.eq();
+		System.out.println(leihdmsSent_sms_logCriteria.uniqueSent_sms_log());
+		
+		System.out.println("Retrieving Sms_recipient by Sms_recipientCriteria");
+		eihdms.Sms_recipientCriteria leihdmsSms_recipientCriteria = new eihdms.Sms_recipientCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsSms_recipientCriteria.sms_recipient_id.eq();
+		System.out.println(leihdmsSms_recipientCriteria.uniqueSms_recipient());
 		
 	}
 	

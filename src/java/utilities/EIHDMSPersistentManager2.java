@@ -36,7 +36,6 @@ public class EIHDMSPersistentManager2 extends PersistentManager {
     @Override
     protected void configureMetadataSources(MetadataSources aMetadataSources) {
         super.configureMetadataSources(aMetadataSources);
-        aMetadataSources.addAnnotatedClass(eihdms.Group_right.class);
         aMetadataSources.addAnnotatedClass(eihdms.Region.class);
         aMetadataSources.addAnnotatedClass(eihdms.District.class);
         aMetadataSources.addAnnotatedClass(eihdms.Sub_district.class);
@@ -81,6 +80,13 @@ public class EIHDMSPersistentManager2 extends PersistentManager {
         aMetadataSources.addAnnotatedClass(eihdms.Organisation.class);
         aMetadataSources.addAnnotatedClass(eihdms.Access_scope.class);
         aMetadataSources.addAnnotatedClass(eihdms.Report_form_update.class);
+        aMetadataSources.addAnnotatedClass(eihdms.Group_right.class);
+        aMetadataSources.addAnnotatedClass(eihdms.Report_form_deadline.class);
+        aMetadataSources.addAnnotatedClass(eihdms.Report_form_entity.class);
+        aMetadataSources.addAnnotatedClass(eihdms.Deadline_extension.class);
+        aMetadataSources.addAnnotatedClass(eihdms.Sms_schedule.class);
+        aMetadataSources.addAnnotatedClass(eihdms.Sent_sms_log.class);
+        aMetadataSources.addAnnotatedClass(eihdms.Sms_recipient.class);
     }
 
     public String getProjectName() {

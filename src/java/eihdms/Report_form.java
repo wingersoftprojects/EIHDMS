@@ -373,10 +373,6 @@ public class Report_form implements Serializable {
 			for(int i = 0; i < lSections.length; i++) {
 				lSections[i].setReport_form(null);
 			}
-			eihdms.Group_right[] lGroup_rights = (eihdms.Group_right[])getGroup_right().toArray(new eihdms.Group_right[getGroup_right().size()]);
-			for(int i = 0; i < lGroup_rights.length; i++) {
-				lGroup_rights[i].setReport_form(null);
-			}
 			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
 			for(int i = 0; i < lUser_actions.length; i++) {
 				lUser_actions[i].setForm_template(null);
@@ -408,6 +404,18 @@ public class Report_form implements Serializable {
 			eihdms.Report_form_short_code[] lReport_form_short_codes = (eihdms.Report_form_short_code[])getReport_form_short_code().toArray(new eihdms.Report_form_short_code[getReport_form_short_code().size()]);
 			for(int i = 0; i < lReport_form_short_codes.length; i++) {
 				lReport_form_short_codes[i].setReport_form(null);
+			}
+			eihdms.Report_form_deadline[] lReport_form_deadlines = (eihdms.Report_form_deadline[])getReport_form_deadline().toArray(new eihdms.Report_form_deadline[getReport_form_deadline().size()]);
+			for(int i = 0; i < lReport_form_deadlines.length; i++) {
+				lReport_form_deadlines[i].setReport_form(null);
+			}
+			eihdms.Report_form_entity[] lReport_form_entitys = (eihdms.Report_form_entity[])getReport_form_entity().toArray(new eihdms.Report_form_entity[getReport_form_entity().size()]);
+			for(int i = 0; i < lReport_form_entitys.length; i++) {
+				lReport_form_entitys[i].setReport_form(null);
+			}
+			eihdms.Group_right[] lGroup_rights = (eihdms.Group_right[])getGroup_right().toArray(new eihdms.Group_right[getGroup_right().size()]);
+			for(int i = 0; i < lGroup_rights.length; i++) {
+				lGroup_rights[i].setReport_form(null);
 			}
 			return delete();
 		}
@@ -427,10 +435,6 @@ public class Report_form implements Serializable {
 			for(int i = 0; i < lSections.length; i++) {
 				lSections[i].setReport_form(null);
 			}
-			eihdms.Group_right[] lGroup_rights = (eihdms.Group_right[])getGroup_right().toArray(new eihdms.Group_right[getGroup_right().size()]);
-			for(int i = 0; i < lGroup_rights.length; i++) {
-				lGroup_rights[i].setReport_form(null);
-			}
 			eihdms.User_action[] lUser_actions = (eihdms.User_action[])getUser_action().toArray(new eihdms.User_action[getUser_action().size()]);
 			for(int i = 0; i < lUser_actions.length; i++) {
 				lUser_actions[i].setForm_template(null);
@@ -462,6 +466,18 @@ public class Report_form implements Serializable {
 			eihdms.Report_form_short_code[] lReport_form_short_codes = (eihdms.Report_form_short_code[])getReport_form_short_code().toArray(new eihdms.Report_form_short_code[getReport_form_short_code().size()]);
 			for(int i = 0; i < lReport_form_short_codes.length; i++) {
 				lReport_form_short_codes[i].setReport_form(null);
+			}
+			eihdms.Report_form_deadline[] lReport_form_deadlines = (eihdms.Report_form_deadline[])getReport_form_deadline().toArray(new eihdms.Report_form_deadline[getReport_form_deadline().size()]);
+			for(int i = 0; i < lReport_form_deadlines.length; i++) {
+				lReport_form_deadlines[i].setReport_form(null);
+			}
+			eihdms.Report_form_entity[] lReport_form_entitys = (eihdms.Report_form_entity[])getReport_form_entity().toArray(new eihdms.Report_form_entity[getReport_form_entity().size()]);
+			for(int i = 0; i < lReport_form_entitys.length; i++) {
+				lReport_form_entitys[i].setReport_form(null);
+			}
+			eihdms.Group_right[] lGroup_rights = (eihdms.Group_right[])getGroup_right().toArray(new eihdms.Group_right[getGroup_right().size()]);
+			for(int i = 0; i < lGroup_rights.length; i++) {
+				lGroup_rights[i].setReport_form(null);
 			}
 			try {
 				session.delete(this);
@@ -534,11 +550,6 @@ public class Report_form implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set section = new java.util.HashSet();
 	
-	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Group_right.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set group_right = new java.util.HashSet();
-	
 	@OneToMany(mappedBy="form_template", targetEntity=eihdms.User_action.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -578,6 +589,21 @@ public class Report_form implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set report_form_short_code = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Report_form_deadline.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set report_form_deadline = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Report_form_entity.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set report_form_entity = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Group_right.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set group_right = new java.util.HashSet();
 	
 	private void setReport_form_id(int value) {
 		this.report_form_id = value;
@@ -737,15 +763,6 @@ public class Report_form implements Serializable {
 	}
 	
 	
-	public void setGroup_right(java.util.Set value) {
-		this.group_right = value;
-	}
-	
-	public java.util.Set getGroup_right() {
-		return group_right;
-	}
-	
-	
 	public void setUser_action(java.util.Set value) {
 		this.user_action = value;
 	}
@@ -815,6 +832,33 @@ public class Report_form implements Serializable {
 	
 	public java.util.Set getReport_form_short_code() {
 		return report_form_short_code;
+	}
+	
+	
+	public void setReport_form_deadline(java.util.Set value) {
+		this.report_form_deadline = value;
+	}
+	
+	public java.util.Set getReport_form_deadline() {
+		return report_form_deadline;
+	}
+	
+	
+	public void setReport_form_entity(java.util.Set value) {
+		this.report_form_entity = value;
+	}
+	
+	public java.util.Set getReport_form_entity() {
+		return report_form_entity;
+	}
+	
+	
+	public void setGroup_right(java.util.Set value) {
+		this.group_right = value;
+	}
+	
+	public java.util.Set getGroup_right() {
+		return group_right;
 	}
 	
 	

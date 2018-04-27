@@ -440,6 +440,7 @@ public class Sub_county implements Serializable {
 	@ManyToOne(targetEntity=eihdms.County.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="county_id", referencedColumnName="county_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.County county;
 	
 	@Column(name="is_deleted", nullable=true, length=1)	

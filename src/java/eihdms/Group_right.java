@@ -413,11 +413,13 @@ public class Group_right implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Group_detail.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="group_detail_id", referencedColumnName="group_detail_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Group_detail group_detail;
 	
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form report_form;
 	
 	@Column(name="allow_view", nullable=false, length=1)	
@@ -562,19 +564,17 @@ public class Group_right implements Serializable {
 		return report_form;
 	}
 	
-	@Override	
-	public int hashCode() {
-		int hash = 3;
-				return hash;
-	}
-	
-	@Override	
 	public boolean equals(Object obj) {
 		if (obj == null) {
-				            return false;
-				        }
-				        Group_right object = (Group_right) obj;
-				        return (this.getGroup_right_id() == object.getGroup_right_id());
+		 return false;
+		 }
+		Group_right object = (Group_right) obj;
+		return (this.getGroup_right_id() == object.getGroup_right_id());
+	}
+	
+	public int hashCode() {
+		int hash = 3;
+		return hash;
 	}
 	
 	public String toString() {

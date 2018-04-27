@@ -469,11 +469,13 @@ public class Base_data implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Batch.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="batch_id", referencedColumnName="batch_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Batch batch;
 	
 	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="data_element_id", referencedColumnName="data_element_id", nullable=false) })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Data_element data_element;
 	
 	@Column(name="data_element_value", nullable=false, length=100)	
@@ -482,31 +484,37 @@ public class Base_data implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Health_facility.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="health_facility_id", referencedColumnName="health_facility_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Health_facility health_facility;
 	
 	@ManyToOne(targetEntity=eihdms.Parish.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="parish_id", referencedColumnName="parish_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Parish parish;
 	
 	@ManyToOne(targetEntity=eihdms.Sub_county.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_county sub_county;
 	
 	@ManyToOne(targetEntity=eihdms.County.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="county_id", referencedColumnName="county_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.County county;
 	
 	@ManyToOne(targetEntity=eihdms.District.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="district_id", referencedColumnName="district_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.District district;
 	
 	@ManyToOne(targetEntity=eihdms.Financial_year.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="financial_year_id", referencedColumnName="financial_year_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Financial_year financial_year;
 	
 	@Column(name="report_period_month", nullable=true, length=11)	
@@ -553,10 +561,14 @@ public class Base_data implements Serializable {
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form report_form;
 	
 	@Column(name="report_form_group_id", nullable=true, length=11)	
 	private Integer report_form_group_id;
+	
+	@Column(name="entry_mode", nullable=true, length=20)	
+	private String entry_mode;
 	
 	private void setBase_data_id(int value) {
 		this.base_data_id = value;
@@ -720,6 +732,14 @@ public class Base_data implements Serializable {
 	
 	public Integer getReport_form_group_id() {
 		return report_form_group_id;
+	}
+	
+	public void setEntry_mode(String value) {
+		this.entry_mode = value;
+	}
+	
+	public String getEntry_mode() {
+		return entry_mode;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {
