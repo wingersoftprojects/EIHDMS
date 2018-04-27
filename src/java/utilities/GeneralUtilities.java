@@ -23,6 +23,9 @@ import eihdms.Sub_section;
 import eihdms.Technical_area;
 import eihdms.Temp_data_element;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -583,5 +586,33 @@ public class GeneralUtilities implements Serializable {
      */
     public void setTemp_data_elements(List<Temp_data_element> temp_data_elements) {
         this.temp_data_elements = temp_data_elements;
+    }
+
+    public static String encodeFusionChartSpecialCharacters(String aString) {
+        String EncodedString = "";
+        EncodedString = aString.replace("'", "&apos;").replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")
+                .replace("\"", "&quot;");
+        return EncodedString;
+    }
+
+    public int sendSMSRoute1(String receiver, String message) {
+        int flag = 0;
+        try {
+            String requestUrl = "http://sms.smsone.co.ug:8866/cgi-bin/sendsms?" + "username="
+                    + URLEncoder.encode("wtl", "UTF-8") + "&password=" + URLEncoder.encode("wT3sF9", "UTF-8")
+                    + "&to=" + URLEncoder.encode(receiver, "UTF-8")
+                    + "&from=" + URLEncoder.encode("EGPAF", "UTF-8")
+                    + "&text=" + URLEncoder.encode(message, "UTF-8");
+            URL url = new URL(requestUrl);
+            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+            flag = 1;
+            System.out.println("Response:" + uc.getResponseMessage());
+            System.out.println("requestUrl:" + requestUrl);
+            uc.disconnect();
+        } catch (Exception ex) {
+            flag = 0;
+            System.out.println("sendSMSRoute1:" + ex.getMessage());
+        }
+        return flag;
     }
 }

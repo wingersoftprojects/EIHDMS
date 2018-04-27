@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <f:view>
+            <script type="text/javascript" src="resources/js/fusioncharts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.charts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.theme.fint.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts-jquery-plugin.js"></script>
+            <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+                <p:growl/>
+                <p:fieldset legend="SMS Received">
+                    <p:panelGrid columns="5" id="header_panel_grid">
+                        <p:outputLabel value="Phone:" />
+                        <p:inputText value="#{report_formBean.formstate}"/>
+                        <p:outputLabel value="Message:" />
+                        <p:inputText value="#{data_elementBean.formstate}"/>
+                        <h:commandButton value="SEND SMS" action="#{generalUtilities.sendSMSRoute1(report_formBean.formstate,data_elementBean.formstate)}" />
+                    </p:panelGrid>
+                    <div id="chart-container"></div>
+                    <script type="text/javascript">
+                        FusionCharts.ready(function () {
+                            var fusioncharts = new FusionCharts({
+                                type: 'stackedbar2d',
+                                renderAt: 'chart-container',
+                                width: '450',
+                                height: '400',
+                                dataFormat: 'json',
+                                dataSource: {
+                                    "chart": {
+                                        "theme": "fint",
+                                        "caption": "Revenue split by product category",
+                                        "subCaption": "For current year",
+                                        "xAxisname": "Quarter",
+                                        "yAxisName": "Revenues (In USD)",
+                                        //Showing the Cumulative Sum of stacked data
+                                        "showSum": "1",
+                                        "numberPrefix": "$"
+                                    },
+                                    "categories": [{
+                                            "category": [{
+                                                    "label": "Q1"
+                                                },
+                                                {
+                                                    "label": "Q2"
+                                                },
+                                                {
+                                                    "label": "Q3"
+                                                },
+                                                {
+                                                    "label": "Q4"
+                                                }
+                                            ]
+                                        }],
+                                    "dataset": [{
+                                            "seriesname": "Food Products",
+                                            "data": [{
+                                                    "value": "11000"
+                                                },
+                                                {
+                                                    "value": "15000"
+                                                },
+                                                {
+                                                    "value": "13500"
+                                                },
+                                                {
+                                                    "value": "15000"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "seriesname": "Non-Food Products",
+                                            "data": [{
+                                                    "value": "11400"
+                                                },
+                                                {
+                                                    "value": "14800"
+                                                },
+                                                {
+                                                    "value": "8300"
+                                                },
+                                                {
+                                                    "value": "11800"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            });
+                            fusioncharts.render();
+                        });
+                    </script>
+
+                </p:fieldset>
+            </h:form>
+        </f:view>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
