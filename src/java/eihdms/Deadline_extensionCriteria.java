@@ -23,6 +23,12 @@ public class Deadline_extensionCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_form_deadlineId;
 	public final AssociationExpression report_form_deadline;
 	public final TimestampExpression extended_to_date;
+	public final IntegerExpression is_deleted;
+	public final IntegerExpression is_active;
+	public final TimestampExpression add_date;
+	public final IntegerExpression add_by;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	
 	public Deadline_extensionCriteria(Criteria criteria) {
 		super(criteria);
@@ -30,6 +36,12 @@ public class Deadline_extensionCriteria extends AbstractORMCriteria {
 		report_form_deadlineId = new IntegerExpression("report_form_deadline.report_form_deadline_id", this);
 		report_form_deadline = new AssociationExpression("report_form_deadline", this);
 		extended_to_date = new TimestampExpression("extended_to_date", this);
+		is_deleted = new IntegerExpression("is_deleted", this);
+		is_active = new IntegerExpression("is_active", this);
+		add_date = new TimestampExpression("add_date", this);
+		add_by = new IntegerExpression("add_by", this);
+		last_edit_date = new TimestampExpression("last_edit_date", this);
+		last_edit_by = new IntegerExpression("last_edit_by", this);
 	}
 	
 	public Deadline_extensionCriteria(PersistentSession session) {

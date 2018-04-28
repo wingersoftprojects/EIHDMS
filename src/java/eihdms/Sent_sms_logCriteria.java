@@ -26,6 +26,12 @@ public class Sent_sms_logCriteria extends AbstractORMCriteria {
 	public final StringExpression scode;
 	public final StringExpression status_code;
 	public final StringExpression status_desc;
+	public final IntegerExpression is_deleted;
+	public final IntegerExpression is_active;
+	public final TimestampExpression add_date;
+	public final IntegerExpression add_by;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	
 	public Sent_sms_logCriteria(Criteria criteria) {
 		super(criteria);
@@ -36,6 +42,12 @@ public class Sent_sms_logCriteria extends AbstractORMCriteria {
 		scode = new StringExpression("scode", this);
 		status_code = new StringExpression("status_code", this);
 		status_desc = new StringExpression("status_desc", this);
+		is_deleted = new IntegerExpression("is_deleted", this);
+		is_active = new IntegerExpression("is_active", this);
+		add_date = new TimestampExpression("add_date", this);
+		add_by = new IntegerExpression("add_by", this);
+		last_edit_date = new TimestampExpression("last_edit_date", this);
+		last_edit_by = new IntegerExpression("last_edit_by", this);
 	}
 	
 	public Sent_sms_logCriteria(PersistentSession session) {

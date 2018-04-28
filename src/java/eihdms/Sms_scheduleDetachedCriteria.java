@@ -25,6 +25,12 @@ public class Sms_scheduleDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final StringExpression status_code;
 	public final StringExpression status_desc;
 	public final StringExpression schedule_by;
+	public final IntegerExpression is_deleted;
+	public final IntegerExpression is_active;
+	public final TimestampExpression add_date;
+	public final IntegerExpression add_by;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	
 	public Sms_scheduleDetachedCriteria() {
 		super(eihdms.Sms_schedule.class, eihdms.Sms_scheduleCriteria.class);
@@ -34,6 +40,12 @@ public class Sms_scheduleDetachedCriteria extends AbstractORMDetachedCriteria {
 		status_code = new StringExpression("status_code", this.getDetachedCriteria());
 		status_desc = new StringExpression("status_desc", this.getDetachedCriteria());
 		schedule_by = new StringExpression("schedule_by", this.getDetachedCriteria());
+		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
+		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
+		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 	}
 	
 	public Sms_scheduleDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -44,6 +56,12 @@ public class Sms_scheduleDetachedCriteria extends AbstractORMDetachedCriteria {
 		status_code = new StringExpression("status_code", this.getDetachedCriteria());
 		status_desc = new StringExpression("status_desc", this.getDetachedCriteria());
 		schedule_by = new StringExpression("schedule_by", this.getDetachedCriteria());
+		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
+		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
+		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 	}
 	
 	public Sms_schedule uniqueSms_schedule(PersistentSession session) {

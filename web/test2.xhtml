@@ -3,16 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Welcome to Flexmonster Pivot Table and Charts Component</title>
+        <!--<link href="flexmonster/style.css" rel="stylesheet" type="text/css"/>-->
+        <link href="style.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
         <div class="container">
+            <div class="header">
+                <div class="headerLogo">
+                    <a href="http://www.flexmonster.com/" target="_blank"><img src="http://www.flexmonster.com/images/email/logo.svg" height="40" border="0" /></a>
+                </div>
+            </div>
+
             <!-- 1. Create a DIV container to insert the component -->
             <div id="pivotContainer" style="padding-bottom: 30px;"></div>
 
             <!-- 2. Include flexmonster.js file -->
-            <h:outputScript name="./component/flexmonster2.5/flexmonster/flexmonster.js"/>
-
+            <!--<script src="resources/component/flexmonster/flexmonster.js" type="text/javascript"></script>-->
+            <!--<h:outputScript name="./component/flexmonster/flexmonster.js"/>-->
+            <script src="flexmonster/flexmonster.js" type="text/javascript"></script>
             <!-- 3. Create an instance of the component using new Flexmonster() -->
             <script type="text/javascript">
 

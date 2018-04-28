@@ -29,6 +29,12 @@ public class Report_form_deadlineDetachedCriteria extends AbstractORMDetachedCri
 	public final StringExpression week_value;
 	public final StringExpression month_value;
 	public final StringExpression quarter_value;
+	public final IntegerExpression is_deleted;
+	public final IntegerExpression is_active;
+	public final TimestampExpression add_date;
+	public final IntegerExpression add_by;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	public final IntegerExpression deadline_extensionId;
 	public final AssociationExpression deadline_extension;
 	
@@ -44,6 +50,12 @@ public class Report_form_deadlineDetachedCriteria extends AbstractORMDetachedCri
 		week_value = new StringExpression("week_value", this.getDetachedCriteria());
 		month_value = new StringExpression("month_value", this.getDetachedCriteria());
 		quarter_value = new StringExpression("quarter_value", this.getDetachedCriteria());
+		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
+		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
+		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		deadline_extensionId = new IntegerExpression("deadline_extension.report_form_deadline_id", this.getDetachedCriteria());
 		deadline_extension = new AssociationExpression("deadline_extension", this.getDetachedCriteria());
 	}
@@ -60,6 +72,12 @@ public class Report_form_deadlineDetachedCriteria extends AbstractORMDetachedCri
 		week_value = new StringExpression("week_value", this.getDetachedCriteria());
 		month_value = new StringExpression("month_value", this.getDetachedCriteria());
 		quarter_value = new StringExpression("quarter_value", this.getDetachedCriteria());
+		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
+		is_active = new IntegerExpression("is_active", this.getDetachedCriteria());
+		add_date = new TimestampExpression("add_date", this.getDetachedCriteria());
+		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
+		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
+		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		deadline_extensionId = new IntegerExpression("deadline_extension.report_form_deadline_id", this.getDetachedCriteria());
 		deadline_extension = new AssociationExpression("deadline_extension", this.getDetachedCriteria());
 	}

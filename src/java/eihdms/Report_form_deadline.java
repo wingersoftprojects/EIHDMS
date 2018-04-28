@@ -437,6 +437,24 @@ public class Report_form_deadline implements Serializable {
 	@Column(name="quarter_value", nullable=true, length=50)	
 	private String quarter_value;
 	
+	@Column(name="is_deleted", nullable=false, length=1)	
+	private int is_deleted;
+	
+	@Column(name="is_active", nullable=false, length=1)	
+	private int is_active;
+	
+	@Column(name="add_date", nullable=true)	
+	private java.sql.Timestamp add_date;
+	
+	@Column(name="add_by", nullable=true, length=10)	
+	private Integer add_by;
+	
+	@Column(name="last_edit_date", nullable=true)	
+	private java.sql.Timestamp last_edit_date;
+	
+	@Column(name="last_edit_by", nullable=true, length=10)	
+	private Integer last_edit_by;
+	
 	@OneToOne(mappedBy="report_form_deadline", targetEntity=eihdms.Deadline_extension.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
@@ -516,6 +534,62 @@ public class Report_form_deadline implements Serializable {
 	
 	public String getQuarter_value() {
 		return quarter_value;
+	}
+	
+	public void setIs_deleted(int value) {
+		this.is_deleted = value;
+	}
+	
+	public int getIs_deleted() {
+		return is_deleted;
+	}
+	
+	public void setIs_active(int value) {
+		this.is_active = value;
+	}
+	
+	public int getIs_active() {
+		return is_active;
+	}
+	
+	public void setAdd_date(java.sql.Timestamp value) {
+		this.add_date = value;
+	}
+	
+	public java.sql.Timestamp getAdd_date() {
+		return add_date;
+	}
+	
+	public void setAdd_by(int value) {
+		setAdd_by(new Integer(value));
+	}
+	
+	public void setAdd_by(Integer value) {
+		this.add_by = value;
+	}
+	
+	public Integer getAdd_by() {
+		return add_by;
+	}
+	
+	public void setLast_edit_date(java.sql.Timestamp value) {
+		this.last_edit_date = value;
+	}
+	
+	public java.sql.Timestamp getLast_edit_date() {
+		return last_edit_date;
+	}
+	
+	public void setLast_edit_by(int value) {
+		setLast_edit_by(new Integer(value));
+	}
+	
+	public void setLast_edit_by(Integer value) {
+		this.last_edit_by = value;
+	}
+	
+	public Integer getLast_edit_by() {
+		return last_edit_by;
 	}
 	
 	public void setReport_form(eihdms.Report_form value) {

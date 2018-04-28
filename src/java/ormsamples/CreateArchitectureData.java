@@ -145,22 +145,22 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : add_by, add_date, is_active, is_deleted, allow_delete, allow_edit, allow_add, allow_view, report_form, group_detail
 			leihdmsGroup_right.save();
 			eihdms.Report_form_deadline leihdmsReport_form_deadline = eihdms.Report_form_deadline.createReport_form_deadline();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : deadline_extension
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : deadline_extension, is_active, is_deleted
 			leihdmsReport_form_deadline.save();
 			eihdms.Report_form_entity leihdmsReport_form_entity = eihdms.Report_form_entity.createReport_form_entity();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : entity_id, entity_type, report_form
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, entity_id, entity_type, report_form
 			leihdmsReport_form_entity.save();
 			eihdms.Deadline_extension leihdmsDeadline_extension = eihdms.Deadline_extension.createDeadline_extension();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : extended_to_date, report_form_deadline
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, extended_to_date, report_form_deadline
 			leihdmsDeadline_extension.save();
 			eihdms.Sms_schedule leihdmsSms_schedule = eihdms.Sms_schedule.createSms_schedule();
-			// Initialize the properties of the persistent object here
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
 			leihdmsSms_schedule.save();
 			eihdms.Sent_sms_log leihdmsSent_sms_log = eihdms.Sent_sms_log.createSent_sms_log();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : sent_date
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, sent_date
 			leihdmsSent_sms_log.save();
 			eihdms.Sms_recipient leihdmsSms_recipient = eihdms.Sms_recipient.createSms_recipient();
-			// Initialize the properties of the persistent object here
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
 			leihdmsSms_recipient.save();
 			t.commit();
 		}

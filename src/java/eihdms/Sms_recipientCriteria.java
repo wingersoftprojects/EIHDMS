@@ -22,12 +22,24 @@ public class Sms_recipientCriteria extends AbstractORMCriteria {
 	public final IntegerExpression sms_recipient_id;
 	public final IntegerExpression sms_schedule_id;
 	public final StringExpression phone;
+	public final IntegerExpression is_deleted;
+	public final IntegerExpression is_active;
+	public final TimestampExpression add_date;
+	public final IntegerExpression add_by;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	
 	public Sms_recipientCriteria(Criteria criteria) {
 		super(criteria);
 		sms_recipient_id = new IntegerExpression("sms_recipient_id", this);
 		sms_schedule_id = new IntegerExpression("sms_schedule_id", this);
 		phone = new StringExpression("phone", this);
+		is_deleted = new IntegerExpression("is_deleted", this);
+		is_active = new IntegerExpression("is_active", this);
+		add_date = new TimestampExpression("add_date", this);
+		add_by = new IntegerExpression("add_by", this);
+		last_edit_date = new TimestampExpression("last_edit_date", this);
+		last_edit_by = new IntegerExpression("last_edit_by", this);
 	}
 	
 	public Sms_recipientCriteria(PersistentSession session) {

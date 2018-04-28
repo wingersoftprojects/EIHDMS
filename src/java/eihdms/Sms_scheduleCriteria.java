@@ -25,6 +25,12 @@ public class Sms_scheduleCriteria extends AbstractORMCriteria {
 	public final StringExpression status_code;
 	public final StringExpression status_desc;
 	public final StringExpression schedule_by;
+	public final IntegerExpression is_deleted;
+	public final IntegerExpression is_active;
+	public final TimestampExpression add_date;
+	public final IntegerExpression add_by;
+	public final TimestampExpression last_edit_date;
+	public final IntegerExpression last_edit_by;
 	
 	public Sms_scheduleCriteria(Criteria criteria) {
 		super(criteria);
@@ -34,6 +40,12 @@ public class Sms_scheduleCriteria extends AbstractORMCriteria {
 		status_code = new StringExpression("status_code", this);
 		status_desc = new StringExpression("status_desc", this);
 		schedule_by = new StringExpression("schedule_by", this);
+		is_deleted = new IntegerExpression("is_deleted", this);
+		is_active = new IntegerExpression("is_active", this);
+		add_date = new TimestampExpression("add_date", this);
+		add_by = new IntegerExpression("add_by", this);
+		last_edit_date = new TimestampExpression("last_edit_date", this);
+		last_edit_by = new IntegerExpression("last_edit_by", this);
 	}
 	
 	public Sms_scheduleCriteria(PersistentSession session) {
