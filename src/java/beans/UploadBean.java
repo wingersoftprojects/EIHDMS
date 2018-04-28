@@ -1867,7 +1867,7 @@ public class UploadBean implements Serializable {
         }
     }
 
-    public void load_interface(List<Interface_data> interface_dataList, Report_form report_form_SMS, Report_form_group report_form_group_SMS) {
+    public void load_interface(List<Interface_data> interface_dataList, Report_form report_form_SMS, Report_form_group report_form_group_SMS, Interface_data_sms interface_data_sms) {
         try {
             PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
             Batch batch;
@@ -2064,8 +2064,43 @@ public class UploadBean implements Serializable {
 
 //loginBean.saveMessage();
 //System.out.println("START-VALIDATION-REPORT:" + new Date());
-                generate_validation_report(batch.getBatch_id());
+                String validationError = generate_validation_report_SMS(batch.getBatch_id());
+                if (null == validationError) {
+                    interface_data_sms.setStatus_v("Failed");
+                    interface_data_sms.setStatus_v_desc("Failed Validation Rule(s)");
+                } else {
+                    switch (validationError) {
+                        case "Passed":
+                            interface_data_sms.setStatus_v("Passed");
+                            interface_data_sms.setStatus_v_desc("Passed Validation Rules");
+                            interface_data_sms.setStatus_m("Moved");
+                            interface_data_sms.setStatus_m_desc("Moved To Base");
+                            break;
+                        case "Existing Data":
+                            interface_data_sms.setStatus_v("Passed");
+                            interface_data_sms.setStatus_v_desc("Passed Validation Rules");
+                            break;
+                        case "Failed":
+                            interface_data_sms.setStatus_v("Failed");
+                            interface_data_sms.setStatus_v_desc("Failed Validation Rule(s)");
+                            break;
+                        default:
+                            interface_data_sms.setStatus_v("Failed");
+                            interface_data_sms.setStatus_v_desc("Failed Validation Rule(s)");
+                            break;
+                    }
+                }
+
 //System.out.println("END-VALIDATION-REPORT:" + new Date());
+                /**
+                 * Save interface_data_sms
+                 */
+                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
+                transaction.commit();
+                /**
+                 * End Save interface_data_sms
+                 */
 
 //RequestContext.getCurrentInstance().execute("PF('validationReport').show();");
             } catch (SQLException ex) {
@@ -2170,6 +2205,112 @@ public class UploadBean implements Serializable {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String generate_validation_report_SMS(int batch_id) {
+        String validationError = "";
+        try {
+            Batch b = Batch.getBatchByORMID(batch_id);
+            User_detail user_detail = User_detail.getUser_detailByORMID(b.getAdd_by());
+            batchDetails = new BatchDetails();
+            batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
+            batchDetails.setBatch(b);
+            List<ValidationReport> tempValidationReports = new ArrayList<>();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name FROM validation_report INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON validation_report.report_form_group_id = report_form_group.report_form_group_id where batch_id=" + batch_id).list();
+            int counter = 1;
+            failed = 0;
+            passed = 0;
+            for (Object[] objects : validations) {
+                ValidationReport vr = new ValidationReport();
+                if (objects[4] != null) {
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    if (objects[1] != null) {
+                        vr.CountyName = objects[1].toString();
+                    } else {
+                        vr.CountyName = "";
+                    }
+                    if (objects[2] != null) {
+                        vr.Sub_countyName = objects[2].toString();
+                    } else {
+                        vr.Sub_countyName = "";
+                    }
+                    if (objects[4] != null) {
+                        vr.FacilityName = objects[4].toString();
+                    } else {
+                        vr.FacilityName = "";
+                    }
+                    vr.ParishName = "";
+                } else if (objects[3] != null) {
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    if (objects[1] != null) {
+                        vr.CountyName = objects[1].toString();
+                    } else {
+                        vr.CountyName = "";
+                    }
+                    if (objects[2] != null) {
+                        vr.Sub_countyName = objects[2].toString();
+                    } else {
+                        vr.Sub_countyName = "";
+                    }
+                    if (objects[3] != null) {
+                        vr.ParishName = objects[3].toString();
+                    } else {
+                        vr.ParishName = "";
+                    }
+                    vr.FacilityName = "";
+                } else {
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    vr.Sub_countyName = "";
+                    vr.ParishName = "";
+                    vr.FacilityName = "";
+                }
+                try {
+                    vr.setStatus(objects[5].toString());
+                    vr.setValidationDescription(objects[6].toString());
+                    if (objects[6].toString().equals("=>Passed Validation Rules")) {
+                        validationError = "Passed";
+                    } else if (objects[6].toString().equals("Data for the same period")) {
+                        validationError = "Existing Data";
+                    } else if (objects[6].toString().contains("=>Failed Validation Rule:")) {
+                        validationError = "Failed";
+                    } else {
+                        validationError = "Failed";
+                    }
+                    if (objects[5].toString().equals("Fail")) {
+                        failed++;
+                    } else {
+                        passed++;
+                    }
+                } catch (NullPointerException ex) {
+                    vr.setValidationDescription("");
+                }
+                ReportFormName = objects[8].toString();
+                ReportFormGroupName = objects[9].toString();
+                vr.setReportId(counter);
+                tempValidationReports.add(vr);
+                counter++;
+            }
+            validationReportListAll = new ArrayList<>(tempValidationReports);
+            //validationReportList = new ArrayList<>(tempValidationReports);
+
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            validationError = "Failed Validation";
+        }
+        return validationError;
     }
 
     public List<ValidationReport> generate_validation_report() {

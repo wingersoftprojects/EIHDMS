@@ -63,6 +63,10 @@ public class SMSData {
 
     /**
      * Start SMS Data functions
+     *
+     * @param sms
+     * @param phone
+     * @param scode
      */
     public void load_interface_data_sms(String sms, String phone, String scode) {
         if (phone != null && !phone.isEmpty() && sms != null && !sms.isEmpty()) {
@@ -71,16 +75,23 @@ public class SMSData {
                 String[] splitString = sms.split(" ");
                 interface_data_sms.setAdd_date(new Timestamp(new Date().getTime()));
                 interface_data_sms.setPhone(phone);
-                try{
-                interface_data_sms.setReport_form_code(splitString[1]);
-                interface_data_sms.setSms(splitString[2]);
-                }catch(Exception ex){
-                interface_data_sms.setReport_form_code("");
-                interface_data_sms.setSms(sms);    
+                try {
+                    if (splitString.length == 3) {
+                        interface_data_sms.setReport_form_code(splitString[1]);
+                        interface_data_sms.setSms(splitString[2]);
+                    }
+                    if (splitString.length == 2) {
+                        //interface_data_sms.setReport_form_code(splitString[1]);
+                        interface_data_sms.setReport_form_code("");
+                        interface_data_sms.setSms(splitString[1]);
+                    }
+                } catch (Exception ex) {
+                    interface_data_sms.setReport_form_code("");
+                    interface_data_sms.setSms(sms);
                 }
                 interface_data_sms.setScode(scode);
-                interface_data_sms.setStatus_f("R");
-                interface_data_sms.setStatus_f_desc("Received");
+                //interface_data_sms.setStatus_f("R");
+                //interface_data_sms.setStatus_f_desc("Received");
                 interface_data_sms.setIs_deleted(0);
                 interface_data_sms.setIs_active(1);
                 interface_data_sms.setAdd_by(1);
@@ -92,7 +103,7 @@ public class SMSData {
                 }
 
                 transaction.commit();
-                this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code());
+                this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,140 +111,159 @@ public class SMSData {
         }
     }
 
-    public void decode_and_load_sms(String sms, String phone, String report_form_code) {
+    public void decode_and_load_sms(String sms, String phone, String report_form_code, Interface_data_sms interface_data_sms) {
         try {
             List<Interface_data> interface_datas = new ArrayList<>();
             List<Data_element_sms_position> data_element_sms_positionList = new ArrayList<>();
             /**
              * Read form being loaded
              */
-            sms_report_form = Report_form.loadReport_formByQuery("report_form_code='" + report_form_code + "'", null);
+            if (!"".equals(report_form_code) && report_form_code != null) {
+                sms_report_form = Report_form.loadReport_formByQuery("report_form_code='" + report_form_code + "'", null);
+            }
             /**
              * Periods
              */
             Calendar calendar = new GregorianCalendar();
             Date trialTime = new Date();
             calendar.setTime(trialTime);
-            System.out.println("Week number:" + calendar.get(Calendar.WEEK_OF_YEAR));
+            System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
             //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
-            report_period_week = calendar.get(Calendar.WEEK_OF_YEAR);
+            report_period_week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
             report_period_year = calendar.get(Calendar.YEAR);
-            get_date_from_other_periods();
             /**
              * Periods
              */
+            /**
+             * Read report form short code list
+             */
+            List<Report_form_short_code> report_form_short_codeList = new ArrayList<>();
             if (sms_report_form != null) {
-                /**
-                 * Read report form short code list
-                 */
-                List<Report_form_short_code> report_form_short_codeList = new ArrayList<>();
                 report_form_short_codeList = Report_form_short_code.queryReport_form_short_code("report_form_id=" + sms_report_form.getReport_form_id(), null);
-                if (report_form_short_codeList.size() > 0) {
-                    /**
-                     * Loop through available short codes for one that starts
-                     * like current SMS
-                     */
-                    for (Report_form_short_code object : report_form_short_codeList) {
-                        if (sms.toUpperCase().startsWith(object.getStart_code().toUpperCase())) {
-                            sms = sms.replace(object.getStart_code(), "");
-                            int count = sms.length() - sms.replace(".", "").length();
-                            /**
-                             * Check if number of separators equals those in SMS
-                             */
-                            if (count == object.getNumber_of_separators()) {
-                                data_element_sms_positionList = Data_element_sms_position.queryData_element_sms_position("report_form_short_code_id=" + object.getReport_form_short_code_id(), null);
-                            }
-                            break;
-                        }
-                    }
-                }
+            } else {
+                report_form_short_codeList = Report_form_short_code.queryReport_form_short_code(null, null);
+            }
+            if (report_form_short_codeList.size() > 0) {
                 /**
-                 * Get location info from phone number
+                 * Loop through available short codes for one that starts like
+                 * current SMS
                  */
-                Phone_contact phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
-                if (phone_contact != null) {
-                    set_sms_location(phone_contact);
-                }
-                /**
-                 * Return invalid SMS is size=0
-                 */
-                if (data_element_sms_positionList.size() > 0) {
-
-                    /**
-                     * Split SMS into an array of strings
-                     */
-                    String[] smsStrings = sms.split("\\.");
-
-                    for (Data_element_sms_position outer : data_element_sms_positionList) {
-                        Interface_data i = new Interface_data();
-                        i.setData_element(outer.getData_element());
-                        i.setData_element_value(smsStrings[outer.getCode_position() - 1]);
-                        i.setAdd_by(1);
-                        i.setAdd_date(new Timestamp(new Date().getTime()));
-                        i.setEntry_mode("SMS");
-                        //i.setFinancial_year(value);
-                        i.setIs_active(1);
-                        i.setIs_deleted(0);
-                        i.setReport_form(sms_report_form);
-                        sms_report_form_group = outer.getData_element().getReport_form_group();
-                        i.setReport_form_group_id(outer.getData_element().getReport_form_group().getReport_form_group_id());
-
+                for (Report_form_short_code object : report_form_short_codeList) {
+                    if (sms.toUpperCase().startsWith(object.getStart_code().toUpperCase())) {
+                        sms = sms.replace(object.getStart_code(), "");
+                        int count = sms.length() - sms.replace(".", "").length();
                         /**
-                         * Get reporting periods
+                         * Check if number of separators equals those in SMS
                          */
-                        i.setFinancial_year(this.getFinancial_year());
-                        i.setReport_period_year(this.getReport_period_year());
-                        i.setReport_period_quarter(this.getReport_period_quarter());
-                        i.setReport_period_from_date(this.getReport_period_from_date());
-                        i.setReport_period_to_date(this.getReport_period_to_date());
-                        i.setReport_period_month(this.getReport_period_month());
-                        i.setReport_period_week(this.getReport_period_week());
-                        i.setReport_period_bi_month(this.getReport_period_bi_month());
-
-                        /**
-                         * End set reporting periods
-                         */
-                        i.setReport_period_from_date(new Date());
-                        i.setReport_period_to_date(new Date());
-                        if (phone_contact != null) {
-                            switch (phone_contact.getEntity_type()) {
-                                case "District":
-                                    i.setDistrict_id(smsDistrict.getDistrict_id());
-                                    i.setDistrict_name(smsDistrict.getDistrict_name());
-                                    break;
-                                case "Parish":
-                                    i.setDistrict_id(smsParish.getSub_county().getCounty().getDistrict().getDistrict_id());
-                                    i.setDistrict_name(smsParish.getSub_county().getCounty().getDistrict().getDistrict_name());
-                                    i.setCounty_id(smsParish.getSub_county().getCounty().getCounty_id());
-                                    i.setCounty_name(smsParish.getSub_county().getCounty().getCounty_name());
-                                    i.setSub_county_id(smsParish.getSub_county().getSub_county_id());
-                                    i.setSub_county_name(smsParish.getSub_county().getSub_county_name());
-                                    i.setParish_id(smsParish.getParish_id());
-                                    i.setParish_name(smsParish.getParish_name());
-                                    break;
-                                case "Facility":
-                                    i.setDistrict_id(smsHealth_facility.getDistrict().getDistrict_id());
-                                    i.setDistrict_name(smsHealth_facility.getDistrict().getDistrict_name());
-                                    i.setCounty_id(smsHealth_facility.getSub_county().getCounty().getCounty_id());
-                                    i.setCounty_name(smsHealth_facility.getSub_county().getCounty().getCounty_name());
-                                    i.setSub_county_id(smsHealth_facility.getSub_county().getSub_county_id());
-                                    i.setSub_county_name(smsHealth_facility.getSub_county().getSub_county_name());
-                                    i.setParish_id(smsHealth_facility.getParish().getParish_id());
-                                    i.setParish_name(smsHealth_facility.getParish().getParish_name());
-                                    i.setHealth_facility_id(smsHealth_facility.getHealth_facility_id());
-                                    i.setHealth_facility_name(smsHealth_facility.getHealth_facility_name());
-                                    break;
-                                default:
-                                    break;
-                            }
+                        if (count == object.getNumber_of_separators()) {
+                            data_element_sms_positionList = Data_element_sms_position.queryData_element_sms_position("report_form_short_code_id=" + object.getReport_form_short_code_id(), null);
+                            interface_data_sms.setStatus_f("Ok");
+                            interface_data_sms.setStatus_f_desc("Valid Data Format");
+                        } else {
+                            interface_data_sms.setStatus_f("Error");
+                            interface_data_sms.setStatus_f_desc("Invalid Data Format (Reason: Data Incomplete)");
                         }
-                        interface_datas.add(i);
+                        break;
                     }
-                    UploadBean uploadBean = new UploadBean();
-                    uploadBean.load_interface(interface_datas, sms_report_form, sms_report_form_group);
-                    System.out.println(interface_datas.size());
                 }
             }
+            /**
+             * Get location info from phone number
+             */
+            Phone_contact phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
+            if (phone_contact != null) {
+                set_sms_location(phone_contact);
+            } else {
+                interface_data_sms.setStatus_f("Error");
+                interface_data_sms.setStatus_f_desc("Unknown Sender");
+            }
+            /**
+             * Return invalid SMS is size=0
+             */
+            if (data_element_sms_positionList.size() > 0) {
+
+                /**
+                 * Split SMS into an array of strings
+                 */
+                String[] smsStrings = sms.split("\\.");
+
+                for (Data_element_sms_position outer : data_element_sms_positionList) {
+                    Interface_data i = new Interface_data();
+                    i.setData_element(outer.getData_element());
+                    i.setData_element_value(smsStrings[outer.getCode_position() - 1]);
+                    i.setAdd_by(1);
+                    i.setAdd_date(new Timestamp(new Date().getTime()));
+                    i.setEntry_mode("SMS");
+                    //i.setFinancial_year(value);
+                    i.setIs_active(1);
+                    i.setIs_deleted(0);
+                    if (sms_report_form == null) {
+                        sms_report_form = outer.getData_element().getReport_form();
+                        get_date_from_other_periods();
+                    }
+                    i.setReport_form(sms_report_form);
+                    sms_report_form_group = outer.getData_element().getReport_form_group();
+                    i.setReport_form_group_id(outer.getData_element().getReport_form_group().getReport_form_group_id());
+
+                    /**
+                     * Get reporting periods
+                     */
+                    i.setFinancial_year(this.getFinancial_year());
+                    i.setReport_period_year(this.getReport_period_year());
+                    i.setReport_period_quarter(this.getReport_period_quarter());
+                    i.setReport_period_from_date(this.getReport_period_from_date());
+                    i.setReport_period_to_date(this.getReport_period_to_date());
+                    i.setReport_period_month(this.getReport_period_month());
+                    i.setReport_period_week(this.getReport_period_week());
+                    i.setReport_period_bi_month(this.getReport_period_bi_month());
+
+                    /**
+                     * End set reporting periods
+                     */
+                    i.setReport_period_from_date(new Date());
+                    i.setReport_period_to_date(new Date());
+                    if (phone_contact != null) {
+                        switch (phone_contact.getEntity_type()) {
+                            case "District":
+                                i.setDistrict_id(smsDistrict.getDistrict_id());
+                                i.setDistrict_name(smsDistrict.getDistrict_name());
+                                break;
+                            case "Parish":
+                                i.setDistrict_id(smsParish.getSub_county().getCounty().getDistrict().getDistrict_id());
+                                i.setDistrict_name(smsParish.getSub_county().getCounty().getDistrict().getDistrict_name());
+                                i.setCounty_id(smsParish.getSub_county().getCounty().getCounty_id());
+                                i.setCounty_name(smsParish.getSub_county().getCounty().getCounty_name());
+                                i.setSub_county_id(smsParish.getSub_county().getSub_county_id());
+                                i.setSub_county_name(smsParish.getSub_county().getSub_county_name());
+                                i.setParish_id(smsParish.getParish_id());
+                                i.setParish_name(smsParish.getParish_name());
+                                break;
+                            case "Facility":
+                                i.setDistrict_id(smsHealth_facility.getDistrict().getDistrict_id());
+                                i.setDistrict_name(smsHealth_facility.getDistrict().getDistrict_name());
+                                i.setCounty_id(smsHealth_facility.getSub_county().getCounty().getCounty_id());
+                                i.setCounty_name(smsHealth_facility.getSub_county().getCounty().getCounty_name());
+                                i.setSub_county_id(smsHealth_facility.getSub_county().getSub_county_id());
+                                i.setSub_county_name(smsHealth_facility.getSub_county().getSub_county_name());
+                                i.setParish_id(smsHealth_facility.getParish().getParish_id());
+                                i.setParish_name(smsHealth_facility.getParish().getParish_name());
+                                i.setHealth_facility_id(smsHealth_facility.getHealth_facility_id());
+                                i.setHealth_facility_name(smsHealth_facility.getHealth_facility_name());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    interface_datas.add(i);
+                }
+                UploadBean uploadBean = new UploadBean();
+                uploadBean.load_interface(interface_datas, sms_report_form, sms_report_form_group, interface_data_sms);
+                System.out.println(interface_datas.size());
+            } else {
+                interface_data_sms.setStatus_f("Error");
+                interface_data_sms.setStatus_f_desc("Invalid Data Format");
+            }
+            //}
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
