@@ -1708,7 +1708,7 @@ PREPARE stmt1 FROM @sql_text1;
 EXECUTE stmt1;
 DEALLOCATE PREPARE stmt1;
 
-SET @sql_text1=CONCAT("update ",table_name_v," set entry_mode='Upload'");
+SET @sql_text1=CONCAT("update ",table_name_v," set entry_mode='UPLOAD'");
 PREPARE stmt1 FROM @sql_text1;
 EXECUTE stmt1;
 DEALLOCATE PREPARE stmt1;

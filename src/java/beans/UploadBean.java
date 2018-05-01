@@ -2565,7 +2565,7 @@ public class UploadBean implements Serializable {
         /**
          * Set Entry Mode
          */
-        interface_data.setEntry_mode("Upload");
+        interface_data.setEntry_mode("UPLOAD");
         /**
          * End Set Entry Mode
          */
@@ -2868,7 +2868,7 @@ public class UploadBean implements Serializable {
                 /**
                  * Entry Mode
                  */
-                interface_data.setEntry_mode("DataEntry");
+                interface_data.setEntry_mode("WEB");
                 interface_datas.add(interface_data);
             }
         }

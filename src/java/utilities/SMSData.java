@@ -128,7 +128,7 @@ public class SMSData {
             Calendar calendar = new GregorianCalendar();
             Date trialTime = new Date();
             calendar.setTime(trialTime);
-            System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
+            //System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
             //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
             report_period_week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
             report_period_year = calendar.get(Calendar.YEAR);
@@ -205,10 +205,10 @@ public class SMSData {
                          */
                         if (count == object.getNumber_of_separators()) {
                             data_element_sms_positionList = Data_element_sms_position.queryData_element_sms_position("report_form_short_code_id=" + object.getReport_form_short_code_id(), null);
-                            interface_data_sms.setStatus_f("Ok");
+                            interface_data_sms.setStatus_f("OK");
                             interface_data_sms.setStatus_f_desc("Valid Data Format");
                         } else {
-                            interface_data_sms.setStatus_f("Error");
+                            interface_data_sms.setStatus_f("ERR");
                             interface_data_sms.setStatus_f_desc("Invalid Data Format (Reason: Data Incomplete)");
                         }
                         break;
@@ -222,7 +222,7 @@ public class SMSData {
             if (phone_contact != null) {
                 set_sms_location(phone_contact);
             } else {
-                interface_data_sms.setStatus_f("Error");
+                interface_data_sms.setStatus_f("ERR");
                 interface_data_sms.setStatus_f_desc("Unknown Sender");
             }
             /**
@@ -288,7 +288,7 @@ public class SMSData {
                         Deadline deadline = check_deadline(sms_report_form);
                         if (deadline.deadline_passed) {
                             PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
-                            interface_data_sms.setStatus_v("Error");
+                            interface_data_sms.setStatus_v("ERR");
                             interface_data_sms.setStatus_v_desc(deadline.getDeadline_reason());
                             EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
                             transaction.commit();
@@ -356,7 +356,7 @@ public class SMSData {
                 uploadBean.load_interface(interface_datas, sms_report_form, sms_report_form_group, interface_data_sms);
                 System.out.println(interface_datas.size());
             } else {
-                interface_data_sms.setStatus_f("Error");
+                interface_data_sms.setStatus_f("ERR");
                 interface_data_sms.setStatus_f_desc("Invalid Data Format");
             }
             //}
