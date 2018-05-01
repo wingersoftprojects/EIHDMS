@@ -14,90 +14,224 @@
             <script type="text/javascript" src="resources/js/fusioncharts.charts.js"></script>
             <script type="text/javascript" src="resources/js/fusioncharts.theme.fint.js"></script>
             <script type="text/javascript" src="resources/js/fusioncharts-jquery-plugin.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.widgets.js"></script>
             <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
                 <p:growl/>
                 <p:fieldset legend="SMS Received">
-                    <p:panelGrid columns="5" id="header_panel_grid">
-                        <p:outputLabel value="Phone:" />
-                        <p:inputText value="#{report_formBean.formstate}"/>
-                        <p:outputLabel value="Message:" />
-                        <p:inputText value="#{data_elementBean.formstate}"/>
-                        <h:commandButton value="SEND SMS" action="#{generalUtilities.sendSMSRoute1(report_formBean.formstate,data_elementBean.formstate)}" />
+                    <p:panelGrid columns="6" id="panelFilter">
+                        <p:outputLabel value="Report Form:" />
+                        <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" converter="report_formConverter">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add','mode_upload')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <p:ajax process="@this" update="panelResultCharts panelResultTable"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Week:" />
+                        <p:inputText id="report_period_week" value="#{uploadBean.report_period_week}">
+                            <f:validateLongRange minimum="1" maximum="52"/>
+                        </p:inputText>
+                        <p:commandButton value="SEARCH"/>
+                        <p:commandButton value="RESET"/>
                     </p:panelGrid>
-                    <div id="chart-container"></div>
-                    <script type="text/javascript">
-                        FusionCharts.ready(function () {
-                            var fusioncharts = new FusionCharts({
-                                type: 'stackedbar2d',
-                                renderAt: 'chart-container',
-                                width: '450',
-                                height: '400',
-                                dataFormat: 'json',
-                                dataSource: {
-                                    "chart": {
-                                        "theme": "fint",
-                                        "caption": "Revenue split by product category",
-                                        "subCaption": "For current year",
-                                        "xAxisname": "Quarter",
-                                        "yAxisName": "Revenues (In USD)",
-                                        //Showing the Cumulative Sum of stacked data
-                                        "showSum": "1",
-                                        "numberPrefix": "$"
-                                    },
-                                    "categories": [{
-                                            "category": [{
-                                                    "label": "Q1"
-                                                },
+                    <h:panelGrid columns="2" id="panelResultCharts">
+                        <h:panelGrid>
+                            <div id="chart-container1"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartSMSReceived = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart-container1',
+                                        width: '400',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "SMS Reports Received (%)",
+                                                "subcaption": "Last week",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#e44a00"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#f8bd19"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#6baa01"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "40"
+                                                    }]
+                                            }
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid>
+                            <div id="chart-container2"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var revenueChart = new FusionCharts({
+                                        type: 'stackedbar2d',
+                                        renderAt: 'chart-container2',
+                                        width: '450',
+                                        height: '400',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "SMS Validation Status",
+                                                "subCaption": "Last Week",
+                                                "xAxisname": "Report Form",
+                                                "yAxisName": "Number of SMS",
+                                                "numberPrefix": "",
+                                                "paletteColors": "#e44a00,#1aaf5d",
+                                                "bgColor": "#ffffff",
+                                                "borderAlpha": "20",
+                                                "showCanvasBorder": "0",
+                                                "usePlotGradientColor": "0",
+                                                "plotBorderAlpha": "10",
+                                                "legendBorderAlpha": "0",
+                                                "legendShadow": "0",
+                                                "valueFontColor": "#ffffff",
+                                                "showXAxisLine": "1",
+                                                "xAxisLineColor": "#999999",
+                                                "divlineColor": "#999999",
+                                                "divLineIsDashed": "1",
+                                                "showAlternateVGridColor": "0",
+                                                "subcaptionFontBold": "0",
+                                                "subcaptionFontSize": "14",
+                                                "showHoverEffect": "1"
+
+                                            },
+                                            "categories": [
                                                 {
-                                                    "label": "Q2"
-                                                },
-                                                {
-                                                    "label": "Q3"
-                                                },
-                                                {
-                                                    "label": "Q4"
+                                                    "category": [
+                                                        {
+                                                            "label": "Option B+ Option B+ Option B+"
+                                                        },
+                                                        {
+                                                            "label": "EGPAF Surge Form"
+                                                        },
+                                                        {
+                                                            "label": "HMIS106a"
+                                                        },
+                                                        {
+                                                            "label": "HMIS 105"
+                                                        }
+                                                    ]
                                                 }
-                                            ]
-                                        }],
-                                    "dataset": [{
-                                            "seriesname": "Food Products",
-                                            "data": [{
-                                                    "value": "11000"
+                                            ],
+                                            "dataset": [
+                                                {
+                                                    "seriesname": "OK",
+                                                    "data": [
+                                                        {
+                                                            "value": "19"
+                                                        },
+                                                        {
+                                                            "value": "13"
+                                                        },
+                                                        {
+                                                            "value": "12"
+                                                        },
+                                                        {
+                                                            "value": "14"
+                                                        }
+                                                    ]
                                                 },
                                                 {
-                                                    "value": "15000"
-                                                },
-                                                {
-                                                    "value": "13500"
-                                                },
-                                                {
-                                                    "value": "15000"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "seriesname": "Non-Food Products",
-                                            "data": [{
-                                                    "value": "11400"
-                                                },
-                                                {
-                                                    "value": "14800"
-                                                },
-                                                {
-                                                    "value": "8300"
-                                                },
-                                                {
-                                                    "value": "11800"
+                                                    "seriesname": "ERR",
+                                                    "data": [
+                                                        {
+                                                            "value": "13"
+                                                        },
+                                                        {
+                                                            "value": "15"
+                                                        },
+                                                        {
+                                                            "value": "98"
+                                                        },
+                                                        {
+                                                            "value": "13"
+                                                        }
+                                                    ]
                                                 }
                                             ]
                                         }
-                                    ]
-                                }
-                            });
-                            fusioncharts.render();
-                        });
-                    </script>
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" id="panelResultTable">
+                        <p:dataTable id="table_data_elements" var="de" value="#{data_elementBean.data_elementList}" draggableRows="false" 
+                                     paginator="true" 
+                                     paginatorTemplate="{Exporters}">
+                            <f:facet name="header">
+                                #{uploadBean.report_form.report_form_name}
+                            </f:facet>
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="table_data_elements" fileName="data_elements" />
+                                </h:commandLink>
 
+                                <h:commandLink>
+                                    <p:graphicImage name="images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="table_data_elements" fileName="data_elements"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="table_data_elements" fileName="data_elements" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="table_data_elements" fileName="data_elements" />
+                                </h:commandLink>
+                            </f:facet>
+                            <p:column headerText="Section">
+                                <h:outputText value="#{de.section.section_name}" />
+                            </p:column>
+                            <p:column headerText="Sub-section">
+                                <h:outputText value="#{de.sub_section.sub_section_name}" />
+                            </p:column>
+                            <p:column headerText="Data Element Name">
+                                <h:outputText value="#{de.data_element_name}" />
+                            </p:column>
+                            <p:column headerText="Section Order">
+                                <h:outputText value="#{de.section_column_number}" />
+                            </p:column>
+                            <p:column headerText="Group Order">
+                                <h:outputText value="#{de.group_column_number}" />
+                            </p:column>
+                            <p:column headerText="Report Form Group">
+                                <h:outputText value="#{de.report_form_group.report_form_group_name}" />
+                            </p:column>
+                            <p:column headerText="Technical Area">
+                                <h:outputText value="#{de.technical_area.technical_area_name}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
                 </p:fieldset>
             </h:form>
         </f:view>
