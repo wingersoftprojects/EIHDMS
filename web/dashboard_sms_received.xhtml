@@ -20,21 +20,23 @@
                 <p:fieldset legend="SMS Received">
                     <p:panelGrid columns="6" id="panelFilter">
                         <p:outputLabel value="Report Form:" />
-                        <p:selectOneMenu id="report_form" value="#{uploadBean.report_form}" style="width:125px" converter="report_formConverter">
+                        <p:selectOneMenu id="report_form" value="#{interface_data_smsBean.report_form}" style="width:125px" converter="report_formConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add','mode_upload')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="panelResultCharts panelResultTable"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Week:" />
-                        <p:inputText id="report_period_week" value="#{uploadBean.report_period_week}">
+                        <p:inputText id="report_period_week" value="#{interface_data_smsBean.report_period_week}">
                             <f:validateLongRange minimum="1" maximum="52"/>
                         </p:inputText>
-                        <p:commandButton value="SEARCH"/>
+                        <p:commandButton id="cmdbSearch" value="SEARCH" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                            <p:ajax listener="#{interface_data_smsBean.refreshSMSreceivedDashboard(interface_data_smsBean.report_form,interface_data_smsBean.report_period_week)}" process="panelFilter" update="panelResultCharts panelResultTable"/>
+                        </p:commandButton>
                         <p:commandButton value="RESET"/>
                     </p:panelGrid>
                     <h:panelGrid columns="2" id="panelResultCharts">
-                        <h:panelGrid>
+                        <h:panelGrid style="text-align: center">
                             <div id="chart-container1"></div>
+                            <p:outputLabel value="#{interface_data_smsBean.count_n} SMS received out of #{interface_data_smsBean.count_d}"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartSMSReceived = new FusionCharts({
@@ -45,7 +47,7 @@
                                         dataFormat: 'json',
                                         dataSource: {
                                             "chart": {
-                                                "caption": "SMS Reports Received (%)",
+                                                "caption": "Current SMS Reporting Rate(%)",
                                                 "subcaption": "Last week",
                                                 "lowerLimit": "0",
                                                 "upperLimit": "100",
@@ -71,13 +73,13 @@
                                                     {
                                                         "minValue": "75",
                                                         "maxValue": "100",
-                                                        "code": "#6baa01"
+                                                        "code": "#1aaf5d"
                                                     }
                                                 ]
                                             },
                                             "dials": {
                                                 "dial": [{
-                                                        "value": "40"
+                                                        "value": "#{interface_data_smsBean.perc_value}"
                                                     }]
                                             }
                                         }
@@ -97,12 +99,12 @@
                                         dataFormat: 'json',
                                         dataSource: {
                                             "chart": {
-                                                "caption": "SMS Validation Status",
+                                                "caption": "Recently received SMS validation status",
                                                 "subCaption": "Last Week",
                                                 "xAxisname": "Report Form",
                                                 "yAxisName": "Number of SMS",
                                                 "numberPrefix": "",
-                                                "paletteColors": "#e44a00,#1aaf5d",
+                                                "paletteColors": "#1aaf5d,#e44a00",
                                                 "bgColor": "#ffffff",
                                                 "borderAlpha": "20",
                                                 "showCanvasBorder": "0",
@@ -121,60 +123,8 @@
                                                 "showHoverEffect": "1"
 
                                             },
-                                            "categories": [
-                                                {
-                                                    "category": [
-                                                        {
-                                                            "label": "Option B+ Option B+ Option B+"
-                                                        },
-                                                        {
-                                                            "label": "EGPAF Surge Form"
-                                                        },
-                                                        {
-                                                            "label": "HMIS106a"
-                                                        },
-                                                        {
-                                                            "label": "HMIS 105"
-                                                        }
-                                                    ]
-                                                }
-                                            ],
-                                            "dataset": [
-                                                {
-                                                    "seriesname": "OK",
-                                                    "data": [
-                                                        {
-                                                            "value": "19"
-                                                        },
-                                                        {
-                                                            "value": "13"
-                                                        },
-                                                        {
-                                                            "value": "12"
-                                                        },
-                                                        {
-                                                            "value": "14"
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "seriesname": "ERR",
-                                                    "data": [
-                                                        {
-                                                            "value": "13"
-                                                        },
-                                                        {
-                                                            "value": "15"
-                                                        },
-                                                        {
-                                                            "value": "98"
-                                                        },
-                                                        {
-                                                            "value": "13"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
+                                            "categories": #{interface_data_smsBean.categoriesChartString},
+                                            "dataset": #{interface_data_smsBean.dataseriesChartString}
                                         }
                                     }).render();
                                 });
@@ -182,53 +132,46 @@
                         </h:panelGrid>
                     </h:panelGrid>
                     <h:panelGrid columns="1" id="panelResultTable">
-                        <p:dataTable id="table_data_elements" var="de" value="#{data_elementBean.data_elementList}" draggableRows="false" 
+                        <p:dataTable id="table_received_sms" var="sms" value="#{interface_data_smsBean.received_SMSs}" draggableRows="false" 
                                      paginator="true" 
                                      paginatorTemplate="{Exporters}">
                             <f:facet name="header">
-                                #{uploadBean.report_form.report_form_name}
+                                #{interface_data_smsBean.report_form.report_form_name}
                             </f:facet>
                             <f:facet name="{Exporters}">
                                 <h:commandLink>
                                     <p:graphicImage name="images/excel.png" width="24"/>
-                                    <p:dataExporter type="xls" target="table_data_elements" fileName="data_elements" />
+                                    <p:dataExporter type="xls" target="table_received_sms" fileName="received_sms" />
                                 </h:commandLink>
-
                                 <h:commandLink>
                                     <p:graphicImage name="images/pdf.png" width="24"/>
-                                    <p:dataExporter type="pdf" target="table_data_elements" fileName="data_elements"/>
+                                    <p:dataExporter type="pdf" target="table_received_sms" fileName="received_sms"/>
                                 </h:commandLink>
-
                                 <h:commandLink>
                                     <p:graphicImage name="images/csv.png" width="24"/>
-                                    <p:dataExporter type="csv" target="table_data_elements" fileName="data_elements" />
+                                    <p:dataExporter type="csv" target="table_received_sms" fileName="received_sms" />
                                 </h:commandLink>
-
                                 <h:commandLink>
                                     <p:graphicImage name="images/xml.png" width="24"/>
-                                    <p:dataExporter type="xml" target="table_data_elements" fileName="data_elements" />
+                                    <p:dataExporter type="xml" target="table_received_sms" fileName="received_sms" />
                                 </h:commandLink>
                             </f:facet>
-                            <p:column headerText="Section">
-                                <h:outputText value="#{de.section.section_name}" />
+                            <p:column headerText="Health Facility">
+                                <h:outputText value="#{sms.phone}" />
                             </p:column>
-                            <p:column headerText="Sub-section">
-                                <h:outputText value="#{de.sub_section.sub_section_name}" />
+                            <p:column headerText="Sender">
+                                <h:outputText value="#{sms.phone}" />
                             </p:column>
-                            <p:column headerText="Data Element Name">
-                                <h:outputText value="#{de.data_element_name}" />
+                            <p:column headerText="Date">
+                                <h:outputText value="#{sms.add_date}" />
                             </p:column>
-                            <p:column headerText="Section Order">
-                                <h:outputText value="#{de.section_column_number}" />
+                            <p:column headerText="Status">
+                                <h:outputText value="#{sms.status_f}" rendered="#{sms.status_f=='OK'}"/>
+                                <h:outputText value="#{sms.status_f}" style="color: red" rendered="#{sms.status_f=='ERR'}"/>
                             </p:column>
-                            <p:column headerText="Group Order">
-                                <h:outputText value="#{de.group_column_number}" />
-                            </p:column>
-                            <p:column headerText="Report Form Group">
-                                <h:outputText value="#{de.report_form_group.report_form_group_name}" />
-                            </p:column>
-                            <p:column headerText="Technical Area">
-                                <h:outputText value="#{de.technical_area.technical_area_name}" />
+                            <p:column headerText="Message">
+                                <h:outputText value="#{sms.sms}" rendered="#{sms.status_f=='OK'}"/>
+                                <h:outputText value="#{sms.sms}" style="color: red" rendered="#{sms.status_f=='ERR'}"/>
                             </p:column>
                         </p:dataTable>
                     </h:panelGrid>
