@@ -1695,7 +1695,7 @@ public class UploadBean implements Serializable {
                     + "report_period_year,report_period_quarter,report_period_bi_month,report_period_month,report_period_week,"
                     + "report_period_from_date,report_period_to_date,"
                     + "status_u,status_u_desc,is_deleted,is_active,"
-                    + "add_date,add_by,report_form_id,report_form_group_id) "
+                    + "add_date,add_by,report_form_id,report_form_group_id,entry_mode) "
                     + "VALUES("
                     + "?,?,?,"
                     + "?,?,?,?,?,"
@@ -1703,7 +1703,7 @@ public class UploadBean implements Serializable {
                     + "?,?,?,?,?,"
                     + "?,?,"
                     + "?,?,?,?,"
-                    + "?,?,?,?)";
+                    + "?,?,?,?,?)";
             try (
                     Connection connection = loginBean.getMySQLConnection();
                     PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -1834,6 +1834,11 @@ public class UploadBean implements Serializable {
                         ps.setInt(28, i.getReport_form_group_id());
                     } catch (NullPointerException npe) {
                         ps.setObject(28, null);
+                    }
+                    try {
+                        ps.setString(29, i.getEntry_mode());
+                    } catch (NullPointerException npe) {
+                        ps.setString(29, null);
                     }
                     ps.addBatch();
                     j++;
@@ -2061,7 +2066,10 @@ public class UploadBean implements Serializable {
 //System.out.println("START-VALIDATION-LOAD-BASE:" + new Date());
                 validate_and_load_data_to_base_SMS(batch.getBatch_id(), report_form_SMS, report_form_group_SMS);
 //System.out.println("END-VALIDATION-LOAD-BASE:" + new Date());
-
+                /**
+                 * Set Batch_Id of interface_data_sms
+                 */
+                interface_data_sms.setBatch_id(batch.getBatch_id());
 //loginBean.saveMessage();
 //System.out.println("START-VALIDATION-REPORT:" + new Date());
                 String validationError = generate_validation_report_SMS(batch.getBatch_id());
@@ -2077,8 +2085,8 @@ public class UploadBean implements Serializable {
                             interface_data_sms.setStatus_m_desc("Moved To Base");
                             break;
                         case "Existing Data":
-                            interface_data_sms.setStatus_v("Passed");
-                            interface_data_sms.setStatus_v_desc("Passed Validation Rules");
+                            interface_data_sms.setStatus_v("Failed");
+                            interface_data_sms.setStatus_v_desc("Data for the same period exists");
                             break;
                         case "Failed":
                             interface_data_sms.setStatus_v("Failed");
@@ -2281,7 +2289,7 @@ public class UploadBean implements Serializable {
                     vr.setValidationDescription(objects[6].toString());
                     if (objects[6].toString().equals("=>Passed Validation Rules")) {
                         validationError = "Passed";
-                    } else if (objects[6].toString().equals("Data for the same period")) {
+                    } else if (objects[6].toString().contains("=>Data for the same period")) {
                         validationError = "Existing Data";
                     } else if (objects[6].toString().contains("=>Failed Validation Rule:")) {
                         validationError = "Failed";
@@ -2554,6 +2562,13 @@ public class UploadBean implements Serializable {
     }
 
     private void read_excel_data(Interface_data interface_data, Map.Entry pair, Cell cell) {
+        /**
+         * Set Entry Mode
+         */
+        interface_data.setEntry_mode("Upload");
+        /**
+         * End Set Entry Mode
+         */
         interface_data.setData_element((Data_element) pair.getValue());
         interface_data.setReport_period_from_date(report_period_from_date);
         interface_data.setReport_form(report_form);
@@ -2850,6 +2865,10 @@ public class UploadBean implements Serializable {
                     interface_data.setDistrict_id(this.district.getDistrict_id());
                     interface_data.setDistrict_name(this.district.getDistrict_name());
                 }
+                /**
+                 * Entry Mode
+                 */
+                interface_data.setEntry_mode("DataEntry");
                 interface_datas.add(interface_data);
             }
         }

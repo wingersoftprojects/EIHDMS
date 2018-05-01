@@ -1,0 +1,1 @@
+alter table interface_data_sms add column batch_id int(11);

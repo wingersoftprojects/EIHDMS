@@ -17,6 +17,7 @@ import eihdms.Interface_data_sms;
 import eihdms.Parish;
 import eihdms.Phone_contact;
 import eihdms.Report_form;
+import eihdms.Report_form_deadline;
 import eihdms.Report_form_group;
 import eihdms.Report_form_short_code;
 import eihdms.Sub_county;
@@ -131,6 +132,53 @@ public class SMSData {
             //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
             report_period_week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
             report_period_year = calendar.get(Calendar.YEAR);
+            report_period_month = calendar.get(Calendar.MONTH);
+
+            /**
+             * Quarterly Report_forms
+             */
+            switch (calendar.get(Calendar.MONTH)) {
+                case 0:
+                    report_period_quarter = 4;
+                    break;
+                case 3:
+                    report_period_quarter = 1;
+                    break;
+                case 7:
+                    report_period_quarter = 2;
+                    break;
+                case 10:
+                    report_period_quarter = 3;
+                    break;
+                default:
+                    break;
+            }
+            /**
+             * Bi-Monthly Report_forms
+             */
+            switch (calendar.get(Calendar.MONTH)) {
+                case 0:
+                    report_period_bi_month = 6;
+                    break;
+                case 2:
+                    report_period_bi_month = 1;
+                    break;
+                case 4:
+                    report_period_bi_month = 2;
+                    break;
+                case 6:
+                    report_period_bi_month = 3;
+                    break;
+                case 8:
+                    report_period_bi_month = 4;
+                    break;
+                case 10:
+                    report_period_bi_month = 5;
+                    break;
+                default:
+                    break;
+            }
+
             /**
              * Periods
              */
@@ -199,7 +247,55 @@ public class SMSData {
                     i.setIs_deleted(0);
                     if (sms_report_form == null) {
                         sms_report_form = outer.getData_element().getReport_form();
+
+                        if (sms_report_form.getReport_form_frequency().equals("Weekly")) {
+                            /**
+                             * Weekly Report_forms
+                             */
+                            switch (calendar.get(Calendar.WEEK_OF_YEAR)) {
+                                case 1:
+                                    /**
+                                     * To cater for december last week ending in
+                                     * the year
+                                     */
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) > 10) {
+                                        report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if (sms_report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+                            /**
+                             * Bi-Monthly Report_forms
+                             */
+                            switch (calendar.get(Calendar.MONTH)) {
+                                case 0:
+                                    /**
+                                     * To cater for december
+                                     */
+                                    report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        /**
+                         * Terminates if the deadline has passed
+                         */
+                        Deadline deadline = check_deadline(sms_report_form);
+                        if (deadline.deadline_passed) {
+                            PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                            interface_data_sms.setStatus_v("Error");
+                            interface_data_sms.setStatus_v_desc(deadline.getDeadline_reason());
+                            EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
+                            transaction.commit();
+                            return;
+                        }
                         get_date_from_other_periods();
+
                     }
                     i.setReport_form(sms_report_form);
                     sms_report_form_group = outer.getData_element().getReport_form_group();
@@ -348,9 +444,9 @@ public class SMSData {
              */
             if (report_period_year != null && report_period_week != null && sms_report_form.getReport_form_frequency().equals("Weekly")) {
                 DateTime date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week);
-                report_period_month = date.getMonthOfYear();
                 report_period_from_date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week).withDayOfWeek(1).toDate();
                 report_period_to_date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week).withDayOfWeek(7).toDate();
+                report_period_month = new DateTime(report_period_from_date.getTime()).getMonthOfYear();
             }
             /**
              * Monthly
@@ -515,6 +611,100 @@ public class SMSData {
         this.report_period_name = report_period_name;
     }
 
+    /**
+     *
+     * Function : check_deadline Created by: Brian Newton Ajuna Date :
+     * 30/04/2018 Purpose : To check whether the reporting deadline of a
+     * Report_form has passed or not
+     *
+     * @param report_form
+     * @return Deadline Object
+     */
+    public Deadline check_deadline(Report_form report_form) {
+        Deadline deadline = new Deadline();
+        deadline.setDeadline_passed(true);
+        java.util.Calendar calendar = new GregorianCalendar();
+        Date trialTime = new Date();
+        calendar.setTime(trialTime);
+        System.out.println("Time Second:" + (calendar.get(java.util.Calendar.SECOND)));
+        try {
+            Report_form_deadline report_form_deadline = Report_form_deadline.loadReport_form_deadlineByQuery("report_form_id=" + report_form.getReport_form_id(), null);
+            if (report_form_deadline != null) {
+                /**
+                 * If Deadline is extended
+                 */
+                if (report_form_deadline.getDeadline_extension() != null) {
+                    DateTime extended_date = new DateTime(report_form_deadline.getDeadline_extension().getExtended_to_date());
+                    DateTime comparisonDate = new DateTime(trialTime);
+                    if (extended_date.toDateMidnight().equals(comparisonDate.toDateMidnight()) || report_form_deadline.getDeadline_extension().getExtended_to_date().after(trialTime)) {
+                        deadline.setDeadline_passed(false);
+                        deadline.setDeadline_reason("Within Deadline");
+                        return deadline;
+                    }
+                }
+                switch (report_form.getReport_form_frequency()) {
+                    case "Weekly":
+                        if (calendar.get(java.util.Calendar.DAY_OF_WEEK) >= report_form_deadline.getDay_from() && calendar.get(java.util.Calendar.DAY_OF_WEEK) <= report_form_deadline.getDay_to()) {
+                            deadline.setDeadline_passed(false);
+                            deadline.setDeadline_reason("Within Deadline");
+                        } else {
+                            deadline.setDeadline_passed(true);
+                            deadline.setDeadline_reason("Deadline Passed");
+                        }
+                        break;
+                    case "Monthly":
+                        if (calendar.get(java.util.Calendar.DAY_OF_MONTH) >= report_form_deadline.getDay_from() && calendar.get(java.util.Calendar.DAY_OF_MONTH) <= report_form_deadline.getDay_to()) {
+                            deadline.setDeadline_passed(false);
+                            deadline.setDeadline_reason("Within Deadline");
+                        } else {
+                            deadline.setDeadline_passed(true);
+                            deadline.setDeadline_reason("Deadline Passed");
+                        }
+                        break;
+                    case "Quarterly":
+                        break;
+                    case "Bi-Monthly":
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                deadline.setDeadline_reason("Error: Report_form_deadline has not been configured!");
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(SMSData.class.getName()).log(Level.SEVERE, null, ex);
+            deadline.setDeadline_reason("Error: " + ex.getMessage() + "!");
+            return deadline;
+        }
+        return deadline;
+    }
+
+    /**
+     * Inner class for deadline object Created by: Brian Newton Ajuna Date
+     * :30/04/2018 Purpose : To hold the Reason and deadline status of a
+     * Report_form
+     */
+    public class Deadline {
+
+        private boolean deadline_passed;
+        private String deadline_reason;
+
+        public boolean isDeadline_passed() {
+            return deadline_passed;
+        }
+
+        public void setDeadline_passed(boolean deadline_passed) {
+            this.deadline_passed = deadline_passed;
+        }
+
+        public String getDeadline_reason() {
+            return deadline_reason;
+        }
+
+        public void setDeadline_reason(String deadline_reason) {
+            this.deadline_reason = deadline_reason;
+        }
+    }
     /**
      * End SMS data functions
      */
