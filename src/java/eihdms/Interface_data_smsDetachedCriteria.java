@@ -36,6 +36,7 @@ public class Interface_data_smsDetachedCriteria extends AbstractORMDetachedCrite
 	public final StringExpression status_v_desc;
 	public final StringExpression status_m;
 	public final StringExpression status_m_desc;
+	public final IntegerExpression batch_id;
 	
 	public Interface_data_smsDetachedCriteria() {
 		super(eihdms.Interface_data_sms.class, eihdms.Interface_data_smsCriteria.class);
@@ -56,6 +57,7 @@ public class Interface_data_smsDetachedCriteria extends AbstractORMDetachedCrite
 		status_v_desc = new StringExpression("status_v_desc", this.getDetachedCriteria());
 		status_m = new StringExpression("status_m", this.getDetachedCriteria());
 		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
+		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 	}
 	
 	public Interface_data_smsDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -77,6 +79,7 @@ public class Interface_data_smsDetachedCriteria extends AbstractORMDetachedCrite
 		status_v_desc = new StringExpression("status_v_desc", this.getDetachedCriteria());
 		status_m = new StringExpression("status_m", this.getDetachedCriteria());
 		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
+		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 	}
 	
 	public Interface_data_sms uniqueInterface_data_sms(PersistentSession session) {

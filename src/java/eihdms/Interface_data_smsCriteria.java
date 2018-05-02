@@ -36,6 +36,7 @@ public class Interface_data_smsCriteria extends AbstractORMCriteria {
 	public final StringExpression status_v_desc;
 	public final StringExpression status_m;
 	public final StringExpression status_m_desc;
+	public final IntegerExpression batch_id;
 	
 	public Interface_data_smsCriteria(Criteria criteria) {
 		super(criteria);
@@ -56,6 +57,7 @@ public class Interface_data_smsCriteria extends AbstractORMCriteria {
 		status_v_desc = new StringExpression("status_v_desc", this);
 		status_m = new StringExpression("status_m", this);
 		status_m_desc = new StringExpression("status_m_desc", this);
+		batch_id = new IntegerExpression("batch_id", this);
 	}
 	
 	public Interface_data_smsCriteria(PersistentSession session) {

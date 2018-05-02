@@ -417,6 +417,9 @@ public class Interface_data_sms implements Serializable {
 	@Column(name="status_m_desc", nullable=true)	
 	private String status_m_desc;
 	
+	@Column(name="batch_id", nullable=true, length=11)	
+	private Integer batch_id;
+	
 	private void setInterface_data_sms_id(int value) {
 		this.interface_data_sms_id = value;
 	}
@@ -563,6 +566,18 @@ public class Interface_data_sms implements Serializable {
 	
 	public String getStatus_m_desc() {
 		return status_m_desc;
+	}
+	
+	public void setBatch_id(int value) {
+		setBatch_id(new Integer(value));
+	}
+	
+	public void setBatch_id(Integer value) {
+		this.batch_id = value;
+	}
+	
+	public Integer getBatch_id() {
+		return batch_id;
 	}
 	
 	public boolean equals(Object obj) {

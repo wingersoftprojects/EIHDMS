@@ -17,6 +17,7 @@ import eihdms.Interface_data_sms;
 import eihdms.Parish;
 import eihdms.Phone_contact;
 import eihdms.Report_form;
+import eihdms.Report_form_deadline;
 import eihdms.Report_form_group;
 import eihdms.Report_form_short_code;
 import eihdms.Sub_county;
@@ -63,6 +64,10 @@ public class SMSData {
 
     /**
      * Start SMS Data functions
+     *
+     * @param sms
+     * @param phone
+     * @param scode
      */
     public void load_interface_data_sms(String sms, String phone, String scode) {
         if (phone != null && !phone.isEmpty() && sms != null && !sms.isEmpty()) {
@@ -71,16 +76,23 @@ public class SMSData {
                 String[] splitString = sms.split(" ");
                 interface_data_sms.setAdd_date(new Timestamp(new Date().getTime()));
                 interface_data_sms.setPhone(phone);
-                try{
-                interface_data_sms.setReport_form_code(splitString[1]);
-                interface_data_sms.setSms(splitString[2]);
-                }catch(Exception ex){
-                interface_data_sms.setReport_form_code("");
-                interface_data_sms.setSms(sms);    
+                try {
+                    if (splitString.length == 3) {
+                        interface_data_sms.setReport_form_code(splitString[1]);
+                        interface_data_sms.setSms(splitString[2]);
+                    }
+                    if (splitString.length == 2) {
+                        //interface_data_sms.setReport_form_code(splitString[1]);
+                        interface_data_sms.setReport_form_code("");
+                        interface_data_sms.setSms(splitString[1]);
+                    }
+                } catch (Exception ex) {
+                    interface_data_sms.setReport_form_code("");
+                    interface_data_sms.setSms(sms);
                 }
                 interface_data_sms.setScode(scode);
-                interface_data_sms.setStatus_f("R");
-                interface_data_sms.setStatus_f_desc("Received");
+                //interface_data_sms.setStatus_f("R");
+                //interface_data_sms.setStatus_f_desc("Received");
                 interface_data_sms.setIs_deleted(0);
                 interface_data_sms.setIs_active(1);
                 interface_data_sms.setAdd_by(1);
@@ -92,7 +104,7 @@ public class SMSData {
                 }
 
                 transaction.commit();
-                this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code());
+                this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,140 +112,254 @@ public class SMSData {
         }
     }
 
-    public void decode_and_load_sms(String sms, String phone, String report_form_code) {
+    public void decode_and_load_sms(String sms, String phone, String report_form_code, Interface_data_sms interface_data_sms) {
         try {
             List<Interface_data> interface_datas = new ArrayList<>();
             List<Data_element_sms_position> data_element_sms_positionList = new ArrayList<>();
             /**
              * Read form being loaded
              */
-            sms_report_form = Report_form.loadReport_formByQuery("report_form_code='" + report_form_code + "'", null);
+            if (!"".equals(report_form_code) && report_form_code != null) {
+                sms_report_form = Report_form.loadReport_formByQuery("report_form_code='" + report_form_code + "'", null);
+            }
             /**
              * Periods
              */
             Calendar calendar = new GregorianCalendar();
             Date trialTime = new Date();
             calendar.setTime(trialTime);
-            System.out.println("Week number:" + calendar.get(Calendar.WEEK_OF_YEAR));
+            //System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
             //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
-            report_period_week = calendar.get(Calendar.WEEK_OF_YEAR);
+            report_period_week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
             report_period_year = calendar.get(Calendar.YEAR);
-            get_date_from_other_periods();
+            report_period_month = calendar.get(Calendar.MONTH);
+
+            /**
+             * Quarterly Report_forms
+             */
+            switch (calendar.get(Calendar.MONTH)) {
+                case 0:
+                    report_period_quarter = 4;
+                    break;
+                case 3:
+                    report_period_quarter = 1;
+                    break;
+                case 7:
+                    report_period_quarter = 2;
+                    break;
+                case 10:
+                    report_period_quarter = 3;
+                    break;
+                default:
+                    break;
+            }
+            /**
+             * Bi-Monthly Report_forms
+             */
+            switch (calendar.get(Calendar.MONTH)) {
+                case 0:
+                    report_period_bi_month = 6;
+                    break;
+                case 2:
+                    report_period_bi_month = 1;
+                    break;
+                case 4:
+                    report_period_bi_month = 2;
+                    break;
+                case 6:
+                    report_period_bi_month = 3;
+                    break;
+                case 8:
+                    report_period_bi_month = 4;
+                    break;
+                case 10:
+                    report_period_bi_month = 5;
+                    break;
+                default:
+                    break;
+            }
+
             /**
              * Periods
              */
+            /**
+             * Read report form short code list
+             */
+            List<Report_form_short_code> report_form_short_codeList = new ArrayList<>();
             if (sms_report_form != null) {
-                /**
-                 * Read report form short code list
-                 */
-                List<Report_form_short_code> report_form_short_codeList = new ArrayList<>();
                 report_form_short_codeList = Report_form_short_code.queryReport_form_short_code("report_form_id=" + sms_report_form.getReport_form_id(), null);
-                if (report_form_short_codeList.size() > 0) {
-                    /**
-                     * Loop through available short codes for one that starts
-                     * like current SMS
-                     */
-                    for (Report_form_short_code object : report_form_short_codeList) {
-                        if (sms.toUpperCase().startsWith(object.getStart_code().toUpperCase())) {
-                            sms = sms.replace(object.getStart_code(), "");
-                            int count = sms.length() - sms.replace(".", "").length();
-                            /**
-                             * Check if number of separators equals those in SMS
-                             */
-                            if (count == object.getNumber_of_separators()) {
-                                data_element_sms_positionList = Data_element_sms_position.queryData_element_sms_position("report_form_short_code_id=" + object.getReport_form_short_code_id(), null);
-                            }
-                            break;
+            } else {
+                report_form_short_codeList = Report_form_short_code.queryReport_form_short_code(null, null);
+            }
+            if (report_form_short_codeList.size() > 0) {
+                /**
+                 * Loop through available short codes for one that starts like
+                 * current SMS
+                 */
+                for (Report_form_short_code object : report_form_short_codeList) {
+                    if (sms.toUpperCase().startsWith(object.getStart_code().toUpperCase())) {
+                        sms = sms.replace(object.getStart_code(), "");
+                        int count = sms.length() - sms.replace(".", "").length();
+                        /**
+                         * Check if number of separators equals those in SMS
+                         */
+                        if (count == object.getNumber_of_separators()) {
+                            data_element_sms_positionList = Data_element_sms_position.queryData_element_sms_position("report_form_short_code_id=" + object.getReport_form_short_code_id(), null);
+                            interface_data_sms.setStatus_f("OK");
+                            interface_data_sms.setStatus_f_desc("Valid Data Format");
+                        } else {
+                            interface_data_sms.setStatus_f("ERR");
+                            interface_data_sms.setStatus_f_desc("Invalid Data Format (Reason: Data Incomplete)");
                         }
+                        break;
                     }
                 }
+            }
+            /**
+             * Get location info from phone number
+             */
+            Phone_contact phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
+            if (phone_contact != null) {
+                set_sms_location(phone_contact);
+            } else {
+                interface_data_sms.setStatus_f("ERR");
+                interface_data_sms.setStatus_f_desc("Unknown Sender");
+            }
+            /**
+             * Return invalid SMS is size=0
+             */
+            if (data_element_sms_positionList.size() > 0) {
+
                 /**
-                 * Get location info from phone number
+                 * Split SMS into an array of strings
                  */
-                Phone_contact phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
-                if (phone_contact != null) {
-                    set_sms_location(phone_contact);
-                }
-                /**
-                 * Return invalid SMS is size=0
-                 */
-                if (data_element_sms_positionList.size() > 0) {
+                String[] smsStrings = sms.split("\\.");
 
-                    /**
-                     * Split SMS into an array of strings
-                     */
-                    String[] smsStrings = sms.split("\\.");
+                for (Data_element_sms_position outer : data_element_sms_positionList) {
+                    Interface_data i = new Interface_data();
+                    i.setData_element(outer.getData_element());
+                    i.setData_element_value(smsStrings[outer.getCode_position() - 1]);
+                    i.setAdd_by(1);
+                    i.setAdd_date(new Timestamp(new Date().getTime()));
+                    i.setEntry_mode("SMS");
+                    //i.setFinancial_year(value);
+                    i.setIs_active(1);
+                    i.setIs_deleted(0);
+                    if (sms_report_form == null) {
+                        sms_report_form = outer.getData_element().getReport_form();
 
-                    for (Data_element_sms_position outer : data_element_sms_positionList) {
-                        Interface_data i = new Interface_data();
-                        i.setData_element(outer.getData_element());
-                        i.setData_element_value(smsStrings[outer.getCode_position() - 1]);
-                        i.setAdd_by(1);
-                        i.setAdd_date(new Timestamp(new Date().getTime()));
-                        i.setEntry_mode("SMS");
-                        //i.setFinancial_year(value);
-                        i.setIs_active(1);
-                        i.setIs_deleted(0);
-                        i.setReport_form(sms_report_form);
-                        sms_report_form_group = outer.getData_element().getReport_form_group();
-                        i.setReport_form_group_id(outer.getData_element().getReport_form_group().getReport_form_group_id());
-
-                        /**
-                         * Get reporting periods
-                         */
-                        i.setFinancial_year(this.getFinancial_year());
-                        i.setReport_period_year(this.getReport_period_year());
-                        i.setReport_period_quarter(this.getReport_period_quarter());
-                        i.setReport_period_from_date(this.getReport_period_from_date());
-                        i.setReport_period_to_date(this.getReport_period_to_date());
-                        i.setReport_period_month(this.getReport_period_month());
-                        i.setReport_period_week(this.getReport_period_week());
-                        i.setReport_period_bi_month(this.getReport_period_bi_month());
-
-                        /**
-                         * End set reporting periods
-                         */
-                        i.setReport_period_from_date(new Date());
-                        i.setReport_period_to_date(new Date());
-                        if (phone_contact != null) {
-                            switch (phone_contact.getEntity_type()) {
-                                case "District":
-                                    i.setDistrict_id(smsDistrict.getDistrict_id());
-                                    i.setDistrict_name(smsDistrict.getDistrict_name());
-                                    break;
-                                case "Parish":
-                                    i.setDistrict_id(smsParish.getSub_county().getCounty().getDistrict().getDistrict_id());
-                                    i.setDistrict_name(smsParish.getSub_county().getCounty().getDistrict().getDistrict_name());
-                                    i.setCounty_id(smsParish.getSub_county().getCounty().getCounty_id());
-                                    i.setCounty_name(smsParish.getSub_county().getCounty().getCounty_name());
-                                    i.setSub_county_id(smsParish.getSub_county().getSub_county_id());
-                                    i.setSub_county_name(smsParish.getSub_county().getSub_county_name());
-                                    i.setParish_id(smsParish.getParish_id());
-                                    i.setParish_name(smsParish.getParish_name());
-                                    break;
-                                case "Facility":
-                                    i.setDistrict_id(smsHealth_facility.getDistrict().getDistrict_id());
-                                    i.setDistrict_name(smsHealth_facility.getDistrict().getDistrict_name());
-                                    i.setCounty_id(smsHealth_facility.getSub_county().getCounty().getCounty_id());
-                                    i.setCounty_name(smsHealth_facility.getSub_county().getCounty().getCounty_name());
-                                    i.setSub_county_id(smsHealth_facility.getSub_county().getSub_county_id());
-                                    i.setSub_county_name(smsHealth_facility.getSub_county().getSub_county_name());
-                                    i.setParish_id(smsHealth_facility.getParish().getParish_id());
-                                    i.setParish_name(smsHealth_facility.getParish().getParish_name());
-                                    i.setHealth_facility_id(smsHealth_facility.getHealth_facility_id());
-                                    i.setHealth_facility_name(smsHealth_facility.getHealth_facility_name());
+                        if (sms_report_form.getReport_form_frequency().equals("Weekly")) {
+                            /**
+                             * Weekly Report_forms
+                             */
+                            switch (calendar.get(Calendar.WEEK_OF_YEAR)) {
+                                case 1:
+                                    /**
+                                     * To cater for december last week ending in
+                                     * the year
+                                     */
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) > 10) {
+                                        report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    }
                                     break;
                                 default:
                                     break;
                             }
                         }
-                        interface_datas.add(i);
+                        if (sms_report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+                            /**
+                             * Bi-Monthly Report_forms
+                             */
+                            switch (calendar.get(Calendar.MONTH)) {
+                                case 0:
+                                    /**
+                                     * To cater for december
+                                     */
+                                    report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        /**
+                         * Terminates if the deadline has passed
+                         */
+                        Deadline deadline = check_deadline(sms_report_form);
+                        if (deadline.deadline_passed) {
+                            PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                            interface_data_sms.setStatus_v("ERR");
+                            interface_data_sms.setStatus_v_desc(deadline.getDeadline_reason());
+                            EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
+                            transaction.commit();
+                            return;
+                        }
+                        get_date_from_other_periods();
+
                     }
-                    UploadBean uploadBean = new UploadBean();
-                    uploadBean.load_interface(interface_datas, sms_report_form, sms_report_form_group);
-                    System.out.println(interface_datas.size());
+                    i.setReport_form(sms_report_form);
+                    sms_report_form_group = outer.getData_element().getReport_form_group();
+                    i.setReport_form_group_id(outer.getData_element().getReport_form_group().getReport_form_group_id());
+
+                    /**
+                     * Get reporting periods
+                     */
+                    i.setFinancial_year(this.getFinancial_year());
+                    i.setReport_period_year(this.getReport_period_year());
+                    i.setReport_period_quarter(this.getReport_period_quarter());
+                    i.setReport_period_from_date(this.getReport_period_from_date());
+                    i.setReport_period_to_date(this.getReport_period_to_date());
+                    i.setReport_period_month(this.getReport_period_month());
+                    i.setReport_period_week(this.getReport_period_week());
+                    i.setReport_period_bi_month(this.getReport_period_bi_month());
+
+                    /**
+                     * End set reporting periods
+                     */
+                    i.setReport_period_from_date(new Date());
+                    i.setReport_period_to_date(new Date());
+                    if (phone_contact != null) {
+                        switch (phone_contact.getEntity_type()) {
+                            case "District":
+                                i.setDistrict_id(smsDistrict.getDistrict_id());
+                                i.setDistrict_name(smsDistrict.getDistrict_name());
+                                break;
+                            case "Parish":
+                                i.setDistrict_id(smsParish.getSub_county().getCounty().getDistrict().getDistrict_id());
+                                i.setDistrict_name(smsParish.getSub_county().getCounty().getDistrict().getDistrict_name());
+                                i.setCounty_id(smsParish.getSub_county().getCounty().getCounty_id());
+                                i.setCounty_name(smsParish.getSub_county().getCounty().getCounty_name());
+                                i.setSub_county_id(smsParish.getSub_county().getSub_county_id());
+                                i.setSub_county_name(smsParish.getSub_county().getSub_county_name());
+                                i.setParish_id(smsParish.getParish_id());
+                                i.setParish_name(smsParish.getParish_name());
+                                break;
+                            case "Facility":
+                                i.setDistrict_id(smsHealth_facility.getDistrict().getDistrict_id());
+                                i.setDistrict_name(smsHealth_facility.getDistrict().getDistrict_name());
+                                i.setCounty_id(smsHealth_facility.getSub_county().getCounty().getCounty_id());
+                                i.setCounty_name(smsHealth_facility.getSub_county().getCounty().getCounty_name());
+                                i.setSub_county_id(smsHealth_facility.getSub_county().getSub_county_id());
+                                i.setSub_county_name(smsHealth_facility.getSub_county().getSub_county_name());
+                                i.setParish_id(smsHealth_facility.getParish().getParish_id());
+                                i.setParish_name(smsHealth_facility.getParish().getParish_name());
+                                i.setHealth_facility_id(smsHealth_facility.getHealth_facility_id());
+                                i.setHealth_facility_name(smsHealth_facility.getHealth_facility_name());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    interface_datas.add(i);
                 }
+                UploadBean uploadBean = new UploadBean();
+                uploadBean.load_interface(interface_datas, sms_report_form, sms_report_form_group, interface_data_sms);
+                System.out.println(interface_datas.size());
+            } else {
+                interface_data_sms.setStatus_f("ERR");
+                interface_data_sms.setStatus_f_desc("Invalid Data Format");
             }
+            //}
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -318,9 +444,9 @@ public class SMSData {
              */
             if (report_period_year != null && report_period_week != null && sms_report_form.getReport_form_frequency().equals("Weekly")) {
                 DateTime date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week);
-                report_period_month = date.getMonthOfYear();
                 report_period_from_date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week).withDayOfWeek(1).toDate();
                 report_period_to_date = new DateTime().withWeekyear(report_period_year).withWeekOfWeekyear(report_period_week).withDayOfWeek(7).toDate();
+                report_period_month = new DateTime(report_period_from_date.getTime()).getMonthOfYear();
             }
             /**
              * Monthly
@@ -485,6 +611,100 @@ public class SMSData {
         this.report_period_name = report_period_name;
     }
 
+    /**
+     *
+     * Function : check_deadline Created by: Brian Newton Ajuna Date :
+     * 30/04/2018 Purpose : To check whether the reporting deadline of a
+     * Report_form has passed or not
+     *
+     * @param report_form
+     * @return Deadline Object
+     */
+    public Deadline check_deadline(Report_form report_form) {
+        Deadline deadline = new Deadline();
+        deadline.setDeadline_passed(true);
+        java.util.Calendar calendar = new GregorianCalendar();
+        Date trialTime = new Date();
+        calendar.setTime(trialTime);
+        System.out.println("Time Second:" + (calendar.get(java.util.Calendar.SECOND)));
+        try {
+            Report_form_deadline report_form_deadline = Report_form_deadline.loadReport_form_deadlineByQuery("report_form_id=" + report_form.getReport_form_id(), null);
+            if (report_form_deadline != null) {
+                /**
+                 * If Deadline is extended
+                 */
+                if (report_form_deadline.getDeadline_extension() != null) {
+                    DateTime extended_date = new DateTime(report_form_deadline.getDeadline_extension().getExtended_to_date());
+                    DateTime comparisonDate = new DateTime(trialTime);
+                    if (extended_date.toDateMidnight().equals(comparisonDate.toDateMidnight()) || report_form_deadline.getDeadline_extension().getExtended_to_date().after(trialTime)) {
+                        deadline.setDeadline_passed(false);
+                        deadline.setDeadline_reason("Within Deadline");
+                        return deadline;
+                    }
+                }
+                switch (report_form.getReport_form_frequency()) {
+                    case "Weekly":
+                        if (calendar.get(java.util.Calendar.DAY_OF_WEEK) >= report_form_deadline.getDay_from() && calendar.get(java.util.Calendar.DAY_OF_WEEK) <= report_form_deadline.getDay_to()) {
+                            deadline.setDeadline_passed(false);
+                            deadline.setDeadline_reason("Within Deadline");
+                        } else {
+                            deadline.setDeadline_passed(true);
+                            deadline.setDeadline_reason("Deadline Passed");
+                        }
+                        break;
+                    case "Monthly":
+                        if (calendar.get(java.util.Calendar.DAY_OF_MONTH) >= report_form_deadline.getDay_from() && calendar.get(java.util.Calendar.DAY_OF_MONTH) <= report_form_deadline.getDay_to()) {
+                            deadline.setDeadline_passed(false);
+                            deadline.setDeadline_reason("Within Deadline");
+                        } else {
+                            deadline.setDeadline_passed(true);
+                            deadline.setDeadline_reason("Deadline Passed");
+                        }
+                        break;
+                    case "Quarterly":
+                        break;
+                    case "Bi-Monthly":
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                deadline.setDeadline_reason("Error: Report_form_deadline has not been configured!");
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(SMSData.class.getName()).log(Level.SEVERE, null, ex);
+            deadline.setDeadline_reason("Error: " + ex.getMessage() + "!");
+            return deadline;
+        }
+        return deadline;
+    }
+
+    /**
+     * Inner class for deadline object Created by: Brian Newton Ajuna Date
+     * :30/04/2018 Purpose : To hold the Reason and deadline status of a
+     * Report_form
+     */
+    public class Deadline {
+
+        private boolean deadline_passed;
+        private String deadline_reason;
+
+        public boolean isDeadline_passed() {
+            return deadline_passed;
+        }
+
+        public void setDeadline_passed(boolean deadline_passed) {
+            this.deadline_passed = deadline_passed;
+        }
+
+        public String getDeadline_reason() {
+            return deadline_reason;
+        }
+
+        public void setDeadline_reason(String deadline_reason) {
+            this.deadline_reason = deadline_reason;
+        }
+    }
     /**
      * End SMS data functions
      */

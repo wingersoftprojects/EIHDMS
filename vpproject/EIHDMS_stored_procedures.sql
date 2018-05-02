@@ -1675,3 +1675,47 @@ RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        delim, '')
 ;;
 DELIMITER ;
+
+
+-- ----------------------------
+-- Procedure structure for sp_check_duplicate_temp_data_elements
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_add_entry_mode_to_base`;
+DELIMITER ;;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_add_entry_mode_to_base`()
+BEGIN
+DECLARE table_name_v varchar(200);
+DECLARE done int;
+	DECLARE cur_tables CURSOR FOR select table_name from information_schema.tables where table_name like 'base_data%';
+
+
+declare continue handler for not found set done=1;
+
+    set done = 0;
+    open cur_tables;
+    tableLoop: loop
+        fetch cur_tables into table_name_v;
+        if done = 1 then leave tableLoop; end if;
+
+SET @sql_text1=CONCAT('alter table ',table_name_v,' drop column entry_mode');
+PREPARE stmt1 FROM @sql_text1;
+EXECUTE stmt1;
+DEALLOCATE PREPARE stmt1;
+
+SET @sql_text1=CONCAT('alter table ',table_name_v,' add column entry_mode varchar(20)');
+PREPARE stmt1 FROM @sql_text1;
+EXECUTE stmt1;
+DEALLOCATE PREPARE stmt1;
+
+SET @sql_text1=CONCAT("update ",table_name_v," set entry_mode='UPLOAD'");
+PREPARE stmt1 FROM @sql_text1;
+EXECUTE stmt1;
+DEALLOCATE PREPARE stmt1;
+        
+    end loop tableLoop;
+    close cur_tables;
+
+END
+;;
+DELIMITER ;
