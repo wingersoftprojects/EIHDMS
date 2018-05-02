@@ -25,6 +25,7 @@
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
+                            <f:ajax render="@this"/>
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" action="#{organisationBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="organisation,@this" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{organisationBean.cancel()}" update="@form" process="@this"/>
@@ -37,8 +38,8 @@
                     <p:column headerText="Organisation Name">
                         <h:outputText value="#{item.organisation_name}"/>
                     </p:column>
-                    <p:column headerText="Is Active?">
-                        <h:outputText value="#{item.is_active}"/>
+                    <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
                     </p:column>
                     
                     <p:column headerText="">

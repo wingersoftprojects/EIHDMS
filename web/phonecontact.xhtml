@@ -48,6 +48,7 @@
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
+                            <f:ajax render="@this"/>
                         </p:selectOneMenu>
                         <p:commandButton value="SAVE" action="#{phone_contactBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="entity_type,entity_id_parish,entity_id_facility,entity_id_organisation,phone_number,@this" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{phone_contactBean.cancel()}" update="@form" process="@this"/>
@@ -65,6 +66,9 @@
                     </p:column>
                     <p:column headerText="Phone Number">
                         <h:outputText value="#{item.entity_phone}"/>
+                    </p:column>
+                    <p:column headerText="Active?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
                     </p:column>
                     <p:column headerText="">
                         <p:commandButton value="Edit" action="#{phone_contactBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
