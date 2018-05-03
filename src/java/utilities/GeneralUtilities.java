@@ -621,8 +621,8 @@ public class GeneralUtilities implements Serializable {
         try {
             if (year != null && week != null) {
                 DateTime date = new DateTime().withWeekyear(year).withWeekOfWeekyear(week);
-                date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).minusDays(1).toDate()) + "-"
-                        + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).minusDays(1).toDate());
+                date_from_to = new SimpleDateFormat("dd-MMM-yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).minusDays(1).toDate()) + "-"
+                        + new SimpleDateFormat("dd-MMM-yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).minusDays(1).toDate());
             }
         } catch (Exception ex) {
 
