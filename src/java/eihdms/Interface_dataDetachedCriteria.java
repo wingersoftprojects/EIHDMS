@@ -32,10 +32,11 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final StringExpression district_name;
 	public final IntegerExpression financial_yearId;
 	public final AssociationExpression financial_year;
+	public final IntegerExpression report_period_quarter;
+	public final IntegerExpression report_period_bi_month;
 	public final IntegerExpression report_period_month;
 	public final IntegerExpression report_period_week;
 	public final IntegerExpression report_period_year;
-	public final IntegerExpression report_period_quarter;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
 	public final IntegerExpression is_deleted;
@@ -55,7 +56,6 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final IntegerExpression sub_county_id;
 	public final IntegerExpression county_id;
 	public final IntegerExpression district_id;
-	public final IntegerExpression report_period_bi_month;
 	public final IntegerExpression report_formId;
 	public final AssociationExpression report_form;
 	public final IntegerExpression report_form_group_id;
@@ -76,10 +76,11 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		district_name = new StringExpression("district_name", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
 		financial_year = new AssociationExpression("financial_year", this.getDetachedCriteria());
+		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 		report_period_month = new IntegerExpression("report_period_month", this.getDetachedCriteria());
 		report_period_week = new IntegerExpression("report_period_week", this.getDetachedCriteria());
 		report_period_year = new IntegerExpression("report_period_year", this.getDetachedCriteria());
-		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
@@ -99,7 +100,6 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
 		county_id = new IntegerExpression("county_id", this.getDetachedCriteria());
 		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
-		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
@@ -121,10 +121,11 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		district_name = new StringExpression("district_name", this.getDetachedCriteria());
 		financial_yearId = new IntegerExpression("financial_year.financial_year_id", this.getDetachedCriteria());
 		financial_year = new AssociationExpression("financial_year", this.getDetachedCriteria());
+		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
+		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 		report_period_month = new IntegerExpression("report_period_month", this.getDetachedCriteria());
 		report_period_week = new IntegerExpression("report_period_week", this.getDetachedCriteria());
 		report_period_year = new IntegerExpression("report_period_year", this.getDetachedCriteria());
-		report_period_quarter = new IntegerExpression("report_period_quarter", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());
 		is_deleted = new IntegerExpression("is_deleted", this.getDetachedCriteria());
@@ -144,7 +145,6 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		sub_county_id = new IntegerExpression("sub_county_id", this.getDetachedCriteria());
 		county_id = new IntegerExpression("county_id", this.getDetachedCriteria());
 		district_id = new IntegerExpression("district_id", this.getDetachedCriteria());
-		report_period_bi_month = new IntegerExpression("report_period_bi_month", this.getDetachedCriteria());
 		report_formId = new IntegerExpression("report_form.report_form_id", this.getDetachedCriteria());
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());

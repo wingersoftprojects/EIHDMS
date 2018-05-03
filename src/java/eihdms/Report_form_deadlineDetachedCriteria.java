@@ -37,6 +37,7 @@ public class Report_form_deadlineDetachedCriteria extends AbstractORMDetachedCri
 	public final IntegerExpression last_edit_by;
 	public final IntegerExpression deadline_extensionId;
 	public final AssociationExpression deadline_extension;
+	public final CollectionExpression deadline_reminder;
 	
 	public Report_form_deadlineDetachedCriteria() {
 		super(eihdms.Report_form_deadline.class, eihdms.Report_form_deadlineCriteria.class);
@@ -58,6 +59,7 @@ public class Report_form_deadlineDetachedCriteria extends AbstractORMDetachedCri
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		deadline_extensionId = new IntegerExpression("deadline_extension.report_form_deadline_id", this.getDetachedCriteria());
 		deadline_extension = new AssociationExpression("deadline_extension", this.getDetachedCriteria());
+		deadline_reminder = new CollectionExpression("deadline_reminder", this.getDetachedCriteria());
 	}
 	
 	public Report_form_deadlineDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -80,6 +82,7 @@ public class Report_form_deadlineDetachedCriteria extends AbstractORMDetachedCri
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		deadline_extensionId = new IntegerExpression("deadline_extension.report_form_deadline_id", this.getDetachedCriteria());
 		deadline_extension = new AssociationExpression("deadline_extension", this.getDetachedCriteria());
+		deadline_reminder = new CollectionExpression("deadline_reminder", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {
@@ -88,6 +91,10 @@ public class Report_form_deadlineDetachedCriteria extends AbstractORMDetachedCri
 	
 	public Deadline_extensionDetachedCriteria createDeadline_extensionCriteria() {
 		return new Deadline_extensionDetachedCriteria(createCriteria("deadline_extension"));
+	}
+	
+	public Deadline_reminderDetachedCriteria createDeadline_reminderCriteria() {
+		return new Deadline_reminderDetachedCriteria(createCriteria("deadline_reminder"));
 	}
 	
 	public Report_form_deadline uniqueReport_form_deadline(PersistentSession session) {

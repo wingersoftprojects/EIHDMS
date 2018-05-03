@@ -462,6 +462,12 @@ public class Interface_data implements Serializable {
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Financial_year financial_year;
 	
+	@Column(name="report_period_quarter", nullable=true, length=11)	
+	private Integer report_period_quarter;
+	
+	@Column(name="report_period_bi_month", nullable=true, length=11)	
+	private Integer report_period_bi_month;
+	
 	@Column(name="report_period_month", nullable=true, length=11)	
 	private Integer report_period_month;
 	
@@ -470,9 +476,6 @@ public class Interface_data implements Serializable {
 	
 	@Column(name="report_period_year", nullable=true, length=11)	
 	private Integer report_period_year;
-	
-	@Column(name="report_period_quarter", nullable=true, length=11)	
-	private Integer report_period_quarter;
 	
 	@Column(name="report_period_from_date", nullable=false)	
 	@Temporal(TemporalType.DATE)	
@@ -532,9 +535,6 @@ public class Interface_data implements Serializable {
 	
 	@Column(name="district_id", nullable=true, length=10)	
 	private Integer district_id;
-	
-	@Column(name="report_period_bi_month", nullable=true, length=11)	
-	private Integer report_period_bi_month;
 	
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	

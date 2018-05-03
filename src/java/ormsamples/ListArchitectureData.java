@@ -417,6 +417,46 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Interface_data_mob_app...");
+		eihdms.Interface_data_mob_app[] eihdmsInterface_data_mob_apps = eihdms.Interface_data_mob_app.listInterface_data_mob_appByQuery(null, null);
+		length = Math.min(eihdmsInterface_data_mob_apps.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsInterface_data_mob_apps[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Batch_mob_app...");
+		eihdms.Batch_mob_app[] eihdmsBatch_mob_apps = eihdms.Batch_mob_app.listBatch_mob_appByQuery(null, null);
+		length = Math.min(eihdmsBatch_mob_apps.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsBatch_mob_apps[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Dashboard_surge...");
+		eihdms.Dashboard_surge[] eihdmsDashboard_surges = eihdms.Dashboard_surge.listDashboard_surgeByQuery(null, null);
+		length = Math.min(eihdmsDashboard_surges.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsDashboard_surges[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Deadline_reminder...");
+		eihdms.Deadline_reminder[] eihdmsDeadline_reminders = eihdms.Deadline_reminder.listDeadline_reminderByQuery(null, null);
+		length = Math.min(eihdmsDeadline_reminders.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsDeadline_reminders[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Report_period_week...");
+		eihdms.Report_period_week[] eihdmsReport_period_weeks = eihdms.Report_period_week.listReport_period_weekByQuery(null, null);
+		length = Math.min(eihdmsReport_period_weeks.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsReport_period_weeks[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -1031,6 +1071,66 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsSms_recipients[i]);
 		}
 		System.out.println(length + " Sms_recipient record(s) retrieved."); 
+		
+		System.out.println("Listing Interface_data_mob_app by Criteria...");
+		eihdms.Interface_data_mob_appCriteria leihdmsInterface_data_mob_appCriteria = new eihdms.Interface_data_mob_appCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsInterface_data_mob_appCriteria.interface_data_mob_app_id.eq();
+		leihdmsInterface_data_mob_appCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Interface_data_mob_app[] eihdmsInterface_data_mob_apps = leihdmsInterface_data_mob_appCriteria.listInterface_data_mob_app();
+		length =eihdmsInterface_data_mob_apps== null ? 0 : Math.min(eihdmsInterface_data_mob_apps.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsInterface_data_mob_apps[i]);
+		}
+		System.out.println(length + " Interface_data_mob_app record(s) retrieved."); 
+		
+		System.out.println("Listing Batch_mob_app by Criteria...");
+		eihdms.Batch_mob_appCriteria leihdmsBatch_mob_appCriteria = new eihdms.Batch_mob_appCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsBatch_mob_appCriteria.batch_mob_app_id.eq();
+		leihdmsBatch_mob_appCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Batch_mob_app[] eihdmsBatch_mob_apps = leihdmsBatch_mob_appCriteria.listBatch_mob_app();
+		length =eihdmsBatch_mob_apps== null ? 0 : Math.min(eihdmsBatch_mob_apps.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsBatch_mob_apps[i]);
+		}
+		System.out.println(length + " Batch_mob_app record(s) retrieved."); 
+		
+		System.out.println("Listing Dashboard_surge by Criteria...");
+		eihdms.Dashboard_surgeCriteria leihdmsDashboard_surgeCriteria = new eihdms.Dashboard_surgeCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsDashboard_surgeCriteria.dashboard_surge_id.eq();
+		leihdmsDashboard_surgeCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Dashboard_surge[] eihdmsDashboard_surges = leihdmsDashboard_surgeCriteria.listDashboard_surge();
+		length =eihdmsDashboard_surges== null ? 0 : Math.min(eihdmsDashboard_surges.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsDashboard_surges[i]);
+		}
+		System.out.println(length + " Dashboard_surge record(s) retrieved."); 
+		
+		System.out.println("Listing Deadline_reminder by Criteria...");
+		eihdms.Deadline_reminderCriteria leihdmsDeadline_reminderCriteria = new eihdms.Deadline_reminderCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsDeadline_reminderCriteria.deadline_reminder_id.eq();
+		leihdmsDeadline_reminderCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Deadline_reminder[] eihdmsDeadline_reminders = leihdmsDeadline_reminderCriteria.listDeadline_reminder();
+		length =eihdmsDeadline_reminders== null ? 0 : Math.min(eihdmsDeadline_reminders.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsDeadline_reminders[i]);
+		}
+		System.out.println(length + " Deadline_reminder record(s) retrieved."); 
+		
+		System.out.println("Listing Report_period_week by Criteria...");
+		eihdms.Report_period_weekCriteria leihdmsReport_period_weekCriteria = new eihdms.Report_period_weekCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsReport_period_weekCriteria.report_period_week_id.eq();
+		leihdmsReport_period_weekCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Report_period_week[] eihdmsReport_period_weeks = leihdmsReport_period_weekCriteria.listReport_period_week();
+		length =eihdmsReport_period_weeks== null ? 0 : Math.min(eihdmsReport_period_weeks.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsReport_period_weeks[i]);
+		}
+		System.out.println(length + " Report_period_week record(s) retrieved."); 
 		
 	}
 	

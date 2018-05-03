@@ -145,7 +145,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : add_by, add_date, is_active, is_deleted, allow_delete, allow_edit, allow_add, allow_view, report_form, group_detail
 			leihdmsGroup_right.save();
 			eihdms.Report_form_deadline leihdmsReport_form_deadline = eihdms.Report_form_deadline.createReport_form_deadline();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : deadline_extension, is_active, is_deleted
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : deadline_reminder, deadline_extension, is_active, is_deleted
 			leihdmsReport_form_deadline.save();
 			eihdms.Report_form_entity leihdmsReport_form_entity = eihdms.Report_form_entity.createReport_form_entity();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, entity_id, entity_type, report_form
@@ -162,6 +162,21 @@ public class CreateArchitectureData {
 			eihdms.Sms_recipient leihdmsSms_recipient = eihdms.Sms_recipient.createSms_recipient();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
 			leihdmsSms_recipient.save();
+			eihdms.Interface_data_mob_app leihdmsInterface_data_mob_app = eihdms.Interface_data_mob_app.createInterface_data_mob_app();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, add_date_mob_app, data_element_value, data_element_id, batch_mob_app_id
+			leihdmsInterface_data_mob_app.save();
+			eihdms.Batch_mob_app leihdmsBatch_mob_app = eihdms.Batch_mob_app.createBatch_mob_app();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, is_completed
+			leihdmsBatch_mob_app.save();
+			eihdms.Dashboard_surge leihdmsDashboard_surge = eihdms.Dashboard_surge.createDashboard_surge();
+			// Initialize the properties of the persistent object here
+			leihdmsDashboard_surge.save();
+			eihdms.Deadline_reminder leihdmsDeadline_reminder = eihdms.Deadline_reminder.createDeadline_reminder();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, report_form_deadline
+			leihdmsDeadline_reminder.save();
+			eihdms.Report_period_week leihdmsReport_period_week = eihdms.Report_period_week.createReport_period_week();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
+			leihdmsReport_period_week.save();
 			t.commit();
 		}
 		catch (Exception e) {

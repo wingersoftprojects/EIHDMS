@@ -162,6 +162,21 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Sms_recipient leihdmsSms_recipient = eihdms.Sms_recipient.loadSms_recipientByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsSms_recipient.save();
+			eihdms.Interface_data_mob_app leihdmsInterface_data_mob_app = eihdms.Interface_data_mob_app.loadInterface_data_mob_appByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsInterface_data_mob_app.save();
+			eihdms.Batch_mob_app leihdmsBatch_mob_app = eihdms.Batch_mob_app.loadBatch_mob_appByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsBatch_mob_app.save();
+			eihdms.Dashboard_surge leihdmsDashboard_surge = eihdms.Dashboard_surge.loadDashboard_surgeByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsDashboard_surge.save();
+			eihdms.Deadline_reminder leihdmsDeadline_reminder = eihdms.Deadline_reminder.loadDeadline_reminderByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsDeadline_reminder.save();
+			eihdms.Report_period_week leihdmsReport_period_week = eihdms.Report_period_week.loadReport_period_weekByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsReport_period_week.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -476,6 +491,36 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsSms_recipientCriteria.sms_recipient_id.eq();
 		System.out.println(leihdmsSms_recipientCriteria.uniqueSms_recipient());
+		
+		System.out.println("Retrieving Interface_data_mob_app by Interface_data_mob_appCriteria");
+		eihdms.Interface_data_mob_appCriteria leihdmsInterface_data_mob_appCriteria = new eihdms.Interface_data_mob_appCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsInterface_data_mob_appCriteria.interface_data_mob_app_id.eq();
+		System.out.println(leihdmsInterface_data_mob_appCriteria.uniqueInterface_data_mob_app());
+		
+		System.out.println("Retrieving Batch_mob_app by Batch_mob_appCriteria");
+		eihdms.Batch_mob_appCriteria leihdmsBatch_mob_appCriteria = new eihdms.Batch_mob_appCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsBatch_mob_appCriteria.batch_mob_app_id.eq();
+		System.out.println(leihdmsBatch_mob_appCriteria.uniqueBatch_mob_app());
+		
+		System.out.println("Retrieving Dashboard_surge by Dashboard_surgeCriteria");
+		eihdms.Dashboard_surgeCriteria leihdmsDashboard_surgeCriteria = new eihdms.Dashboard_surgeCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsDashboard_surgeCriteria.dashboard_surge_id.eq();
+		System.out.println(leihdmsDashboard_surgeCriteria.uniqueDashboard_surge());
+		
+		System.out.println("Retrieving Deadline_reminder by Deadline_reminderCriteria");
+		eihdms.Deadline_reminderCriteria leihdmsDeadline_reminderCriteria = new eihdms.Deadline_reminderCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsDeadline_reminderCriteria.deadline_reminder_id.eq();
+		System.out.println(leihdmsDeadline_reminderCriteria.uniqueDeadline_reminder());
+		
+		System.out.println("Retrieving Report_period_week by Report_period_weekCriteria");
+		eihdms.Report_period_weekCriteria leihdmsReport_period_weekCriteria = new eihdms.Report_period_weekCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsReport_period_weekCriteria.report_period_week_id.eq();
+		System.out.println(leihdmsReport_period_weekCriteria.uniqueReport_period_week());
 		
 	}
 	

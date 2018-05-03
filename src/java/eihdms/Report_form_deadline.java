@@ -373,6 +373,10 @@ public class Report_form_deadline implements Serializable {
 				getDeadline_extension().setReport_form_deadline(null);
 			}
 			
+			eihdms.Deadline_reminder[] lDeadline_reminders = (eihdms.Deadline_reminder[])getDeadline_reminder().toArray(new eihdms.Deadline_reminder[getDeadline_reminder().size()]);
+			for(int i = 0; i < lDeadline_reminders.length; i++) {
+				lDeadline_reminders[i].setReport_form_deadline(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -391,6 +395,10 @@ public class Report_form_deadline implements Serializable {
 				getDeadline_extension().setReport_form_deadline(null);
 			}
 			
+			eihdms.Deadline_reminder[] lDeadline_reminders = (eihdms.Deadline_reminder[])getDeadline_reminder().toArray(new eihdms.Deadline_reminder[getDeadline_reminder().size()]);
+			for(int i = 0; i < lDeadline_reminders.length; i++) {
+				lDeadline_reminders[i].setReport_form_deadline(null);
+			}
 			try {
 				session.delete(this);
 				return true;
@@ -459,6 +467,11 @@ public class Report_form_deadline implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Deadline_extension deadline_extension;
+	
+	@OneToMany(mappedBy="report_form_deadline", targetEntity=eihdms.Deadline_reminder.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set deadline_reminder = new java.util.HashSet();
 	
 	private void setReport_form_deadline_id(int value) {
 		this.report_form_deadline_id = value;
@@ -607,6 +620,15 @@ public class Report_form_deadline implements Serializable {
 	public eihdms.Deadline_extension getDeadline_extension() {
 		return deadline_extension;
 	}
+	
+	public void setDeadline_reminder(java.util.Set value) {
+		this.deadline_reminder = value;
+	}
+	
+	public java.util.Set getDeadline_reminder() {
+		return deadline_reminder;
+	}
+	
 	
 	public String toString() {
 		return String.valueOf(getReport_form_deadline_id());

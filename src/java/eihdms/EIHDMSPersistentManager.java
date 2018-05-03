@@ -88,6 +88,11 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		aMetadataSources.addAnnotatedClass(eihdms.Sms_schedule.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Sent_sms_log.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Sms_recipient.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Interface_data_mob_app.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Batch_mob_app.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Dashboard_surge.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Deadline_reminder.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Report_period_week.class);
 	}
 	
 	public String getProjectName() {

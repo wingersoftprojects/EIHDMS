@@ -35,15 +35,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.joda.time.DateTime;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
 
@@ -614,5 +614,36 @@ public class GeneralUtilities implements Serializable {
             System.out.println("sendSMSRoute1:" + ex.getMessage());
         }
         return flag;
+    }
+
+    public String get_week_dates_from_year_and_week(Integer year, Integer week) {
+        String date_from_to = "Invalid Week/Year Combination";
+        try {
+            if (year != null && week != null) {
+                DateTime date = new DateTime().withWeekyear(year).withWeekOfWeekyear(week);
+                date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).minusDays(1).toDate()) + "-"
+                        + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).minusDays(1).toDate());
+            }
+        } catch (Exception ex) {
+
+        }
+        return date_from_to;
+    }
+
+    public String get_week_from_date(Date date) {
+        String week = "Invalid Date";
+        try {
+            if (date != null) {
+                Calendar calendar = new GregorianCalendar();
+                Date trialTime = new Date();
+                calendar.setTime(trialTime);
+                //System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
+                //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
+                week = "Week_" + calendar.get(Calendar.WEEK_OF_YEAR);
+            }
+        } catch (Exception ex) {
+
+        }
+        return week;
     }
 }
