@@ -617,33 +617,46 @@ public class GeneralUtilities implements Serializable {
     }
 
     public String get_week_dates_from_year_and_week(Integer year, Integer week) {
-        String date_from_to = "Invalid Week/Year Combination";
+        String date_from_to = "INVALID-YEAR-WEEK";
         try {
             if (year != null && week != null) {
                 DateTime date = new DateTime().withWeekyear(year).withWeekOfWeekyear(week);
-                date_from_to = new SimpleDateFormat("dd-MMM-yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).minusDays(1).toDate()) + "-"
-                        + new SimpleDateFormat("dd-MMM-yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).minusDays(1).toDate());
+                //date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).minusDays(1).toDate()) + "-"
+                //        + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).minusDays(1).toDate());
+                date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).toDate()) + "-"
+                        + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).toDate());
             }
         } catch (Exception ex) {
-
         }
         return date_from_to;
     }
 
-    public String get_week_from_date(Date date) {
-        String week = "Invalid Date";
+    public String get_week_from_date(Date date,String aReturnFormat) {
+        String week = "INVALID-DATE";
         try {
             if (date != null) {
                 Calendar calendar = new GregorianCalendar();
-                Date trialTime = new Date();
-                calendar.setTime(trialTime);
-                //System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
-                //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
-                week = "Week_" + calendar.get(Calendar.WEEK_OF_YEAR);
+                calendar.setFirstDayOfWeek(Calendar.MONDAY);
+                Date dt = new Date(date.getTime());
+                calendar.setTime(dt);
+                if(aReturnFormat.equals("W")){
+                    week = "W" + calendar.get(Calendar.WEEK_OF_YEAR);
+                }else if(aReturnFormat.equals("YW")){
+                    week =calendar.get(Calendar.YEAR) + "W" + calendar.get(Calendar.WEEK_OF_YEAR);
+                }else if(aReturnFormat.equals("")){
+                    week =Integer.toString(calendar.get(Calendar.WEEK_OF_YEAR));
+                }  
             }
         } catch (Exception ex) {
 
         }
         return week;
     }
+//    public static void main(String[] args) {
+//        DateTime dt = new DateTime(2018, 1, 7, 0, 0, 0, 0);
+//        GeneralUtilities gn=new GeneralUtilities();
+//        System.out.println(gn.get_week_from_date(dt.toDate(),"YW"));
+//        System.out.println(dt.toDate().toString());
+//        System.out.println(gn.get_week_dates_from_year_and_week(2018,1));
+//    }
 }
