@@ -653,10 +653,10 @@ public class GeneralUtilities implements Serializable {
         return week;
     }
 //    public static void main(String[] args) {
-//        DateTime dt = new DateTime(2018, 1, 7, 0, 0, 0, 0);
+//        DateTime dt = new DateTime(2018, 5, 8, 0, 0, 0, 0);
 //        GeneralUtilities gn=new GeneralUtilities();
 //        System.out.println(gn.get_week_from_date(dt.toDate(),"YW"));
 //        System.out.println(dt.toDate().toString());
-//        System.out.println(gn.get_week_dates_from_year_and_week(2018,1));
+//        System.out.println(gn.get_week_dates_from_year_and_week(2018,17));
 //    }
 }

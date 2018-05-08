@@ -17,38 +17,95 @@
             <script type="text/javascript" src="resources/js/fusioncharts.widgets.js"></script>
             <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
                 <p:growl/>
-                <p:fieldset legend="SMS Received">
-                    <p:panelGrid columns="6" id="panelFilter">
-                        <p:outputLabel value="Report Form:" />
-                        <p:selectOneMenu id="report_form" value="#{interface_data_smsBean.report_form}" style="width:125px" converter="report_formConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add','mode_upload')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Week:" />
-                        <p:inputText id="report_period_week" value="#{interface_data_smsBean.report_period_week}">
-                            <f:validateLongRange minimum="1" maximum="52"/>
-                        </p:inputText>
-                        <p:commandButton id="cmdbSearch" value="SEARCH" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
-                            <p:ajax listener="#{interface_data_smsBean.refreshSMSreceivedDashboard(interface_data_smsBean.report_form,interface_data_smsBean.report_period_week)}" process="panelFilter" update="panelResultCharts panelResultTable"/>
-                        </p:commandButton>
-                        <p:commandButton value="RESET"/>
-                    </p:panelGrid>
-                    <h:panelGrid columns="2" id="panelResultCharts">
-                        <h:panelGrid style="text-align: center">
-                            <div id="chart-container1"></div>
+                <p:fieldset legend="EGPAF Surge Form Dashboard">
+                    <div class="ui-fluid">
+                        <p:panelGrid columns="7" id="panelFilter" style="width: 100%;">
+                            <p:outputLabel value="Year" />
+                            <p:outputLabel value="Month" />
+                            <p:outputLabel value="Week" />
+                            <p:outputLabel value="District:" />
+                            <p:autoComplete id="district" value="#{dashboard_surgeBean.district}"
+                                            completeMethod="#{uploadBean.completeDistrict}"
+                                            var="district" itemLabel="#{district.district_name}" itemValue="#{district}" 
+                                            converter="districtConverter" forceSelection="true"
+                                            minQueryLength="3">
+                                <p:column headerText="District Name" style="text-align: left">
+                                    <h:outputText value="#{district.district_name}">
+                                    </h:outputText>
+                                </p:column>
+                            </p:autoComplete>
+                            <p:outputLabel value="Indicator for the Trend" />
+                            <p:commandButton id="cmdbSearch" value="SEARCH" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                                <p:ajax listener="#{dashboard_surgeBean.refreshDashboard(dashboard_surgeBean.year_value,dashboard_surgeBean.month_value,dashboard_surgeBean.week_value,dashboard_surgeBean.district,dashboard_surgeBean.facility,dashboard_surgeBean.indicator_id)}" process="panelFilter" update="pnlgCharts pnlgTrends"/>
+                            </p:commandButton>
+
+                            <p:selectOneMenu id="year" value="#{dashboard_surgeBean.year_value}" editable="true">
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="month" value="#{dashboard_surgeBean.month_value}">
+                                <f:selectItem itemLabel="Jan" itemValue="1" />
+                                <f:selectItem itemLabel="Feb" itemValue="2" />
+                                <f:selectItem itemLabel="Mar" itemValue="3" />
+                                <f:selectItem itemLabel="Apr" itemValue="4" />
+                                <f:selectItem itemLabel="May" itemValue="5" />
+                                <f:selectItem itemLabel="Jun" itemValue="6" />
+                                <f:selectItem itemLabel="Jul" itemValue="7" />
+                                <f:selectItem itemLabel="Aug" itemValue="8" />
+                                <f:selectItem itemLabel="Sep" itemValue="9" />
+                                <f:selectItem itemLabel="Oct" itemValue="10" />
+                                <f:selectItem itemLabel="Nov" itemValue="11" />
+                                <f:selectItem itemLabel="Dec" itemValue="12" />
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="week" value="#{dashboard_surgeBean.week_value}" editable="true">
+                                <f:selectItem itemLabel="" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Facility:" />
+                            <p:autoComplete id="facility" value="#{dashboard_surgeBean.facility}"
+                                            completeMethod="#{uploadBean.completeHealth_facility}"
+                                            var="health_facility" itemLabel="#{health_facility.health_facility_name}" itemValue="#{health_facility}" 
+                                            converter="health_facilityConverter" forceSelection="true"
+                                            minQueryLength="3">
+                                <p:column headerText="Health Facility Name" style="text-align: left">
+                                    <h:outputText value="#{health_facility.health_facility_name}">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Sub County" style="text-align: left">
+                                    <h:outputText value="#{health_facility.sub_county.sub_county_name}">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="District" style="text-align: left">
+                                    <h:outputText value="#{health_facility.district.district_name}">
+                                    </h:outputText>
+                                </p:column>
+                            </p:autoComplete>
+                            <p:selectOneMenu id="trend" value="#{dashboard_surgeBean.indicator_id}">
+                                <f:selectItem itemLabel="% Viral Load Testing Coverage" itemValue="1" />
+                                <f:selectItem itemLabel="% of clients missed appointment during the week" itemValue="2" />
+                                <f:selectItem itemLabel="% of clients missed appointment during the previous week and brought back into care" itemValue="3" />
+                                <f:selectItem itemLabel="HTS Yield" itemValue="4" />
+                                <f:selectItem itemLabel="Total/% started ART" itemValue="5" />
+                            </p:selectOneMenu>
+                            <p:commandButton value="RESET"/>
+                        </p:panelGrid>
+                    </div>
+                    <h:panelGrid columns="5" id="pnlgCharts">
+                        <h:panelGrid id="pnlgChart1" style="text-align: center">
+                            <div id="chart1"></div>
                             <p:outputLabel value="#{interface_data_smsBean.count_n} SMS received out of #{interface_data_smsBean.count_d}"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
-                                    var chartSMSReceived = new FusionCharts({
+                                    var chartind1 = new FusionCharts({
                                         type: 'angulargauge',
-                                        renderAt: 'chart-container1',
-                                        width: '400',
+                                        renderAt: 'chart1',
+                                        width: '250',
                                         height: '250',
                                         dataFormat: 'json',
                                         dataSource: {
                                             "chart": {
-                                                "caption": "Current SMS Reporting Rate(%)",
-                                                "subcaption": "Last week",
+                                                "caption": "% Viral Load Testing Coverage",
                                                 "lowerLimit": "0",
                                                 "upperLimit": "100",
                                                 "lowerLimitDisplay": "0%",
@@ -79,7 +136,7 @@
                                             },
                                             "dials": {
                                                 "dial": [{
-                                                        "value": "#{interface_data_smsBean.perc_value}"
+                                                        "value": "#{dashboard_surgeBean.perc_value1}"
                                                     }]
                                             }
                                         }
@@ -87,93 +144,228 @@
                                 });
                             </script>
                         </h:panelGrid>
-                        <h:panelGrid>
-                            <div id="chart-container2"></div>
+                        <h:panelGrid id="pnlgChart2">
+                            <div id="chart2"></div>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
-                                    var revenueChart = new FusionCharts({
-                                        type: 'stackedbar2d',
-                                        renderAt: 'chart-container2',
-                                        width: '450',
-                                        height: '400',
+                                    var chartind2 = new FusionCharts({
+                                        type: 'pie2d',
+                                        renderAt: 'chart2',
+                                        width: '20%',
+                                        height: '250',
                                         dataFormat: 'json',
                                         dataSource: {
                                             "chart": {
-                                                "caption": "Recently received SMS validation status",
-                                                "subCaption": "Last Week",
-                                                "xAxisname": "Report Form",
-                                                "yAxisName": "Number of SMS",
-                                                "numberPrefix": "",
-                                                "paletteColors": "#1aaf5d,#e44a00",
-                                                "bgColor": "#ffffff",
-                                                "borderAlpha": "20",
-                                                "showCanvasBorder": "0",
-                                                "usePlotGradientColor": "0",
-                                                "plotBorderAlpha": "10",
-                                                "legendBorderAlpha": "0",
-                                                "legendShadow": "0",
-                                                "valueFontColor": "#ffffff",
-                                                "showXAxisLine": "1",
-                                                "xAxisLineColor": "#999999",
-                                                "divlineColor": "#999999",
-                                                "divLineIsDashed": "1",
-                                                "showAlternateVGridColor": "0",
-                                                "subcaptionFontBold": "0",
-                                                "subcaptionFontSize": "14",
-                                                "showHoverEffect": "1"
-
+                                                "caption": "% of clients missed appointment during the week",
+                                                "numberPrefix": "$",
+                                                "showPercentValues": "1",
+                                                "showPercentInTooltip": "0",
+                                                "decimals": "1",
+                                                //Theme
+                                                "theme": "fint"
                                             },
-                                            "categories": #{interface_data_smsBean.categoriesChartString},
-                                            "dataset": #{interface_data_smsBean.dataseriesChartString}
+                                            "data": #{dashboard_surgeBean.dataChartString2}
+                                        }
+                                    }).render();
+
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid id="pnlgChart3" style="text-align: center">
+                            <div id="chart3"></div>
+                            <p:outputLabel value="#{interface_data_smsBean.count_n} SMS received out of #{interface_data_smsBean.count_d}"/>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind3 = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart3',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "% of clients missed appointment during the previous week and brought back into care",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#e44a00"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#f8bd19"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#1aaf5d"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "#{dashboard_surgeBean.perc_value3}"
+                                                    }]
+                                            }
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid id="pnlgChart4">
+                            <div id="chart4"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind4 = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart4',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "HTS Yield",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#e44a00"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#f8bd19"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#1aaf5d"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "#{dashboard_surgeBean.perc_value4}"
+                                                    }]
+                                            }
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid id="pnlgChart5">
+                            <div id="chart5"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind5 = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart5',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "Total/% started ART",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#e44a00"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#f8bd19"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#1aaf5d"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "#{dashboard_surgeBean.perc_value5}"
+                                                    }]
+                                            }
                                         }
                                     }).render();
                                 });
                             </script>
                         </h:panelGrid>
                     </h:panelGrid>
-                    <h:panelGrid columns="1" id="panelResultTable">
-                        <p:dataTable id="table_received_sms" var="sms" value="#{interface_data_smsBean.received_SMSs}" draggableRows="false" 
-                                     paginator="true" 
-                                     paginatorTemplate="{Exporters}">
-                            <f:facet name="header">
-                                #{interface_data_smsBean.report_form.report_form_name}
-                            </f:facet>
-                            <f:facet name="{Exporters}">
-                                <h:commandLink>
-                                    <p:graphicImage name="images/excel.png" width="24"/>
-                                    <p:dataExporter type="xls" target="table_received_sms" fileName="received_sms" />
-                                </h:commandLink>
-                                <h:commandLink>
-                                    <p:graphicImage name="images/pdf.png" width="24"/>
-                                    <p:dataExporter type="pdf" target="table_received_sms" fileName="received_sms"/>
-                                </h:commandLink>
-                                <h:commandLink>
-                                    <p:graphicImage name="images/csv.png" width="24"/>
-                                    <p:dataExporter type="csv" target="table_received_sms" fileName="received_sms" />
-                                </h:commandLink>
-                                <h:commandLink>
-                                    <p:graphicImage name="images/xml.png" width="24"/>
-                                    <p:dataExporter type="xml" target="table_received_sms" fileName="received_sms" />
-                                </h:commandLink>
-                            </f:facet>
-                            <p:column headerText="Health Facility">
-                                <h:outputText value="#{sms.phone}" />
-                            </p:column>
-                            <p:column headerText="Sender">
-                                <h:outputText value="#{sms.phone}" />
-                            </p:column>
-                            <p:column headerText="Date">
-                                <h:outputText value="#{sms.add_date}" />
-                            </p:column>
-                            <p:column headerText="Status">
-                                <h:outputText value="#{sms.status_f}" rendered="#{sms.status_f=='OK'}"/>
-                                <h:outputText value="#{sms.status_f}" style="color: red" rendered="#{sms.status_f=='ERR'}"/>
-                            </p:column>
-                            <p:column headerText="Message">
-                                <h:outputText value="#{sms.sms}" rendered="#{sms.status_f=='OK'}"/>
-                                <h:outputText value="#{sms.sms}" style="color: red" rendered="#{sms.status_f=='ERR'}"/>
-                            </p:column>
-                        </p:dataTable>
+                    <h:panelGrid columns="1" id="pnlgTrends">
+                        <h:panelGrid id="pnlgTrend1">
+                            <div id="chart-trend1"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var charttrend = new FusionCharts({
+                                        type: 'column2d',
+                                        renderAt: 'chart-trend1',
+                                        width: '100%',
+                                        height: '350',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "Trend for #{dashboard_surgeBean.getIndicatorStringById(dashboard_surgeBean.indicator_id)}",
+                                                "xAxisName": "Week",
+                                                "yAxisName": "Percentage(%)",
+                                                "numberSuffix": "%",
+                                                "paletteColors": "#0075c2",
+                                                "bgColor": "#ffffff",
+                                                "borderAlpha": "20",
+                                                "canvasBorderAlpha": "0",
+                                                "usePlotGradientColor": "0",
+                                                "plotBorderAlpha": "10",
+                                                "placevaluesInside": "1",
+                                                "rotatevalues": "1",
+                                                "valueFontColor": "#ffffff",
+                                                "showXAxisLine": "1",
+                                                "xAxisLineColor": "#999999",
+                                                "divlineColor": "#999999",
+                                                "divLineIsDashed": "1",
+                                                "showAlternateHGridColor": "0",
+                                                "subcaptionFontBold": "0",
+                                                "subcaptionFontSize": "14"
+                                            },
+                                            "data": #{dashboard_surgeBean.dataChartString6}
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
             </h:form>
