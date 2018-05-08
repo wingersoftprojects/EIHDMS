@@ -35,15 +35,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.joda.time.DateTime;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
 
@@ -636,4 +636,48 @@ public class GeneralUtilities implements Serializable {
         }
         return flag;
     }
+
+    public String get_week_dates_from_year_and_week(Integer year, Integer week) {
+        String date_from_to = "INVALID-YEAR-WEEK";
+        try {
+            if (year != null && week != null) {
+                DateTime date = new DateTime().withWeekyear(year).withWeekOfWeekyear(week);
+                //date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).minusDays(1).toDate()) + "-"
+                //        + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).minusDays(1).toDate());
+                date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).toDate()) + "-"
+                        + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).toDate());
+            }
+        } catch (Exception ex) {
+        }
+        return date_from_to;
+    }
+
+    public String get_week_from_date(Date date,String aReturnFormat) {
+        String week = "INVALID-DATE";
+        try {
+            if (date != null) {
+                Calendar calendar = new GregorianCalendar();
+                calendar.setFirstDayOfWeek(Calendar.MONDAY);
+                Date dt = new Date(date.getTime());
+                calendar.setTime(dt);
+                if(aReturnFormat.equals("W")){
+                    week = "W" + calendar.get(Calendar.WEEK_OF_YEAR);
+                }else if(aReturnFormat.equals("YW")){
+                    week =calendar.get(Calendar.YEAR) + "W" + calendar.get(Calendar.WEEK_OF_YEAR);
+                }else if(aReturnFormat.equals("")){
+                    week =Integer.toString(calendar.get(Calendar.WEEK_OF_YEAR));
+                }  
+            }
+        } catch (Exception ex) {
+
+        }
+        return week;
+    }
+//    public static void main(String[] args) {
+//        DateTime dt = new DateTime(2018, 1, 7, 0, 0, 0, 0);
+//        GeneralUtilities gn=new GeneralUtilities();
+//        System.out.println(gn.get_week_from_date(dt.toDate(),"YW"));
+//        System.out.println(dt.toDate().toString());
+//        System.out.println(gn.get_week_dates_from_year_and_week(2018,1));
+//    }
 }

@@ -111,6 +111,16 @@ public class DeleteArchitectureData {
 			leihdmsSent_sms_log.delete();
 			eihdms.Sms_recipient leihdmsSms_recipient = eihdms.Sms_recipient.loadSms_recipientByQuery(null, null);
 			leihdmsSms_recipient.delete();
+			eihdms.Interface_data_mob_app leihdmsInterface_data_mob_app = eihdms.Interface_data_mob_app.loadInterface_data_mob_appByQuery(null, null);
+			leihdmsInterface_data_mob_app.delete();
+			eihdms.Batch_mob_app leihdmsBatch_mob_app = eihdms.Batch_mob_app.loadBatch_mob_appByQuery(null, null);
+			leihdmsBatch_mob_app.delete();
+			eihdms.Dashboard_surge leihdmsDashboard_surge = eihdms.Dashboard_surge.loadDashboard_surgeByQuery(null, null);
+			leihdmsDashboard_surge.delete();
+			eihdms.Deadline_reminder leihdmsDeadline_reminder = eihdms.Deadline_reminder.loadDeadline_reminderByQuery(null, null);
+			leihdmsDeadline_reminder.delete();
+			eihdms.Report_period_week leihdmsReport_period_week = eihdms.Report_period_week.loadReport_period_weekByQuery(null, null);
+			leihdmsReport_period_week.delete();
 			t.commit();
 		}
 		catch (Exception e) {
