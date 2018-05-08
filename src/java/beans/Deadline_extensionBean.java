@@ -5,10 +5,8 @@
  */
 package beans;
 
-import eihdms.Report_form_deadline;
+import eihdms.Deadline_extension;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -19,10 +17,10 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class Report_form_deadlineBean extends AbstractBean<Report_form_deadline> implements Serializable {
+public class Deadline_extensionBean extends AbstractBean<Deadline_extension> implements Serializable {
 
-    public Report_form_deadlineBean() {
-        super(Report_form_deadline.class);
+    public Deadline_extensionBean() {
+        super(Deadline_extension.class);
     }
 
     @Override
@@ -42,4 +40,5 @@ public class Report_form_deadlineBean extends AbstractBean<Report_form_deadline>
         this.loginBean = loginBean;
     }
 
+    
 }

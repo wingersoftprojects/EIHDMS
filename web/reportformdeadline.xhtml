@@ -30,34 +30,34 @@
                         <p:selectOneMenu id="day_from" value="#{report_form_deadlineBean.selected.day_from}" required="true" requiredMessage="From Day field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Mon" itemValue="1" />
-                            <f:selectItem itemLabel="Tue" itemValue="1" />
+                            <f:selectItem itemLabel="Tue" itemValue="2" />
                             <f:selectItem itemLabel="Wed" itemValue="3" />
                             <f:selectItem itemLabel="Thu" itemValue="4" />
                             <f:selectItem itemLabel="Fri" itemValue="5" />
                             <f:selectItem itemLabel="Sat" itemValue="6" />
-                            <f:selectItem itemLabel="Sat" itemValue="7" />
+                            <f:selectItem itemLabel="Sun" itemValue="7" />
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Day To:" for="day_to"/>
                         <p:selectOneMenu id="day_to" value="#{report_form_deadlineBean.selected.day_to}" required="true" requiredMessage="Entity Type field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Mon" itemValue="1" />
-                            <f:selectItem itemLabel="Tue" itemValue="1" />
+                            <f:selectItem itemLabel="Tue" itemValue="2" />
                             <f:selectItem itemLabel="Wed" itemValue="3" />
                             <f:selectItem itemLabel="Thu" itemValue="4" />
                             <f:selectItem itemLabel="Fri" itemValue="5" />
                             <f:selectItem itemLabel="Sat" itemValue="6" />
-                            <f:selectItem itemLabel="Sat" itemValue="7" />
+                            <f:selectItem itemLabel="Sun" itemValue="7" />
                             <p:ajax process="@this"/>
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Start Time:" for="start_time"/>
-                        <p:calendar id="start_time" value="#{report_form_deadlineBean.selected.time_from}" timeOnly="true" pattern="HH:mm:ss" title="startdate" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">
-                            <p:ajax event="blur" process="@this"/>
+                        <p:calendar id="start_time" value="#{report_form_deadlineBean.selected.time_from}" timeOnly="true" converter="deadlineTimeConverter" pattern="HH:mm:ss" timeZone="EAT" navigator="true" showButtonPanel="true" size="11" required="true" requiredMessage="Start Time field is required">
+                            <p:ajax event="dateSelect" process="@this"/>
                         </p:calendar>
                         <p:outputLabel value="End Time:" for="end_time"/>
-                        <p:calendar id="end_time" value="#{report_form_deadlineBean.selected.time_to}" timeOnly="true" pattern="HH:mm:ss" title="startdate" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">
-                            <p:ajax event="blur" process="@this"/>
+                        <p:calendar id="end_time" value="#{report_form_deadlineBean.selected.time_to}" timeOnly="true" converter="deadlineTimeConverter" pattern="HH:mm:ss" timeZone="EAT" navigator="true" showButtonPanel="true" size="11" required="true" requiredMessage="End Time field is required">
+                            <p:ajax event="dateSelect" process="@this"/>
                         </p:calendar>
                         <p:outputLabel value="Week:" for="deadline_week"/>
                         <p:inputText id="deadline_week" value="#{report_form_deadlineBean.selected.week_value}">
