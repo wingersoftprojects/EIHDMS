@@ -95,7 +95,7 @@
                                         completeMethod="#{kpi_summary_functionBean.completeData_element}"
                                         var="data_element" itemLabel="#{data_element.data_element_name} (Code: #{data_element.data_element_code})" itemValue="#{data_element}" 
                                         converter="data_elementConverter" forceSelection="true"
-                                        minQueryLength="3" dropdown="true" maxResults="8">
+                                        minQueryLength="3" dropdown="true" scrollHeight = "150">
                             <p:column headerText="Data Element Name" style="text-align: left">
                                 <h:outputText value="#{data_element.data_element_name} (Code: #{data_element.data_element_code})">
                                 </h:outputText>
