@@ -148,25 +148,25 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         this.facility = null;
         this.indicator_id = 1;
         this.month_value = 0;
-        this.refreshWeeks(this.year_value,this.week_value);
+        this.refreshWeeks(this.year_value, this.week_value);
         this.refreshDashboard(this.year_value, this.month_value, this.week_value, this.district, this.facility, this.indicator_id);
     }
-    
-    public void refreshWeeks(int aYear, int aTopWeek){
+
+    public void refreshWeeks(int aYear, int aTopWeek) {
         weekList = new ArrayList<>();
-        Report_form week=null;
-        GeneralUtilities gu=new GeneralUtilities();
-        int i=1;
-        while(i<=10){
-            week=new Report_form();
+        Report_form week = null;
+        GeneralUtilities gu = new GeneralUtilities();
+        int i = 1;
+        while (i <= 10) {
+            week = new Report_form();
             week.setIs_active(aTopWeek);
             week.setReport_form_code(aTopWeek + " (" + gu.get_week_dates_from_year_and_week(aYear, aTopWeek) + ")");
             weekList.add(week);
-            aTopWeek=aTopWeek-1;
-            if(aTopWeek<=0){
+            aTopWeek = aTopWeek - 1;
+            if (aTopWeek <= 0) {
                 break;
             }
-            i=i+1;
+            i = i + 1;
         }
     }
 
@@ -175,7 +175,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         ResultSet rs2 = null;
         Gson gson;
         String sql1 = "SELECT "
-                + "ceil(avg(a)) as a,ceil(avg(b)) as b,ceil(avg(b_prev)) as b_prev,ceil(avg(c)) as c,ceil(avg(d)) as d,ceil(avg(e)) as e,ceil(avg(f)) as f,ceil(avg(g)) as g,ceil(avg(h)) as h,ceil(avg(i)) as i,ceil(avg(j)) as j,ceil(avg(k)) as k,ceil(avg(l)) as l,"
+                + "sum(a) as a,sum(b) as b,sum(b_prev) as b_prev,sum(c) as c,sum(d) as d,sum(e) as e,sum(f) as f,sum(g) as g,sum(h) as h,sum(i) as i,sum(j) as j,sum(k) as k,sum(l) as l,"
                 + "avg(perc_test_coverage) as perc_test_coverage,avg(perc_miss_appoint_cur) as perc_miss_appoint_cur,avg(perc_miss_appoint_prev) as perc_miss_appoint_prev,"
                 + "avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art "
                 + "FROM dashboard_surge WHERE 1=1";
@@ -184,6 +184,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                 + "FROM dashboard_surge WHERE 1=1";
         String order2 = " ORDER BY report_period_year ASC,report_period_week ASC";
         String where1 = "";
+        String where2 = "";
         if (aYear > 0) {
             where1 = where1 + " and report_period_year=" + aYear;
         }
@@ -208,7 +209,15 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             //skip 
         }
         sql1 = sql1 + where1;
-        sql2 = sql2 + where1 + order2;
+        int aWeekFrom = 0;
+        if (aWeek > 0) {
+            aWeekFrom = aWeek - 30;
+        } else {
+            Date current_date = Calendar.getInstance().getTime();
+            aWeekFrom = Integer.parseInt(new GeneralUtilities().get_week_from_date(current_date, ""));
+        }
+        where2 = where2 + " and report_period_week between " + aWeekFrom + " and " + aWeek;
+        sql2 = sql2 + where2 + order2;
 
         //for the indicator charts
         try (Connection conn = DBConnection.getMySQLConnection();
