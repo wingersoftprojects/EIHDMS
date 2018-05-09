@@ -7,7 +7,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{dashboard_surgeBean.initDashboard()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
     <ui:define name="content">
         <f:view>
             <script type="text/javascript" src="resources/js/fusioncharts.js"></script>
@@ -34,8 +38,8 @@
                                     </h:outputText>
                                 </p:column>
                             </p:autoComplete>
-                            <p:outputLabel value="Indicator for the Trend" />
-                            <p:commandButton id="cmdbSearch" value="SEARCH" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                            <p:outputLabel value="Select Indicator for the Trend Graph" />
+                            <p:commandButton id="cmdbSearch" value="APPLY  FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
                                 <p:ajax listener="#{dashboard_surgeBean.refreshDashboard(dashboard_surgeBean.year_value,dashboard_surgeBean.month_value,dashboard_surgeBean.week_value,dashboard_surgeBean.district,dashboard_surgeBean.facility,dashboard_surgeBean.indicator_id)}" process="panelFilter" update="pnlgCharts pnlgTrends"/>
                             </p:commandButton>
 
@@ -46,6 +50,7 @@
                                 <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
                             </p:selectOneMenu>
                             <p:selectOneMenu id="month" value="#{dashboard_surgeBean.month_value}">
+                                <f:selectItem itemLabel="" itemValue="0" />
                                 <f:selectItem itemLabel="Jan" itemValue="1" />
                                 <f:selectItem itemLabel="Feb" itemValue="2" />
                                 <f:selectItem itemLabel="Mar" itemValue="3" />
@@ -59,8 +64,9 @@
                                 <f:selectItem itemLabel="Nov" itemValue="11" />
                                 <f:selectItem itemLabel="Dec" itemValue="12" />
                             </p:selectOneMenu>
-                            <p:selectOneMenu id="week" value="#{dashboard_surgeBean.week_value}" editable="true">
-                                <f:selectItem itemLabel="" />
+                            <p:selectOneMenu id="week" value="#{dashboard_surgeBean.week_value}" editable="false">
+                                <f:selectItems value="#{dashboard_surgeBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
+                                <p:ajax/>
                             </p:selectOneMenu>
                             <p:outputLabel value="Facility:" />
                             <p:autoComplete id="facility" value="#{dashboard_surgeBean.facility}"
@@ -88,7 +94,9 @@
                                 <f:selectItem itemLabel="HTS Yield" itemValue="4" />
                                 <f:selectItem itemLabel="Total/% started ART" itemValue="5" />
                             </p:selectOneMenu>
-                            <p:commandButton value="RESET"/>
+                            <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                                <p:ajax listener="#{dashboard_surgeBean.resetDashboard()}" process="panelFilter" update="panelFilter pnlgCharts pnlgTrends"/>
+                            </p:commandButton>
                         </p:panelGrid>
                     </div>
                     <h:panelGrid columns="5" id="pnlgCharts">
@@ -161,7 +169,7 @@
                                                 "showPercentValues": "1",
                                                 "showPercentInTooltip": "0",
                                                 "decimals": "1",
-                                                //Theme
+                                                "palettecolors": "#e44a00,#1aaf5d",
                                                 "theme": "fint"
                                             },
                                             "data": #{dashboard_surgeBean.dataChartString2}

@@ -7,6 +7,7 @@ package beans;
 
 import com.google.gson.Gson;
 import connections.DBConnection;
+import eihdms.Dashboard_surge;
 import eihdms.District;
 import eihdms.Health_facility;
 import eihdms.Interface_data_sms;
@@ -20,6 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,6 +32,7 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.orm.PersistentException;
 import utilities.GeneralUtilities;
 
@@ -38,7 +42,7 @@ import utilities.GeneralUtilities;
  */
 @ManagedBean
 @SessionScoped
-public class Dashboard_surgeBean extends AbstractBean<Interface_data_sms> implements Serializable {
+public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implements Serializable {
 
     private Report_form report_form;
     private Integer report_period_week;
@@ -79,9 +83,10 @@ public class Dashboard_surgeBean extends AbstractBean<Interface_data_sms> implem
     private String DataChartString4;
     private String DataChartString5;
     private String DataChartString6;
+    private List<Report_form> weekList = new ArrayList<>();
 
     public Dashboard_surgeBean() {
-        super(Interface_data_sms.class);
+        super(Dashboard_surge.class);
     }
 
     @Override
@@ -112,6 +117,56 @@ public class Dashboard_surgeBean extends AbstractBean<Interface_data_sms> implem
             return "Total/% started ART";
         } else {
             return "";
+        }
+    }
+
+    public void initDashboard() {
+        if (FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest()) {
+            // Skip ajax requests.
+        } else {
+            this.resetDashboard();
+        }
+    }
+
+    public void resetDashboard() {
+        int current_year = Calendar.getInstance().get(Calendar.YEAR);
+        Date current_date = Calendar.getInstance().getTime();
+        int current_week = Integer.parseInt(new GeneralUtilities().get_week_from_date(current_date, ""));
+
+        int previous_week = 0;
+        int previous_week_year = 0;
+        if (current_week > 1) {
+            previous_week = current_week - 1;
+            previous_week_year = current_year;
+        } else {
+            previous_week_year = current_year - 1;
+            previous_week = new GeneralUtilities().get_weeks_in_a_year(previous_week_year);
+        }
+        this.year_value = previous_week_year;
+        this.week_value = previous_week;
+        this.district = null;
+        this.facility = null;
+        this.indicator_id = 1;
+        this.month_value = 0;
+        this.refreshWeeks(this.year_value,this.week_value);
+        this.refreshDashboard(this.year_value, this.month_value, this.week_value, this.district, this.facility, this.indicator_id);
+    }
+    
+    public void refreshWeeks(int aYear, int aTopWeek){
+        weekList = new ArrayList<>();
+        Report_form week=null;
+        GeneralUtilities gu=new GeneralUtilities();
+        int i=1;
+        while(i<=10){
+            week=new Report_form();
+            week.setIs_active(aTopWeek);
+            week.setReport_form_code(aTopWeek + " (" + gu.get_week_dates_from_year_and_week(aYear, aTopWeek) + ")");
+            weekList.add(week);
+            aTopWeek=aTopWeek-1;
+            if(aTopWeek<=0){
+                break;
+            }
+            i=i+1;
         }
     }
 
@@ -942,6 +997,20 @@ public class Dashboard_surgeBean extends AbstractBean<Interface_data_sms> implem
      */
     public void setDataChartString6(String DataChartString6) {
         this.DataChartString6 = DataChartString6;
+    }
+
+    /**
+     * @return the weekList
+     */
+    public List<Report_form> getWeekList() {
+        return weekList;
+    }
+
+    /**
+     * @param weekList the weekList to set
+     */
+    public void setWeekList(List<Report_form> weekList) {
+        this.weekList = weekList;
     }
 
 }

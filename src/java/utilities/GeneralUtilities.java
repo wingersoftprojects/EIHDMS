@@ -673,11 +673,28 @@ public class GeneralUtilities implements Serializable {
         }
         return week;
     }
+    
+    public int get_weeks_in_a_year(int aYear) {
+        int weeks = 0;
+        try {
+            if (aYear>0) {
+                Calendar calendar = new GregorianCalendar();
+                calendar.setFirstDayOfWeek(Calendar.MONDAY);
+                calendar.set(aYear,0,1);
+                weeks=calendar.getActualMaximum(Calendar.WEEK_OF_YEAR);
+            }
+        } catch (Exception ex) {
+        }
+        return weeks;
+    }
 //    public static void main(String[] args) {
 //        DateTime dt = new DateTime(2018, 5, 8, 0, 0, 0, 0);
 //        GeneralUtilities gn=new GeneralUtilities();
 //        System.out.println(gn.get_week_from_date(dt.toDate(),"YW"));
 //        System.out.println(dt.toDate().toString());
 //        System.out.println(gn.get_week_dates_from_year_and_week(2018,17));
+//        System.out.println(gn.get_weeks_in_a_year(2018));
+//        System.out.println(gn.get_weeks_in_a_year(2017));
+//        System.out.println(gn.get_weeks_in_a_year(2016));
 //    }
 }
