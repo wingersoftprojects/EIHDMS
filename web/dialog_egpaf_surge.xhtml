@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition>
+
+        <p:dialog header="EGPAF Surge Report Form" widgetVar="detailReport" modal="true" resizable="false" >
+            <h:form id="detailreportdialog">
+                <p:panel header="header-to-be-here" style="border-style: solid;">
+                    <p:dataTable id="table_Validation_Summary" widgetVar="reportList" value="#{uploadBean.validationReportListAll}" var="item" rows="5"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                 rowsPerPageTemplate="5,10,50,500" 
+                                 emptyMessage="No validation report found with given criteria" filteredValue="#{uploadBean.validationReportFiltered}">
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage name="images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="table_Validation_Summary" fileName="Validation_Report"/>
+                            </h:commandLink>
+
+                            <h:commandLink>
+                                <p:graphicImage name="images/csv.png" width="24"/>
+                                <p:dataExporter type="csv" target="table_Validation_Summary" fileName="Validation_Report" />
+                            </h:commandLink>
+
+                            <h:commandLink>
+                                <p:graphicImage name="images/xml.png" width="24"/>
+                                <p:dataExporter type="xml" target="table_Validation_Summary" fileName="Validation_Report" />
+                            </h:commandLink>
+                        </f:facet>
+                        <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields(Status/Facility/Parish/District/Subcounty):" />
+                            <p:inputText id="globalFilter" onkeyup="PF('reportList').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                        <p:column headerText="District" filterBy="#{item.districtName}" filterMatchMode="contains">
+                            <h:outputText value="#{item.districtName}"/>
+                        </p:column>
+                        <p:column headerText="Sub County" filterBy="#{item.sub_countyName}" filterMatchMode="contains">
+                            <h:outputText value="#{item.sub_countyName}"/>
+                        </p:column>
+                        <p:column headerText="Parish" filterBy="#{item.parishName}" filterMatchMode="contains">
+                            <h:outputText value="#{item.parishName}"/>
+                        </p:column>
+                        <p:column headerText="Health Facility" filterBy="#{item.facilityName}" filterMatchMode="contains">
+                            <h:outputText value="#{item.facilityName}"/>
+                        </p:column>
+                        <p:column headerText="Status" filterBy="#{item.status}" filterMatchMode="exact">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('reportList').filter()" >
+                                    <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Pass" itemValue="Pass" />
+                                    <f:selectItem itemLabel="Fail" itemValue="Fail" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        <p:column headerText="Validation Message">
+                            <h:outputText value="#{item.validationDescription}" style="white-space: pre-wrap;word-wrap: break-word; " />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

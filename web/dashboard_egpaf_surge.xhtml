@@ -21,9 +21,9 @@
             <script type="text/javascript" src="resources/js/fusioncharts.widgets.js"></script>
             <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
                 <p:growl/>
-                <p:fieldset legend="EGPAF Surge Form Dashboard">
+                <p:fieldset legend="EGPAF Surge Form Dashboard" style="width: 100%;">
                     <div class="ui-fluid">
-                        <p:panelGrid columns="7" id="panelFilter" style="width: 100%;">
+                        <p:panelGrid columns="7" id="panelFilter">
                             <p:outputLabel value="Year" />
                             <p:outputLabel value="Month" />
                             <p:outputLabel value="Week" />
@@ -102,7 +102,8 @@
                     <h:panelGrid columns="5" id="pnlgCharts">
                         <h:panelGrid id="pnlgChart1" style="text-align: center">
                             <div id="chart1"></div>
-                            <p:outputLabel value="#{interface_data_smsBean.count_n} SMS received out of #{interface_data_smsBean.count_d}"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n1} viral load tests / #{dashboard_surgeBean.count_d1} attended" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(1)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind1 = new FusionCharts({
@@ -152,14 +153,17 @@
                                 });
                             </script>
                         </h:panelGrid>
-                        <h:panelGrid id="pnlgChart2">
+                        <h:panelGrid id="pnlgChart2" style="text-align: center;">
                             <div id="chart2"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n2} clients missed / #{dashboard_surgeBean.count_d2} total appointments" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(2)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
+                            
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind2 = new FusionCharts({
                                         type: 'pie2d',
                                         renderAt: 'chart2',
-                                        width: '20%',
+                                        width: '250',
                                         height: '250',
                                         dataFormat: 'json',
                                         dataSource: {
@@ -181,7 +185,9 @@
                         </h:panelGrid>
                         <h:panelGrid id="pnlgChart3" style="text-align: center">
                             <div id="chart3"></div>
-                            <p:outputLabel value="#{interface_data_smsBean.count_n} SMS received out of #{interface_data_smsBean.count_d}"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n3} missed and brought back / #{dashboard_surgeBean.count_d3} missed last week" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(3)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
+                            
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind3 = new FusionCharts({
@@ -231,8 +237,10 @@
                                 });
                             </script>
                         </h:panelGrid>
-                        <h:panelGrid id="pnlgChart4">
+                        <h:panelGrid id="pnlgChart4" style="text-align: center;">
                             <div id="chart4"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind4 = new FusionCharts({
@@ -282,8 +290,10 @@
                                 });
                             </script>
                         </h:panelGrid>
-                        <h:panelGrid id="pnlgChart5">
+                        <h:panelGrid id="pnlgChart5" style="text-align: center;">
                             <div id="chart5"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n5} newly initiated on ART / #{dashboard_surgeBean.count_d5} clients newly tested" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(5)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind5 = new FusionCharts({
@@ -378,6 +388,7 @@
                     </h:panelGrid>
                 </p:fieldset>
             </h:form>
+            <ui:include src="dialog_egpaf_surge.xhtml"/>
         </f:view>
         <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
             <f:facet name="default">

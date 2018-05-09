@@ -245,6 +245,17 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                 }
 
                 //indicator-2:b/(a+b)*100%
+                try {
+                    this.count_n2 = rs.getInt("b");
+                } catch (NullPointerException npe) {
+                    this.count_n2 = 0;
+                }
+                try {
+                    this.count_d2 = rs.getInt("a") + rs.getInt("b");
+                } catch (NullPointerException npe) {
+                    this.count_d2 = 0;
+                }
+                
                 gson = new Gson();
                 this.DataChartString2 = "[]";
                 List<Object> ChartDataArray2 = new ArrayList<>();
@@ -364,7 +375,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                 } else if (aIndicatorId == 5) {
                     //perc_start_art
                     try {
-                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_cur")));
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_start_art")));
                     } catch (NullPointerException npe) {
                         lv.put("value", "0");
                     }
@@ -381,6 +392,10 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             System.err.println("refreshDashboard1-Trend:" + se1.getMessage());
         }
 
+    }
+    
+    public void refreshReportDetail(int aIndicator){
+        System.out.println("indicator:" + aIndicator);
     }
 
     public int getElibileEntities(Report_form aReport_form) {
