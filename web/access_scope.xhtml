@@ -64,18 +64,24 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="access_scopes_table" value="#{access_scopeBean.ts}" var="item" rows="10"
+                <p:dataTable id="access_scopes_table" value="#{access_scopeBean.tsAll}" var="item" rows="10"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15,30,50,100">
-                    <p:column headerText="Entity ID">
-                        <h:outputText value="#{item.access_scope_id}"/>
+                    <p:column headerText="Username">
+                        <h:outputText value="#{item.user_detail.user_name}"/>
                     </p:column>
-                    <p:column headerText="Entity Type">
-                        
+                    <p:column headerText="Region">
+                        <h:outputText value="#{item.region.region_name}"/>
                     </p:column>
-                    <p:column headerText="Phone Number">
-                        
+                    <p:column headerText="District">
+                        <h:outputText value="#{item.district.district_name}"/>
+                    </p:column>
+                    <p:column headerText="Parish">
+                        <h:outputText value="#{item.parish.parish_name}"/>
+                    </p:column>
+                    <p:column headerText="Health Facility">
+                        <h:outputText value="#{item.health_facility.health_facility_name}"/>
                     </p:column>
                     <p:column headerText="Active?">
                         <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
