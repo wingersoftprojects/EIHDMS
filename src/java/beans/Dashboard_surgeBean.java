@@ -51,7 +51,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
     private int count_n;
     private int count_d;
     private float perc_value;
-    private List<Interface_data_sms> received_SMSs = new ArrayList<>();
+    private List<Dashboard_surge> Dashboard_surgeList = new ArrayList<>();
     private String CategoriesChartString;
     private String DataseriesChartString;
     private District district;
@@ -391,11 +391,28 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         } catch (SQLException se1) {
             System.err.println("refreshDashboard1-Trend:" + se1.getMessage());
         }
+        
+        //for the dialog list
+        try {
+            this.Dashboard_surgeList=Dashboard_surge.queryDashboard_surge("1=1" + where1, null);
+            this.count_n=this.Dashboard_surgeList.size();
+        } catch (PersistentException ex) {
+            Logger.getLogger(Dashboard_surgeBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
     
+    public Health_facility getHfById(int aHfId){
+        try {
+            return Health_facility.getHealth_facilityByORMID(aHfId);
+        } catch (PersistentException ex) {
+            Logger.getLogger(Dashboard_surgeBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
     public void refreshReportDetail(int aIndicator){
-        System.out.println("indicator:" + aIndicator);
+        this.indicator_id=aIndicator;
     }
 
     public int getElibileEntities(Report_form aReport_form) {
@@ -573,20 +590,6 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
      */
     public void setPerc_value(float perc_value) {
         this.perc_value = perc_value;
-    }
-
-    /**
-     * @return the received_SMSs
-     */
-    public List<Interface_data_sms> getReceived_SMSs() {
-        return received_SMSs;
-    }
-
-    /**
-     * @param received_SMSs the received_SMSs to set
-     */
-    public void setReceived_SMSs(List<Interface_data_sms> received_SMSs) {
-        this.received_SMSs = received_SMSs;
     }
 
     /**
@@ -1035,6 +1038,20 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
      */
     public void setWeekList(List<Report_form> weekList) {
         this.weekList = weekList;
+    }
+
+    /**
+     * @return the Dashboard_surgeList
+     */
+    public List<Dashboard_surge> getDashboard_surgeList() {
+        return Dashboard_surgeList;
+    }
+
+    /**
+     * @param Dashboard_surgeList the Dashboard_surgeList to set
+     */
+    public void setDashboard_surgeList(List<Dashboard_surge> Dashboard_surgeList) {
+        this.Dashboard_surgeList = Dashboard_surgeList;
     }
 
 }
