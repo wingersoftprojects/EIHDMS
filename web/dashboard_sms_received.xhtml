@@ -7,7 +7,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{interface_data_smsBean.initDashboard()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
     <ui:define name="content">
         <f:view>
             <script type="text/javascript" src="resources/js/fusioncharts.js"></script>
@@ -18,20 +22,29 @@
             <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
                 <p:growl/>
                 <p:fieldset legend="SMS Received">
-                    <p:panelGrid columns="6" id="panelFilter">
+                    <p:panelGrid columns="8" id="panelFilter">
                         <p:outputLabel value="Report Form:" />
                         <p:selectOneMenu id="report_form" value="#{interface_data_smsBean.report_form}" style="width:125px" converter="report_formConverter">
-                            <f:selectItem itemLabel="" />
-                            <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add','mode_upload')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                            <f:selectItems value="#{report_formBean.getReport_forms_by_entrymode(2)}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
                         </p:selectOneMenu>
+                        <p:outputLabel value="Year:" />
+                        <p:selectOneMenu id="year" value="#{interface_data_smsBean.report_period_year}" editable="true">
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            </p:selectOneMenu>
                         <p:outputLabel value="Week:" />
-                        <p:inputText id="report_period_week" value="#{interface_data_smsBean.report_period_week}">
-                            <f:validateLongRange minimum="1" maximum="52"/>
-                        </p:inputText>
-                        <p:commandButton id="cmdbSearch" value="SEARCH" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
-                            <p:ajax listener="#{interface_data_smsBean.refreshSMSreceivedDashboard(interface_data_smsBean.report_form,interface_data_smsBean.report_period_week)}" process="panelFilter" update="panelResultCharts panelResultTable"/>
+                        <p:selectOneMenu id="report_period_week" value="#{interface_data_smsBean.report_period_week}" editable="false">
+                            <f:selectItems value="#{interface_data_smsBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
+                            <p:ajax/>
+                        </p:selectOneMenu>
+                        <p:commandButton id="cmdbSearch" value="APPLY FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                            <p:ajax listener="#{interface_data_smsBean.refreshSMSreceivedDashboard(interface_data_smsBean.report_form,interface_data_smsBean.report_period_year,interface_data_smsBean.report_period_week)}" process="panelFilter" update="panelResultCharts panelResultTable"/>
                         </p:commandButton>
-                        <p:commandButton value="RESET"/>
+                        <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                            <p:ajax listener="#{interface_data_smsBean.resetDashboard()}" process="panelFilter" update="panelResultCharts panelResultTable"/>
+                        </p:commandButton>
                     </p:panelGrid>
                     <h:panelGrid columns="2" id="panelResultCharts">
                         <h:panelGrid style="text-align: center">
@@ -47,8 +60,8 @@
                                         dataFormat: 'json',
                                         dataSource: {
                                             "chart": {
-                                                "caption": "Current SMS Reporting Rate(%)",
-                                                "subcaption": "Last week",
+                                                "caption": "SMS Reporting Rate(%)",
+                                                "subcaption": "W#{interface_data_smsBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_smsBean.report_period_year, interface_data_smsBean.report_period_week)})",
                                                 "lowerLimit": "0",
                                                 "upperLimit": "100",
                                                 "lowerLimitDisplay": "0%",
@@ -94,13 +107,13 @@
                                     var revenueChart = new FusionCharts({
                                         type: 'stackedbar2d',
                                         renderAt: 'chart-container2',
-                                        width: '450',
+                                        width: '650',
                                         height: '400',
                                         dataFormat: 'json',
                                         dataSource: {
                                             "chart": {
-                                                "caption": "Recently received SMS validation status",
-                                                "subCaption": "Last Week",
+                                                "caption": "Received SMS validation status",
+                                                "subCaption": "W#{interface_data_smsBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_smsBean.report_period_year, interface_data_smsBean.report_period_week)})",
                                                 "xAxisname": "Report Form",
                                                 "yAxisName": "Number of SMS",
                                                 "numberPrefix": "",
@@ -157,13 +170,15 @@
                                 </h:commandLink>
                             </f:facet>
                             <p:column headerText="Health Facility">
-                                <h:outputText value="#{sms.phone}" />
+                                <h:outputText value="#{interface_data_smsBean.getEntityNameByPhone(sms.phone)}" />
                             </p:column>
                             <p:column headerText="Sender">
                                 <h:outputText value="#{sms.phone}" />
                             </p:column>
                             <p:column headerText="Date">
-                                <h:outputText value="#{sms.add_date}" />
+                                <h:outputText value="#{sms.add_date}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy HH:mm" timeZone="EAT"/>
+                                </h:outputText>
                             </p:column>
                             <p:column headerText="Status">
                                 <h:outputText value="#{sms.status_f}" rendered="#{sms.status_f=='OK'}"/>

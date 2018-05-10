@@ -10,6 +10,7 @@ import connections.DBConnection;
 import eihdms.Health_facility;
 import eihdms.Interface_data_sms;
 import eihdms.Parish;
+import eihdms.Phone_contact;
 import eihdms.Report_form;
 import eihdms.Report_form_entity;
 import java.io.Serializable;
@@ -18,6 +19,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,7 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.orm.PersistentException;
 import utilities.GeneralUtilities;
 
@@ -39,6 +43,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
 
     private Report_form report_form;
     private Integer report_period_week;
+    private Integer report_period_year;
     @ManagedProperty("#{loginBean}")
     private LoginBean loginBean;
     private int count_n;
@@ -47,6 +52,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
     private List<Interface_data_sms> received_SMSs = new ArrayList<>();
     private String CategoriesChartString;
     private String DataseriesChartString;
+    private List<Report_form> weekList = new ArrayList<>();
 
     public Interface_data_smsBean() {
         super(Interface_data_sms.class);
@@ -67,35 +73,97 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         this.loginBean = loginBean;
     }
 
-    public void refreshSMSreceivedDashboard(Report_form aReport_form, int aReportPeriodWeek) {
+    public void refreshWeeks(int aYear, int aTopWeek) {
+        this.weekList = new ArrayList<>();
+        Report_form week = null;
+        GeneralUtilities gu = new GeneralUtilities();
+        int i = 1;
+        while (i <= 10) {
+            week = new Report_form();
+            week.setIs_active(aTopWeek);
+            week.setReport_form_code(aTopWeek + " (" + gu.get_week_dates_from_year_and_week(aYear, aTopWeek) + ")");
+            getWeekList().add(week);
+            aTopWeek = aTopWeek - 1;
+            if (aTopWeek <= 0) {
+                break;
+            }
+            i = i + 1;
+        }
+    }
+
+    public void initDashboard() {
+        if (FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest()) {
+            // Skip ajax requests.
+        } else {
+            this.resetDashboard();
+        }
+    }
+
+    public void resetDashboard() {
+        int current_year = Calendar.getInstance().get(Calendar.YEAR);
+        Date current_date = Calendar.getInstance().getTime();
+        int current_week = Integer.parseInt(new GeneralUtilities().get_week_from_date(current_date, ""));
+
+        int previous_week = 0;
+        int previous_week_year = 0;
+        if (current_week > 1) {
+            previous_week = current_week - 1;
+            previous_week_year = current_year;
+        } else {
+            previous_week_year = current_year - 1;
+            previous_week = new GeneralUtilities().get_weeks_in_a_year(previous_week_year);
+        }
+        this.report_period_year = previous_week_year;
+        this.report_period_week = previous_week;
+        try {
+            this.report_form = (Report_form) Report_form.queryReport_form("mode_data_entry=2", null).get(0);
+        } catch (PersistentException ex) {
+            Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.report_form = null;
+        }
+        this.refreshWeeks(this.report_period_year, this.report_period_week);
+        this.refreshSMSreceivedDashboard(this.report_form, this.report_period_year, this.report_period_week);
+    }
+
+    public void refreshSMSreceivedDashboard(Report_form aReport_form, int aReportPeriodYear, int aReportPeriodWeek) {
+        GeneralUtilities gn = new GeneralUtilities();
+        String WhereDate = "";
+        String WhereDate2 = "";
         if (null != aReport_form) {
             //get denominator; eligible entities for the report form
             this.count_d = this.getElibileEntities(aReport_form);
-            
+
             //get numerator;entities that submitted the report form
-            this.count_n = this.getReceivedEntities(aReport_form, aReportPeriodWeek);
-            
+            this.count_n = this.getReceivedEntities(aReport_form, aReportPeriodYear, aReportPeriodWeek);
+
             //calculate percentage for the gauge
             if (this.count_d > 0) {
                 this.perc_value = 100 * (this.count_n / this.count_d);
             } else {
                 this.perc_value = 0;
             }
-            
+
+            //where for date
+            Date startdat = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek);
+            Date enddat = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek);
+            WhereDate = " AND DATE(s.add_date) BETWEEN '" + new java.sql.Date(startdat.getTime()) + "' AND '" + new java.sql.Date(enddat.getTime()) + "'";
+            WhereDate2 = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat.getTime()) + "' AND '" + new java.sql.Date(enddat.getTime()) + "'";
+
             //stacked-bar graph
             String sqlPivot = "SELECT s.report_form_code,rf.report_form_name,"
                     + "COUNT(IF(status_f='OK',status_f,NULL)) AS ok,"
                     + "COUNT(IF(status_f='ERR',status_f,NULL)) AS err "
                     + "FROM interface_data_sms s "
                     + "inner join report_form rf on s.report_form_code=rf.report_form_code "
-                    + "WHERE s.report_form_code='" + aReport_form.getReport_form_code() + "' "
-                    + "GROUP BY report_form_code"; 
+                    + "WHERE s.report_form_code='" + aReport_form.getReport_form_code() + "'"
+                    + WhereDate
+                    + " GROUP BY report_form_code";
             this.refreshStackedBarChartdata(sqlPivot);
 
             //data table
             this.received_SMSs = new ArrayList<>();
             try {
-                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "'", "add_date DESC");
+                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "' " + WhereDate2, "add_date DESC");
             } catch (PersistentException ex) {
                 Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -126,16 +194,20 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         return x;
     }
 
-    public int getReceivedEntities(Report_form aReport_form, int aReportPeriodWeek) {
+    public int getReceivedEntities(Report_form aReport_form, int aReportPeriodYear, int aReportPeriodWeek) {
         int x = 0;
+        String WhereDate = "";
+        GeneralUtilities gn = new GeneralUtilities();
         try {
             if (null != aReport_form) {
                 if (aReport_form.getReport_form_frequency().equals("Weekly")) {
                     if (aReportPeriodWeek > 0) {
-                        //Need to first add period in sms_data or calculate it from add_date
-
+                        Date startdat = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek);
+                        Date enddat = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek);
+                        WhereDate = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat.getTime()) + "' AND '" + new java.sql.Date(enddat.getTime()) + "'";
+                        x = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "'" + WhereDate, null).size();
                     } else {
-                        x = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "'", null).size();
+                        x = 0;
                     }
                 } else {
                     x = 0;
@@ -209,6 +281,26 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
                 }
             }
         }
+    }
+
+    public String getEntityNameByPhone(String aPhone) {
+        Phone_contact pc = null;
+        String entityname = "";
+        try {
+            pc = (Phone_contact) Phone_contact.queryPhone_contact("entity_phone='" + aPhone + "'", null).get(0);
+            if (null != pc) {
+                try {
+                    if (pc.getEntity_type().equals("FACILITY")) {
+                        entityname = Health_facility.getHealth_facilityByORMID(pc.getEntity_id()).getHealth_facility_name();
+                    }
+                } catch (NullPointerException npe) {
+
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return entityname;
     }
 
     /**
@@ -321,6 +413,34 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
      */
     public void setDataseriesChartString(String DataseriesChartString) {
         this.DataseriesChartString = DataseriesChartString;
+    }
+
+    /**
+     * @return the report_period_year
+     */
+    public Integer getReport_period_year() {
+        return report_period_year;
+    }
+
+    /**
+     * @param report_period_year the report_period_year to set
+     */
+    public void setReport_period_year(Integer report_period_year) {
+        this.report_period_year = report_period_year;
+    }
+
+    /**
+     * @return the weekList
+     */
+    public List<Report_form> getWeekList() {
+        return weekList;
+    }
+
+    /**
+     * @param weekList the weekList to set
+     */
+    public void setWeekList(List<Report_form> weekList) {
+        this.weekList = weekList;
     }
 
 }

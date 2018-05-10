@@ -644,7 +644,7 @@ public class GeneralUtilities implements Serializable {
                 DateTime date = new DateTime().withWeekyear(year).withWeekOfWeekyear(week);
                 //date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).minusDays(1).toDate()) + "-"
                 //        + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).minusDays(1).toDate());
-                date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).toDate()) + "-"
+                date_from_to = new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).toDate()) + " - "
                         + new SimpleDateFormat("dd/MMM/yyyy").format(new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).toDate());
             }
         } catch (Exception ex) {
@@ -652,7 +652,31 @@ public class GeneralUtilities implements Serializable {
         return date_from_to;
     }
 
-    public String get_week_from_date(Date date,String aReturnFormat) {
+    public Date get_week_date_from(Integer year, Integer week) {
+        Date date_from = null;
+        try {
+            if (year != null && week != null) {
+                DateTime date = new DateTime().withWeekyear(year).withWeekOfWeekyear(week);
+                date_from = new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(1).toDate();
+            }
+        } catch (Exception ex) {
+        }
+        return date_from;
+    }
+
+    public Date get_week_date_to(Integer year, Integer week) {
+        Date date_to = null;
+        try {
+            if (year != null && week != null) {
+                DateTime date = new DateTime().withWeekyear(year).withWeekOfWeekyear(week);
+                date_to = new DateTime().withWeekyear(year).withWeekOfWeekyear(week).withDayOfWeek(7).toDate();
+            }
+        } catch (Exception ex) {
+        }
+        return date_to;
+    }
+
+    public String get_week_from_date(Date date, String aReturnFormat) {
         String week = "INVALID-DATE";
         try {
             if (date != null) {
@@ -660,28 +684,28 @@ public class GeneralUtilities implements Serializable {
                 calendar.setFirstDayOfWeek(Calendar.MONDAY);
                 Date dt = new Date(date.getTime());
                 calendar.setTime(dt);
-                if(aReturnFormat.equals("W")){
+                if (aReturnFormat.equals("W")) {
                     week = "W" + calendar.get(Calendar.WEEK_OF_YEAR);
-                }else if(aReturnFormat.equals("YW")){
-                    week =calendar.get(Calendar.YEAR) + "W" + calendar.get(Calendar.WEEK_OF_YEAR);
-                }else if(aReturnFormat.equals("")){
-                    week =Integer.toString(calendar.get(Calendar.WEEK_OF_YEAR));
-                }  
+                } else if (aReturnFormat.equals("YW")) {
+                    week = calendar.get(Calendar.YEAR) + "W" + calendar.get(Calendar.WEEK_OF_YEAR);
+                } else if (aReturnFormat.equals("")) {
+                    week = Integer.toString(calendar.get(Calendar.WEEK_OF_YEAR));
+                }
             }
         } catch (Exception ex) {
 
         }
         return week;
     }
-    
+
     public int get_weeks_in_a_year(int aYear) {
         int weeks = 0;
         try {
-            if (aYear>0) {
+            if (aYear > 0) {
                 Calendar calendar = new GregorianCalendar();
                 calendar.setFirstDayOfWeek(Calendar.MONDAY);
-                calendar.set(aYear,0,1);
-                weeks=calendar.getActualMaximum(Calendar.WEEK_OF_YEAR);
+                calendar.set(aYear, 0, 1);
+                weeks = calendar.getActualMaximum(Calendar.WEEK_OF_YEAR);
             }
         } catch (Exception ex) {
         }
