@@ -98,6 +98,21 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
             }
         }
     }
+    public List<Health_facility> getts(Parish parish) {
+        List<Health_facility> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && parish != null) {
+                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select c FROM Health_facility  c where c.is_deleted<>1 AND c.parish=" + parish.getParish_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    
     public List<Health_facility> getts_id(int aParish_id) {
         List<Health_facility> temp = new ArrayList<>();
         
