@@ -32,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -2110,7 +2111,8 @@ public class UploadBean implements Serializable {
                  * End Save interface_data_sms
                  */
 
-//RequestContext.getCurrentInstance().execute("PF('validationReport').show();");
+                //pivot dashboard surge form
+                this.PivotEGPAFSurgeFormData(batch.getBatch_id());
             } catch (SQLException ex) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
@@ -2119,6 +2121,19 @@ public class UploadBean implements Serializable {
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void PivotEGPAFSurgeFormData(long aBatchId) {
+        String sql = "{call sp_insert_dashboard_surge(?)}";
+        try (
+                Connection connection = loginBean.getMySQLConnection_System_User();
+                CallableStatement cs = connection.prepareCall(sql);) {
+            cs.setLong(1, aBatchId);
+            cs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public void generate_validation_report(int batch_id) {
