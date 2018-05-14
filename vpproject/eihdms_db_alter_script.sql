@@ -455,4 +455,9 @@ alter table user_detail modify column last_edit_date datetime;
 alter table user_detail comment = 'Stores user details such as username, password, type, status, etc';
 alter table deadline_reminder add constraint FKdeadline_r994913 foreign key (report_form_deadline_id) references report_form_deadline (report_form_deadline_id);
 
+/*
+alter_script_14.05.2018
+*/
+alter table dashboard_surge drop column data_element_id;
+alter table dashboard_surge add column batch_id int(11);
 
