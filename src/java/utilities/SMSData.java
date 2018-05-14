@@ -238,7 +238,7 @@ public class SMSData {
                 for (Data_element_sms_position outer : data_element_sms_positionList) {
                     Interface_data i = new Interface_data();
                     i.setData_element(outer.getData_element());
-                    i.setData_element_value(smsStrings[outer.getCode_position() - 1]);
+                    i.setData_element_value(smsStrings[outer.getValue_position() - 1]);
                     i.setAdd_by(1);
                     i.setAdd_date(new Timestamp(new Date().getTime()));
                     i.setEntry_mode("SMS");
