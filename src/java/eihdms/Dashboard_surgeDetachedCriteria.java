@@ -29,7 +29,7 @@ public class Dashboard_surgeDetachedCriteria extends AbstractORMDetachedCriteria
 	public final IntegerExpression report_period_year;
 	public final DateExpression report_period_from_date;
 	public final DateExpression report_period_to_date;
-	public final IntegerExpression data_element_id;
+	public final IntegerExpression batch_id;
 	public final IntegerExpression a;
 	public final IntegerExpression b;
 	public final IntegerExpression b_prev;
@@ -61,7 +61,7 @@ public class Dashboard_surgeDetachedCriteria extends AbstractORMDetachedCriteria
 		report_period_year = new IntegerExpression("report_period_year", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());
-		data_element_id = new IntegerExpression("data_element_id", this.getDetachedCriteria());
+		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 		a = new IntegerExpression("a", this.getDetachedCriteria());
 		b = new IntegerExpression("b", this.getDetachedCriteria());
 		b_prev = new IntegerExpression("b_prev", this.getDetachedCriteria());
@@ -94,7 +94,7 @@ public class Dashboard_surgeDetachedCriteria extends AbstractORMDetachedCriteria
 		report_period_year = new IntegerExpression("report_period_year", this.getDetachedCriteria());
 		report_period_from_date = new DateExpression("report_period_from_date", this.getDetachedCriteria());
 		report_period_to_date = new DateExpression("report_period_to_date", this.getDetachedCriteria());
-		data_element_id = new IntegerExpression("data_element_id", this.getDetachedCriteria());
+		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 		a = new IntegerExpression("a", this.getDetachedCriteria());
 		b = new IntegerExpression("b", this.getDetachedCriteria());
 		b_prev = new IntegerExpression("b_prev", this.getDetachedCriteria());

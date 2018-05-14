@@ -398,8 +398,8 @@ public class Dashboard_surge implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private java.util.Date report_period_to_date;
 	
-	@Column(name="data_element_id", nullable=true, length=11)	
-	private Integer data_element_id;
+	@Column(name="batch_id", nullable=true, length=11)	
+	private Integer batch_id;
 	
 	@Column(name="a", nullable=true, length=11)	
 	private Integer a;
@@ -567,16 +567,16 @@ public class Dashboard_surge implements Serializable {
 		return report_period_to_date;
 	}
 	
-	public void setData_element_id(int value) {
-		setData_element_id(new Integer(value));
+	public void setBatch_id(int value) {
+		setBatch_id(new Integer(value));
 	}
 	
-	public void setData_element_id(Integer value) {
-		this.data_element_id = value;
+	public void setBatch_id(Integer value) {
+		this.batch_id = value;
 	}
 	
-	public Integer getData_element_id() {
-		return data_element_id;
+	public Integer getBatch_id() {
+		return batch_id;
 	}
 	
 	public void setA(int value) {

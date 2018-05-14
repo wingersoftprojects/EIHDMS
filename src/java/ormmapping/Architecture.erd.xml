@@ -8054,7 +8054,7 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="data_element_id">
+    <Column name="batch_id">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
