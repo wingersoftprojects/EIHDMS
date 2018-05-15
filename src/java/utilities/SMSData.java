@@ -18,6 +18,7 @@ import eihdms.Parish;
 import eihdms.Phone_contact;
 import eihdms.Report_form;
 import eihdms.Report_form_deadline;
+import eihdms.Report_form_entity;
 import eihdms.Report_form_group;
 import eihdms.Report_form_short_code;
 import eihdms.Sub_county;
@@ -218,8 +219,25 @@ public class SMSData {
             /**
              * Get location info from phone number
              */
-            Phone_contact phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
-            if (phone_contact != null) {
+            /**
+             * Get entity phone where phone number used for multiple entities
+             */
+            Phone_contact phone_contact = new Phone_contact();// = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
+            if (data_element_sms_positionList.size() > 0) {
+                Data_element_sms_position data_element_sms_position = data_element_sms_positionList.get(0);
+                Report_form report_form_temp = data_element_sms_position.getReport_form_short_code().getReport_form();
+                List<Report_form_entity> report_form_entityList = new ArrayList<>(report_form_temp.getReport_form_entity());
+                List<Phone_contact> phone_contactList = Phone_contact.queryPhone_contact("entity_phone='" + phone + "'", null);
+                for (Report_form_entity report_form_entity : report_form_entityList) {
+                    for (Phone_contact phone_contact_temp : phone_contactList) {
+                        if (phone_contact_temp.getEntity_id() == report_form_entity.getEntity_id() && phone_contact_temp.getEntity_type().toUpperCase().equals(report_form_entity.getEntity_type().toUpperCase())) {
+                            phone_contact = phone_contact_temp;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (phone_contact.getPhone_contact_id() != 0) {
                 set_sms_location(phone_contact);
             } else {
                 interface_data_sms.setStatus_f("ERR");
@@ -247,6 +265,10 @@ public class SMSData {
                     i.setIs_deleted(0);
                     if (sms_report_form == null) {
                         sms_report_form = outer.getData_element().getReport_form();
+                        /**
+                         * Set interface_data_sms report_form_code
+                         */
+                        interface_data_sms.setReport_form_code(sms_report_form.getReport_form_code());
 
                         if (sms_report_form.getReport_form_frequency().equals("Weekly")) {
                             /**
@@ -316,9 +338,9 @@ public class SMSData {
                     /**
                      * End set reporting periods
                      */
-                    i.setReport_period_from_date(new Date());
-                    i.setReport_period_to_date(new Date());
-                    if (phone_contact != null) {
+//                    i.setReport_period_from_date(new Date());
+//                    i.setReport_period_to_date(new Date());
+                    if (phone_contact.getPhone_contact_id() > 0) {
                         switch (phone_contact.getEntity_type()) {
                             case "District":
                                 i.setDistrict_id(smsDistrict.getDistrict_id());

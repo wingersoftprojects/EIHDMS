@@ -117,7 +117,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         this.report_period_week = previous_week;
         try {
             this.report_form = (Report_form) Report_form.queryReport_form("mode_data_entry=2", null).get(0);
-        } catch (PersistentException ex) {
+        } catch (PersistentException | IndexOutOfBoundsException ex) {
             Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
             this.report_form = null;
         }

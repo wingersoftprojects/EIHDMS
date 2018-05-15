@@ -133,7 +133,8 @@ batch_id,
 report_form_id,
 deleted_by,
 delete_date,
-report_form_group_id)
+report_form_group_id,
+entry_mode)
 
 SELECT
 base_data_id,
@@ -162,7 +163,8 @@ batch_id,
 report_form_id,',
 in_deleted_by,',
 NOW(),
-report_form_group_id
+report_form_group_id,
+entry_mode
 FROM
 base_data_',in_report_form_id,'  where base_data_id in (',in_base_data_id_in,')');
 
@@ -680,7 +682,8 @@ sub_county_id,
 batch_id,
 report_period_month,
 report_period_week,
-report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id) SELECT 
+report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id,
+entry_mode) SELECT 
 id.data_element_id,
 id.data_element_value,
 id.health_facility_id,
@@ -702,12 +705,578 @@ id.report_period_week,
 id.report_period_year,
 id.report_period_bi_month,
 id.report_form_id,
-id.county_id,id.report_form_group_id
+id.county_id,id.report_form_group_id,
+entry_mode
 FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.health_facility_id=id.health_facility_id where vr.batch_id=",in_batch_id," AND vr.status_v='Pass'");
 SET @sql_text1=CONCAT(@sql1,@sql2);
 PREPARE stmt1 FROM @sql_text1;
 EXECUTE stmt1;
 DEALLOCATE PREPARE stmt1;
+
+-- Update for SMS Data
+-- Weekly
+IF in_frequency='Weekly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_week=i.report_period_week
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_week=",in_week,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_week=i.report_period_week
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value
+WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_week=",in_week,
+		" AND b.report_period_year=",in_calendar_year
+	);
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+	-- " AND report_period_month=",in_month
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Monthly
+IF in_frequency='Monthly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_month=i.report_period_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_month=",in_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_month=i.report_period_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value
+WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_month=",in_month,
+		" AND b.report_period_year=",in_calendar_year
+	);
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+	-- " AND report_period_month=",in_month
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Bi-Monthly
+IF in_frequency='Bi-Monthly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_bi_month=i.report_period_bi_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_bi_month=",in_bi_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_bi_month=i.report_period_bi_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value
+WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_bi_month=",in_bi_month,
+		" AND b.report_period_year=",in_calendar_year
+	);
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+	-- " AND report_period_month=",in_month
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Quarterly
+IF in_frequency='Quarterly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_quarter=i.report_period_quarter
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_quarter=",in_quarter,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_quarter=i.report_period_quarter
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value
+WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_quarter=",in_quarter,
+		" AND b.report_period_year=",in_calendar_year
+	);
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+	-- " AND report_period_month=",in_month
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Annually
+IF in_frequency='Annually' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	 AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.health_facility_id=b.health_facility_id
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value
+WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.health_facility_id=i.health_facility_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_year=",in_calendar_year
+	);
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+	-- " AND report_period_month=",in_month
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- End Update SMS Data
+
 ELSEIF reporting_level='Parish' THEN 
 SET @sql11=CONCAT("INSERT INTO base_data_",in_report_form_id);
 SET @sql22=CONCAT("(data_element_id,
@@ -728,7 +1297,8 @@ sub_county_id,
 batch_id,
 report_period_month,
 report_period_week,
-report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id) SELECT 
+report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id,
+entry_mode) SELECT 
 id.data_element_id,
 id.data_element_value,
 id.health_facility_id,
@@ -750,12 +1320,578 @@ id.report_period_week,
 id.report_period_year,
 id.report_period_bi_month,
 id.report_form_id,
-id.county_id,id.report_form_group_id
+id.county_id,id.report_form_group_id,
+entry_mode
 FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.parish_id=id.parish_id where vr.batch_id=",in_batch_id," AND vr.status_v='Pass'");
 SET @sql_text2=CONCAT(@sql11,@sql22);
 PREPARE stmt2 FROM @sql_text2;
 EXECUTE stmt2;
 DEALLOCATE PREPARE stmt2;
+
+-- Update for SMS Data
+-- Weekly
+IF in_frequency='Weekly' THEN
+
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.parish_id=b.parish_id
+			 AND b.report_period_week=i.report_period_week
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_week=",in_week,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.parish_id=b.parish_id
+			 AND b.report_period_week=i.report_period_week
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_week=",in_week,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Monthly
+IF in_frequency='Monthly' THEN
+
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.parish_id=b.parish_id
+			 AND b.report_period_month=i.report_period_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_month=",in_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.parish_id=b.parish_id
+			 AND b.report_period_month=i.report_period_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_month=",in_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Bi-Monthly
+IF in_frequency='Bi-Monthly' THEN
+
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.parish_id=b.parish_id
+			 AND b.report_period_bi_month=i.report_period_bi_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_bi_month=",in_bi_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.parish_id=b.parish_id
+			 AND b.report_period_bi_month=i.report_period_bi_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_bi_month=",in_bi_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Quarterly
+IF in_frequency='Quarterly' THEN
+
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.parish_id=b.parish_id
+			 AND b.report_period_quarter=i.report_period_quarter
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_quarter=",in_quarter,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.parish_id=b.parish_id
+			 AND b.report_period_quarter=i.report_period_quarter
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_quarter=",in_quarter,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Annually
+IF in_frequency='Annually' THEN
+
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.parish_id=b.parish_id
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	 AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.parish_id=b.parish_id
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.parish_id=i.parish_id
+	AND i.entry_mode='SMS'
+	 AND b.report_period_year=",in_calendar_year
+	);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- End Update SMS Data
+
 ELSEIF reporting_level='District' THEN 
 SET @sql111=CONCAT("INSERT INTO base_data_",in_report_form_id);
 SET @sql222=CONCAT("(data_element_id,
@@ -776,7 +1912,8 @@ sub_county_id,
 batch_id,
 report_period_month,
 report_period_week,
-report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id) SELECT 
+report_period_year,report_period_bi_month,report_form_id,county_id,report_form_group_id,
+entry_mode) SELECT 
 id.data_element_id,
 id.data_element_value,
 id.health_facility_id,
@@ -798,12 +1935,568 @@ id.report_period_week,
 id.report_period_year,
 id.report_period_bi_month,
 id.report_form_id,
-id.county_id,id.report_form_group_id
+id.county_id,id.report_form_group_id,
+entry_mode
 FROM interface_data id INNER JOIN validation_report vr on vr.batch_id=id.batch_id and vr.district_id=id.district_id where vr.batch_id=",in_batch_id," AND vr.status_v='Pass'");
 SET @sql_text3=CONCAT(@sql111,@sql222);
 PREPARE stmt3 FROM @sql_text3;
 EXECUTE stmt3;
 DEALLOCATE PREPARE stmt3;
+
+-- Update for SMS Data
+-- Weekly
+IF in_frequency='Weekly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.district_id=b.district_id
+			 AND b.report_period_week=i.report_period_week
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_week=",in_week,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.district_id=b.district_id
+			 AND b.report_period_week=i.report_period_week
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_week=",in_week,
+	" AND b.report_period_year=",in_calendar_year
+);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Monthly
+IF in_frequency='Monthly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.district_id=b.district_id
+			 AND b.report_period_month=i.report_period_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_month=",in_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.district_id=b.district_id
+			 AND b.report_period_month=i.report_period_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_month=",in_month,
+	" AND b.report_period_year=",in_calendar_year
+);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Bi-Monthly
+IF in_frequency='Bi-Monthly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.district_id=b.district_id
+			 AND b.report_period_bi_month=i.report_period_bi_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_bi_month=",in_bi_month,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.district_id=b.district_id
+			 AND b.report_period_bi_month=i.report_period_bi_month
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_bi_month=",in_bi_month,
+	" AND b.report_period_year=",in_calendar_year
+);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Quarterly
+IF in_frequency='Quarterly' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.district_id=b.district_id
+			 AND b.report_period_quarter=i.report_period_quarter
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_quarter=",in_quarter,
+	" AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.district_id=b.district_id
+			 AND b.report_period_quarter=i.report_period_quarter
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	AND b.report_period_quarter=",in_quarter,
+	" AND b.report_period_year=",in_calendar_year
+);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- Annually
+
+IF in_frequency='Annually' THEN
+-- Insert into base_data_deleted before updating
+
+SET @sql= CONCAT('INSERT INTO base_data_deleted (base_data_id,
+data_element_id,
+data_element_value,
+health_facility_id,
+parish_id,
+sub_county_id,
+county_id,
+district_id,
+financial_year_id,
+report_period_week,
+report_period_month,
+report_period_bi_month,
+report_period_quarter,
+report_period_year,
+report_period_from_date,
+report_period_to_date,
+is_deleted,
+is_active,
+add_date,
+add_by,
+last_edit_date,
+last_edit_by,
+batch_id,
+report_form_id,
+deleted_by,
+delete_date,
+report_form_group_id,
+entry_mode)
+
+SELECT
+b.base_data_id,
+b.data_element_id,
+b.data_element_value,
+b.health_facility_id,
+b.parish_id,
+b.sub_county_id,
+b.county_id,
+b.district_id,
+b.financial_year_id,
+b.report_period_week,
+b.report_period_month,
+b.report_period_bi_month,
+b.report_period_quarter,
+b.report_period_year,
+b.report_period_from_date,
+b.report_period_to_date,
+b.is_deleted,
+b.is_active,
+b.add_date,
+b.add_by,
+b.last_edit_date,
+b.last_edit_by,
+b.batch_id,
+b.report_form_id,1,
+NOW(),
+b.report_form_group_id,
+b.entry_mode
+FROM
+base_data_',in_report_form_id," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 			 AND i.district_id=b.district_id
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 WHERE i.batch_id = ",in_batch_id," AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	 AND b.report_period_year=",in_calendar_year
+	);
+	-- " AND report_period_month=",in_month
+		-- " AND report_eriod_quarter=",in_quarter
+	-- " AND report_period_bi_month=",in_bi_month
+
+prepare stmt from @sql;
+execute stmt;
+DEALLOCATE PREPARE stmt;
+-- End insert
+
+SET @sql2=CONCAT("UPDATE base_data_",in_report_form_id);
+SET @sql21=CONCAT(@sql2," AS b
+INNER JOIN interface_data AS i 
+       ON i.data_element_id = b.data_element_id 
+			 AND i.district_id=b.district_id
+			 AND b.report_period_year=i.report_period_year
+			 INNER JOIN validation_report vr on vr.batch_id=i.batch_id
+			 			 SET b.data_element_value = i.data_element_value,
+						 b.batch_id=i.batch_id
+WHERE i.batch_id = ",in_batch_id,"  
+  AND vr.status_v_desc like '%Passed Validation Rules%'
+	AND vr.status_v_desc like '%Data for the same period%'
+	AND b.data_element_id=i.data_element_id
+	AND vr.district_id=i.district_id
+	AND i.entry_mode='SMS'
+	 AND b.report_period_year=",in_calendar_year
+);
+	
+PREPARE stmt12 FROM @sql21;
+EXECUTE stmt12;
+DEALLOCATE PREPARE stmt12;
+END IF;
+
+-- End Update SMS Data
 END IF;
 
 
@@ -838,7 +2531,6 @@ add_date,
 (select count(*) from validation_report where status_v='Pass' and batch_id=in_batch_id) FROM validation_report WHERE batch_id=in_batch_id AND status_v='Pass';
 END IF;
 -- END loaded_data_summary
-
 
 -- Delete from interface_data
 -- DELETE from interface_data WHERE batch_id=in_batch_id;
