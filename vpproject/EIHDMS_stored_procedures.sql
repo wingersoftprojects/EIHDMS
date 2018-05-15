@@ -19,6 +19,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- Procedure structure for sp_add_entry_mode_to_base
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_add_entry_mode_to_base`;
+DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_add_entry_mode_to_base`()
 BEGIN
 DECLARE table_name_v varchar(200);
