@@ -146,8 +146,10 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
             //where for date
             Date startdat = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek);
             Date enddat = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek);
-            WhereDate = " AND DATE(s.add_date) BETWEEN '" + new java.sql.Date(startdat.getTime()) + "' AND '" + new java.sql.Date(enddat.getTime()) + "'";
-            WhereDate2 = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat.getTime()) + "' AND '" + new java.sql.Date(enddat.getTime()) + "'";
+            Date startdat2 = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek+1);
+            Date enddat2 = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek+1);
+            WhereDate = " AND DATE(s.add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
+            WhereDate2 = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
 
             //stacked-bar graph
             String sqlPivot = "SELECT s.report_form_code,rf.report_form_name,"
@@ -204,7 +206,9 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
                     if (aReportPeriodWeek > 0) {
                         Date startdat = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek);
                         Date enddat = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek);
-                        WhereDate = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat.getTime()) + "' AND '" + new java.sql.Date(enddat.getTime()) + "'";
+                        Date startdat2 = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek+1);
+                        Date enddat2 = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek+1);
+                        WhereDate = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
                         x = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "'" + WhereDate, null).size();
                     } else {
                         x = 0;
