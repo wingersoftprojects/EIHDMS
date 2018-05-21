@@ -390,6 +390,12 @@ public class Batch_mob_app implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="status_m", nullable=true, length=50)	
+	private String status_m;
+	
+	@Column(name="status_m_desc", nullable=true)	
+	private String status_m_desc;
+	
 	private void setBatch_mob_app_id(int value) {
 		this.batch_mob_app_id = value;
 	}
@@ -464,6 +470,22 @@ public class Batch_mob_app implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setStatus_m(String value) {
+		this.status_m = value;
+	}
+	
+	public String getStatus_m() {
+		return status_m;
+	}
+	
+	public void setStatus_m_desc(String value) {
+		this.status_m_desc = value;
+	}
+	
+	public String getStatus_m_desc() {
+		return status_m_desc;
 	}
 	
 	public String toString() {
