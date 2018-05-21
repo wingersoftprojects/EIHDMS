@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.SimpleTimeZone;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,31 +24,26 @@ import javax.faces.convert.FacesConverter;
  * @author philp
  */
 @FacesConverter(value = "deadlineTimeConverter")
-public class DeadlineTimeConverter implements Converter  {
+public class DeadlineTimeConverter implements Converter {
 
     @Override
-    public Object getAsObject(FacesContext facesContext,UIComponent uIComponent,String string) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        Date date = null;
-        Calendar calendar = Calendar.getInstance();
-        try {
-            date = sdf.parse(string);
-            calendar.setTime(date);
+    public Object getAsObject(FacesContext facesContext, UIComponent uIComponent, String string) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        java.sql.Time t = null;
+        try {            
+            long ms = sdf.parse(string).getTime();
+            t = new java.sql.Time(ms);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Calendar now = Calendar.getInstance();
-        calendar.set(Calendar.HOUR, now.get(Calendar.HOUR));
-        calendar.set(Calendar.MINUTE, now.get(Calendar.MINUTE));
-        calendar.set(Calendar.SECOND, now.get(Calendar.SECOND));
-        Timestamp result = new Timestamp(calendar.getTime().getTime()); 
-       return result;
+        return t;
     }
 
     @Override
     public String getAsString(FacesContext facesContext,
             UIComponent uIComponent,
-            Object object) {
+            Object object
+    ) {
         if (object == null) {
             return null;
         }
