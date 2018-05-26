@@ -29,6 +29,7 @@ public class Batch_mob_appDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression last_edit_by;
 	public final StringExpression status_m;
 	public final StringExpression status_m_desc;
+	public final IntegerExpression batch_id;
 	
 	public Batch_mob_appDetachedCriteria() {
 		super(eihdms.Batch_mob_app.class, eihdms.Batch_mob_appCriteria.class);
@@ -42,6 +43,7 @@ public class Batch_mob_appDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		status_m = new StringExpression("status_m", this.getDetachedCriteria());
 		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
+		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 	}
 	
 	public Batch_mob_appDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -56,6 +58,7 @@ public class Batch_mob_appDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		status_m = new StringExpression("status_m", this.getDetachedCriteria());
 		status_m_desc = new StringExpression("status_m_desc", this.getDetachedCriteria());
+		batch_id = new IntegerExpression("batch_id", this.getDetachedCriteria());
 	}
 	
 	public Batch_mob_app uniqueBatch_mob_app(PersistentSession session) {

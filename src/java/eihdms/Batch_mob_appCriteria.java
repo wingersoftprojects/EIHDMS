@@ -29,6 +29,7 @@ public class Batch_mob_appCriteria extends AbstractORMCriteria {
 	public final IntegerExpression last_edit_by;
 	public final StringExpression status_m;
 	public final StringExpression status_m_desc;
+	public final IntegerExpression batch_id;
 	
 	public Batch_mob_appCriteria(Criteria criteria) {
 		super(criteria);
@@ -42,6 +43,7 @@ public class Batch_mob_appCriteria extends AbstractORMCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		status_m = new StringExpression("status_m", this);
 		status_m_desc = new StringExpression("status_m_desc", this);
+		batch_id = new IntegerExpression("batch_id", this);
 	}
 	
 	public Batch_mob_appCriteria(PersistentSession session) {

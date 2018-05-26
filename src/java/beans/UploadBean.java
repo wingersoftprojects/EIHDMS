@@ -8,6 +8,7 @@ package beans;
 import connections.DBConnection;
 import eihdms.Base_data;
 import eihdms.Batch;
+import eihdms.Batch_mob_app;
 import eihdms.County;
 import eihdms.Data_element;
 import eihdms.Data_element_sms_position;
@@ -2106,6 +2107,254 @@ public class UploadBean implements Serializable {
                  */
                 transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                 EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
+                transaction.commit();
+                /**
+                 * End Save interface_data_sms
+                 */
+
+                //pivot dashboard surge form
+                this.PivotEGPAFSurgeFormData(batch.getBatch_id());
+            } catch (SQLException ex) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void load_interface(List<Interface_data> interface_dataList, Report_form report_form_SMS, Report_form_group report_form_group_SMS, Batch_mob_app batch_mob_app) {
+        try {
+            PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+            Batch batch;
+            loginBean = new LoginBean();
+            try {
+                loginBean.setUser_detail(User_detail.getUser_detailByORMID(1));
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String sql = "";
+//            if (!interface_dataList.isEmpty()) {
+            batch = newBatch_SMS(transaction);
+//                try {
+//                    for (Interface_data i : interface_dataList) {
+//                        i.setStatus_u("Pass");
+//                        i.setStatus_u_desc("Uploaded");
+//                        i.setAdd_by(loginBean.getUser_detail().getUser_detail_id());
+//                        i.save();
+//                    }
+//                    transaction.commit();
+            //System.out.println("START-INSERT-INTERFACE: " + new Date());
+            //3,5,5,5,2,4,4=28
+            sql = "INSERT INTO interface_data(batch_id,data_element_id,data_element_value,"
+                    + "health_facility_name,parish_name,sub_county_name,county_name,district_name,"
+                    + "health_facility_id,parish_id,sub_county_id,county_id,district_id,"
+                    + "report_period_year,report_period_quarter,report_period_bi_month,report_period_month,report_period_week,"
+                    + "report_period_from_date,report_period_to_date,"
+                    + "status_u,status_u_desc,is_deleted,is_active,"
+                    + "add_date,add_by,report_form_id,report_form_group_id,entry_mode) "
+                    + "VALUES("
+                    + "?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,"
+                    + "?,?,?,?,"
+                    + "?,?,?,?,?)";
+            try (
+                    Connection connection = loginBean.getMySQLConnection_System_User();
+                    PreparedStatement ps = connection.prepareStatement(sql);) {
+                connection.setAutoCommit(false);
+                int j = 0;
+                for (Interface_data i : interface_dataList) {
+                    try {
+                        ps.setInt(1, batch.getBatch_id());
+                    } catch (NullPointerException npe) {
+                        ps.setInt(1, 0);
+                        ps.setObject(1, null);
+                    }
+                    try {
+                        ps.setInt(2, i.getData_element().getData_element_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(2, null);
+                    }
+                    try {
+                        ps.setString(3, i.getData_element_value());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(3, null);
+                    }
+                    try {
+                        ps.setString(4, i.getHealth_facility_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(4, null);
+                    }
+                    try {
+                        ps.setString(5, i.getParish_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(5, null);
+                    }
+                    try {
+                        ps.setString(6, i.getSub_county_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(6, null);
+                    }
+                    try {
+                        ps.setString(7, i.getCounty_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(7, null);
+                    }
+                    try {
+                        ps.setString(8, i.getDistrict_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(8, null);
+                    }
+                    try {
+                        ps.setInt(9, i.getHealth_facility_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(9, null);
+                    }
+                    try {
+                        ps.setInt(10, i.getParish_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(10, null);
+                    }
+                    try {
+                        ps.setInt(11, i.getSub_county_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(11, null);
+                    }
+                    try {
+                        ps.setInt(12, i.getCounty_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(12, null);
+                    }
+                    try {
+                        ps.setInt(13, i.getDistrict_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(13, null);
+                    }
+                    try {
+                        ps.setInt(14, i.getReport_period_year());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(14, null);
+                    }
+                    try {
+                        ps.setInt(15, i.getReport_period_quarter());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(15, null);
+                    }
+                    try {
+                        ps.setInt(16, i.getReport_period_bi_month());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(16, null);
+                    }
+                    try {
+                        ps.setInt(17, i.getReport_period_month());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(17, null);
+                    }
+                    try {
+                        ps.setInt(18, i.getReport_period_week());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(18, null);
+                    }
+                    try {
+                        ps.setDate(19, new java.sql.Date(i.getReport_period_from_date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setObject(19, null);
+                    }
+                    try {
+                        ps.setDate(20, new java.sql.Date(i.getReport_period_to_date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setDate(20, null);
+                    }
+                    ps.setString(21, "Pass");
+                    ps.setString(22, "Uploaded");
+                    ps.setInt(23, 0);
+                    ps.setInt(24, 1);
+                    try {
+                        ps.setTimestamp(25, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setTimestamp(25, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    }
+                    try {
+                        /**
+                         * User Id Loading the data
+                         */
+                        ps.setInt(26, loginBean.getUser_detail().getUser_detail_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(26, null);
+                    }
+                    try {
+                        ps.setInt(27, i.getReport_form().getReport_form_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(27, null);
+                    }
+                    try {
+                        ps.setInt(28, i.getReport_form_group_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(28, null);
+                    }
+                    try {
+                        ps.setString(29, i.getEntry_mode());
+                    } catch (NullPointerException npe) {
+                        ps.setString(29, null);
+                    }
+                    ps.addBatch();
+                    j++;
+                    if (j % 500 == 0 || j == interface_dataList.size()) {
+                        //System.out.println("--execute-J--:" + j);
+                        ps.executeBatch();
+                    }
+                }
+//System.out.println("--final-J1--:" + j);
+                connection.commit();
+//System.out.println("--final-J2--:" + j);
+                interface_dataList.clear();
+//System.out.println("END-INSERT-INTERFACE:" + new Date());
+
+//Load Base Data
+//System.out.println("START-VALIDATION-LOAD-BASE:" + new Date());
+                validate_and_load_data_to_base_SMS(batch.getBatch_id(), report_form_SMS, report_form_group_SMS);
+//System.out.println("END-VALIDATION-LOAD-BASE:" + new Date());
+                /**
+                 * Set Batch_Id of interface_data_sms
+                 */
+                batch_mob_app.setBatch_id(batch.getBatch_id());
+//loginBean.saveMessage();
+//System.out.println("START-VALIDATION-REPORT:" + new Date());
+                String validationError = generate_validation_report_SMS(batch.getBatch_id());
+                if (null == validationError) {
+                    batch_mob_app.setStatus_m("Failed");
+                    batch_mob_app.setStatus_m_desc("Failed Validation Rule(s)");
+                } else {
+                    switch (validationError) {
+                        case "Passed":
+                            batch_mob_app.setStatus_m("Moved");
+                            batch_mob_app.setStatus_m_desc("Moved To Base");
+                            break;
+                        case "Existing Data":
+                            batch_mob_app.setStatus_m("Failed");
+                            batch_mob_app.setStatus_m_desc("Data for the same period exists");
+                            break;
+                        case "Failed":
+                            batch_mob_app.setStatus_m("Failed");
+                            batch_mob_app.setStatus_m_desc("Failed Validation Rule(s)");
+                            break;
+                        default:
+                            batch_mob_app.setStatus_m("Failed");
+                            batch_mob_app.setStatus_m_desc("Failed Validation Rule(s)");
+                            break;
+                    }
+                }
+
+//System.out.println("END-VALIDATION-REPORT:" + new Date());
+                /**
+                 * Save interface_data_sms
+                 */
+                transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                EIHDMSPersistentManager.instance().getSession().merge(batch_mob_app);
                 transaction.commit();
                 /**
                  * End Save interface_data_sms

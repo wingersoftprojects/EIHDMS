@@ -22,8 +22,10 @@ public class Test2 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println(new Test2().get_week_dates_from_year_and_week(2018, 2));
-        System.out.println(new Test2().get_week_from_date(new Date()));
+//        System.out.println(new Test2().get_week_dates_from_year_and_week(2018, 2));
+//        System.out.println(new Test2().get_week_from_date(new Date()));
+        SMSData sData = new SMSData();
+        sData.upload_mobile_data(1);
     }
     
     public String get_week_dates_from_year_and_week(Integer year, Integer week) {
@@ -39,6 +41,7 @@ public class Test2 {
         }
         return date_from_to;
     }
+
     public String get_week_from_date(Date date) {
         String week = "Invalid Date";
         try {
@@ -51,7 +54,7 @@ public class Test2 {
                 week = "Week_" + calendar.get(java.util.Calendar.WEEK_OF_YEAR);
             }
         } catch (Exception ex) {
-
+            
         }
         return week;
     }

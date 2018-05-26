@@ -6,13 +6,16 @@
 package utilities;
 
 import beans.UploadBean;
+import eihdms.Batch_mob_app;
 import eihdms.County;
+import eihdms.Data_element;
 import eihdms.Data_element_sms_position;
 import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Financial_year;
 import eihdms.Health_facility;
 import eihdms.Interface_data;
+import eihdms.Interface_data_mob_app;
 import eihdms.Interface_data_sms;
 import eihdms.Parish;
 import eihdms.Phone_contact;
@@ -727,7 +730,193 @@ public class SMSData {
             this.deadline_reason = deadline_reason;
         }
     }
+
     /**
      * End SMS data functions
+     */
+    /**
+     * Mobile Upload
+     *
+     * @param batch_mob_app_id
+     */
+    public void upload_mobile_data(int batch_mob_app_id) {
+        try {
+            Batch_mob_app batch_mob_app = Batch_mob_app.getBatch_mob_appByORMID(batch_mob_app_id);
+            if (batch_mob_app != null) {
+                List<Interface_data_mob_app> interface_data_mob_appList = Interface_data_mob_app.queryInterface_data_mob_app("batch_mob_app_id=" + batch_mob_app_id, null);
+                List<Interface_data> interface_datas = new ArrayList<>();
+                for (Interface_data_mob_app interface_data_mob_app : interface_data_mob_appList) {
+                    Interface_data interface_data = new Interface_data();
+                    Data_element data_element = Data_element.getData_elementByORMID(interface_data_mob_app.getData_element_id());
+                    interface_data.setData_element(data_element);
+                    interface_data.setData_element_value(interface_data_mob_app.getData_element_value());
+                    interface_data.setAdd_by(interface_data_mob_app.getAdd_by());
+                    interface_data.setAdd_date(interface_data_mob_app.getAdd_date());
+                    interface_data.setEntry_mode(interface_data_mob_app.getEntry_mode());
+                    //i.setFinancial_year(value);
+                    interface_data.setIs_active(1);
+                    interface_data.setIs_deleted(0);
+
+                    /**
+                     * Get Report_form and Report_form_group
+                     */
+                    //Report_form report_form=Report_form.getReport_formByORMID(interface_data_mob_app.getReport_form_id());
+                    //Report_form_group report_form_group=Report_form_group.getReport_form_groupByORMID(interface_data_mob_app.getReport_form_group_id());
+                    //interface_data.setReport_form(report_form);
+                    //interface_data.setReport_form_group_id(report_form_group.getReport_form_group_id());
+                    Calendar calendar = new GregorianCalendar();
+                    //Date trialTime = new Date();
+                    calendar.setTime(interface_data_mob_app.getAdd_date());
+
+                    /**
+                     * Periods
+                     */
+                    //System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
+                    //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
+                    report_period_week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
+                    report_period_year = calendar.get(Calendar.YEAR);
+                    report_period_month = calendar.get(Calendar.MONTH);
+
+                    /**
+                     * Quarterly Report_forms
+                     */
+                    switch (calendar.get(Calendar.MONTH)) {
+                        case 0:
+                            report_period_quarter = 4;
+                            break;
+                        case 3:
+                            report_period_quarter = 1;
+                            break;
+                        case 7:
+                            report_period_quarter = 2;
+                            break;
+                        case 10:
+                            report_period_quarter = 3;
+                            break;
+                        default:
+                            break;
+                    }
+                    /**
+                     * Bi-Monthly Report_forms
+                     */
+                    switch (calendar.get(Calendar.MONTH)) {
+                        case 0:
+                            report_period_bi_month = 6;
+                            break;
+                        case 2:
+                            report_period_bi_month = 1;
+                            break;
+                        case 4:
+                            report_period_bi_month = 2;
+                            break;
+                        case 6:
+                            report_period_bi_month = 3;
+                            break;
+                        case 8:
+                            report_period_bi_month = 4;
+                            break;
+                        case 10:
+                            report_period_bi_month = 5;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    /**
+                     * Periods
+                     */
+                    if (sms_report_form == null) {
+                        sms_report_form = Report_form.getReport_formByORMID(interface_data_mob_app.getReport_form_id());
+                        /**
+                         * Set interface_data_sms report_form_code
+                         */
+                        //interface_data_sms.setReport_form_code(sms_report_form.getReport_form_code());
+
+                        if (sms_report_form.getReport_form_frequency().equals("Weekly")) {
+                            /**
+                             * Weekly Report_forms
+                             */
+                            switch (calendar.get(Calendar.WEEK_OF_YEAR)) {
+                                case 1:
+                                    /**
+                                     * To cater for december last week ending in
+                                     * the year
+                                     */
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) > 10) {
+                                        report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if (sms_report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+                            /**
+                             * Bi-Monthly Report_forms
+                             */
+                            switch (calendar.get(Calendar.MONTH)) {
+                                case 0:
+                                    /**
+                                     * To cater for december
+                                     */
+                                    report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        /**
+                         * Terminates if the deadline has passed
+                         */
+                        Deadline deadline = check_deadline(sms_report_form);
+//                        if (deadline.deadline_passed) {
+//                            PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+//                            batch_mob_app.setStatus_m("ERR");
+//                            batch_mob_app.setStatus_m_desc(deadline.getDeadline_reason());
+//                            EIHDMSPersistentManager.instance().getSession().merge(batch_mob_app);
+//                            transaction.commit();
+//                            return;
+//                        }
+                        get_date_from_other_periods();
+
+                    }
+                    interface_data.setReport_form(sms_report_form);
+                    sms_report_form_group = Report_form_group.getReport_form_groupByORMID(interface_data_mob_app.getReport_form_group_id());
+                    interface_data.setReport_form_group_id(sms_report_form_group.getReport_form_group_id());
+
+                    /**
+                     * Get reporting periods
+                     */
+                    interface_data.setFinancial_year(this.getFinancial_year());
+                    interface_data.setReport_period_year(this.getReport_period_year());
+                    interface_data.setReport_period_quarter(this.getReport_period_quarter());
+                    interface_data.setReport_period_from_date(this.getReport_period_from_date());
+                    interface_data.setReport_period_to_date(this.getReport_period_to_date());
+                    interface_data.setReport_period_month(this.getReport_period_month());
+                    interface_data.setReport_period_week(this.getReport_period_week());
+                    interface_data.setReport_period_bi_month(this.getReport_period_bi_month());
+
+                    interface_data.setDistrict_id(interface_data_mob_app.getDistrict_id());
+                    interface_data.setDistrict_name(interface_data_mob_app.getDistrict_name());
+                    interface_data.setCounty_id(interface_data_mob_app.getCounty_id());
+                    interface_data.setCounty_name(interface_data_mob_app.getCounty_name());
+                    interface_data.setSub_county_id(interface_data_mob_app.getSub_county_id());
+                    interface_data.setSub_county_name(interface_data_mob_app.getSub_county_name());
+                    interface_data.setParish_id(interface_data_mob_app.getParish_id());
+                    interface_data.setParish_name(interface_data_mob_app.getParish_name());
+                    interface_data.setHealth_facility_id(interface_data_mob_app.getHealth_facility_id());
+                    interface_data.setHealth_facility_name(interface_data_mob_app.getHealth_facility_name());
+                    interface_datas.add(interface_data);
+                }
+                UploadBean uploadBean = new UploadBean();
+                uploadBean.load_interface(interface_datas, sms_report_form, sms_report_form_group, batch_mob_app);
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(SMSData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /**
+     * End Mobile Upload
      */
 }
