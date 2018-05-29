@@ -49,10 +49,24 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
     private int count_n;
     private int count_d;
     private float perc_value;
+    private int count_n1;
+    private int count_d1;
+    private float perc_value1;
+    private int count_n2;
+    private int count_d2;
+    private float perc_value2;
     private List<Interface_data_sms> received_SMSs = new ArrayList<>();
     private String CategoriesChartString;
     private String DataseriesChartString;
+    private String CategoriesChartString1;
+    private String DataseriesChartString1;
+    private String CategoriesChartString2;
+    private String DataseriesChartString2;
     private List<Report_form> weekList = new ArrayList<>();
+    private Report_form[] selectedReport_forms;
+    private List<Report_form> report_forms;
+    private Report_form report_form1;
+    private Report_form report_form2;
 
     public Interface_data_smsBean() {
         super(Interface_data_sms.class);
@@ -95,6 +109,11 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         if (FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest()) {
             // Skip ajax requests.
         } else {
+            try {
+                this.report_forms = Report_form.queryReport_form("mode_data_entry=2", null);
+            } catch (PersistentException ex) {
+                Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.resetDashboard();
         }
     }
@@ -115,62 +134,147 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         }
         this.report_period_year = previous_week_year;
         this.report_period_week = previous_week;
-        try {
-            this.report_form = (Report_form) Report_form.queryReport_form("mode_data_entry=2", null).get(0);
-        } catch (PersistentException | IndexOutOfBoundsException ex) {
-            Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
-            this.report_form = null;
-        }
         this.refreshWeeks(this.report_period_year, this.report_period_week);
-        this.refreshSMSreceivedDashboard(this.report_form, this.report_period_year, this.report_period_week);
+        this.convertListToArry();
+        this.refreshSMSreceivedDashboard();
     }
 
-    public void refreshSMSreceivedDashboard(Report_form aReport_form, int aReportPeriodYear, int aReportPeriodWeek) {
+    public void convertListToArry() {
+        int n = 0;
+        try {
+            n = this.report_forms.size();
+        } catch (NullPointerException npe) {
+            n = 0;
+        }
+
+        if (n > 0) {
+            this.selectedReport_forms = new Report_form[n];
+            for (int i = 0; i < n; i++) {
+                this.selectedReport_forms[i] = this.report_forms.get(i);
+            }
+        } else {
+
+        }
+    }
+
+    public void refreshSMSreceivedDashboard() {
         GeneralUtilities gn = new GeneralUtilities();
         String WhereDate = "";
         String WhereDate2 = "";
-        if (null != aReport_form) {
-            //get denominator; eligible entities for the report form
-            this.count_d = this.getElibileEntities(aReport_form);
-
-            //get numerator;entities that submitted the report form
-            this.count_n = this.getReceivedEntities(aReport_form, aReportPeriodYear, aReportPeriodWeek);
-
-            //calculate percentage for the gauge
-            if (this.count_d > 0) {
-                this.perc_value = 100 * (this.count_n / this.count_d);
-            } else {
-                this.perc_value = 0;
-            }
-
-            //where for date
-            Date startdat = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek);
-            Date enddat = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek);
-            Date startdat2 = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek+1);
-            Date enddat2 = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek+1);
-            WhereDate = " AND DATE(s.add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
-            WhereDate2 = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
-
-            //stacked-bar graph
-            String sqlPivot = "SELECT s.report_form_code,rf.report_form_name,"
-                    + "COUNT(IF(status_f='OK',status_f,NULL)) AS ok,"
-                    + "COUNT(IF(status_f='ERR',status_f,NULL)) AS err "
-                    + "FROM interface_data_sms s "
-                    + "inner join report_form rf on s.report_form_code=rf.report_form_code "
-                    + "WHERE s.report_form_code='" + aReport_form.getReport_form_code() + "'"
-                    + WhereDate
-                    + " GROUP BY report_form_code";
-            this.refreshStackedBarChartdata(sqlPivot);
-
-            //data table
-            this.received_SMSs = new ArrayList<>();
+        String ReportFormsCodeStr = "";//1,2,3 string format for selected RFs
+        int nSelRFs = 0;
+        try {
+            nSelRFs = this.selectedReport_forms.length;
+        } catch (Exception e) {
+            nSelRFs = 0;
+        }
+        //if no forms selected, select all
+        if (nSelRFs == 0) {
+            this.convertListToArry();
             try {
-                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "' " + WhereDate2, "add_date DESC");
-            } catch (PersistentException ex) {
-                Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
+                nSelRFs = this.selectedReport_forms.length;
+            } catch (Exception e) {
+                nSelRFs = 0;
             }
+        }
+        this.report_form1 = null;
+        this.report_form2 = null;
+        ReportFormsCodeStr = "";
+        if (nSelRFs > 0) {//when there are forms selected
+            int x = 0;
+            for (int i = 0; i < nSelRFs; i++) {
+                String reportformcode = "";
+                try {
+                    reportformcode = this.selectedReport_forms[i].getReport_form_code();
+                } catch (NullPointerException npe) {
+                    reportformcode = "Unknown";
+                }
+                if (ReportFormsCodeStr.length() > 0) {
+                    ReportFormsCodeStr = ReportFormsCodeStr + ",'" + reportformcode + "'";
+                } else {
+                    ReportFormsCodeStr = "'" + reportformcode + "'";
+                }
+                if (reportformcode.equals("Unknown")) {
+                    //do nothing
+                } else {
+                    x = x + 1;
+                    if (x == 1) {
+                        this.report_form1 = this.selectedReport_forms[i];
+                    } else if (x == 2) {
+                        this.report_form2 = this.selectedReport_forms[i];
+                    }
+                }
+            }
+        } else {//when NO forms selected
+        }
+        this.count_d1 = 0;
+        this.count_d2 = 0;
+        this.perc_value1 = 0;
+        this.count_n1 = 0;
+        this.count_n2 = 0;
+        this.perc_value2 = 0;
+
+        //get denominator; eligible entities for the report form
+        this.count_d1 = this.getElibileEntities(this.report_form1);
+        this.count_d2 = this.getElibileEntities(this.report_form2);
+
+        //get numerator;entities that submitted the report form
+        this.count_n1 = this.getReceivedEntities(this.report_form1, this.report_period_year, this.report_period_week);
+        this.count_n2 = this.getReceivedEntities(this.report_form2, this.report_period_year, this.report_period_week);
+
+        //calculate percentage for the gauge
+        if (this.count_d1 > 0) {
+            this.perc_value1 = 100 * (this.count_n1 / this.count_d1);
         } else {
-            //initilaise
+            this.perc_value1 = 0;
+        }
+        if (this.count_d2 > 0) {
+            this.perc_value2 = 100 * (this.count_n2 / this.count_d2);
+        } else {
+            this.perc_value2 = 0;
+        }
+
+        //where for date
+        Date startdat = gn.get_week_date_from(this.report_period_year, this.report_period_week);
+        Date enddat = gn.get_week_date_to(this.report_period_year, this.report_period_week);
+        Date startdat2 = gn.get_week_date_from(this.report_period_year, this.report_period_week + 1);
+        Date enddat2 = gn.get_week_date_to(this.report_period_year, this.report_period_week + 1);
+        WhereDate = " AND DATE(s.add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
+        WhereDate2 = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
+
+        //stacked-bar graph
+        String sqlPivot = "";
+        if (ReportFormsCodeStr.length() > 0) {
+            sqlPivot = "SELECT s.report_form_code,ifnull(rf.report_form_name,'Unknown Report Form') as report_form_name,"
+                    + "COUNT(IF(s.status_f='OK',s.status_f,NULL)) AS ok,"
+                    + "COUNT(IF(s.status_f='ERR',s.status_f,NULL)) AS err "
+                    + "FROM interface_data_sms s "
+                    + "left join report_form rf on s.report_form_code=rf.report_form_code "
+                    + "WHERE s.report_form_code IN(" + ReportFormsCodeStr + ")"
+                    + WhereDate
+                    + " GROUP BY s.report_form_code";
+        } else {
+            sqlPivot = "SELECT s.report_form_code,ifnull(rf.report_form_name,'Unknown Report Form') as report_form_name,"
+                    + "COUNT(IF(s.status_f='OK',s.status_f,NULL)) AS ok,"
+                    + "COUNT(IF(s.status_f='ERR',s.status_f,NULL)) AS err "
+                    + "FROM interface_data_sms s "
+                    + "left join report_form rf on s.report_form_code=rf.report_form_code "
+                    + "WHERE 1=1"
+                    + WhereDate
+                    + " GROUP BY s.report_form_code";
+        }
+        this.refreshStackedBarChartdata(sqlPivot);
+
+        //data table
+        this.received_SMSs = new ArrayList<>();
+        try {
+            if (ReportFormsCodeStr.length() > 0) {
+                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code IN(" + ReportFormsCodeStr + ") " + WhereDate2, "add_date DESC");
+            } else {
+                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 " + WhereDate2, "add_date DESC");
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -206,8 +310,8 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
                     if (aReportPeriodWeek > 0) {
                         Date startdat = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek);
                         Date enddat = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek);
-                        Date startdat2 = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek+1);
-                        Date enddat2 = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek+1);
+                        Date startdat2 = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek + 1);
+                        Date enddat2 = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek + 1);
                         WhereDate = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
                         x = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "'" + WhereDate, null).size();
                     } else {
@@ -445,6 +549,202 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
      */
     public void setWeekList(List<Report_form> weekList) {
         this.weekList = weekList;
+    }
+
+    /**
+     * @return the selectedReport_forms
+     */
+    public Report_form[] getSelectedReport_forms() {
+        return selectedReport_forms;
+    }
+
+    /**
+     * @param selectedReport_forms the selectedReport_forms to set
+     */
+    public void setSelectedReport_forms(Report_form[] selectedReport_forms) {
+        this.selectedReport_forms = selectedReport_forms;
+    }
+
+    /**
+     * @return the report_forms
+     */
+    public List<Report_form> getReport_forms() {
+        return report_forms;
+    }
+
+    /**
+     * @param report_forms the report_forms to set
+     */
+    public void setReport_forms(List<Report_form> report_forms) {
+        this.report_forms = report_forms;
+    }
+
+    /**
+     * @return the report_form1
+     */
+    public Report_form getReport_form1() {
+        return report_form1;
+    }
+
+    /**
+     * @param report_form1 the report_form1 to set
+     */
+    public void setReport_form1(Report_form report_form1) {
+        this.report_form1 = report_form1;
+    }
+
+    /**
+     * @return the report_form2
+     */
+    public Report_form getReport_form2() {
+        return report_form2;
+    }
+
+    /**
+     * @param report_form2 the report_form2 to set
+     */
+    public void setReport_form2(Report_form report_form2) {
+        this.report_form2 = report_form2;
+    }
+
+    /**
+     * @return the count_n1
+     */
+    public int getCount_n1() {
+        return count_n1;
+    }
+
+    /**
+     * @param count_n1 the count_n1 to set
+     */
+    public void setCount_n1(int count_n1) {
+        this.count_n1 = count_n1;
+    }
+
+    /**
+     * @return the count_d1
+     */
+    public int getCount_d1() {
+        return count_d1;
+    }
+
+    /**
+     * @param count_d1 the count_d1 to set
+     */
+    public void setCount_d1(int count_d1) {
+        this.count_d1 = count_d1;
+    }
+
+    /**
+     * @return the perc_value1
+     */
+    public float getPerc_value1() {
+        return perc_value1;
+    }
+
+    /**
+     * @param perc_value1 the perc_value1 to set
+     */
+    public void setPerc_value1(float perc_value1) {
+        this.perc_value1 = perc_value1;
+    }
+
+    /**
+     * @return the count_n2
+     */
+    public int getCount_n2() {
+        return count_n2;
+    }
+
+    /**
+     * @param count_n2 the count_n2 to set
+     */
+    public void setCount_n2(int count_n2) {
+        this.count_n2 = count_n2;
+    }
+
+    /**
+     * @return the count_d2
+     */
+    public int getCount_d2() {
+        return count_d2;
+    }
+
+    /**
+     * @param count_d2 the count_d2 to set
+     */
+    public void setCount_d2(int count_d2) {
+        this.count_d2 = count_d2;
+    }
+
+    /**
+     * @return the perc_value2
+     */
+    public float getPerc_value2() {
+        return perc_value2;
+    }
+
+    /**
+     * @param perc_value2 the perc_value2 to set
+     */
+    public void setPerc_value2(float perc_value2) {
+        this.perc_value2 = perc_value2;
+    }
+
+    /**
+     * @return the CategoriesChartString1
+     */
+    public String getCategoriesChartString1() {
+        return CategoriesChartString1;
+    }
+
+    /**
+     * @param CategoriesChartString1 the CategoriesChartString1 to set
+     */
+    public void setCategoriesChartString1(String CategoriesChartString1) {
+        this.CategoriesChartString1 = CategoriesChartString1;
+    }
+
+    /**
+     * @return the DataseriesChartString1
+     */
+    public String getDataseriesChartString1() {
+        return DataseriesChartString1;
+    }
+
+    /**
+     * @param DataseriesChartString1 the DataseriesChartString1 to set
+     */
+    public void setDataseriesChartString1(String DataseriesChartString1) {
+        this.DataseriesChartString1 = DataseriesChartString1;
+    }
+
+    /**
+     * @return the CategoriesChartString2
+     */
+    public String getCategoriesChartString2() {
+        return CategoriesChartString2;
+    }
+
+    /**
+     * @param CategoriesChartString2 the CategoriesChartString2 to set
+     */
+    public void setCategoriesChartString2(String CategoriesChartString2) {
+        this.CategoriesChartString2 = CategoriesChartString2;
+    }
+
+    /**
+     * @return the DataseriesChartString2
+     */
+    public String getDataseriesChartString2() {
+        return DataseriesChartString2;
+    }
+
+    /**
+     * @param DataseriesChartString2 the DataseriesChartString2 to set
+     */
+    public void setDataseriesChartString2(String DataseriesChartString2) {
+        this.DataseriesChartString2 = DataseriesChartString2;
     }
 
 }
