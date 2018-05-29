@@ -24,81 +24,139 @@
                 <p:fieldset legend="SMS Received">
                     <p:panelGrid columns="8" id="panelFilter">
                         <p:outputLabel value="Report Form:" />
-                        <p:selectOneMenu id="report_form" value="#{interface_data_smsBean.report_form}" style="width:125px" converter="report_formConverter">
-                            <f:selectItems value="#{report_formBean.getReport_forms_by_entrymode(2)}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                        </p:selectOneMenu>
+                        <p:selectCheckboxMenu id="report_form" value="#{interface_data_smsBean.selectedReport_forms}" label="Report Form(s)" style="width:125px" converter="report_formConverter">
+                            <f:selectItem itemLabel="Unknown Report Form"/>
+                            <f:selectItems value="#{interface_data_smsBean.report_forms}" var="rfs" itemValue="#{rfs}" itemLabel="#{rfs.report_form_name}" />
+                            <p:ajax process="@this"/>
+                        </p:selectCheckboxMenu>
                         <p:outputLabel value="Year:" />
-                        <p:selectOneMenu id="year" value="#{interface_data_smsBean.report_period_year}" editable="true">
-                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
-                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
-                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
-                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
-                            </p:selectOneMenu>
+                        <p:selectOneMenu id="report_period_year" value="#{interface_data_smsBean.report_period_year}" editable="true">
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
                         <p:outputLabel value="Week:" />
                         <p:selectOneMenu id="report_period_week" value="#{interface_data_smsBean.report_period_week}" editable="false">
                             <f:selectItems value="#{interface_data_smsBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
-                            <p:ajax/>
+                            <p:ajax process="@this"/>
                         </p:selectOneMenu>
                         <p:commandButton id="cmdbSearch" value="APPLY FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
-                            <p:ajax listener="#{interface_data_smsBean.refreshSMSreceivedDashboard(interface_data_smsBean.report_form,interface_data_smsBean.report_period_year,interface_data_smsBean.report_period_week)}" process="panelFilter" update="panelResultCharts panelResultTable"/>
+                            <p:ajax listener="#{interface_data_smsBean.refreshSMSreceivedDashboard()}" process="@form" update="panelResultCharts panelResultTable"/>
                         </p:commandButton>
                         <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
-                            <p:ajax listener="#{interface_data_smsBean.resetDashboard()}" process="panelFilter" update="panelResultCharts panelResultTable"/>
+                            <p:ajax listener="#{interface_data_smsBean.resetDashboard()}" process="@form" update="@form"/>
                         </p:commandButton>
                     </p:panelGrid>
                     <h:panelGrid columns="2" id="panelResultCharts">
                         <h:panelGrid style="text-align: center">
-                            <div id="chart-container1"></div>
-                            <p:outputLabel value="#{interface_data_smsBean.count_n} SMS received out of #{interface_data_smsBean.count_d}"/>
-                            <script type="text/javascript">
-                                FusionCharts.ready(function () {
-                                    var chartSMSReceived = new FusionCharts({
-                                        type: 'angulargauge',
-                                        renderAt: 'chart-container1',
-                                        width: '400',
-                                        height: '250',
-                                        dataFormat: 'json',
-                                        dataSource: {
-                                            "chart": {
-                                                "caption": "SMS Reporting Rate(%)",
-                                                "subcaption": "W#{interface_data_smsBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_smsBean.report_period_year, interface_data_smsBean.report_period_week)})",
-                                                "lowerLimit": "0",
-                                                "upperLimit": "100",
-                                                "lowerLimitDisplay": "0%",
-                                                "upperLimitDisplay": "100%",
-                                                "showValue": "1",
-                                                "valueBelowPivot": "1",
-                                                "numberSuffix": "%",
-                                                "theme": "fint"
-                                            },
-                                            "colorRange": {
-                                                "color": [
-                                                    {
-                                                        "minValue": "0",
-                                                        "maxValue": "50",
-                                                        "code": "#e44a00"
-                                                    },
-                                                    {
-                                                        "minValue": "50",
-                                                        "maxValue": "75",
-                                                        "code": "#f8bd19"
-                                                    },
-                                                    {
-                                                        "minValue": "75",
-                                                        "maxValue": "100",
-                                                        "code": "#1aaf5d"
-                                                    }
-                                                ]
-                                            },
-                                            "dials": {
-                                                "dial": [{
-                                                        "value": "#{interface_data_smsBean.perc_value}"
-                                                    }]
+                            <h:panelGrid style="text-align: center" rendered="#{interface_data_smsBean.report_form1.report_form_id>0}">
+                                <div id="chart-container1"></div>
+                                <p:outputLabel value="Reporting rate : #{interface_data_smsBean.count_n1} SMS received out of #{interface_data_smsBean.count_d1}"/>
+                                <script type="text/javascript">
+                                    FusionCharts.ready(function () {
+                                        var chartSMSReceived1 = new FusionCharts({
+                                            type: 'angulargauge',
+                                            renderAt: 'chart-container1',
+                                            width: '350',
+                                            height: '250',
+                                            dataFormat: 'json',
+                                            dataSource: {
+                                                "chart": {
+                                                    "caption": "#{interface_data_smsBean.report_form1.report_form_name}",
+                                                    "subcaption": "W#{interface_data_smsBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_smsBean.report_period_year, interface_data_smsBean.report_period_week)})",
+                                                    "lowerLimit": "0",
+                                                    "upperLimit": "100",
+                                                    "lowerLimitDisplay": "0%",
+                                                    "upperLimitDisplay": "100%",
+                                                    "showValue": "1",
+                                                    "valueBelowPivot": "1",
+                                                    "numberSuffix": "%",
+                                                    "theme": "fint"
+                                                },
+                                                "colorRange": {
+                                                    "color": [
+                                                        {
+                                                            "minValue": "0",
+                                                            "maxValue": "50",
+                                                            "code": "#C02133"
+                                                        },
+                                                        {
+                                                            "minValue": "50",
+                                                            "maxValue": "75",
+                                                            "code": "#E96B25"
+                                                        },
+                                                        {
+                                                            "minValue": "75",
+                                                            "maxValue": "100",
+                                                            "code": "#488A7E"
+                                                        }
+                                                    ]
+                                                },
+                                                "dials": {
+                                                    "dial": [{
+                                                            "value": "#{interface_data_smsBean.perc_value1}"
+                                                        }]
+                                                }
                                             }
-                                        }
-                                    }).render();
-                                });
-                            </script>
+                                        }).render();
+                                    });
+                                </script>
+                            </h:panelGrid>
+                            <h:panelGrid style="text-align: center" rendered="#{interface_data_smsBean.report_form2.report_form_id>0}">
+                                <div id="chart-container11"></div>
+                                <p:outputLabel value="Reporting rate : #{interface_data_smsBean.count_n2} SMS received out of #{interface_data_smsBean.count_d2}"/>
+                                <script type="text/javascript">
+                                    FusionCharts.ready(function () {
+                                        var chartSMSReceived11 = new FusionCharts({
+                                            type: 'angulargauge',
+                                            renderAt: 'chart-container11',
+                                            width: '350',
+                                            height: '250',
+                                            dataFormat: 'json',
+                                            dataSource: {
+                                                "chart": {
+                                                    "caption": "#{interface_data_smsBean.report_form2.report_form_name}",
+                                                    "subcaption": "W#{interface_data_smsBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_smsBean.report_period_year, interface_data_smsBean.report_period_week)})",
+                                                    "lowerLimit": "0",
+                                                    "upperLimit": "100",
+                                                    "lowerLimitDisplay": "0%",
+                                                    "upperLimitDisplay": "100%",
+                                                    "showValue": "1",
+                                                    "valueBelowPivot": "1",
+                                                    "numberSuffix": "%",
+                                                    "theme": "fint"
+                                                },
+                                                "colorRange": {
+                                                    "color": [
+                                                        {
+                                                            "minValue": "0",
+                                                            "maxValue": "50",
+                                                            "code": "#C02133"
+                                                        },
+                                                        {
+                                                            "minValue": "50",
+                                                            "maxValue": "75",
+                                                            "code": "#E96B25"
+                                                        },
+                                                        {
+                                                            "minValue": "75",
+                                                            "maxValue": "100",
+                                                            "code": "#488A7E"
+                                                        }
+                                                    ]
+                                                },
+                                                "dials": {
+                                                    "dial": [{
+                                                            "value": "#{interface_data_smsBean.perc_value2}"
+                                                        }]
+                                                }
+                                            }
+                                        }).render();
+                                    });
+                                </script>
+                            </h:panelGrid>
                         </h:panelGrid>
                         <h:panelGrid>
                             <div id="chart-container2"></div>
@@ -117,7 +175,7 @@
                                                 "xAxisname": "Report Form",
                                                 "yAxisName": "Number of SMS",
                                                 "numberPrefix": "",
-                                                "paletteColors": "#1aaf5d,#e44a00",
+                                                "paletteColors": "#488A7E,#C02133",
                                                 "bgColor": "#ffffff",
                                                 "borderAlpha": "20",
                                                 "showCanvasBorder": "0",
@@ -146,10 +204,10 @@
                     </h:panelGrid>
                     <h:panelGrid columns="1" id="panelResultTable">
                         <p:dataTable id="table_received_sms" var="sms" value="#{interface_data_smsBean.received_SMSs}" draggableRows="false" 
-                                     paginator="true" 
-                                     paginatorTemplate="{Exporters}">
+                                     paginator="true" tableStyle="width:auto;" rows="50" rowsPerPageTemplate="100,200,400,1000,2000" 
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {Exporters}">
                             <f:facet name="header">
-                                #{interface_data_smsBean.report_form.report_form_name}
+                                SMS received for period W#{interface_data_smsBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_smsBean.report_period_year, interface_data_smsBean.report_period_week)})
                             </f:facet>
                             <f:facet name="{Exporters}">
                                 <h:commandLink>
@@ -169,24 +227,33 @@
                                     <p:dataExporter type="xml" target="table_received_sms" fileName="received_sms" />
                                 </h:commandLink>
                             </f:facet>
-                            <p:column headerText="Health Facility">
+                            <p:column headerText="Report Form" style="font-size: 12px;">
+                                <h:outputText value="#{sms.report_form_code}" />
+                            </p:column>
+                            <p:column headerText="Health Facility" style="font-size: 12px;">
                                 <h:outputText value="#{interface_data_smsBean.getEntityNameByPhone(sms.phone)}" />
                             </p:column>
-                            <p:column headerText="Sender">
+                            <p:column headerText="Sender" style="font-size: 12px;">
                                 <h:outputText value="#{sms.phone}" />
                             </p:column>
-                            <p:column headerText="Date">
+                            <p:column headerText="Date" style="font-size: 12px;">
                                 <h:outputText value="#{sms.add_date}">
                                     <f:convertDateTime pattern="dd-MM-yyyy HH:mm" timeZone="EAT"/>
                                 </h:outputText>
                             </p:column>
-                            <p:column headerText="Status">
+                            <p:column headerText="Message" style="font-size: 12px;">
+                                <h:outputText value="#{sms.sms}" rendered="#{sms.status_f=='OK'}"/>
+                                <h:outputText value="#{sms.sms}" style="color: red" rendered="#{sms.status_f=='ERR'}"/>
+                            </p:column>
+                            <p:column headerText="Format" style="font-size: 12px;">
                                 <h:outputText value="#{sms.status_f}" rendered="#{sms.status_f=='OK'}"/>
                                 <h:outputText value="#{sms.status_f}" style="color: red" rendered="#{sms.status_f=='ERR'}"/>
                             </p:column>
-                            <p:column headerText="Message">
-                                <h:outputText value="#{sms.sms}" rendered="#{sms.status_f=='OK'}"/>
-                                <h:outputText value="#{sms.sms}" style="color: red" rendered="#{sms.status_f=='ERR'}"/>
+                            <p:column headerText="Validation" style="font-size: 12px;">
+                                <h:outputText value="#{sms.status_v}" rendered="#{sms.status_v=='OK'}"/>
+                                <h:outputText value="#{sms.status_v}" rendered="#{sms.status_v=='Passed'}"/>
+                                <h:outputText value="#{sms.status_v}" style="color: red" rendered="#{sms.status_v=='ERR'}"/>
+                                <h:outputText value="#{sms.status_v}" style="color: red" rendered="#{sms.status_v=='Failed'}"/>
                             </p:column>
                         </p:dataTable>
                     </h:panelGrid>
