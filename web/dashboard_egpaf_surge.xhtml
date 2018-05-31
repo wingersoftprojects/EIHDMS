@@ -102,7 +102,7 @@
                     <h:panelGrid columns="5" id="pnlgCharts">
                         <h:panelGrid id="pnlgChart1" style="text-align: center">
                             <div id="chart1"></div>
-                            <p:commandLink value="#{dashboard_surgeBean.count_n1} viral load tests / #{dashboard_surgeBean.count_d1} attended" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(1)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n1} viral load tests / #{dashboard_surgeBean.count_d1} attended" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(1)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
@@ -129,17 +129,17 @@
                                                     {
                                                         "minValue": "0",
                                                         "maxValue": "50",
-                                                        "code": "#e44a00"
+                                                        "code": "#C02133"
                                                     },
                                                     {
                                                         "minValue": "50",
                                                         "maxValue": "75",
-                                                        "code": "#f8bd19"
+                                                        "code": "#E96B25"
                                                     },
                                                     {
                                                         "minValue": "75",
                                                         "maxValue": "100",
-                                                        "code": "#1aaf5d"
+                                                        "code": "#488A7E"
                                                     }
                                                 ]
                                             },
@@ -155,7 +155,7 @@
                         </h:panelGrid>
                         <h:panelGrid id="pnlgChart2" style="text-align: center;">
                             <div id="chart2"></div>
-                            <p:commandLink value="#{dashboard_surgeBean.count_n2} clients missed / #{dashboard_surgeBean.count_d2} total appointments" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(2)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n2} clients missed / #{dashboard_surgeBean.count_d2} total appointments" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(2)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             
                             <script type="text/javascript">
@@ -173,7 +173,7 @@
                                                 "showPercentValues": "1",
                                                 "showPercentInTooltip": "0",
                                                 "decimals": "1",
-                                                "palettecolors": "#e44a00,#1aaf5d",
+                                                "palettecolors": "#C02133,#488A7E",
                                                 "theme": "fint"
                                             },
                                             "data": #{dashboard_surgeBean.dataChartString2}
@@ -185,7 +185,7 @@
                         </h:panelGrid>
                         <h:panelGrid id="pnlgChart3" style="text-align: center">
                             <div id="chart3"></div>
-                            <p:commandLink value="#{dashboard_surgeBean.count_n3} missed and brought back / #{dashboard_surgeBean.count_d3} missed last week" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(3)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n3} missed and brought back / #{dashboard_surgeBean.count_d3} missed last week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(3)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             
                             <script type="text/javascript">
@@ -213,17 +213,17 @@
                                                     {
                                                         "minValue": "0",
                                                         "maxValue": "50",
-                                                        "code": "#e44a00"
+                                                        "code": "#C02133"
                                                     },
                                                     {
                                                         "minValue": "50",
                                                         "maxValue": "75",
-                                                        "code": "#f8bd19"
+                                                        "code": "#E96B25"
                                                     },
                                                     {
                                                         "minValue": "75",
                                                         "maxValue": "100",
-                                                        "code": "#1aaf5d"
+                                                        "code": "#488A7E"
                                                     }
                                                 ]
                                             },
@@ -239,7 +239,7 @@
                         </h:panelGrid>
                         <h:panelGrid id="pnlgChart4" style="text-align: center;">
                             <div id="chart4"></div>
-                            <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
@@ -266,17 +266,17 @@
                                                     {
                                                         "minValue": "0",
                                                         "maxValue": "50",
-                                                        "code": "#e44a00"
+                                                        "code": "#C02133"
                                                     },
                                                     {
                                                         "minValue": "50",
                                                         "maxValue": "75",
-                                                        "code": "#f8bd19"
+                                                        "code": "#E96B25"
                                                     },
                                                     {
                                                         "minValue": "75",
                                                         "maxValue": "100",
-                                                        "code": "#1aaf5d"
+                                                        "code": "#488A7E"
                                                     }
                                                 ]
                                             },
@@ -292,7 +292,7 @@
                         </h:panelGrid>
                         <h:panelGrid id="pnlgChart5" style="text-align: center;">
                             <div id="chart5"></div>
-                            <p:commandLink value="#{dashboard_surgeBean.count_n5} newly initiated on ART / #{dashboard_surgeBean.count_d5} clients newly tested" style="color: blue;" action="#{dashboard_surgeBean.refreshReportDetail(5)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n5} newly initiated on ART / #{dashboard_surgeBean.count_d5} clients newly tested" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(5)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
@@ -319,17 +319,17 @@
                                                     {
                                                         "minValue": "0",
                                                         "maxValue": "50",
-                                                        "code": "#e44a00"
+                                                        "code": "#C02133"
                                                     },
                                                     {
                                                         "minValue": "50",
                                                         "maxValue": "75",
-                                                        "code": "#f8bd19"
+                                                        "code": "#E96B25"
                                                     },
                                                     {
                                                         "minValue": "75",
                                                         "maxValue": "100",
-                                                        "code": "#1aaf5d"
+                                                        "code": "#488A7E"
                                                     }
                                                 ]
                                             },
@@ -362,7 +362,7 @@
                                                 "xAxisName": "Week",
                                                 "yAxisName": "Percentage(%)",
                                                 "numberSuffix": "%",
-                                                "paletteColors": "#0075c2",
+                                                "paletteColors": "#2696D1",
                                                 "bgColor": "#ffffff",
                                                 "borderAlpha": "20",
                                                 "canvasBorderAlpha": "0",
