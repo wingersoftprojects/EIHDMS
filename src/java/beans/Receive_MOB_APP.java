@@ -20,7 +20,7 @@ import utilities.SMSData;
  *
  * @author bajuna
  */
-@WebServlet(name = "Receive_SMS", urlPatterns = {"/Receive_SMS"})
+@WebServlet(name = "Receive_MOB_APP", urlPatterns = {"/Receive_MOB_APP"})
 public class Receive_MOB_APP extends HttpServlet {
 
     /**
