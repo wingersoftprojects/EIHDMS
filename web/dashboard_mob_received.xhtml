@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{interface_data_mob_appBean.initDashboard()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <f:view>
+            <script type="text/javascript" src="resources/js/fusioncharts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.charts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.theme.fint.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts-jquery-plugin.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.widgets.js"></script>
+            <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+                <center>
+                <p:growl/>
+                <p:fieldset legend="Mobile Reports Received Dashboard">
+                    <p:panelGrid columns="8" id="panelFilter">
+                        <p:outputLabel value="Report Form:" />
+                        <p:selectCheckboxMenu id="report_form" value="#{interface_data_mob_appBean.selectedReport_forms}" label="Report Form(s)" style="width:125px" converter="report_formConverter">
+                            <f:selectItems value="#{interface_data_mob_appBean.report_forms}" var="rfs" itemValue="#{rfs}" itemLabel="#{rfs.report_form_name}" />
+                            <p:ajax process="@this"/>
+                        </p:selectCheckboxMenu>
+                        <p:outputLabel value="Year:" />
+                        <p:selectOneMenu id="report_period_year" value="#{interface_data_mob_appBean.report_period_year}" editable="true">
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                            <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Week:" />
+                        <p:selectOneMenu id="report_period_week" value="#{interface_data_mob_appBean.report_period_week}" editable="false">
+                            <f:selectItems value="#{interface_data_mob_appBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                        <p:commandButton id="cmdbSearch" value="APPLY FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                            <p:ajax listener="#{interface_data_mob_appBean.refreshMOB_APPreceivedDashboard()}" process="@form" update="panelResultCharts panelResultTable"/>
+                        </p:commandButton>
+                        <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                            <p:ajax listener="#{interface_data_mob_appBean.resetDashboard()}" process="@form" update="@form"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                    
+                    <h:panelGrid columns="1" id="panelResultCharts">
+                        <h:panelGrid columns="2" style="text-align: center">
+                            <h:panelGrid style="text-align: center" rendered="#{interface_data_mob_appBean.report_form1.report_form_id>0}">
+                                <div id="chart-container1"></div>
+                                <p:outputLabel value="Reporting rate : #{interface_data_mob_appBean.count_n1} MobApp reports received out of #{interface_data_mob_appBean.count_d1}"/>
+                                <script type="text/javascript">
+                                    FusionCharts.ready(function () {
+                                        var chartMOB_APPReceived1 = new FusionCharts({
+                                            type: 'angulargauge',
+                                            renderAt: 'chart-container1',
+                                            width: '350',
+                                            height: '250',
+                                            dataFormat: 'json',
+                                            dataSource: {
+                                                "chart": {
+                                                    "caption": "#{interface_data_mob_appBean.report_form1.report_form_name}",
+                                                    "subcaption": "W#{interface_data_mob_appBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_mob_appBean.report_period_year, interface_data_mob_appBean.report_period_week)})",
+                                                    "lowerLimit": "0",
+                                                    "upperLimit": "100",
+                                                    "lowerLimitDisplay": "0%",
+                                                    "upperLimitDisplay": "100%",
+                                                    "showValue": "1",
+                                                    "valueBelowPivot": "1",
+                                                    "numberSuffix": "%",
+                                                    "theme": "fint"
+                                                },
+                                                "colorRange": {
+                                                    "color": [
+                                                        {
+                                                            "minValue": "0",
+                                                            "maxValue": "50",
+                                                            "code": "#C02133"
+                                                        },
+                                                        {
+                                                            "minValue": "50",
+                                                            "maxValue": "75",
+                                                            "code": "#E96B25"
+                                                        },
+                                                        {
+                                                            "minValue": "75",
+                                                            "maxValue": "100",
+                                                            "code": "#488A7E"
+                                                        }
+                                                    ]
+                                                },
+                                                "dials": {
+                                                    "dial": [{
+                                                            "value": "#{interface_data_mob_appBean.perc_value1}"
+                                                        }]
+                                                }
+                                            }
+                                        }).render();
+                                    });
+                                </script>
+                            </h:panelGrid>
+                            <h:panelGrid style="text-align: center" rendered="#{interface_data_mob_appBean.report_form2.report_form_id>0}">
+                                <div id="chart-container11"></div>
+                                <p:outputLabel value="Reporting rate : #{interface_data_mob_appBean.count_n2} MobApp reports received out of #{interface_data_mob_appBean.count_d2}"/>
+                                <script type="text/javascript">
+                                    FusionCharts.ready(function () {
+                                        var chartMOB_APPReceived11 = new FusionCharts({
+                                            type: 'angulargauge',
+                                            renderAt: 'chart-container11',
+                                            width: '350',
+                                            height: '250',
+                                            dataFormat: 'json',
+                                            dataSource: {
+                                                "chart": {
+                                                    "caption": "#{interface_data_mob_appBean.report_form2.report_form_name}",
+                                                    "subcaption": "W#{interface_data_mob_appBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_mob_appBean.report_period_year, interface_data_mob_appBean.report_period_week)})",
+                                                    "lowerLimit": "0",
+                                                    "upperLimit": "100",
+                                                    "lowerLimitDisplay": "0%",
+                                                    "upperLimitDisplay": "100%",
+                                                    "showValue": "1",
+                                                    "valueBelowPivot": "1",
+                                                    "numberSuffix": "%",
+                                                    "theme": "fint"
+                                                },
+                                                "colorRange": {
+                                                    "color": [
+                                                        {
+                                                            "minValue": "0",
+                                                            "maxValue": "50",
+                                                            "code": "#C02133"
+                                                        },
+                                                        {
+                                                            "minValue": "50",
+                                                            "maxValue": "75",
+                                                            "code": "#E96B25"
+                                                        },
+                                                        {
+                                                            "minValue": "75",
+                                                            "maxValue": "100",
+                                                            "code": "#488A7E"
+                                                        }
+                                                    ]
+                                                },
+                                                "dials": {
+                                                    "dial": [{
+                                                            "value": "#{interface_data_mob_appBean.perc_value2}"
+                                                        }]
+                                                }
+                                            }
+                                        }).render();
+                                    });
+                                </script>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <h:panelGrid>
+                            <div id="chart-container2"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var revenueChart = new FusionCharts({
+                                        type: 'stackedbar2d',
+                                        renderAt: 'chart-container2',
+                                        width: '650',
+                                        height: '400',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "Received MobApp reports validation status",
+                                                "subCaption": "W#{interface_data_mob_appBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_mob_appBean.report_period_year, interface_data_mob_appBean.report_period_week)})",
+                                                "xAxisname": "Report Form",
+                                                "yAxisName": "Number of MobApp reports",
+                                                "numberPrefix": "",
+                                                "paletteColors": "#488A7E,#C02133",
+                                                "bgColor": "#ffffff",
+                                                "borderAlpha": "20",
+                                                "showCanvasBorder": "0",
+                                                "usePlotGradientColor": "0",
+                                                "plotBorderAlpha": "10",
+                                                "legendBorderAlpha": "0",
+                                                "legendShadow": "0",
+                                                "valueFontColor": "#ffffff",
+                                                "showXAxisLine": "1",
+                                                "xAxisLineColor": "#999999",
+                                                "divlineColor": "#999999",
+                                                "divLineIsDashed": "1",
+                                                "showAlternateVGridColor": "0",
+                                                "subcaptionFontBold": "0",
+                                                "subcaptionFontSize": "14",
+                                                "showHoverEffect": "1"
+
+                                            },
+                                            "categories": #{interface_data_mob_appBean.categoriesChartString},
+                                            "dataset": #{interface_data_mob_appBean.dataseriesChartString}
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" id="panelResultTable">
+                        <p:dataTable id="table_received_mob_app" var="mob_app" value="#{interface_data_mob_appBean.received_MOB_APPs}" draggableRows="false" 
+                                     paginator="true" tableStyle="width:auto;" rows="50" rowsPerPageTemplate="100,200,400,1000,2000" 
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {Exporters}">
+                            <f:facet name="header">
+                                MobApp reports received for period W#{interface_data_mob_appBean.report_period_week} (#{generalUtilities.get_week_dates_from_year_and_week(interface_data_mob_appBean.report_period_year, interface_data_mob_appBean.report_period_week)})
+                            </f:facet>
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="table_received_mob_app" fileName="received_mob_app" />
+                                </h:commandLink>
+                                <h:commandLink>
+                                    <p:graphicImage name="images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="table_received_mob_app" fileName="received_mob_app"/>
+                                </h:commandLink>
+                                <h:commandLink>
+                                    <p:graphicImage name="images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="table_received_mob_app" fileName="received_mob_app" />
+                                </h:commandLink>
+                                <h:commandLink>
+                                    <p:graphicImage name="images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="table_received_mob_app" fileName="received_mob_app" />
+                                </h:commandLink>
+                            </f:facet>
+                            <p:column headerText="Report Form" style="font-size: 12px;">
+                                <h:outputText value="#{report_formBean.getReport_form_by_id(mob_app.report_form_id).report_form_name}" />
+                            </p:column>
+                            <p:column headerText="Health Facility" style="font-size: 12px;">
+                                <h:outputText value="#{mob.health_facility_name}" />
+                            </p:column>
+                            <p:column headerText="District" style="font-size: 12px;">
+                                <h:outputText value="#{mob_app.district_name}" />
+                            </p:column>
+                            <p:column headerText="Date" style="font-size: 12px;">
+                                <h:outputText value="#{mob_app.add_date}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy HH:mm" timeZone="EAT"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Validation" style="font-size: 12px;">
+                                <h:outputText value="#{mob_app.status_v}" rendered="#{mob_app.status_v=='Pass'}"/>
+                                <h:outputText value="#{mob_app.status_v}" style="color: red" rendered="#{mob_app.status_v=='Fail'}"/>
+                            </p:column>
+                            <p:column headerText="Validation Message" style="font-size: 12px;">
+                                <h:outputText value="#{mob_app.status_v_desc}" rendered="#{mob_app.status_v=='Pass'}"/>
+                                <h:outputText value="#{mob_app.status_v_desc}" style="color: red" rendered="#{mob_app.status_v=='Fail'}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:fieldset>
+                </center>
+            </h:form>
+        </f:view>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

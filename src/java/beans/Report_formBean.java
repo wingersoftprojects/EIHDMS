@@ -165,4 +165,13 @@ public class Report_formBean extends AbstractBean<Report_form> implements Serial
             return null;
         }
     }
+    
+    public Report_form getReport_form_by_id(int aReport_form_id){
+        try {
+            return (Report_form) Report_form.queryReport_form("is_active=1 and is_deleted=0 and report_form_id=" + aReport_form_id, null).get(0);
+        } catch (PersistentException ex) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
