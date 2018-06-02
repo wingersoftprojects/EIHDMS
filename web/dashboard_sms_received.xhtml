@@ -20,8 +20,9 @@
             <script type="text/javascript" src="resources/js/fusioncharts-jquery-plugin.js"></script>
             <script type="text/javascript" src="resources/js/fusioncharts.widgets.js"></script>
             <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+                <center>
                 <p:growl/>
-                <p:fieldset legend="SMS Received">
+                <p:fieldset legend="SMS Reports Received Dashboard">
                     <p:panelGrid columns="8" id="panelFilter">
                         <p:outputLabel value="Report Form:" />
                         <p:selectCheckboxMenu id="report_form" value="#{interface_data_smsBean.selectedReport_forms}" label="Report Form(s)" style="width:125px" converter="report_formConverter">
@@ -49,8 +50,9 @@
                             <p:ajax listener="#{interface_data_smsBean.resetDashboard()}" process="@form" update="@form"/>
                         </p:commandButton>
                     </p:panelGrid>
-                    <h:panelGrid columns="2" id="panelResultCharts">
-                        <h:panelGrid style="text-align: center">
+                    
+                    <h:panelGrid columns="1" id="panelResultCharts">
+                        <h:panelGrid columns="2" style="text-align: center">
                             <h:panelGrid style="text-align: center" rendered="#{interface_data_smsBean.report_form1.report_form_id>0}">
                                 <div id="chart-container1"></div>
                                 <p:outputLabel value="Reporting rate : #{interface_data_smsBean.count_n1} SMS received out of #{interface_data_smsBean.count_d1}"/>
@@ -258,6 +260,7 @@
                         </p:dataTable>
                     </h:panelGrid>
                 </p:fieldset>
+                </center>
             </h:form>
         </f:view>
         <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
