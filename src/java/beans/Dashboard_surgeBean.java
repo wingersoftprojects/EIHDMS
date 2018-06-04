@@ -222,7 +222,6 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         //for the indicator charts
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql1);) {
-            System.out.println("SQL1:" + sql1);
             rs = ps.executeQuery();
             if (rs.next()) {
                 DecimalFormat myFormatter = new DecimalFormat("###,###");
@@ -328,69 +327,69 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         }
 
         //for the trend
-        try (Connection conn2 = DBConnection.getMySQLConnection();
-                PreparedStatement ps2 = conn2.prepareStatement(sql2);) {
-            System.out.println("SQL2:" + sql2);
-            rs2 = ps2.executeQuery();
-            DecimalFormat myFormatter = new DecimalFormat("###,###");
-            Map<String, String> lv;
-            gson = new Gson();
-            this.DataChartString6 = "[]";
-            List<Object> ChartDataArray6 = new ArrayList<>();
-            while (rs2.next()) {
-                lv = new HashMap<String, String>();
-                try {
-                    lv.put("label", rs2.getString("report_period_year") + "W" + rs2.getString("report_period_week"));
-                } catch (NullPointerException npe) {
-                    lv.put("label", "");
-                }
-                if (aIndicatorId == 1) {
-                    //perc_test_coverage
-                    try {
-                        lv.put("value", myFormatter.format(rs2.getFloat("perc_test_coverage")));
-                    } catch (NullPointerException npe) {
-                        lv.put("value", "0");
-                    }
-                } else if (aIndicatorId == 2) {
-                    //perc_miss_appoint_cur
-                    try {
-                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_cur")));
-                    } catch (NullPointerException npe) {
-                        lv.put("value", "0");
-                    }
-                } else if (aIndicatorId == 3) {
-                    //perc_miss_appoint_prev
-                    try {
-                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_prev")));
-                    } catch (NullPointerException npe) {
-                        lv.put("value", "0");
-                    }
-                } else if (aIndicatorId == 4) {
-                    //perc_hts_yield
-                    try {
-                        lv.put("value", myFormatter.format(rs2.getFloat("perc_hts_yield")));
-                    } catch (NullPointerException npe) {
-                        lv.put("value", "0");
-                    }
-                } else if (aIndicatorId == 5) {
-                    //perc_start_art
-                    try {
-                        lv.put("value", myFormatter.format(rs2.getFloat("perc_start_art")));
-                    } catch (NullPointerException npe) {
-                        lv.put("value", "0");
-                    }
-                } else {
-                    lv.put("value", "0");
-                }
-                ChartDataArray6.add(lv);
-            }
-            if (ChartDataArray6.size() > 0) {
-                this.DataChartString6 = gson.toJson(ChartDataArray6);
-                System.out.println("DataChartString6:" + DataChartString6);
-            }
-        } catch (SQLException se1) {
-            System.err.println("refreshDashboard1-Trend:" + se1.getMessage());
-        }
+//        try (Connection conn2 = DBConnection.getMySQLConnection();
+//                PreparedStatement ps2 = conn2.prepareStatement(sql2);) {
+//            rs2 = ps2.executeQuery();
+//            DecimalFormat myFormatter = new DecimalFormat("###,###");
+//            Map<String, String> lv;
+//            gson = new Gson();
+//            this.DataChartString6 = "[]";
+//            List<Object> ChartDataArray6 = new ArrayList<>();
+//            while (rs2.next()) {
+//                lv = new HashMap<String, String>();
+//                try {
+//                    lv.put("label", rs2.getString("report_period_year") + "W" + rs2.getString("report_period_week"));
+//                } catch (NullPointerException npe) {
+//                    lv.put("label", "");
+//                }
+//                if (aIndicatorId == 1) {
+//                    //perc_test_coverage
+//                    try {
+//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_test_coverage")));
+//                    } catch (NullPointerException npe) {
+//                        lv.put("value", "0");
+//                    }
+//                } else if (aIndicatorId == 2) {
+//                    //perc_miss_appoint_cur
+//                    try {
+//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_cur")));
+//                    } catch (NullPointerException npe) {
+//                        lv.put("value", "0");
+//                    }
+//                } else if (aIndicatorId == 3) {
+//                    //perc_miss_appoint_prev
+//                    try {
+//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_prev")));
+//                    } catch (NullPointerException npe) {
+//                        lv.put("value", "0");
+//                    }
+//                } else if (aIndicatorId == 4) {
+//                    //perc_hts_yield
+//                    try {
+//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_hts_yield")));
+//                    } catch (NullPointerException npe) {
+//                        lv.put("value", "0");
+//                    }
+//                } else if (aIndicatorId == 5) {
+//                    //perc_start_art
+//                    try {
+//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_start_art")));
+//                    } catch (NullPointerException npe) {
+//                        lv.put("value", "0");
+//                    }
+//                } else {
+//                    lv.put("value", "0");
+//                }
+//                ChartDataArray6.add(lv);
+//            }
+//            if (ChartDataArray6.size() > 0) {
+//                this.DataChartString6 = gson.toJson(ChartDataArray6);
+//                System.out.println("DataChartString6:" + DataChartString6);
+//            }
+//        } catch (SQLException se1) {
+//            System.err.println("refreshDashboard1-Trend:" + se1.getMessage());
+//        }
+        this.refreshBarChartdata(sql2, aIndicatorId);
         
         //for the dialog list
         try {
@@ -400,6 +399,116 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             Logger.getLogger(Dashboard_surgeBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    public void refreshBarChartdata(String sql,int aIndicatorId) {
+        ResultSet rs2 = null;
+        Gson gson = new Gson();
+        Map<String, String> lv;
+        DecimalFormat myFormatter = new DecimalFormat("###,###");
+
+        this.CategoriesChartString = "";
+        ArrayList<Object> categoryarray = new ArrayList<>();
+        this.DataseriesChartString = "";
+        ArrayList<Object> dataSeriesArray = new ArrayList<>();
+        ArrayList<Object> dataSeriesArray1 = new ArrayList<>();
+        ArrayList<Object> dataSeriesArray2 = new ArrayList<>();
+        String SerieName1 = "", SerieName2 = "";
+        String SerieString1 = "", SerieString2 = "";
+
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs2 = ps.executeQuery();
+            while (rs2.next()) {
+                String FormName = "";
+                // add category data to the category array
+                lv = new LinkedHashMap<String, String>();
+                lv.put("label", rs2.getString("report_period_year") + "W" + rs2.getString("report_period_week"));
+                categoryarray.add(lv);
+
+                // dataseries
+                if (aIndicatorId == 1) {
+                    //perc_test_coverage
+                    lv = new LinkedHashMap<String, String>();
+                    try {
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_test_coverage")));
+                    } catch (NullPointerException npe) {
+                        lv.put("value", "0");
+                    }
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                } else if (aIndicatorId == 2) {
+                    //perc_miss_appoint_cur
+                    lv = new LinkedHashMap<String, String>();
+                    try {
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_cur")));
+                    } catch (NullPointerException npe) {
+                        lv.put("value", "0");
+                    }
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                } else if (aIndicatorId == 3) {
+                    //perc_miss_appoint_prev
+                    lv = new LinkedHashMap<String, String>();
+                    try {
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_prev")));
+                    } catch (NullPointerException npe) {
+                        lv.put("value", "0");
+                    }
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                } else if (aIndicatorId == 4) {
+                    //perc_hts_yield
+                    lv = new LinkedHashMap<String, String>();
+                    try {
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_hts_yield")));
+                    } catch (NullPointerException npe) {
+                        lv.put("value", "0");
+                    }
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                } else if (aIndicatorId == 5) {
+                    //perc_start_art
+                    lv = new LinkedHashMap<String, String>();
+                    try {
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_start_art")));
+                    } catch (NullPointerException npe) {
+                        lv.put("value", "0");
+                    }
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                } else {
+                    lv = new LinkedHashMap<String, String>();
+                    lv.put("value", "0");
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                }
+            }
+            //final categories string from the array
+            CategoriesChartString = "[{\"category\":" + gson.toJson(categoryarray) + "}]";
+
+            //build series string from the array
+            SerieName1 = "Data";
+            SerieString1 = "{\"seriesname\": \"" + SerieName1 + "\",\"showValues\":\"1\",\"data\":" + gson.toJson(dataSeriesArray1) + "}";
+            dataSeriesArray.add(SerieString1);
+            SerieName2 = "Trendline";
+            String renderas2="line";
+            SerieString2 = "{\"seriesname\": \"" + SerieName2 + "\",\"renderAs\":\"line\",\"parentYAxis\":\"S\",\"showValues\":\"0\",\"data\":" + gson.toJson(dataSeriesArray2) + "}";
+            dataSeriesArray.add(SerieString2);
+
+            //final data series string from the array
+            DataseriesChartString = dataSeriesArray.toString();
+        } catch (SQLException se) {
+            System.err.println("refreshBarChartdata:" + se.getMessage());
+        } finally {
+            if (rs2 != null) {
+                try {
+                    rs2.close();
+                } catch (SQLException ex) {
+                    System.err.println(ex.getMessage());
+                }
+            }
+        }
     }
     
     public Health_facility getHfById(int aHfId){

@@ -3471,74 +3471,100 @@ DECLARE health_facility_id_v int(11);
 DECLARE report_period_year_v int(11);
 DECLARE report_period_week_v int(11);
 DECLARE finished INTEGER DEFAULT 0;
+DECLARE surge_table_id Integer;
+DECLARE surge_table_name varchar(100);
 DECLARE cur_dashboard_surge CURSOR FOR SELECT health_facility_id,report_period_year,report_period_week FROM  dashboard_surge WHERE dashboard_surge_id>0 and report_period_week>1 and batch_id=in_batch_id;
 
-INSERT INTO dashboard_surge
- (
-  batch_id,
-  report_form_id,
-  health_facility_id,
-  parish_id,
-  sub_county_id,
-  district_id,
-  report_period_week,
-  report_period_year,
-  report_period_from_date,
-  report_period_to_date,
-  a,
-  b,
-  c,
-  d,
-  e,
-  f,
-  g,
-  h,
-  i,
-  j,
-  k,
-  l
- ) 
-SELECT in_batch_id,report_form_id,health_facility_id,parish_id,sub_county_id,district_id,report_period_week,report_period_year,report_period_from_date,report_period_to_date,
- MAX(IF(data_element_id=18003,data_element_value,NULL)) AS a,
- MAX(IF(data_element_id=18004,data_element_value,NULL)) AS b,
- MAX(IF(data_element_id=18005,data_element_value,NULL)) AS c,
- MAX(IF(data_element_id=18006,data_element_value,NULL)) AS d, 
- MAX(IF(data_element_id=18007,data_element_value,NULL)) AS e, 
- MAX(IF(data_element_id=18008,data_element_value,NULL)) AS f, 
- MAX(IF(data_element_id=18009,data_element_value,NULL)) AS g, 
- MAX(IF(data_element_id=18010,data_element_value,NULL)) AS h, 
- MAX(IF(data_element_id=18011,data_element_value,NULL)) AS i,
- MAX(IF(data_element_id=18012,data_element_value,NULL)) AS j,
- MAX(IF(data_element_id=18013,data_element_value,NULL)) AS k,
- MAX(IF(data_element_id=18014,data_element_value,NULL)) AS l 
- FROM base_data_39 where batch_id =in_batch_id 
- GROUP BY report_form_id,health_facility_id,parish_id,sub_county_id,district_id,report_period_week,report_period_year,report_period_from_date,report_period_to_date;
+SET surge_table_id=(select report_form_id from report_form where report_form_code='SURGE' limit 1);
+SET surge_table_name=concat('base_data_',surge_table_id);
+IF(surge_table_id IS NOT NULL) THEN 
+		SET @sqltext=concat("
+		INSERT INTO dashboard_surge
+		 (
+		  batch_id,
+		  report_form_id,
+		  health_facility_id,
+		  parish_id,
+		  sub_county_id,
+		  district_id,
+		  report_period_week,
+		  report_period_year,
+		  report_period_from_date,
+		  report_period_to_date,
+		  a,
+		  b,
+		  c,
+		  d,
+		  e,
+		  f,
+		  g,
+		  h,
+		  i,
+		  j,
+		  k,
+		  l
+		 ) 
+		 SELECT ",in_batch_id,",bd.report_form_id,bd.health_facility_id,bd.parish_id,bd.sub_county_id,bd.district_id,bd.report_period_week,bd.report_period_year,bd.report_period_from_date,report_period_to_date,
+		 MAX(IF(de.data_element_code='a',bd.data_element_value,NULL)) AS a,
+		 MAX(IF(de.data_element_code='b',bd.data_element_value,NULL)) AS b,
+		 MAX(IF(de.data_element_code='c',bd.data_element_value,NULL)) AS c,
+		 MAX(IF(de.data_element_code='d',bd.data_element_value,NULL)) AS d, 
+		 MAX(IF(de.data_element_code='e',bd.data_element_value,NULL)) AS e, 
+		 MAX(IF(de.data_element_code='f',bd.data_element_value,NULL)) AS f, 
+		 MAX(IF(de.data_element_code='g',bd.data_element_value,NULL)) AS g, 
+		 MAX(IF(de.data_element_code='h',bd.data_element_value,NULL)) AS h, 
+		 MAX(IF(de.data_element_code='i',bd.data_element_value,NULL)) AS i,
+		 MAX(IF(de.data_element_code='j',bd.data_element_value,NULL)) AS j,
+		 MAX(IF(de.data_element_code='k',bd.data_element_value,NULL)) AS k,
+		 MAX(IF(de.data_element_code='l',bd.data_element_value,NULL)) AS l 
+		 FROM ",surge_table_name," bd INNER JOIN data_element de ON bd.data_element_id=de.data_element_id where bd.batch_id=",in_batch_id," 
+		 GROUP BY bd.report_form_id,bd.health_facility_id,bd.parish_id,bd.sub_county_id,bd.district_id,bd.report_period_week,bd.report_period_year,bd.report_period_from_date,report_period_to_date");
 
--- update b_prev from the previous week where week>1
-OPEN cur_dashboard_surge;
-BEGIN
-	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished =1;
-	loopDBSurge: LOOP
-			FETCH cur_dashboard_surge INTO health_facility_id_v,report_period_year_v,report_period_week_v;
-				IF finished=1 THEN
-					LEAVE loopDBSurge;
-				END IF;
-				SET b_prev_v=0;
-				SET b_prev_v=(SELECT max(b) FROM dashboard_surge where health_facility_id=health_facility_id_v and report_period_year=report_period_year_v and report_period_week=(report_period_week_v-1));
-				UPDATE dashboard_surge SET b_prev=b_prev_v WHERE dashboard_surge_id>0 AND  health_facility_id=health_facility_id_v and report_period_year=report_period_year_v and report_period_week=report_period_week_v;
-END LOOP;
-END;
-CLOSE cur_dashboard_surge;
+		PREPARE stmt FROM @sqltext;
+		EXECUTE stmt;
+		DEALLOCATE PREPARE stmt;
 
--- update b_prev from the previous week where week=1
+		-- update b_prev from the previous week where week>1
+		OPEN cur_dashboard_surge;
+		BEGIN
+			DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished =1;
+			loopDBSurge: LOOP
+					FETCH cur_dashboard_surge INTO health_facility_id_v,report_period_year_v,report_period_week_v;
+						IF finished=1 THEN
+							LEAVE loopDBSurge;
+						END IF;
+						SET b_prev_v=0;
+						SET b_prev_v=(SELECT max(b) FROM dashboard_surge where health_facility_id=health_facility_id_v and report_period_year=report_period_year_v and report_period_week=(report_period_week_v-1));
+						UPDATE dashboard_surge SET b_prev=b_prev_v WHERE dashboard_surge_id>0 AND  health_facility_id=health_facility_id_v and report_period_year=report_period_year_v and report_period_week=report_period_week_v;
+		END LOOP;
+		END;
+		CLOSE cur_dashboard_surge;
 
--- calculating percentages
-UPDATE dashboard_surge SET  
-	perc_test_coverage = 100.0*d/a,
-	perc_miss_appoint_cur =100.0*b/(a+b),
-	perc_miss_appoint_prev = 100.0*c/b_prev,
-	perc_hts_yield =100.0*f/e,
-	perc_start_art =100.0*h/f 
-WHERE dashboard_surge_id>0 and batch_id=in_batch_id;
+		-- update b_prev from the previous week where week=1
+
+		-- calculating percentages
+		UPDATE dashboard_surge SET  
+			perc_test_coverage = 100.0*d/a,
+			perc_miss_appoint_cur =100.0*b/(a+b),
+			perc_miss_appoint_prev = 100.0*c/b_prev,
+			perc_hts_yield =100.0*f/e,
+			perc_start_art =100.0*h/f 
+		WHERE dashboard_surge_id>0 and batch_id=in_batch_id;
+END IF;
+END//
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_update_dashboard_surge
+-- ----------------------------
+DROP PROCEDURE IF EXISTS sp_update_dashboard_surge;
+DELIMITER //
+CREATE PROCEDURE sp_update_dashboard_surge
+(
+	IN in_batch_id int(11)
+) 
+BEGIN 
+DELETE FROM dashboard_surge WHERE dashboard_surge_id>0 AND batch_id=in_batch_id;
+CALL sp_insert_dashboard_surge(in_batch_id);
 END//
 DELIMITER ;
