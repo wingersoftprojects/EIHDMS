@@ -2113,7 +2113,7 @@ public class UploadBean implements Serializable {
                  */
 
                 //pivot dashboard surge form
-                this.PivotEGPAFSurgeFormData(batch.getBatch_id());
+                this.InsertPivotEGPAFSurgeFormData(batch.getBatch_id());
             } catch (SQLException ex) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
@@ -2361,7 +2361,7 @@ public class UploadBean implements Serializable {
                  */
 
                 //pivot dashboard surge form
-                this.PivotEGPAFSurgeFormData(batch.getBatch_id());
+                this.InsertPivotEGPAFSurgeFormData(batch.getBatch_id());
             } catch (SQLException ex) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
@@ -2372,8 +2372,21 @@ public class UploadBean implements Serializable {
         }
     }
 
-    public void PivotEGPAFSurgeFormData(long aBatchId) {
+    public void InsertPivotEGPAFSurgeFormData(long aBatchId) {
         String sql = "{call sp_insert_dashboard_surge(?)}";
+        try (
+                Connection connection = loginBean.getMySQLConnection_System_User();
+                CallableStatement cs = connection.prepareCall(sql);) {
+            cs.setLong(1, aBatchId);
+            cs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void UpdatePivotEGPAFSurgeFormData(long aBatchId) {
+        String sql = "{call sp_update_dashboard_surge(?)}";
         try (
                 Connection connection = loginBean.getMySQLConnection_System_User();
                 CallableStatement cs = connection.prepareCall(sql);) {
