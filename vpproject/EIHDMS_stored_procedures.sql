@@ -2575,6 +2575,17 @@ add_date,
 END IF;
 -- END loaded_data_summary
 
+
+-- Add SURGE 
+
+SELECT * FROM report_form where report_form_id=in_report_form_id AND report_form_code='SURGE';
+IF FOUND_ROWS()>0 THEN
+DELETE FROM dashboard_surge WHERE dashboard_surge_id>0 AND report_period_week=in_report_period_week AND report_period_year=in_report_period_year AND health_facility_id=in_health_facility_id and report_form_id=in_report_form_id;
+CALL sp_insert_dashboard_surge(in_batch_id);
+END IF;
+
+-- End Add SURGE
+
 -- Delete from interface_data
 -- DELETE from interface_data WHERE batch_id=in_batch_id;
 CALL sp_delete_from_interface_data_by_batch_id(in_batch_id);
@@ -3561,10 +3572,13 @@ DROP PROCEDURE IF EXISTS sp_update_dashboard_surge;
 DELIMITER //
 CREATE PROCEDURE sp_update_dashboard_surge
 (
-	IN in_batch_id int(11)
+	IN in_batch_id int(11),
+	IN in_report_period_week int(11),
+	IN in_report_period_year int(11),
+	IN in_health_facility_id int(11)
 ) 
 BEGIN 
-DELETE FROM dashboard_surge WHERE dashboard_surge_id>0 AND batch_id=in_batch_id;
+DELETE FROM dashboard_surge WHERE dashboard_surge_id>0 AND report_period_week=in_report_period_week AND report_period_year=in_report_period_year AND health_facility_id=in_health_facility_id;
 CALL sp_insert_dashboard_surge(in_batch_id);
 END//
 DELIMITER ;

@@ -2113,7 +2113,7 @@ public class UploadBean implements Serializable {
                  */
 
                 //pivot dashboard surge form
-                this.InsertPivotEGPAFSurgeFormData(batch.getBatch_id());
+                //this.InsertPivotEGPAFSurgeFormData(batch.getBatch_id());
             } catch (SQLException ex) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
