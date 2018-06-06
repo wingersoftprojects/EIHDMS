@@ -25,7 +25,7 @@ public class Test2 {
 //        System.out.println(new Test2().get_week_dates_from_year_and_week(2018, 2));
 //        System.out.println(new Test2().get_week_from_date(new Date()));
         SMSData sData = new SMSData();
-        sData.upload_mobile_data(1);
+        sData.upload_mobile_data(7);
     }
     
     public String get_week_dates_from_year_and_week(Integer year, Integer week) {
