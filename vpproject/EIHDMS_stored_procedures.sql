@@ -2575,7 +2575,7 @@ END IF;
 
 SELECT * FROM report_form where report_form_id=in_report_form_id AND report_form_code='SURGE';
 IF FOUND_ROWS()>0 THEN
-DELETE FROM dashboard_surge WHERE dashboard_surge_id>0 AND report_period_week=in_week AND report_period_year=in_calendar_year AND health_facility_id=in_health_facility_id and report_form_id=(select distinct health_facility_id from validation_report where batch_id=in_batch_id);
+DELETE FROM dashboard_surge WHERE dashboard_surge_id>0 AND report_period_week=in_week AND report_period_year=in_calendar_year AND health_facility_id=(select distinct health_facility_id from validation_report where batch_id=in_batch_id) and report_form_id=in_report_form_group_id;
 CALL sp_insert_dashboard_surge(in_batch_id);
 END IF;
 
