@@ -65,8 +65,9 @@
                         <p:outputLabel value="Data Entry Mode?:" for="mode_data_entry"/>
                         <p:selectOneMenu id="mode_data_entry" value="#{report_formBean.selected.mode_data_entry}" required="true" requiredMessage="Data Entry Mode field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItem itemLabel="Yes" itemValue="1" />
-                            <f:selectItem itemLabel="No" itemValue="0" />
+                            <f:selectItem itemLabel="WEB" itemValue="1" />
+                            <f:selectItem itemLabel="SMS" itemValue="2" />
+                            <f:selectItem itemLabel="MOB APP" itemValue="3" />
                             <f:ajax render="@this"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Is Active?:" for="is_active"/>

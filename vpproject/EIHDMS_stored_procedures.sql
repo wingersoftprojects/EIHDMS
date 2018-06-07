@@ -35,11 +35,6 @@ declare continue handler for not found set done=1;
         fetch cur_tables into table_name_v;
         if done = 1 then leave tableLoop; end if;
 
--- SET @sql_text1=CONCAT('alter table ',table_name_v,' drop column entry_mode');
--- PREPARE stmt1 FROM @sql_text1;
--- EXECUTE stmt1;
--- DEALLOCATE PREPARE stmt1;
-
 SET @sql_text1=CONCAT('alter table ',table_name_v,' add column entry_mode varchar(20)');
 PREPARE stmt1 FROM @sql_text1;
 EXECUTE stmt1;

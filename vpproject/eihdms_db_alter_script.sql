@@ -396,7 +396,6 @@ alter_scripts_03.05.2018
 create table dashboard_surge (dashboard_surge_id int(11) not null auto_increment, report_form_id int(11), health_facility_id int(11), parish_id int(11), sub_county_id int(11), district_id int(11), report_period_week int(11), report_period_year int(11), report_period_from_date date, report_period_to_date date, data_element_id int(11), a int(11), b int(11), b_prev int(11), c int(11), d int(11), e int(11), f int(11), g int(11), h int(11), i int(11), j int(11), k int(11), l int(11), perc_test_coverage float, perc_miss_appoint_cur float, perc_miss_appoint_prev float, perc_hts_yield float, perc_start_art float, primary key (dashboard_surge_id)) ENGINE=InnoDB;
 alter table access_scope modify column add_date datetime not null;
 alter table access_scope modify column last_edit_date datetime;
-create table batch_mob_app (batch_mob_app_id int(11) not null auto_increment, is_completed int(1) not null, is_deleted int(1) not null, is_active int(1) not null, add_date datetime null, add_by int(10), last_edit_date datetime null, last_edit_by int(10), primary key (batch_mob_app_id)) ENGINE=InnoDB;
 alter table county modify column add_date datetime;
 alter table county modify column last_edit_date datetime;
 alter table data_element modify column data_element_name varchar(255);
@@ -414,7 +413,6 @@ alter table district modify column add_date datetime;
 alter table district modify column last_edit_date datetime;
 alter table health_facility modify column add_date datetime;
 alter table health_facility modify column last_edit_date datetime;
-create table interface_data_mob_app (interface_data_mob_app_id int(11) not null auto_increment, batch_mob_app_id int(11) not null, data_element_id int(11) not null, data_element_value varchar(100) not null, health_facility_name varchar(100), parish_name varchar(100), sub_county_name varchar(100), county_name varchar(100), district_name varchar(100), add_date_mob_app datetime not null, is_deleted int(1) not null, is_active int(1) not null, add_date datetime null, add_by int(10), last_edit_date datetime null, last_edit_by int(10), status_v varchar(50), status_v_desc text, status_m varchar(50), status_m_desc text, health_facility_id int(11), parish_id int(11), sub_county_id int(10), county_id int(11), district_id int(10), report_form_id int(11), report_form_group_id int(11), entry_mode varchar(20), primary key (interface_data_mob_app_id)) ENGINE=InnoDB;
 alter table interface_data_sms modify column add_date datetime not null;
 alter table interface_data_sms modify column last_edit_date datetime;
 alter table organisation modify column add_date datetime not null;
