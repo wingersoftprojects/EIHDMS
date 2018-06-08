@@ -148,10 +148,10 @@ public class SMSData {
                 case 3:
                     report_period_quarter = 1;
                     break;
-                case 7:
+                case 6:
                     report_period_quarter = 2;
                     break;
-                case 10:
+                case 9:
                     report_period_quarter = 3;
                     break;
                 default:
@@ -787,10 +787,10 @@ public class SMSData {
                         case 3:
                             report_period_quarter = 1;
                             break;
-                        case 7:
+                        case 6:
                             report_period_quarter = 2;
                             break;
-                        case 10:
+                        case 9:
                             report_period_quarter = 3;
                             break;
                         default:
