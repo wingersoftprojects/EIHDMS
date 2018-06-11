@@ -399,7 +399,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
             if (null != pc) {
                 try {
                     if (pc.getEntity_type().equals("FACILITY")) {
-                        entityname = Health_facility.getHealth_facilityByORMID(pc.getEntity_id()).getHealth_facility_name();
+                        entityname = Health_facility.getHealth_facilityByORMID(pc.getEntity_id(), null).getHealth_facility_name();
                     }
                 } catch (NullPointerException npe) {
 
