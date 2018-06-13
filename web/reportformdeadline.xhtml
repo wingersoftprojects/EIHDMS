@@ -25,32 +25,52 @@
                             <p:selectOneMenu id="report_form2" value="#{report_form_deadlineBean.selected.report_form}" style="width:125px" converter="report_formConverter">
                                 <f:selectItem itemLabel="" />
                                 <f:selectItems value="#{report_formBean.tsActive}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                                <p:ajax process="@this"/>
+                                <p:ajax process="@this" update="@form,day_from"/>
                             </p:selectOneMenu>
-                            <p:outputLabel value="Day From:" for="day_from"/>
-                            <p:selectOneMenu id="day_from" value="#{report_form_deadlineBean.selected.day_from}" required="true" requiredMessage="From Day field is required">
+                            <p:outputLabel value="From Day:" for="day_from" rendered="#{report_form_deadlineBean.showweekly(report_form_deadlineBean.selected.report_form)}"/>
+                            <p:selectOneMenu id="day_from" value="#{report_form_deadlineBean.selected.day_from}" required="true"  rendered="#{report_form_deadlineBean.showweekly(report_form_deadlineBean.selected.report_form)}" requiredMessage="From Day field is required">
                                 <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItem itemLabel="Mon" itemValue="1" />
-                                <f:selectItem itemLabel="Tue" itemValue="2" />
-                                <f:selectItem itemLabel="Wed" itemValue="3" />
-                                <f:selectItem itemLabel="Thu" itemValue="4" />
-                                <f:selectItem itemLabel="Fri" itemValue="5" />
-                                <f:selectItem itemLabel="Sat" itemValue="6" />
-                                <f:selectItem itemLabel="Sun" itemValue="7" />
+                                <f:selectItem itemLabel="Sun" itemValue="1" />
+                                <f:selectItem itemLabel="Mon" itemValue="2" />
+                                <f:selectItem itemLabel="Tue" itemValue="3" />
+                                <f:selectItem itemLabel="Wed" itemValue="4" />
+                                <f:selectItem itemLabel="Thu" itemValue="5" />
+                                <f:selectItem itemLabel="Fri" itemValue="6" />
+                                <f:selectItem itemLabel="Sat" itemValue="7" />
                                 <p:ajax process="@this"/>
                             </p:selectOneMenu>
-                            <p:outputLabel value="Day To:" for="day_to"/>
-                            <p:selectOneMenu id="day_to" value="#{report_form_deadlineBean.selected.day_to}" required="true" requiredMessage="Entity Type field is required">
+                            <p:outputLabel value="To Day:" for="day_to" rendered="#{report_form_deadlineBean.showweekly(report_form_deadlineBean.selected.report_form)}"/>
+                            <p:selectOneMenu id="day_to" value="#{report_form_deadlineBean.selected.day_to}"  rendered="#{report_form_deadlineBean.showweekly(report_form_deadlineBean.selected.report_form)}" required="true" requiredMessage="Entity Type field is required">
                                 <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItem itemLabel="Mon" itemValue="1" />
-                                <f:selectItem itemLabel="Tue" itemValue="2" />
-                                <f:selectItem itemLabel="Wed" itemValue="3" />
-                                <f:selectItem itemLabel="Thu" itemValue="4" />
-                                <f:selectItem itemLabel="Fri" itemValue="5" />
-                                <f:selectItem itemLabel="Sat" itemValue="6" />
-                                <f:selectItem itemLabel="Sun" itemValue="7" />
+                                <f:selectItem itemLabel="Sun" itemValue="1" />
+                                <f:selectItem itemLabel="Mon" itemValue="2" />
+                                <f:selectItem itemLabel="Tue" itemValue="3" />
+                                <f:selectItem itemLabel="Wed" itemValue="4" />
+                                <f:selectItem itemLabel="Thu" itemValue="5" />
+                                <f:selectItem itemLabel="Fri" itemValue="6" />
+                                <f:selectItem itemLabel="Sat" itemValue="7" />
                                 <p:ajax process="@this"/>
                             </p:selectOneMenu>
+                            <p:outputLabel value="From Day:" for="month_day_from"  rendered="#{report_form_deadlineBean.showmonthly(report_form_deadlineBean.selected.report_form)}"/>
+                            <p:inputText id="month_day_from" value="#{report_form_deadlineBean.selected.day_from}"  rendered="#{report_form_deadlineBean.showmonthly(report_form_deadlineBean.selected.report_form)}">
+                                <f:validateLongRange minimum="1" maximum="31"/>
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText>
+                            <p:outputLabel value="To Day:" for="month_day_to"  rendered="#{report_form_deadlineBean.showmonthly(report_form_deadlineBean.selected.report_form)}"/>
+                            <p:inputText id="month_day_to" value="#{report_form_deadlineBean.selected.day_to}"  rendered="#{report_form_deadlineBean.showmonthly(report_form_deadlineBean.selected.report_form)}">
+                                <f:validateLongRange minimum="1" maximum="31"/>
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText>
+                            <p:outputLabel value="From Day:" for="quarter_day_from" rendered="#{report_form_deadlineBean.showquartery(report_form_deadlineBean.selected.report_form)}"/>
+                            <p:inputText id="quarter_day_from" value="#{report_form_deadlineBean.selected.day_from}" rendered="#{report_form_deadlineBean.showquartery(report_form_deadlineBean.selected.report_form)}">
+                                <f:validateLongRange minimum="1" maximum="31"/>
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText>
+                            <p:outputLabel value="To Day:" for="quarter_day_to" rendered="#{report_form_deadlineBean.showquartery(report_form_deadlineBean.selected.report_form)}"/>
+                            <p:inputText id="quarter_day_to" value="#{report_form_deadlineBean.selected.day_to}" rendered="#{report_form_deadlineBean.showquartery(report_form_deadlineBean.selected.report_form)}">
+                                <f:validateLongRange minimum="1" maximum="31"/>
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText>
 
                             <p:outputLabel value="Start Time:" for="start_time"/>
                             <p:calendar id="start_time" value="#{report_form_deadlineBean.selected.time_from}" timeOnly="true" converter="deadlineTimeConverter" pattern="HH:mm:ss" timeZone="EAT" navigator="true" showButtonPanel="true" size="11" required="true" requiredMessage="Start Time field is required">
@@ -60,37 +80,6 @@
                             <p:calendar id="end_time" value="#{report_form_deadlineBean.selected.time_to}" timeOnly="true" converter="deadlineTimeConverter" pattern="HH:mm:ss" timeZone="EAT" navigator="true" showButtonPanel="true" size="11" required="true" requiredMessage="End Time field is required">
                                 <p:ajax event="dateSelect" process="@this"/>
                             </p:calendar>
-                            <p:outputLabel value="Week:" for="deadline_week"/>
-                            <p:inputText id="deadline_week" value="#{report_form_deadlineBean.selected.week_value}">
-                                <f:validateLongRange minimum="1" maximum="52"/>
-                                <p:ajax event="blur" process="@this" update="@form" listener="#{uploadBean.get_date_from_other_periods()}"/>
-                            </p:inputText>
-                            <p:outputLabel value="Month:" for="deadline_month"/>
-                            <p:selectOneMenu id="deadline_month" value="#{report_form_deadlineBean.selected.month_value}">
-                                <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItem itemLabel="Jan" itemValue="Jan" />
-                                <f:selectItem itemLabel="Feb" itemValue="Feb" />
-                                <f:selectItem itemLabel="Mar" itemValue="Mar" />
-                                <f:selectItem itemLabel="Apr" itemValue="Apr" />
-                                <f:selectItem itemLabel="May" itemValue="May" />
-                                <f:selectItem itemLabel="Jun" itemValue="Jun" />
-                                <f:selectItem itemLabel="Jul" itemValue="Jul" />
-                                <f:selectItem itemLabel="Aug" itemValue="Aug" />
-                                <f:selectItem itemLabel="Sep" itemValue="Sep" />
-                                <f:selectItem itemLabel="Oct" itemValue="Oct" />
-                                <f:selectItem itemLabel="Nov" itemValue="Nov" />
-                                <f:selectItem itemLabel="Dec" itemValue="Dec" />
-                                <p:ajax process="@this"/>
-                            </p:selectOneMenu>
-                            <p:outputLabel value="Quarter:" for="deadline_quarter"/>
-                            <p:selectOneMenu id="deadline_quarter" value="#{report_form_deadlineBean.selected.quarter_value}">
-                                <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="Q1" />
-                                <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="Q2" />
-                                <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="Q3" />
-                                <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="Q4" />
-                                <p:ajax process="@this"/>
-                            </p:selectOneMenu>
                             <p:outputLabel value="Is Active?" for="is_active"/>
                             <p:selectOneMenu id="is_active" value="#{report_form_deadlineBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
                                 <f:selectItem itemLabel="Select One" itemValue="" />
@@ -110,20 +99,13 @@
                     <p:column headerText="Report form">
                         <h:outputText value="#{item.report_form.report_form_name}"/>
                     </p:column>
-                    <p:column headerText="Week">
-                        <h:outputText value="#{item.week_value}"/>
-                    </p:column>
-                    <p:column headerText="Month">
-                        <h:outputText value="#{item.month_value}"/>
-                    </p:column>
-                    <p:column headerText="Quarter">
-                        <h:outputText value="#{item.quarter_value}"/>
-                    </p:column>
                     <p:column headerText="From Day">
-                        <h:outputText value="#{generalUtilities.convertWeekDay(item.day_from)}"/>
+                        <h:outputText value="#{generalUtilities.convertWeekDay(item.day_from)}" rendered="#{report_form_deadlineBean.showweekly(item.report_form)}"/>
+                        <h:outputText value="#{item.day_from}" rendered="#{report_form_deadlineBean.showmonthly(item.report_form) or report_form_deadlineBean.showquartery(item.report_form)}"/>
                     </p:column>
                     <p:column headerText="To Day">
-                        <h:outputText value="#{generalUtilities.convertWeekDay(item.day_to)}"/>
+                        <h:outputText value="#{generalUtilities.convertWeekDay(item.day_to)}" rendered="#{report_form_deadlineBean.showweekly(item.report_form)}"/>
+                        <h:outputText value="#{item.day_to}" rendered="#{report_form_deadlineBean.showmonthly(item.report_form) or report_form_deadlineBean.showquartery(item.report_form)}"/>
                     </p:column>
                     <p:column headerText="Start Time">
                         <h:outputText value="#{item.time_from}"/>

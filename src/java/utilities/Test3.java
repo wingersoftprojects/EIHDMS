@@ -8,6 +8,9 @@ package utilities;
 import beans.Interface_data_smsBean;
 import eihdms.Health_facility;
 import eihdms.Phone_contact;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.LockMode;
@@ -24,24 +27,17 @@ public class Test3 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Phone_contact pc = null;
-        String entityname = "";
-        String aPhone = "256706267475";
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String timeT ="16:00:00";
+        Time t = null;
         try {
-            pc = (Phone_contact) Phone_contact.queryPhone_contact("entity_phone='" + aPhone + "'", null).get(0);
-            if (null != pc) {
-                try {
-                    if (pc.getEntity_type().equals("FACILITY")) {
-//                        entityname = Health_facility.getHealth_facilityByORMID(pc.getEntity_id()).getHealth_facility_name();
-                        entityname = Health_facility.getHealth_facilityByORMID(pc.getEntity_id(), null).getHealth_facility_name();
-                    }
-                } catch (NullPointerException npe) {
+            long ms = sdf.parse(timeT).getTime();
+            t = new Time(ms);
 
-                }
-            }
-        } catch (PersistentException ex) {
-            Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        System.out.println(entityname);
+       
+        System.out.println(t);
     }
 }

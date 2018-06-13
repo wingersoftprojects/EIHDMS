@@ -246,9 +246,9 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
                     + "report_form_id,"
                     + "COUNT(IF(status_v='Pass',status_v,NULL)) AS ok,"
                     + "COUNT(IF(status_v='Fail',status_v,NULL)) AS err"
-                    + " from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id," +
-                    "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b " +
-                    "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
+                    + " from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id,"
+                    + "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b "
+                    + "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
                     + "WHERE report_form_id IN(" + ReportFormsCodeStr + ")"
                     + WhereDate
                     + " GROUP BY report_form_id";
@@ -257,9 +257,9 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
                     + "report_form_id,"
                     + "COUNT(IF(status_v='Pass',status_v,NULL)) AS ok,"
                     + "COUNT(IF(status_v='Fail',status_v,NULL)) AS err"
-                    + " from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id," +
-                    "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b " +
-                    "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
+                    + " from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id,"
+                    + "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b "
+                    + "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
                     + "WHERE 1=1"
                     + WhereDate
                     + " GROUP BY report_form_id";
@@ -271,17 +271,17 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
         String sqlData = "";
         ResultSet rs = null;
         if (ReportFormsCodeStr.length() > 0) {
-            sqlData = "select * from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id," +
-            "v.health_facility_name,v.parish_name,v.district_name,"+
-            "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b " +
-            "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
+            sqlData = "select * from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id,"
+                    + "v.health_facility_name,v.parish_name,v.district_name,"
+                    + "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b "
+                    + "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
                     + "WHERE report_form_id IN(" + ReportFormsCodeStr + ")"
                     + WhereDate;
         } else {
-            sqlData = "select * from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id," +
-            "v.health_facility_name,v.parish_name,v.district_name,"+
-            "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b " +
-            "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
+            sqlData = "select * from (select b.add_date,v.health_facility_id,v.parish_id,v.district_id,"
+                    + "v.health_facility_name,v.parish_name,v.district_name,"
+                    + "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b "
+                    + "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mobdata "
                     + "WHERE 1=1"
                     + WhereDate;
         }
@@ -362,9 +362,66 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
                         //WhereDate = " AND add_date BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
                         //x = Interface_data_mob_app.queryInterface_data_mob_app("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "'" + WhereDate, null).size();
                         String sql = "select count(*) as x from "
-                                + "(select b.add_date,v.health_facility_id,v.parish_id,v.district_id," +
-                                "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b " +
-                                "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mdata "
+                                + "(select b.add_date,v.health_facility_id,v.parish_id,v.district_id,"
+                                + "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b "
+                                + "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mdata "
+                                + "where report_form_id=" + aReport_form.getReport_form_id() + WhereDate;
+                        try (Connection conn = DBConnection.getMySQLConnection();
+                                PreparedStatement ps = conn.prepareStatement(sql);) {
+                            rs = ps.executeQuery();
+                            if (rs.next()) {
+                                x = rs.getInt("x");
+                            }
+                        } catch (SQLException se) {
+                        }
+                    } else {
+                        x = 0;
+                    }
+                } else {
+                    String sql = "select count(*) as y from "
+                            + "(select distinct health_facility_id, parish_id,"
+                            + "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b "
+                            + "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mdata "
+                            + "where report_form_id=" + aReport_form.getReport_form_id();
+                    try (Connection conn = DBConnection.getMySQLConnection();
+                            PreparedStatement ps = conn.prepareStatement(sql);) {
+                        rs = ps.executeQuery();
+                        if (rs.next()) {
+                            x = rs.getInt("y");
+                        }
+                    } catch (SQLException se) {
+                    }
+                }
+            } else {
+                //initilaise
+                x = 0;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return x;
+    }
+
+    public int getReceivedEntities_old(Report_form aReport_form, int aReportPeriodYear, int aReportPeriodWeek) {
+        int x = 0;
+        ResultSet rs = null;
+        String WhereDate = "";
+        GeneralUtilities gn = new GeneralUtilities();
+        try {
+            if (null != aReport_form) {
+                if (aReport_form.getReport_form_frequency().equals("Weekly")) {
+                    if (aReportPeriodWeek > 0) {
+                        Date startdat = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek);
+                        Date enddat = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek);
+                        Date startdat2 = gn.get_week_date_from(aReportPeriodYear, aReportPeriodWeek + 1);
+                        Date enddat2 = gn.get_week_date_to(aReportPeriodYear, aReportPeriodWeek + 1);
+                        WhereDate = " AND DATE(add_date) BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
+                        //WhereDate = " AND add_date BETWEEN '" + new java.sql.Date(startdat2.getTime()) + "' AND '" + new java.sql.Date(enddat2.getTime()) + "'";
+                        //x = Interface_data_mob_app.queryInterface_data_mob_app("is_active=1 and is_deleted=0 and report_form_code='" + aReport_form.getReport_form_code() + "'" + WhereDate, null).size();
+                        String sql = "select count(*) as x from "
+                                + "(select b.add_date,v.health_facility_id,v.parish_id,v.district_id,"
+                                + "v.report_form_id,v.status_v,v.status_v_desc from batch_mob_app b "
+                                + "inner join validation_report v on b.batch_id=v.batch_id and b.is_completed=1) as mdata "
                                 + "where report_form_id=" + aReport_form.getReport_form_id() + WhereDate;
                         try (Connection conn = DBConnection.getMySQLConnection();
                                 PreparedStatement ps = conn.prepareStatement(sql);) {
