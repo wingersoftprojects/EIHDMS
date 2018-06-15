@@ -230,12 +230,19 @@ public class SMSData {
                 Data_element_sms_position data_element_sms_position = data_element_sms_positionList.get(0);
                 Report_form report_form_temp = data_element_sms_position.getReport_form_short_code().getReport_form();
                 List<Report_form_entity> report_form_entityList = new ArrayList<>(report_form_temp.getReport_form_entity());
-                List<Phone_contact> phone_contactList = Phone_contact.queryPhone_contact("entity_phone='" + phone + "'", null);
-                for (Report_form_entity report_form_entity : report_form_entityList) {
-                    for (Phone_contact phone_contact_temp : phone_contactList) {
-                        if (phone_contact_temp.getEntity_id() == report_form_entity.getEntity_id() && phone_contact_temp.getEntity_type().toUpperCase().equals(report_form_entity.getEntity_type().toUpperCase())) {
-                            phone_contact = phone_contact_temp;
-                            break;
+                if (report_form_entityList.isEmpty()) {
+                    phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
+                    if (phone_contact == null) {
+                        phone_contact = new Phone_contact();
+                    }
+                } else {
+                    List<Phone_contact> phone_contactList = Phone_contact.queryPhone_contact("entity_phone='" + phone + "'", null);
+                    for (Report_form_entity report_form_entity : report_form_entityList) {
+                        for (Phone_contact phone_contact_temp : phone_contactList) {
+                            if (phone_contact_temp.getEntity_id() == report_form_entity.getEntity_id() && phone_contact_temp.getEntity_type().toUpperCase().equals(report_form_entity.getEntity_type().toUpperCase())) {
+                                phone_contact = phone_contact_temp;
+                                break;
+                            }
                         }
                     }
                 }
