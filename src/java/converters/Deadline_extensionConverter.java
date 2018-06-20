@@ -33,10 +33,6 @@ public class Deadline_extensionConverter implements Converter {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        Calendar now = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR, now.get(Calendar.HOUR));
-//        calendar.set(Calendar.MINUTE, now.get(Calendar.MINUTE));
-//        calendar.set(Calendar.SECOND, now.get(Calendar.SECOND));
         Timestamp result = new Timestamp(calendar.getTime().getTime());
         return result;
     }
