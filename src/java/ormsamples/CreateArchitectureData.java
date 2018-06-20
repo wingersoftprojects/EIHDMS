@@ -76,7 +76,7 @@ public class CreateArchitectureData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted, description, technical_area_name
 			leihdmsTechnical_area.save();
 			eihdms.Sub_section leihdmsSub_section = eihdms.Sub_section.createSub_section();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : data_element, is_active, is_deleted, section, sub_section_order, sub_section_name
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : sub_section_cell, data_element, is_active, is_deleted, section, sub_section_order, sub_section_name
 			leihdmsSub_section.save();
 			eihdms.Report_form_group leihdmsReport_form_group = eihdms.Report_form_group.createReport_form_group();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : validation_rule, group_order, is_active, is_deleted, report_form, description, report_form_group_name
@@ -177,6 +177,12 @@ public class CreateArchitectureData {
 			eihdms.Report_period_week leihdmsReport_period_week = eihdms.Report_period_week.createReport_period_week();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
 			leihdmsReport_period_week.save();
+			eihdms.Sms_category leihdmsSms_category = eihdms.Sms_category.createSms_category();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : is_active, is_deleted
+			leihdmsSms_category.save();
+			eihdms.Sub_section_cell leihdmsSub_section_cell = eihdms.Sub_section_cell.createSub_section_cell();
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : add_date, is_active, is_deleted, col_no, row_no, sub_section
+			leihdmsSub_section_cell.save();
 			t.commit();
 		}
 		catch (Exception e) {

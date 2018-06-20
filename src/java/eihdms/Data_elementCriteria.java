@@ -52,6 +52,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	public final CollectionExpression standard_rule;
 	public final IntegerExpression data_element_sms_positionId;
 	public final AssociationExpression data_element_sms_position;
+	public final CollectionExpression sub_section_cell;
 	
 	public Data_elementCriteria(Criteria criteria) {
 		super(criteria);
@@ -88,6 +89,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		standard_rule = new CollectionExpression("standard_rule", this);
 		data_element_sms_positionId = new IntegerExpression("data_element_sms_position.data_element_id", this);
 		data_element_sms_position = new AssociationExpression("data_element_sms_position", this);
+		sub_section_cell = new CollectionExpression("sub_section_cell", this);
 	}
 	
 	public Data_elementCriteria(PersistentSession session) {
@@ -132,6 +134,10 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	
 	public Data_element_sms_positionCriteria createData_element_sms_positionCriteria() {
 		return new Data_element_sms_positionCriteria(createCriteria("data_element_sms_position"));
+	}
+	
+	public Sub_section_cellCriteria createSub_section_cellCriteria() {
+		return new Sub_section_cellCriteria(createCriteria("sub_section_cell"));
 	}
 	
 	public Data_element uniqueData_element() {

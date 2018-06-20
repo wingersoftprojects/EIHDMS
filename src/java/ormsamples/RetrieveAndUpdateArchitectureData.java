@@ -177,6 +177,12 @@ public class RetrieveAndUpdateArchitectureData {
 			eihdms.Report_period_week leihdmsReport_period_week = eihdms.Report_period_week.loadReport_period_weekByQuery(null, null);
 			// Update the properties of the persistent object
 			leihdmsReport_period_week.save();
+			eihdms.Sms_category leihdmsSms_category = eihdms.Sms_category.loadSms_categoryByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsSms_category.save();
+			eihdms.Sub_section_cell leihdmsSub_section_cell = eihdms.Sub_section_cell.loadSub_section_cellByQuery(null, null);
+			// Update the properties of the persistent object
+			leihdmsSub_section_cell.save();
 			t.commit();
 		}
 		catch (Exception e) {
@@ -521,6 +527,18 @@ public class RetrieveAndUpdateArchitectureData {
 		// Please uncomment the follow line and fill in parameter(s)
 		//leihdmsReport_period_weekCriteria.report_period_week_id.eq();
 		System.out.println(leihdmsReport_period_weekCriteria.uniqueReport_period_week());
+		
+		System.out.println("Retrieving Sms_category by Sms_categoryCriteria");
+		eihdms.Sms_categoryCriteria leihdmsSms_categoryCriteria = new eihdms.Sms_categoryCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsSms_categoryCriteria.sms_category_id.eq();
+		System.out.println(leihdmsSms_categoryCriteria.uniqueSms_category());
+		
+		System.out.println("Retrieving Sub_section_cell by Sub_section_cellCriteria");
+		eihdms.Sub_section_cellCriteria leihdmsSub_section_cellCriteria = new eihdms.Sub_section_cellCriteria();
+		// Please uncomment the follow line and fill in parameter(s)
+		//leihdmsSub_section_cellCriteria.sub_section_cell_id.eq();
+		System.out.println(leihdmsSub_section_cellCriteria.uniqueSub_section_cell());
 		
 	}
 	

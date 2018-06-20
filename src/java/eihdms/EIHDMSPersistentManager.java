@@ -93,6 +93,8 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		aMetadataSources.addAnnotatedClass(eihdms.Dashboard_surge.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Deadline_reminder.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Report_period_week.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Sms_category.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Sub_section_cell.class);
 	}
 	
 	public String getProjectName() {

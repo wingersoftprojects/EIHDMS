@@ -401,6 +401,10 @@ public class Data_element implements Serializable {
 				getData_element_sms_position().setData_element(null);
 			}
 			
+			eihdms.Sub_section_cell[] lSub_section_cells = (eihdms.Sub_section_cell[])getSub_section_cell().toArray(new eihdms.Sub_section_cell[getSub_section_cell().size()]);
+			for(int i = 0; i < lSub_section_cells.length; i++) {
+				lSub_section_cells[i].setData_element(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -447,6 +451,10 @@ public class Data_element implements Serializable {
 				getData_element_sms_position().setData_element(null);
 			}
 			
+			eihdms.Sub_section_cell[] lSub_section_cells = (eihdms.Sub_section_cell[])getSub_section_cell().toArray(new eihdms.Sub_section_cell[getSub_section_cell().size()]);
+			for(int i = 0; i < lSub_section_cells.length; i++) {
+				lSub_section_cells[i].setData_element(null);
+			}
 			try {
 				session.delete(this);
 				return true;
@@ -566,6 +574,11 @@ public class Data_element implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Data_element_sms_position data_element_sms_position;
+	
+	@OneToMany(mappedBy="data_element", targetEntity=eihdms.Sub_section_cell.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set sub_section_cell = new java.util.HashSet();
 	
 	private void setData_element_id(int value) {
 		this.data_element_id = value;
@@ -809,6 +822,15 @@ public class Data_element implements Serializable {
 	public eihdms.Data_element_sms_position getData_element_sms_position() {
 		return data_element_sms_position;
 	}
+	
+	public void setSub_section_cell(java.util.Set value) {
+		this.sub_section_cell = value;
+	}
+	
+	public java.util.Set getSub_section_cell() {
+		return sub_section_cell;
+	}
+	
 	
 	public boolean equals(Object obj) {
 		if (obj == null) {

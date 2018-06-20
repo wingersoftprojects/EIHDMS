@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form>
+                <p:outputLabel for="report_form_id" value="Report Form:" />
+                <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                    <f:selectItem itemLabel="" />
+                    <f:selectItems value="#{testBean.get_report_forms_by_user()}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                    <p:ajax process="@this" update="@form" listener="#{testBean.retrieve_data(uploadBean.report_form)}"/>
+                </p:selectOneMenu>
+                <table border="1">
+                    <tr>
+                        <th colspan="2">Test</th>
+                        <th colspan="2">Test2</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tr>
+                    <c:forEach items="#{testBean.base_dataList}" var="model">
+                        <tr>
+                            <td colspan="2">
+                                <p:outputLabel value="#{model.data_element.data_element_name}"/>
+                            </td>
+                            <td colspan="2">
+                                <p:inputText value="#{model.data_element_value}">
+                                    <p:ajax process="@this" event="blur"/>
+                                </p:inputText>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <p:commandButton value="Clear" action="#{testBean.clear()}" update="@form"/>
+                <p:commandButton value="Save" action="#{testBean.save()}" process="@form" update="@form"/>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+
