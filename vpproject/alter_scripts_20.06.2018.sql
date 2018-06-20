@@ -1,0 +1,12 @@
+alter table data_element modify column data_element_name varchar(255);
+alter table data_element modify column data_element_context varchar(255);
+alter table data_element modify column description varchar(255);
+alter table data_element modify column add_date datetime;
+alter table data_element modify column last_edit_date datetime;
+alter table sub_section modify column add_date datetime;
+alter table sub_section modify column last_edit_date datetime;
+alter table sub_section add column rows_count int(11);
+alter table sub_section add column cols_count int(11);
+create table sub_section_cell (sub_section_cell_id int(11) not null auto_increment, sub_section_id int(11) not null, row_no int(11) not null, col_no int(11) not null, col_span int(11), row_span int(11), label_name varchar(100), data_element_id int(11), data_element_value varchar(100), text_color varchar(50), cell_color varchar(50), read_only int(1), is_deleted int(1) not null, is_active int(1) not null, add_date datetime not null, add_by int(10), last_edit_date datetime null, last_edit_by int(10), primary key (sub_section_cell_id)) ENGINE=InnoDB;
+alter table sub_section_cell add constraint FKsub_sectio698396 foreign key (data_element_id) references data_element (data_element_id);
+alter table sub_section_cell add constraint FKsub_sectio34243 foreign key (sub_section_id) references sub_section (sub_section_id);

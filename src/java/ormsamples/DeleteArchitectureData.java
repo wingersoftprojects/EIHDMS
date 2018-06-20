@@ -121,6 +121,10 @@ public class DeleteArchitectureData {
 			leihdmsDeadline_reminder.delete();
 			eihdms.Report_period_week leihdmsReport_period_week = eihdms.Report_period_week.loadReport_period_weekByQuery(null, null);
 			leihdmsReport_period_week.delete();
+			eihdms.Sms_category leihdmsSms_category = eihdms.Sms_category.loadSms_categoryByQuery(null, null);
+			leihdmsSms_category.delete();
+			eihdms.Sub_section_cell leihdmsSub_section_cell = eihdms.Sub_section_cell.loadSub_section_cellByQuery(null, null);
+			leihdmsSub_section_cell.delete();
 			t.commit();
 		}
 		catch (Exception e) {

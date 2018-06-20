@@ -373,6 +373,10 @@ public class Sub_section implements Serializable {
 			for(int i = 0; i < lData_elements.length; i++) {
 				lData_elements[i].setSub_section(null);
 			}
+			eihdms.Sub_section_cell[] lSub_section_cells = (eihdms.Sub_section_cell[])getSub_section_cell().toArray(new eihdms.Sub_section_cell[getSub_section_cell().size()]);
+			for(int i = 0; i < lSub_section_cells.length; i++) {
+				lSub_section_cells[i].setSub_section(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -390,6 +394,10 @@ public class Sub_section implements Serializable {
 			eihdms.Data_element[] lData_elements = (eihdms.Data_element[])getData_element().toArray(new eihdms.Data_element[getData_element().size()]);
 			for(int i = 0; i < lData_elements.length; i++) {
 				lData_elements[i].setSub_section(null);
+			}
+			eihdms.Sub_section_cell[] lSub_section_cells = (eihdms.Sub_section_cell[])getSub_section_cell().toArray(new eihdms.Sub_section_cell[getSub_section_cell().size()]);
+			for(int i = 0; i < lSub_section_cells.length; i++) {
+				lSub_section_cells[i].setSub_section(null);
 			}
 			try {
 				session.delete(this);
@@ -440,10 +448,21 @@ public class Sub_section implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="rows_count", nullable=true, length=11)	
+	private Integer rows_count;
+	
+	@Column(name="cols_count", nullable=true, length=11)	
+	private Integer cols_count;
+	
 	@OneToMany(mappedBy="sub_section", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set data_element = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="sub_section", targetEntity=eihdms.Sub_section_cell.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set sub_section_cell = new java.util.HashSet();
 	
 	private void setSub_section_id(int value) {
 		this.sub_section_id = value;
@@ -529,6 +548,30 @@ public class Sub_section implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setRows_count(int value) {
+		setRows_count(new Integer(value));
+	}
+	
+	public void setRows_count(Integer value) {
+		this.rows_count = value;
+	}
+	
+	public Integer getRows_count() {
+		return rows_count;
+	}
+	
+	public void setCols_count(int value) {
+		setCols_count(new Integer(value));
+	}
+	
+	public void setCols_count(Integer value) {
+		this.cols_count = value;
+	}
+	
+	public Integer getCols_count() {
+		return cols_count;
+	}
+	
 	public void setSection(eihdms.Section value) {
 		this.section = value;
 	}
@@ -543,6 +586,15 @@ public class Sub_section implements Serializable {
 	
 	public java.util.Set getData_element() {
 		return data_element;
+	}
+	
+	
+	public void setSub_section_cell(java.util.Set value) {
+		this.sub_section_cell = value;
+	}
+	
+	public java.util.Set getSub_section_cell() {
+		return sub_section_cell;
 	}
 	
 	

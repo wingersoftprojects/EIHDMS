@@ -30,7 +30,10 @@ public class Sub_sectionDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression rows_count;
+	public final IntegerExpression cols_count;
 	public final CollectionExpression data_element;
+	public final CollectionExpression sub_section_cell;
 	
 	public Sub_sectionDetachedCriteria() {
 		super(eihdms.Sub_section.class, eihdms.Sub_sectionCriteria.class);
@@ -45,7 +48,10 @@ public class Sub_sectionDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		rows_count = new IntegerExpression("rows_count", this.getDetachedCriteria());
+		cols_count = new IntegerExpression("cols_count", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
+		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}
 	
 	public Sub_sectionDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -61,7 +67,10 @@ public class Sub_sectionDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		rows_count = new IntegerExpression("rows_count", this.getDetachedCriteria());
+		cols_count = new IntegerExpression("cols_count", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
+		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}
 	
 	public SectionDetachedCriteria createSectionCriteria() {
@@ -70,6 +79,10 @@ public class Sub_sectionDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
 		return new Data_elementDetachedCriteria(createCriteria("data_element"));
+	}
+	
+	public Sub_section_cellDetachedCriteria createSub_section_cellCriteria() {
+		return new Sub_section_cellDetachedCriteria(createCriteria("sub_section_cell"));
 	}
 	
 	public Sub_section uniqueSub_section(PersistentSession session) {

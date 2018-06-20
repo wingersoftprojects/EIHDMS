@@ -30,7 +30,10 @@ public class Sub_sectionCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final IntegerExpression rows_count;
+	public final IntegerExpression cols_count;
 	public final CollectionExpression data_element;
+	public final CollectionExpression sub_section_cell;
 	
 	public Sub_sectionCriteria(Criteria criteria) {
 		super(criteria);
@@ -45,7 +48,10 @@ public class Sub_sectionCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		rows_count = new IntegerExpression("rows_count", this);
+		cols_count = new IntegerExpression("cols_count", this);
 		data_element = new CollectionExpression("data_element", this);
+		sub_section_cell = new CollectionExpression("sub_section_cell", this);
 	}
 	
 	public Sub_sectionCriteria(PersistentSession session) {
@@ -62,6 +68,10 @@ public class Sub_sectionCriteria extends AbstractORMCriteria {
 	
 	public Data_elementCriteria createData_elementCriteria() {
 		return new Data_elementCriteria(createCriteria("data_element"));
+	}
+	
+	public Sub_section_cellCriteria createSub_section_cellCriteria() {
+		return new Sub_section_cellCriteria(createCriteria("sub_section_cell"));
 	}
 	
 	public Sub_section uniqueSub_section() {

@@ -52,6 +52,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression standard_rule;
 	public final IntegerExpression data_element_sms_positionId;
 	public final AssociationExpression data_element_sms_position;
+	public final CollectionExpression sub_section_cell;
 	
 	public Data_elementDetachedCriteria() {
 		super(eihdms.Data_element.class, eihdms.Data_elementCriteria.class);
@@ -88,6 +89,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
 		data_element_sms_positionId = new IntegerExpression("data_element_sms_position.data_element_id", this.getDetachedCriteria());
 		data_element_sms_position = new AssociationExpression("data_element_sms_position", this.getDetachedCriteria());
+		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -125,6 +127,7 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 		standard_rule = new CollectionExpression("standard_rule", this.getDetachedCriteria());
 		data_element_sms_positionId = new IntegerExpression("data_element_sms_position.data_element_id", this.getDetachedCriteria());
 		data_element_sms_position = new AssociationExpression("data_element_sms_position", this.getDetachedCriteria());
+		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {
@@ -161,6 +164,10 @@ public class Data_elementDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Data_element_sms_positionDetachedCriteria createData_element_sms_positionCriteria() {
 		return new Data_element_sms_positionDetachedCriteria(createCriteria("data_element_sms_position"));
+	}
+	
+	public Sub_section_cellDetachedCriteria createSub_section_cellCriteria() {
+		return new Sub_section_cellDetachedCriteria(createCriteria("sub_section_cell"));
 	}
 	
 	public Data_element uniqueData_element(PersistentSession session) {

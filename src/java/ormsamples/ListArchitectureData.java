@@ -457,6 +457,22 @@ public class ListArchitectureData {
 		}
 		System.out.println(length + " record(s) retrieved.");
 		
+		System.out.println("Listing Sms_category...");
+		eihdms.Sms_category[] eihdmsSms_categorys = eihdms.Sms_category.listSms_categoryByQuery(null, null);
+		length = Math.min(eihdmsSms_categorys.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsSms_categorys[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
+		System.out.println("Listing Sub_section_cell...");
+		eihdms.Sub_section_cell[] eihdmsSub_section_cells = eihdms.Sub_section_cell.listSub_section_cellByQuery(null, null);
+		length = Math.min(eihdmsSub_section_cells.length, ROW_COUNT);
+		for (int i = 0; i < length; i++) {
+			System.out.println(eihdmsSub_section_cells[i]);
+		}
+		System.out.println(length + " record(s) retrieved.");
+		
 	}
 	
 	public void listByCriteria() throws PersistentException {
@@ -1131,6 +1147,30 @@ public class ListArchitectureData {
 			 System.out.println(eihdmsReport_period_weeks[i]);
 		}
 		System.out.println(length + " Report_period_week record(s) retrieved."); 
+		
+		System.out.println("Listing Sms_category by Criteria...");
+		eihdms.Sms_categoryCriteria leihdmsSms_categoryCriteria = new eihdms.Sms_categoryCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsSms_categoryCriteria.sms_category_id.eq();
+		leihdmsSms_categoryCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Sms_category[] eihdmsSms_categorys = leihdmsSms_categoryCriteria.listSms_category();
+		length =eihdmsSms_categorys== null ? 0 : Math.min(eihdmsSms_categorys.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsSms_categorys[i]);
+		}
+		System.out.println(length + " Sms_category record(s) retrieved."); 
+		
+		System.out.println("Listing Sub_section_cell by Criteria...");
+		eihdms.Sub_section_cellCriteria leihdmsSub_section_cellCriteria = new eihdms.Sub_section_cellCriteria();
+		// Please uncomment the follow line and fill in parameter(s) 
+		//leihdmsSub_section_cellCriteria.sub_section_cell_id.eq();
+		leihdmsSub_section_cellCriteria.setMaxResults(ROW_COUNT);
+		eihdms.Sub_section_cell[] eihdmsSub_section_cells = leihdmsSub_section_cellCriteria.listSub_section_cell();
+		length =eihdmsSub_section_cells== null ? 0 : Math.min(eihdmsSub_section_cells.length, ROW_COUNT); 
+		for (int i = 0; i < length; i++) {
+			 System.out.println(eihdmsSub_section_cells[i]);
+		}
+		System.out.println(length + " Sub_section_cell record(s) retrieved."); 
 		
 	}
 	
