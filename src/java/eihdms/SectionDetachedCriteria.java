@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -32,6 +32,7 @@ public class SectionDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression data_element;
 	public final CollectionExpression sub_section;
+	public final CollectionExpression sub_section_cell;
 	
 	public SectionDetachedCriteria() {
 		super(eihdms.Section.class, eihdms.SectionCriteria.class);
@@ -48,6 +49,7 @@ public class SectionDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		sub_section = new CollectionExpression("sub_section", this.getDetachedCriteria());
+		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}
 	
 	public SectionDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -65,6 +67,7 @@ public class SectionDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		sub_section = new CollectionExpression("sub_section", this.getDetachedCriteria());
+		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria createReport_formCriteria() {
@@ -77,6 +80,10 @@ public class SectionDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Sub_sectionDetachedCriteria createSub_sectionCriteria() {
 		return new Sub_sectionDetachedCriteria(createCriteria("sub_section"));
+	}
+	
+	public Sub_section_cellDetachedCriteria createSub_section_cellCriteria() {
+		return new Sub_section_cellDetachedCriteria(createCriteria("sub_section_cell"));
 	}
 	
 	public Section uniqueSection(PersistentSession session) {

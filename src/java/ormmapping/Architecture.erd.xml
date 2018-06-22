@@ -3452,28 +3452,6 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <Column name="rows_count">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>true</Nullable>
-      <IDGenerator>native</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="cols_count">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
-      <Type>9</Type>
-      <Length>11</Length>
-      <Nullable>true</Nullable>
-      <IDGenerator>native</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
   </Entity>
   <Entity name="report_form_group" Unlogged="false" PKClustered="0">
     <Column name="report_form_group_id">
@@ -8696,8 +8674,20 @@
       <ReferencedColumn>sub_section.sub_section_id</ReferencedColumn>
       <Type>9</Type>
       <Length>11</Length>
-      <Nullable>false</Nullable>
+      <Nullable>true</Nullable>
       <IDGenerator>assigned</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="section_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>section.section_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
       <UserTypes/>
@@ -9528,6 +9518,16 @@
     </Columns>
     <RefColumns>
       <Column>data_element_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKsub_sectio65859">
+    <ReferenceTable>sub_section_cell</ReferenceTable>
+    <ReferencedTable>section</ReferencedTable>
+    <Columns>
+      <Column>section_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>section_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>

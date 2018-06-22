@@ -1683,7 +1683,7 @@ public class UploadBean implements Serializable {
         //System.out.println("END-BATCH:" + new Date());
         return batch;
     }
-
+    
     public void load_interface() {
         Batch batch;
         String sql = "";
@@ -3149,6 +3149,25 @@ public class UploadBean implements Serializable {
                 interface_datas.add(interface_data);
             }
         }
+    }
+    
+    public Interface_data getInterface_dataCell(long aData_element_id) {
+        int n = 0;
+        Interface_data interface_data = new Interface_data();
+        try {
+            n = this.interface_datas.size();
+            if (n > 0) {
+                for (int i = 0; i < n; i++) {
+                    if (this.interface_datas.get(i).getData_element().getData_element_id() == aData_element_id) {
+                        interface_data = this.interface_datas.get(i);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return interface_data;
     }
 
     /**

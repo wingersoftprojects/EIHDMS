@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -32,6 +32,7 @@ public class SectionCriteria extends AbstractORMCriteria {
 	public final IntegerExpression last_edit_by;
 	public final CollectionExpression data_element;
 	public final CollectionExpression sub_section;
+	public final CollectionExpression sub_section_cell;
 	
 	public SectionCriteria(Criteria criteria) {
 		super(criteria);
@@ -48,6 +49,7 @@ public class SectionCriteria extends AbstractORMCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		data_element = new CollectionExpression("data_element", this);
 		sub_section = new CollectionExpression("sub_section", this);
+		sub_section_cell = new CollectionExpression("sub_section_cell", this);
 	}
 	
 	public SectionCriteria(PersistentSession session) {
@@ -68,6 +70,10 @@ public class SectionCriteria extends AbstractORMCriteria {
 	
 	public Sub_sectionCriteria createSub_sectionCriteria() {
 		return new Sub_sectionCriteria(createCriteria("sub_section"));
+	}
+	
+	public Sub_section_cellCriteria createSub_section_cellCriteria() {
+		return new Sub_section_cellCriteria(createCriteria("sub_section_cell"));
 	}
 	
 	public Section uniqueSection() {
