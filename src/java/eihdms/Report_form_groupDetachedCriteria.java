@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -31,6 +31,7 @@ public class Report_form_groupDetachedCriteria extends AbstractORMDetachedCriter
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final StringExpression def_name;
 	public final CollectionExpression data_element;
 	public final CollectionExpression validation_rule;
 	
@@ -48,6 +49,7 @@ public class Report_form_groupDetachedCriteria extends AbstractORMDetachedCriter
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		def_name = new StringExpression("def_name", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 	}
@@ -66,6 +68,7 @@ public class Report_form_groupDetachedCriteria extends AbstractORMDetachedCriter
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		def_name = new StringExpression("def_name", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 	}

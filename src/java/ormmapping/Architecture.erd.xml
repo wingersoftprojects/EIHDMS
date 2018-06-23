@@ -1872,6 +1872,10 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <UniqueKey name="Report_Form_Group_Data_Element_Code">
+      <Column name="report_form_group_id"/>
+      <Column name="data_element_code"/>
+    </UniqueKey>
   </Entity>
   <Entity name="base_data" Unlogged="false" PKClustered="0">
     <Column name="base_data_id">
@@ -3570,6 +3574,17 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="def_name">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>100</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
