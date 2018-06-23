@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -369,6 +369,10 @@ public class Sub_section_cell implements Serializable {
 				getSub_section().getSub_section_cell().remove(this);
 			}
 			
+			if(getSection() != null) {
+				getSection().getSub_section_cell().remove(this);
+			}
+			
 			if(getData_element() != null) {
 				getData_element().getSub_section_cell().remove(this);
 			}
@@ -385,6 +389,10 @@ public class Sub_section_cell implements Serializable {
 		try {
 			if(getSub_section() != null) {
 				getSub_section().getSub_section_cell().remove(this);
+			}
+			
+			if(getSection() != null) {
+				getSection().getSub_section_cell().remove(this);
 			}
 			
 			if(getData_element() != null) {
@@ -412,9 +420,15 @@ public class Sub_section_cell implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Sub_section.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="sub_section_id", referencedColumnName="sub_section_id", nullable=false) })	
+	@JoinColumns({ @JoinColumn(name="sub_section_id", referencedColumnName="sub_section_id") })	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_section sub_section;
+	
+	@ManyToOne(targetEntity=eihdms.Section.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="section_id", referencedColumnName="section_id") })	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
+	private eihdms.Section section;
 	
 	@Column(name="row_no", nullable=false, length=11)	
 	private int row_no;
@@ -633,6 +647,14 @@ public class Sub_section_cell implements Serializable {
 	
 	public eihdms.Data_element getData_element() {
 		return data_element;
+	}
+	
+	public void setSection(eihdms.Section value) {
+		this.section = value;
+	}
+	
+	public eihdms.Section getSection() {
+		return section;
 	}
 	
 	/**

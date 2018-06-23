@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -448,12 +448,6 @@ public class Sub_section implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
-	@Column(name="rows_count", nullable=true, length=11)	
-	private Integer rows_count;
-	
-	@Column(name="cols_count", nullable=true, length=11)	
-	private Integer cols_count;
-	
 	@OneToMany(mappedBy="sub_section", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -546,30 +540,6 @@ public class Sub_section implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
-	}
-	
-	public void setRows_count(int value) {
-		setRows_count(new Integer(value));
-	}
-	
-	public void setRows_count(Integer value) {
-		this.rows_count = value;
-	}
-	
-	public Integer getRows_count() {
-		return rows_count;
-	}
-	
-	public void setCols_count(int value) {
-		setCols_count(new Integer(value));
-	}
-	
-	public void setCols_count(Integer value) {
-		this.cols_count = value;
-	}
-	
-	public Integer getCols_count() {
-		return cols_count;
 	}
 	
 	public void setSection(eihdms.Section value) {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -30,8 +30,6 @@ public class Sub_sectionDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
-	public final IntegerExpression rows_count;
-	public final IntegerExpression cols_count;
 	public final CollectionExpression data_element;
 	public final CollectionExpression sub_section_cell;
 	
@@ -48,8 +46,6 @@ public class Sub_sectionDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
-		rows_count = new IntegerExpression("rows_count", this.getDetachedCriteria());
-		cols_count = new IntegerExpression("cols_count", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}
@@ -67,8 +63,6 @@ public class Sub_sectionDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
-		rows_count = new IntegerExpression("rows_count", this.getDetachedCriteria());
-		cols_count = new IntegerExpression("cols_count", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		sub_section_cell = new CollectionExpression("sub_section_cell", this.getDetachedCriteria());
 	}

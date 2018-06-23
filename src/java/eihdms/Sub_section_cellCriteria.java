@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -22,6 +22,8 @@ public class Sub_section_cellCriteria extends AbstractORMCriteria {
 	public final IntegerExpression sub_section_cell_id;
 	public final IntegerExpression sub_sectionId;
 	public final AssociationExpression sub_section;
+	public final IntegerExpression sectionId;
+	public final AssociationExpression section;
 	public final IntegerExpression row_no;
 	public final IntegerExpression col_no;
 	public final IntegerExpression col_span;
@@ -45,6 +47,8 @@ public class Sub_section_cellCriteria extends AbstractORMCriteria {
 		sub_section_cell_id = new IntegerExpression("sub_section_cell_id", this);
 		sub_sectionId = new IntegerExpression("sub_section.sub_section_id", this);
 		sub_section = new AssociationExpression("sub_section", this);
+		sectionId = new IntegerExpression("section.section_id", this);
+		section = new AssociationExpression("section", this);
 		row_no = new IntegerExpression("row_no", this);
 		col_no = new IntegerExpression("col_no", this);
 		col_span = new IntegerExpression("col_span", this);
@@ -74,6 +78,10 @@ public class Sub_section_cellCriteria extends AbstractORMCriteria {
 	
 	public Sub_sectionCriteria createSub_sectionCriteria() {
 		return new Sub_sectionCriteria(createCriteria("sub_section"));
+	}
+	
+	public SectionCriteria createSectionCriteria() {
+		return new SectionCriteria(createCriteria("section"));
 	}
 	
 	public Data_elementCriteria createData_elementCriteria() {

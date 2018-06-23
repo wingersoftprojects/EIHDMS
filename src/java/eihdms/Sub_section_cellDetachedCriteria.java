@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -22,6 +22,8 @@ public class Sub_section_cellDetachedCriteria extends AbstractORMDetachedCriteri
 	public final IntegerExpression sub_section_cell_id;
 	public final IntegerExpression sub_sectionId;
 	public final AssociationExpression sub_section;
+	public final IntegerExpression sectionId;
+	public final AssociationExpression section;
 	public final IntegerExpression row_no;
 	public final IntegerExpression col_no;
 	public final IntegerExpression col_span;
@@ -45,6 +47,8 @@ public class Sub_section_cellDetachedCriteria extends AbstractORMDetachedCriteri
 		sub_section_cell_id = new IntegerExpression("sub_section_cell_id", this.getDetachedCriteria());
 		sub_sectionId = new IntegerExpression("sub_section.sub_section_id", this.getDetachedCriteria());
 		sub_section = new AssociationExpression("sub_section", this.getDetachedCriteria());
+		sectionId = new IntegerExpression("section.section_id", this.getDetachedCriteria());
+		section = new AssociationExpression("section", this.getDetachedCriteria());
 		row_no = new IntegerExpression("row_no", this.getDetachedCriteria());
 		col_no = new IntegerExpression("col_no", this.getDetachedCriteria());
 		col_span = new IntegerExpression("col_span", this.getDetachedCriteria());
@@ -69,6 +73,8 @@ public class Sub_section_cellDetachedCriteria extends AbstractORMDetachedCriteri
 		sub_section_cell_id = new IntegerExpression("sub_section_cell_id", this.getDetachedCriteria());
 		sub_sectionId = new IntegerExpression("sub_section.sub_section_id", this.getDetachedCriteria());
 		sub_section = new AssociationExpression("sub_section", this.getDetachedCriteria());
+		sectionId = new IntegerExpression("section.section_id", this.getDetachedCriteria());
+		section = new AssociationExpression("section", this.getDetachedCriteria());
 		row_no = new IntegerExpression("row_no", this.getDetachedCriteria());
 		col_no = new IntegerExpression("col_no", this.getDetachedCriteria());
 		col_span = new IntegerExpression("col_span", this.getDetachedCriteria());
@@ -90,6 +96,10 @@ public class Sub_section_cellDetachedCriteria extends AbstractORMDetachedCriteri
 	
 	public Sub_sectionDetachedCriteria createSub_sectionCriteria() {
 		return new Sub_sectionDetachedCriteria(createCriteria("sub_section"));
+	}
+	
+	public SectionDetachedCriteria createSectionCriteria() {
+		return new SectionDetachedCriteria(createCriteria("section"));
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -377,6 +377,10 @@ public class Section implements Serializable {
 			for(int i = 0; i < lSub_sections.length; i++) {
 				lSub_sections[i].setSection(null);
 			}
+			eihdms.Sub_section_cell[] lSub_section_cells = (eihdms.Sub_section_cell[])getSub_section_cell().toArray(new eihdms.Sub_section_cell[getSub_section_cell().size()]);
+			for(int i = 0; i < lSub_section_cells.length; i++) {
+				lSub_section_cells[i].setSection(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -398,6 +402,10 @@ public class Section implements Serializable {
 			eihdms.Sub_section[] lSub_sections = (eihdms.Sub_section[])getSub_section().toArray(new eihdms.Sub_section[getSub_section().size()]);
 			for(int i = 0; i < lSub_sections.length; i++) {
 				lSub_sections[i].setSection(null);
+			}
+			eihdms.Sub_section_cell[] lSub_section_cells = (eihdms.Sub_section_cell[])getSub_section_cell().toArray(new eihdms.Sub_section_cell[getSub_section_cell().size()]);
+			for(int i = 0; i < lSub_section_cells.length; i++) {
+				lSub_section_cells[i].setSection(null);
 			}
 			try {
 				session.delete(this);
@@ -457,6 +465,11 @@ public class Section implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set sub_section = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="section", targetEntity=eihdms.Sub_section_cell.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set sub_section_cell = new java.util.HashSet();
 	
 	private void setSection_id(int value) {
 		this.section_id = value;
@@ -565,6 +578,15 @@ public class Section implements Serializable {
 	
 	public java.util.Set getSub_section() {
 		return sub_section;
+	}
+	
+	
+	public void setSub_section_cell(java.util.Set value) {
+		this.sub_section_cell = value;
+	}
+	
+	public java.util.Set getSub_section_cell() {
+		return sub_section_cell;
 	}
 	
 	
