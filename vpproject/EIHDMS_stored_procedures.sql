@@ -3577,3 +3577,16 @@ DELETE FROM dashboard_surge WHERE dashboard_surge_id>0 AND report_period_week=in
 CALL sp_insert_dashboard_surge(in_batch_id);
 END//
 DELIMITER ;
+
+-- ----------------------------
+-- Function structure for sp_update_dashboard_surge
+-- ----------------------------
+DROP FUNCTION IF EXISTS get_minimum_data_element_id;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `get_minimum_data_element_id`(`in_report_form_id` int) RETURNS int(11)
+BEGIN
+	#Routine body goes here...
+
+	RETURN (select min(data_element_id) from data_element where report_form_id=in_report_form_id group by report_form_id);
+END//
+DELIMITER ;

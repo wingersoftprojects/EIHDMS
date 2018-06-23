@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -451,6 +451,9 @@ public class Report_form_group implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="def_name", nullable=true, length=100)	
+	private String def_name;
+	
 	@OneToMany(mappedBy="report_form_group", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -551,6 +554,14 @@ public class Report_form_group implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setDef_name(String value) {
+		this.def_name = value;
+	}
+	
+	public String getDef_name() {
+		return def_name;
 	}
 	
 	public void setReport_form(eihdms.Report_form value) {
