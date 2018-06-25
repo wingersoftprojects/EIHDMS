@@ -139,9 +139,9 @@
                     <p:commandButton value="Retrieve Entry Form" action="#{uploadBean.refreshData_elements(uploadBean.report_form,uploadBean.report_form_group)}" update="@form"/>
                 </p:panelGrid>
                 <p:panel id="detail_panel_grid" rendered="#{uploadBean.interface_datas.size()>0}">
-                    <ui:include src="def_17_1.xhtml"/>
+                    <ui:include src="#{uploadBean.getDE_Form(uploadBean.report_form_group)}.xhtml"/>
                 </p:panel>
-                <p:commandButton value="SAVE FORM DATA" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" icon="ui-icon-disk" rendered="#{uploadBean.interface_datas.size()>0}" oncomplete="PF('validationReport').show();"/>
+                <p:commandButton value="SAVE FORM DATA" action="#{uploadBean.load_interface()}" update="@form,:validationreportdialog" icon="ui-icon-disk" rendered="#{uploadBean.interface_datas.size()>0 and uploadBean.getDE_Form(uploadBean.report_form_group)!='def_0_0'}" oncomplete="PF('validationReport').show();"/>
             </p:fieldset>
         </h:form>
 
