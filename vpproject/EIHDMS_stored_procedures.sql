@@ -123,6 +123,7 @@ SET @sql2="(
   `report_period_bi_month` int(11) DEFAULT NULL,
   `report_form_id` int(11) DEFAULT NULL,
   `report_form_group_id` int(11) DEFAULT NULL,
+  `entry_mode` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`base_data_id`)
   )";
 SET @sql_text=CONCAT(@sql1,@sql2);
