@@ -21,23 +21,23 @@
                         <p:outputLabel value="Entity Type:" for="entity_type"/>
                         <p:selectOneMenu id="entity_type" value="#{phone_contactBean.selected.entity_type}" required="true" requiredMessage="Entity Type field is required">
                             <f:selectItem itemLabel="Select One"/>
-                            <f:selectItem itemLabel="Parish" itemValue="PARISH" />
-                            <f:selectItem itemLabel="Facility" itemValue="FACILITY" />
-                            <f:selectItem itemLabel="Organisation" itemValue="ORGANISATION" />
+                            <f:selectItem itemLabel="Parish" itemValue="Parish" />
+                            <f:selectItem itemLabel="Facility" itemValue="Facility" />
+                            <f:selectItem itemLabel="Organisation" itemValue="Organisation" />
                             <p:ajax process="@this" update="@form,entity_id_parish,entity_id_parish,entity_id_facility,entity_id_organisation"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='PARISH'}"/>
-                        <p:selectOneMenu id="entity_id_parish" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='PARISH'}" required="true" requiredMessage="Entity Id field is required">
+                        <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='Parish'}"/>
+                        <p:selectOneMenu id="entity_id_parish" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='Parish'}" required="true" requiredMessage="Entity Id field is required">
                             <f:selectItem itemLabel="Select One"/>
                             <f:selectItems value="#{parishBean.tsActive}" var="item" itemLabel="#{item.parish_name}" itemValue="#{item.parish_id}"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='FACILITY'}"/>
-                        <p:selectOneMenu id="entity_id_facility" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='FACILITY'}" required="true" requiredMessage="Entity Id field is required">
+                        <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='Facility'}"/>
+                        <p:selectOneMenu id="entity_id_facility" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='Facility'}" required="true" requiredMessage="Entity Id field is required">
                             <f:selectItem itemLabel="Select One"/>
                             <f:selectItems value="#{health_facilityBean.tsActive}" var="item" itemLabel="#{item.health_facility_name}" itemValue="#{item.health_facility_id}"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='ORGANISATION'}"/>
-                        <p:selectOneMenu id="entity_id_organisation" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='ORGANISATION'}" required="true" requiredMessage="Entity Id field is required">
+                        <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='Organisation'}"/>
+                        <p:selectOneMenu id="entity_id_organisation" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='Organisation'}" required="true" requiredMessage="Entity Id field is required">
                             <f:selectItem itemLabel="Select One"/>
                             <f:selectItems value="#{organisationBean.tsActive}" var="item" itemLabel="#{item.organisation_name}" itemValue="#{item.organisation_id}"/>
                         </p:selectOneMenu>

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <style type="text/css">
+            body,div,table,thead,tbody,tfoot,tr,th,td,p { font-family:"Calibri"; font-size:x-small }
+            a.comment-indicator:hover + comment { background:#ffd; position:absolute; display:block; border:1px solid black; padding:0.5em;  } 
+            a.comment-indicator { background:red; display:inline-block; border:1px solid black; width:0.5em; height:0.5em;  } 
+            comment { display:none;  } 
+        </style>
+        <table cellspacing="0" border="0">
+            <colgroup width="62"></colgroup>
+            <colgroup width="620"></colgroup>
+            <colgroup width="132"></colgroup>
+            <tr>
+                <td style="border-top: 2px solid #000000; border-bottom: 1px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan="3" rowspan="2" height="79" align="center" valign="middle"><b><font face="Garamond" size="4" color="#000000">HEALTH UNIT OUTPATIENT MONTHLY REPORT (NVP SACHETS ADDITIONAL INDICATORS MONTHLY REPORT FORM) </font></b></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 2px solid #000000; border-right: 1px solid #000000" colspan="2" height="25" align="center" valign="bottom"><b><font face="Garamond" size="4" color="#000000">2.1 : ANTENATAL</font></b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" align="left" valign="bottom"><b><font face="Garamond" size="4" color="#000000">Numbers</font></b></td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 2px solid #000000; border-right: 1px solid #000000" height="25" align="center" valign="middle"><font face="Garamond" size="4" color="#000000">A23</font></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><font face="Garamond" size="4" color="#000000">Number of HIV+ pregnant women who received NVP Sachets in ANC</font></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" align="left" valign="middle"><font size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('A23').data_element_value}" style="width: 100%;"/></font></td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan="3" height="25" align="center" valign="bottom"><b><font face="Garamond" size="4" color="#000000">2.2 : MATERNITY</font></b></td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 2px solid #000000; border-right: 1px solid #000000" height="50" align="center" valign="middle"><font face="Garamond" size="4" color="#000000">M20</font></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><font face="Garamond" size="4" color="#000000">Number of HIV + pregnant women who received NVP Sachets in ANC &amp; delivered at a health facility</font></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" align="left" valign="middle"><font size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('M20').data_element_value}" style="width: 100%;"/></font></td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan="3" height="25" align="center" valign="bottom"><b><font face="Garamond" size="4" color="#000000">2.3 : EARLY INFANTS DIAGNOSIS (EID) SERVICES</font></b></td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-right: 1px solid #000000" rowspan="2" height="84" align="center" valign="middle"><font face="Garamond" size="4" color="#000000">E8</font></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><font face="Garamond" size="4" color="#000000">Number of HEIs who initiated NVP at birth and completed 6 weeks </font></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" align="left" valign="middle"><font size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('E8-6').data_element_value}" style="width: 100%;"/></font></td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Garamond" size="4" color="#000000">Number of HEIs who initiated NVP at birth and completed 12 weeks</font></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" align="left" valign="middle"><font size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('E8-12').data_element_value}" style="width: 100%;"/></font></td>
+            </tr>
+        </table>
+    </h:body>
+    <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+        <f:facet name="default">
+            <h:outputText value="Status: StandBy" />
+        </f:facet>
+
+        <f:facet name="start">
+
+        </f:facet>
+
+        <f:facet name="complete">
+            <h:outputText value="Status: Completed" />
+        </f:facet>
+    </p:ajaxStatus>
+    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+        <p:graphicImage name="/images/ajax-loader.gif" />
+    </p:dialog>
+</html>

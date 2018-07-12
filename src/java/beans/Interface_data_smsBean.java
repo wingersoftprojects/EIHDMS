@@ -398,7 +398,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
             pc = (Phone_contact) Phone_contact.queryPhone_contact("entity_phone='" + aPhone + "'", null).get(0);
             if (null != pc) {
                 try {
-                    if (pc.getEntity_type().equals("FACILITY")) {
+                    if (pc.getEntity_type().equals("Facility")) {
                         entityname = Health_facility.getHealth_facilityByORMID(pc.getEntity_id(), null).getHealth_facility_name();
                     }
                 } catch (NullPointerException npe) {
