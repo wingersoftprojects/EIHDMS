@@ -301,6 +301,11 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
                 } catch (NullPointerException npe) {
                 }
                 try {
+                    obj.setParish_id(rs.getInt("parish_id"));
+                    obj.setParish_name(rs.getString("parish_name"));
+                } catch (NullPointerException npe) {
+                }
+                try {
                     obj.setDistrict_id(rs.getInt("district_id"));
                     obj.setDistrict_name(rs.getString("district_name"));
                 } catch (NullPointerException npe) {

@@ -78,5 +78,14 @@ public class ParishBean extends AbstractBean<Parish> implements Serializable {
         }
         return temp;
     }
+        public Parish getParish_by_id(int aParish_id){
+        try {
+            return (Parish) Parish.queryParish("is_active=1 and is_deleted=0 and parish_id=" + aParish_id, null).get(0);
+        } catch (PersistentException ex) {
+            Logger.getLogger(ParishBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
 }
