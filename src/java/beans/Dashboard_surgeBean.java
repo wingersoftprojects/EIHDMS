@@ -59,6 +59,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
     private int year_value;
     private int month_value;
     private int week_value;
+    private int week_value2;
     private int indicator_id;
     private String indicator_name;
     private int count_n1;
@@ -84,6 +85,10 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
     private String DataChartString5;
     private String DataChartString6;
     private List<Report_form> weekList = new ArrayList<>();
+    private District[] selectedDistricts;
+    private Health_facility[] selectedFacilities;
+    private List<District> districts;
+    private List<Health_facility> facilities;
 
     public Dashboard_surgeBean() {
         super(Dashboard_surge.class);
@@ -114,7 +119,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         } else if (aIndicatorId == 4) {
             return "HTS Yield";
         } else if (aIndicatorId == 5) {
-            return "Total/% started ART";
+            return "Total/% started on ART";
         } else {
             return "";
         }
@@ -144,12 +149,13 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         }
         this.year_value = previous_week_year;
         this.week_value = previous_week;
+        this.week_value2 = previous_week;
         this.district = null;
         this.facility = null;
         this.indicator_id = 1;
         this.month_value = 0;
         this.refreshWeeks(this.year_value, this.week_value);
-        this.refreshDashboard(this.year_value, this.month_value, this.week_value, this.district, this.facility, this.indicator_id);
+        this.refreshDashboard(this.year_value, this.month_value, this.week_value, this.week_value2, this.selectedDistricts, this.selectedFacilities, this.indicator_id);
     }
 
     public void refreshWeeks(int aYear, int aTopWeek) {
@@ -170,7 +176,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         }
     }
 
-    public void refreshDashboard(int aYear, int aMonth, int aWeek, District aDistrict, Health_facility aFacility, int aIndicatorId) {
+    public void refreshDashboard(int aYear, int aMonth, int aWeek, int aWeek2, District[] aSelectedDistricts, Health_facility[] aSelectedFacilities, int aIndicatorId) {
         ResultSet rs = null;
         ResultSet rs2 = null;
         Gson gson;
@@ -180,7 +186,8 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                 + "avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art "
                 + "FROM dashboard_surge WHERE 1=1";
         String sql2 = "SELECT report_period_year,report_period_week,"
-                + "perc_test_coverage,perc_miss_appoint_cur,perc_miss_appoint_prev,perc_hts_yield,perc_start_art "
+                + "avg(perc_test_coverage) as perc_test_coverage,avg(perc_miss_appoint_cur) as perc_miss_appoint_cur,"
+                + "avg(perc_miss_appoint_prev) as perc_miss_appoint_prev,avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art "
                 + "FROM dashboard_surge WHERE 1=1";
         String order2 = " ORDER BY report_period_year ASC,report_period_week ASC";
         String where1 = "";
@@ -191,33 +198,46 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         if (aMonth > 0) {
             where1 = where1 + " and (MONTH(report_period_from_date)>=" + aMonth + " and MONTH(report_period_from_date)<=" + aMonth + ")";
         }
-        if (aWeek > 0) {
+        if (aWeek > 0 && aWeek2 == 0) {
             where1 = where1 + " and report_period_week=" + aWeek;
         }
+        if (aWeek2 > 0 && aWeek == 0) {
+            where1 = where1 + " and report_period_week=" + aWeek2;
+        }
+        if (aWeek > 0 && aWeek2 > 0) {
+            where1 = where1 + " and report_period_week>=" + aWeek + " and report_period_week<=" + aWeek2;
+        }
         try {
-            if (null != aDistrict && aDistrict.getDistrict_id() > 0) {
-                where1 = where1 + " and district_id=" + aDistrict.getDistrict_id();
+            String aDIDs = this.getDistrictsStr();
+            if (aDIDs.length() > 0) {
+                where1 = where1 + " and district_id IN (" + aDIDs + ")";
             }
         } catch (NullPointerException npe) {
             //skip 
         }
         try {
-            if (null != aFacility && aFacility.getHealth_facility_id() > 0) {
-                where1 = where1 + " and health_facility_id=" + aFacility.getHealth_facility_id();
+            String aFIDs = this.getFacilitiesStr();
+            if (aFIDs.length() > 0) {
+                where1 = where1 + " and health_facility_id IN(" + aFIDs + ")";
             }
         } catch (NullPointerException npe) {
             //skip 
         }
         sql1 = sql1 + where1;
         int aWeekFrom = 0;
-        if (aWeek > 0) {
-            aWeekFrom = aWeek - 30;
+        int aWeekTo = 0;
+        int aCurrentWeek = 0;
+        Date current_date = Calendar.getInstance().getTime();
+        aCurrentWeek = Integer.parseInt(new GeneralUtilities().get_week_from_date(current_date, ""));
+        if (aWeek == aWeek2) {
+            aWeekFrom = aWeek - 28;
+            aWeekTo = aWeek;
         } else {
-            Date current_date = Calendar.getInstance().getTime();
-            aWeekFrom = Integer.parseInt(new GeneralUtilities().get_week_from_date(current_date, ""));
+            aWeekFrom = aWeek;
+            aWeekTo = aWeek2;
         }
-        where2 = where2 + " and report_period_week between " + aWeekFrom + " and " + aWeek;
-        sql2 = sql2 + where2 + order2;
+        where2 = where2 + " and report_period_week between " + aWeekFrom + " and " + aWeekTo;
+        sql2 = sql2 + where2 + " GROUP BY report_period_year,report_period_week " + order2;
 
         //for the indicator charts
         try (Connection conn = DBConnection.getMySQLConnection();
@@ -254,7 +274,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                 } catch (NullPointerException npe) {
                     this.count_d2 = 0;
                 }
-                
+
                 gson = new Gson();
                 this.DataChartString2 = "[]";
                 List<Object> ChartDataArray2 = new ArrayList<>();
@@ -327,81 +347,20 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         }
 
         //for the trend
-//        try (Connection conn2 = DBConnection.getMySQLConnection();
-//                PreparedStatement ps2 = conn2.prepareStatement(sql2);) {
-//            rs2 = ps2.executeQuery();
-//            DecimalFormat myFormatter = new DecimalFormat("###,###");
-//            Map<String, String> lv;
-//            gson = new Gson();
-//            this.DataChartString6 = "[]";
-//            List<Object> ChartDataArray6 = new ArrayList<>();
-//            while (rs2.next()) {
-//                lv = new HashMap<String, String>();
-//                try {
-//                    lv.put("label", rs2.getString("report_period_year") + "W" + rs2.getString("report_period_week"));
-//                } catch (NullPointerException npe) {
-//                    lv.put("label", "");
-//                }
-//                if (aIndicatorId == 1) {
-//                    //perc_test_coverage
-//                    try {
-//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_test_coverage")));
-//                    } catch (NullPointerException npe) {
-//                        lv.put("value", "0");
-//                    }
-//                } else if (aIndicatorId == 2) {
-//                    //perc_miss_appoint_cur
-//                    try {
-//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_cur")));
-//                    } catch (NullPointerException npe) {
-//                        lv.put("value", "0");
-//                    }
-//                } else if (aIndicatorId == 3) {
-//                    //perc_miss_appoint_prev
-//                    try {
-//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_miss_appoint_prev")));
-//                    } catch (NullPointerException npe) {
-//                        lv.put("value", "0");
-//                    }
-//                } else if (aIndicatorId == 4) {
-//                    //perc_hts_yield
-//                    try {
-//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_hts_yield")));
-//                    } catch (NullPointerException npe) {
-//                        lv.put("value", "0");
-//                    }
-//                } else if (aIndicatorId == 5) {
-//                    //perc_start_art
-//                    try {
-//                        lv.put("value", myFormatter.format(rs2.getFloat("perc_start_art")));
-//                    } catch (NullPointerException npe) {
-//                        lv.put("value", "0");
-//                    }
-//                } else {
-//                    lv.put("value", "0");
-//                }
-//                ChartDataArray6.add(lv);
-//            }
-//            if (ChartDataArray6.size() > 0) {
-//                this.DataChartString6 = gson.toJson(ChartDataArray6);
-//                System.out.println("DataChartString6:" + DataChartString6);
-//            }
-//        } catch (SQLException se1) {
-//            System.err.println("refreshDashboard1-Trend:" + se1.getMessage());
-//        }
+        System.out.println("sql2:" + sql2);
         this.refreshBarChartdata(sql2, aIndicatorId);
-        
+
         //for the dialog list
         try {
-            this.Dashboard_surgeList=Dashboard_surge.queryDashboard_surge("1=1" + where1, null);
-            this.count_n=this.Dashboard_surgeList.size();
+            this.Dashboard_surgeList = Dashboard_surge.queryDashboard_surge("1=1" + where1, null);
+            this.count_n = this.Dashboard_surgeList.size();
         } catch (PersistentException ex) {
             Logger.getLogger(Dashboard_surgeBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
-    public void refreshBarChartdata(String sql,int aIndicatorId) {
+
+    public void refreshBarChartdata(String sql, int aIndicatorId) {
         ResultSet rs2 = null;
         Gson gson = new Gson();
         Map<String, String> lv;
@@ -492,7 +451,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             SerieString1 = "{\"seriesname\": \"" + SerieName1 + "\",\"showValues\":\"1\",\"data\":" + gson.toJson(dataSeriesArray1) + "}";
             dataSeriesArray.add(SerieString1);
             SerieName2 = "Trendline";
-            String renderas2="line";
+            String renderas2 = "line";
             SerieString2 = "{\"seriesname\": \"" + SerieName2 + "\",\"renderAs\":\"line\",\"parentYAxis\":\"S\",\"showValues\":\"0\",\"data\":" + gson.toJson(dataSeriesArray2) + "}";
             dataSeriesArray.add(SerieString2);
 
@@ -510,8 +469,8 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             }
         }
     }
-    
-    public Health_facility getHfById(int aHfId){
+
+    public Health_facility getHfById(int aHfId) {
         try {
             return Health_facility.getHealth_facilityByORMID(aHfId);
         } catch (PersistentException ex) {
@@ -519,9 +478,9 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             return null;
         }
     }
-    
-    public void refreshReportDetail(int aIndicator){
-        this.indicator_id=aIndicator;
+
+    public void refreshReportDetail(int aIndicator) {
+        this.indicator_id = aIndicator;
     }
 
     public int getElibileEntities(Report_form aReport_form) {
@@ -1161,6 +1120,116 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
      */
     public void setDashboard_surgeList(List<Dashboard_surge> Dashboard_surgeList) {
         this.Dashboard_surgeList = Dashboard_surgeList;
+    }
+
+    /**
+     * @return the selectedDistricts
+     */
+    public District[] getSelectedDistricts() {
+        return selectedDistricts;
+    }
+
+    /**
+     * @param selectedDistricts the selectedDistricts to set
+     */
+    public void setSelectedDistricts(District[] selectedDistricts) {
+        this.selectedDistricts = selectedDistricts;
+    }
+
+    /**
+     * @return the selectedFacilities
+     */
+    public Health_facility[] getSelectedFacilities() {
+        return selectedFacilities;
+    }
+
+    /**
+     * @param selectedFacilities the selectedFacilities to set
+     */
+    public void setSelectedFacilities(Health_facility[] selectedFacilities) {
+        this.selectedFacilities = selectedFacilities;
+    }
+
+    /**
+     * @return the districts
+     */
+    public List<District> getDistricts() {
+        List<District> districtList = new ArrayList<>();
+        try {
+            districtList = District.queryDistrict("is_deleted=0", "district_name");
+        } catch (PersistentException | NullPointerException ex) {
+        }
+        this.districts = districtList;
+        return districts;
+    }
+
+    /**
+     * @param districts the districts to set
+     */
+    public void setDistricts(List<District> districts) {
+        this.districts = districts;
+    }
+
+    public String getDistrictsStr() {
+        String DistrictsStr = "";
+        int y = 0;
+        y = this.selectedDistricts.length;
+        for (int i = 0; i < y; i++) {
+            if (DistrictsStr.length() > 0) {
+                DistrictsStr = DistrictsStr + "," + selectedDistricts[i].getDistrict_id();
+            } else {
+                DistrictsStr = "" + selectedDistricts[i].getDistrict_id();
+            }
+        }
+        return DistrictsStr;
+    }
+
+    public String getFacilitiesStr() {
+        String FacilitiesStr = "";
+        int y = 0;
+        y = this.selectedFacilities.length;
+        for (int i = 0; i < y; i++) {
+            if (FacilitiesStr.length() > 0) {
+                FacilitiesStr = FacilitiesStr + "," + selectedFacilities[i].getHealth_facility_id();
+            } else {
+                FacilitiesStr = "" + selectedFacilities[i].getHealth_facility_id();
+            }
+        }
+        return FacilitiesStr;
+    }
+
+    /**
+     * @return the facilities
+     */
+    public List<Health_facility> getFacilities() {
+        List<Health_facility> facilityList = new ArrayList<>();
+        try {
+            facilityList = Health_facility.queryHealth_facility("is_deleted=0 and district_id IN(" + this.getDistrictsStr() + ")", "district_id,health_facility_name");
+        } catch (PersistentException | NullPointerException ex) {
+        }
+        this.facilities = facilityList;
+        return facilities;
+    }
+
+    /**
+     * @param facilities the facilities to set
+     */
+    public void setFacilities(List<Health_facility> facilities) {
+        this.facilities = facilities;
+    }
+
+    /**
+     * @return the week_value2
+     */
+    public int getWeek_value2() {
+        return week_value2;
+    }
+
+    /**
+     * @param week_value2 the week_value2 to set
+     */
+    public void setWeek_value2(int week_value2) {
+        this.week_value2 = week_value2;
     }
 
 }

@@ -23,24 +23,19 @@
                 <p:growl/>
                 <p:fieldset legend="EGPAF Surge Form Dashboard">
                     <div class="ui-fluid">
-                        <p:panelGrid columns="7" id="panelFilter">
+                        <p:panelGrid columns="8" id="panelFilter">
                             <p:outputLabel value="Year" />
                             <p:outputLabel value="Month" />
-                            <p:outputLabel value="Week" />
-                            <p:outputLabel value="District:" />
-                            <p:autoComplete id="district" value="#{dashboard_surgeBean.district}"
-                                            completeMethod="#{uploadBean.completeDistrict}"
-                                            var="district" itemLabel="#{district.district_name}" itemValue="#{district}" 
-                                            converter="districtConverter" forceSelection="true"
-                                            minQueryLength="3">
-                                <p:column headerText="District Name" style="text-align: left">
-                                    <h:outputText value="#{district.district_name}">
-                                    </h:outputText>
-                                </p:column>
-                            </p:autoComplete>
+                            <p:outputLabel value="From Week" />
+                            <p:outputLabel value="To Week" />
+                            <p:outputLabel value="District:" for="district" />
+                            <p:selectCheckboxMenu id="district" value="#{dashboard_surgeBean.selectedDistricts}" label="" style="width:150px" converter="districtConverter">
+                                <f:selectItems value="#{dashboard_surgeBean.districts}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
+                                <p:ajax update="facility"/>
+                            </p:selectCheckboxMenu>
                             <p:outputLabel value="Select Indicator for the Trend Graph" />
                             <p:commandButton id="cmdbSearch" value="APPLY  FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
-                                <p:ajax listener="#{dashboard_surgeBean.refreshDashboard(dashboard_surgeBean.year_value,dashboard_surgeBean.month_value,dashboard_surgeBean.week_value,dashboard_surgeBean.district,dashboard_surgeBean.facility,dashboard_surgeBean.indicator_id)}" process="panelFilter" update="pnlgCharts pnlgTrends"/>
+                                <p:ajax listener="#{dashboard_surgeBean.refreshDashboard(dashboard_surgeBean.year_value,dashboard_surgeBean.month_value,dashboard_surgeBean.week_value,dashboard_surgeBean.week_value2,dashboard_surgeBean.selectedDistricts,dashboard_surgeBean.selectedFacilities,dashboard_surgeBean.indicator_id)}" process="panelFilter" update="pnlgCharts pnlgTrends"/>
                             </p:commandButton>
 
                             <p:selectOneMenu id="year" value="#{dashboard_surgeBean.year_value}" editable="true">
@@ -68,31 +63,20 @@
                                 <f:selectItems value="#{dashboard_surgeBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
                                 <p:ajax/>
                             </p:selectOneMenu>
-                            <p:outputLabel value="Facility:" />
-                            <p:autoComplete id="facility" value="#{dashboard_surgeBean.facility}"
-                                            completeMethod="#{uploadBean.completeHealth_facility}"
-                                            var="health_facility" itemLabel="#{health_facility.health_facility_name}" itemValue="#{health_facility}" 
-                                            converter="health_facilityConverter" forceSelection="true"
-                                            minQueryLength="3">
-                                <p:column headerText="Health Facility Name" style="text-align: left">
-                                    <h:outputText value="#{health_facility.health_facility_name}">
-                                    </h:outputText>
-                                </p:column>
-                                <p:column headerText="Sub County" style="text-align: left">
-                                    <h:outputText value="#{health_facility.sub_county.sub_county_name}">
-                                    </h:outputText>
-                                </p:column>
-                                <p:column headerText="District" style="text-align: left">
-                                    <h:outputText value="#{health_facility.district.district_name}">
-                                    </h:outputText>
-                                </p:column>
-                            </p:autoComplete>
+                            <p:selectOneMenu id="week2" value="#{dashboard_surgeBean.week_value2}" editable="false">
+                                <f:selectItems value="#{dashboard_surgeBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
+                                <p:ajax/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Facility:" for="facility" />
+                            <p:selectCheckboxMenu id="facility" value="#{dashboard_surgeBean.selectedFacilities}" label="" style="width:150px" converter="health_facilityConverter">
+                                <f:selectItems value="#{dashboard_surgeBean.facilities}" var="fs" itemValue="#{fs}" itemLabel="#{fs.health_facility_name}" />
+                            </p:selectCheckboxMenu>
                             <p:selectOneMenu id="trend" value="#{dashboard_surgeBean.indicator_id}">
                                 <f:selectItem itemLabel="% Viral Load Testing Coverage" itemValue="1" />
-                                <f:selectItem itemLabel="% of clients missed appointment during the week" itemValue="2" />
-                                <f:selectItem itemLabel="% of clients missed appointment during the previous week and brought back into care" itemValue="3" />
+                                <f:selectItem itemLabel="% missed appointment during the week" itemValue="2" />
+                                <f:selectItem itemLabel="% missed appointment prev. week and brought back" itemValue="3" />
                                 <f:selectItem itemLabel="HTS Yield" itemValue="4" />
-                                <f:selectItem itemLabel="Total/% started ART" itemValue="5" />
+                                <f:selectItem itemLabel="Total/% started on ART" itemValue="5" />
                             </p:selectOneMenu>
                             <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
                                 <p:ajax listener="#{dashboard_surgeBean.resetDashboard()}" process="panelFilter" update="panelFilter pnlgCharts pnlgTrends"/>
@@ -122,7 +106,8 @@
                                                 "showValue": "1",
                                                 "valueBelowPivot": "1",
                                                 "numberSuffix": "%",
-                                                "theme": "fint"
+                                                "theme": "fint",
+                                                "decimals": "1"
                                             },
                                             "colorRange": {
                                                 "color": [
@@ -157,7 +142,7 @@
                             <div id="chart2"></div>
                             <p:commandLink value="#{dashboard_surgeBean.count_n2} clients missed / #{dashboard_surgeBean.count_d2} total appointments" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(2)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
-                            
+
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind2 = new FusionCharts({
@@ -174,7 +159,8 @@
                                                 "showPercentInTooltip": "0",
                                                 "decimals": "1",
                                                 "palettecolors": "#C02133,#488A7E",
-                                                "theme": "fint"
+                                                "theme": "fint",
+                                                "decimals": "1"
                                             },
                                             "data": #{dashboard_surgeBean.dataChartString2}
                                         }
@@ -187,7 +173,7 @@
                             <div id="chart3"></div>
                             <p:commandLink value="#{dashboard_surgeBean.count_n3} missed and brought back / #{dashboard_surgeBean.count_d3} missed last week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(3)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
-                            
+
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind3 = new FusionCharts({
@@ -206,7 +192,8 @@
                                                 "showValue": "1",
                                                 "valueBelowPivot": "1",
                                                 "numberSuffix": "%",
-                                                "theme": "fint"
+                                                "theme": "fint",
+                                                "decimals": "1"
                                             },
                                             "colorRange": {
                                                 "color": [
@@ -259,7 +246,8 @@
                                                 "showValue": "1",
                                                 "valueBelowPivot": "1",
                                                 "numberSuffix": "%",
-                                                "theme": "fint"
+                                                "theme": "fint",
+                                                "decimals": "1"
                                             },
                                             "colorRange": {
                                                 "color": [
@@ -304,7 +292,7 @@
                                         dataFormat: 'json',
                                         dataSource: {
                                             "chart": {
-                                                "caption": "Total/% started ART",
+                                                "caption": "Total/% started on ART",
                                                 "lowerLimit": "0",
                                                 "upperLimit": "100",
                                                 "lowerLimitDisplay": "0%",
@@ -312,7 +300,8 @@
                                                 "showValue": "1",
                                                 "valueBelowPivot": "1",
                                                 "numberSuffix": "%",
-                                                "theme": "fint"
+                                                "theme": "fint",
+                                                "decimals": "1"
                                             },
                                             "colorRange": {
                                                 "color": [
@@ -358,7 +347,7 @@
                                         dataSource: {
                                             "chart": {
                                                 "caption": "Trend for #{dashboard_surgeBean.getIndicatorStringById(dashboard_surgeBean.indicator_id)}",
-                                                "subCaption": "Showing previous 30 weeks from Selected/Current Week",
+                                                "subCaption": "Showing EITHER selected range OR previous 28 weeks from selected/current Week",
                                                 "xAxisName": "Week",
                                                 "yAxisName": "Percentage(%)",
                                                 "numberSuffix": "%",
@@ -378,7 +367,7 @@
                                                 "showAlternateHGridColor": "0",
                                                 "subcaptionFontBold": "0",
                                                 "subcaptionFontSize": "14",
-                                                "showValues":"1"
+                                                "showValues": "1"
                                             },
                                             "categories": #{dashboard_surgeBean.categoriesChartString},
                                             "dataset": #{dashboard_surgeBean.dataseriesChartString}
