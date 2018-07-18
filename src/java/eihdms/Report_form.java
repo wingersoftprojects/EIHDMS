@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -417,6 +417,10 @@ public class Report_form implements Serializable {
 			for(int i = 0; i < lGroup_rights.length; i++) {
 				lGroup_rights[i].setReport_form(null);
 			}
+			eihdms.Report_form_entity_count[] lReport_form_entity_counts = (eihdms.Report_form_entity_count[])getReport_form_entity_count().toArray(new eihdms.Report_form_entity_count[getReport_form_entity_count().size()]);
+			for(int i = 0; i < lReport_form_entity_counts.length; i++) {
+				lReport_form_entity_counts[i].setReport_form(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -478,6 +482,10 @@ public class Report_form implements Serializable {
 			eihdms.Group_right[] lGroup_rights = (eihdms.Group_right[])getGroup_right().toArray(new eihdms.Group_right[getGroup_right().size()]);
 			for(int i = 0; i < lGroup_rights.length; i++) {
 				lGroup_rights[i].setReport_form(null);
+			}
+			eihdms.Report_form_entity_count[] lReport_form_entity_counts = (eihdms.Report_form_entity_count[])getReport_form_entity_count().toArray(new eihdms.Report_form_entity_count[getReport_form_entity_count().size()]);
+			for(int i = 0; i < lReport_form_entity_counts.length; i++) {
+				lReport_form_entity_counts[i].setReport_form(null);
 			}
 			try {
 				session.delete(this);
@@ -604,6 +612,11 @@ public class Report_form implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set group_right = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Report_form_entity_count.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set report_form_entity_count = new java.util.HashSet();
 	
 	private void setReport_form_id(int value) {
 		this.report_form_id = value;
@@ -859,6 +872,15 @@ public class Report_form implements Serializable {
 	
 	public java.util.Set getGroup_right() {
 		return group_right;
+	}
+	
+	
+	public void setReport_form_entity_count(java.util.Set value) {
+		this.report_form_entity_count = value;
+	}
+	
+	public java.util.Set getReport_form_entity_count() {
+		return report_form_entity_count;
 	}
 	
 	

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
-@Table(name="data_element", uniqueConstraints={ @UniqueConstraint(columnNames={ "report_form_group_id", "data_element_code" }) })
+@Table(name="data_element")
 public class Data_element implements Serializable {
 	public Data_element() {
 	}

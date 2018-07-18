@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;

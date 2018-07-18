@@ -5,11 +5,15 @@
  */
 package beans;
 
+import eihdms.Report_form;
 import eihdms.Report_form_entity;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import utilities.Security;
 
 /**
  *
@@ -17,12 +21,13 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class Report_form_entityBean extends AbstractBean<Report_form_entity> implements Serializable{
-    
-    public Report_form_entityBean(){
+public class Report_form_entityBean extends AbstractBean<Report_form_entity> implements Serializable {
+
+    public Report_form_entityBean() {
         super(Report_form_entity.class);
     }
-        @Override
+
+    @Override
     public void init() {
         if (super.getEntityClass() == null) {
             loginBean.logout();
@@ -37,6 +42,12 @@ public class Report_form_entityBean extends AbstractBean<Report_form_entity> imp
 
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
+    }
+
+    public void saveReport_form_entity(int id) {
+        Report_form savedReport_form=this.getSelected().getReport_form();
+        super.save(id);
+        new Report_form_entity_countBean().saveEntityCount(savedReport_form,id);
     }
 
 }

@@ -56,7 +56,7 @@
                             <f:selectItem itemLabel="No" itemValue="0" />
                             <f:ajax render="@this"/>
                         </p:selectOneMenu>
-                        <p:commandButton value="SAVE" action="#{report_form_entityBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="entity_type,entity_id_parish,entity_id_facility,entity_id_organisation,report_form2,@this" update="@form"/>
+                        <p:commandButton value="SAVE" action="#{report_form_entityBean.saveReport_form_entity(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="entity_type,entity_id_parish,entity_id_facility,entity_id_organisation,report_form2,@this" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{report_form_entityBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>

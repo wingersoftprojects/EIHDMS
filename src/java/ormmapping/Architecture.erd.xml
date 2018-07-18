@@ -1872,10 +1872,6 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
-    <UniqueKey name="Report_Form_Group_Data_Element_Code">
-      <Column name="report_form_group_id"/>
-      <Column name="data_element_code"/>
-    </UniqueKey>
   </Entity>
   <Entity name="base_data" Unlogged="false" PKClustered="0">
     <Column name="base_data_id">
@@ -3574,17 +3570,6 @@
       <ForeignKey>false</ForeignKey>
       <Type>9</Type>
       <Length>10</Length>
-      <Nullable>true</Nullable>
-      <IDGenerator>native</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="def_name">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>false</ForeignKey>
-      <Type>27</Type>
-      <Length>100</Length>
       <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
@@ -8885,6 +8870,119 @@
       <UserTypes/>
     </Column>
   </Entity>
+  <Entity name="report_form_entity_count" Unlogged="false" PKClustered="0">
+    <Column name="report_form_entity_count_id">
+      <PrimaryKey>true</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="report_form_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>report_form.report_form_id</ReferencedColumn>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="entity_count">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>11</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="count_date">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>17</Type>
+      <Length>0</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="is_deleted">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>1</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="is_active">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>1</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="add_date">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>20</Type>
+      <Length>0</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="add_by">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>10</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="last_edit_date">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>20</Type>
+      <Length>0</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+    <Column name="last_edit_by">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>9</Type>
+      <Length>10</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
+  </Entity>
   <ForeignKey name="FKdistrict138403">
     <ReferenceTable>district</ReferenceTable>
     <ReferencedTable>region</ReferencedTable>
@@ -9543,6 +9641,16 @@
     </Columns>
     <RefColumns>
       <Column>section_id</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKreport_for328608">
+    <ReferenceTable>report_form_entity_count</ReferenceTable>
+    <ReferencedTable>report_form</ReferencedTable>
+    <Columns>
+      <Column>report_form_id</Column>
+    </Columns>
+    <RefColumns>
+      <Column>report_form_id</Column>
     </RefColumns>
   </ForeignKey>
 </Model>

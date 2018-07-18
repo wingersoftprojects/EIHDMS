@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -47,6 +47,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression report_form_deadline;
 	public final CollectionExpression report_form_entity;
 	public final CollectionExpression group_right;
+	public final CollectionExpression report_form_entity_count;
 	
 	public Report_formDetachedCriteria() {
 		super(eihdms.Report_form.class, eihdms.Report_formCriteria.class);
@@ -78,6 +79,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_form_deadline = new CollectionExpression("report_form_deadline", this.getDetachedCriteria());
 		report_form_entity = new CollectionExpression("report_form_entity", this.getDetachedCriteria());
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
+		report_form_entity_count = new CollectionExpression("report_form_entity_count", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -110,6 +112,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_form_deadline = new CollectionExpression("report_form_deadline", this.getDetachedCriteria());
 		report_form_entity = new CollectionExpression("report_form_entity", this.getDetachedCriteria());
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
+		report_form_entity_count = new CollectionExpression("report_form_entity_count", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
@@ -162,6 +165,10 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Group_rightDetachedCriteria createGroup_rightCriteria() {
 		return new Group_rightDetachedCriteria(createCriteria("group_right"));
+	}
+	
+	public Report_form_entity_countDetachedCriteria createReport_form_entity_countCriteria() {
+		return new Report_form_entity_countDetachedCriteria(createCriteria("report_form_entity_count"));
 	}
 	
 	public Report_form uniqueReport_form(PersistentSession session) {

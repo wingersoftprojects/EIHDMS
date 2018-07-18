@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -47,6 +47,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression report_form_deadline;
 	public final CollectionExpression report_form_entity;
 	public final CollectionExpression group_right;
+	public final CollectionExpression report_form_entity_count;
 	
 	public Report_formCriteria(Criteria criteria) {
 		super(criteria);
@@ -78,6 +79,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		report_form_deadline = new CollectionExpression("report_form_deadline", this);
 		report_form_entity = new CollectionExpression("report_form_entity", this);
 		group_right = new CollectionExpression("group_right", this);
+		report_form_entity_count = new CollectionExpression("report_form_entity_count", this);
 	}
 	
 	public Report_formCriteria(PersistentSession session) {
@@ -138,6 +140,10 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public Group_rightCriteria createGroup_rightCriteria() {
 		return new Group_rightCriteria(createCriteria("group_right"));
+	}
+	
+	public Report_form_entity_countCriteria createReport_form_entity_countCriteria() {
+		return new Report_form_entity_countCriteria(createCriteria("report_form_entity_count"));
 	}
 	
 	public Report_form uniqueReport_form() {

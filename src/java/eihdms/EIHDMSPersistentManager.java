@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: wence.twesigye
  * License Type: Purchased
  */
 package eihdms;
@@ -95,6 +95,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		aMetadataSources.addAnnotatedClass(eihdms.Report_period_week.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Sms_category.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Sub_section_cell.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Report_form_entity_count.class);
 	}
 	
 	public String getProjectName() {
