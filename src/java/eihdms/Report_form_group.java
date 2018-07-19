@@ -451,6 +451,9 @@ public class Report_form_group implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="def_name", nullable=true, length=100)	
+	private String def_name;
+	
 	@OneToMany(mappedBy="report_form_group", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -553,6 +556,14 @@ public class Report_form_group implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setDef_name(String value) {
+		this.def_name = value;
+	}
+	
+	public String getDef_name() {
+		return def_name;
+	}
+	
 	public void setReport_form(eihdms.Report_form value) {
 		this.report_form = value;
 	}
@@ -578,19 +589,6 @@ public class Report_form_group implements Serializable {
 		return validation_rule;
 	}
 	
-	
-	public boolean equals(Object obj) {
-		if (obj == null) {
-		 return false;
-		 }
-		Report_form_group object = (Report_form_group) obj;
-		return (this.getReport_form_group_id() == object.getReport_form_group_id());
-	}
-	
-	public int hashCode() {
-		int hash = 3;
-		return hash;
-	}
 	
 	public String toString() {
 		return String.valueOf(getReport_form_group_id());

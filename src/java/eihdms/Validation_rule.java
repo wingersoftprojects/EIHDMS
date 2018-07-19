@@ -541,20 +541,20 @@ public class Validation_rule implements Serializable {
 		return last_edit_by;
 	}
 	
-	public void setReport_form_group(eihdms.Report_form_group value) {
-		this.report_form_group = value;
-	}
-	
-	public eihdms.Report_form_group getReport_form_group() {
-		return report_form_group;
-	}
-	
 	public void setReport_form(eihdms.Report_form value) {
 		this.report_form = value;
 	}
 	
 	public eihdms.Report_form getReport_form() {
 		return report_form;
+	}
+	
+	public void setReport_form_group(eihdms.Report_form_group value) {
+		this.report_form_group = value;
+	}
+	
+	public eihdms.Report_form_group getReport_form_group() {
+		return report_form_group;
 	}
 	
 	public boolean equals(Object obj) {

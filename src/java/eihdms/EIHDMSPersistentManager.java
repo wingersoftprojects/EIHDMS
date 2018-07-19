@@ -60,7 +60,6 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		aMetadataSources.addAnnotatedClass(eihdms.User_action.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Technical_area.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Sub_section.class);
-		aMetadataSources.addAnnotatedClass(eihdms.Report_form_group.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Application_configuration.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Temp_data_element.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Temp_health_facility.class);
@@ -96,6 +95,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		aMetadataSources.addAnnotatedClass(eihdms.Sms_category.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Sub_section_cell.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Report_form_entity_count.class);
+		aMetadataSources.addAnnotatedClass(eihdms.Report_form_group.class);
 	}
 	
 	public String getProjectName() {

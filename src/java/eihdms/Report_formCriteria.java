@@ -37,7 +37,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
 	public final CollectionExpression user_action;
-	public final CollectionExpression report_form_group;
 	public final CollectionExpression validation_rule;
 	public final CollectionExpression data_obligation;
 	public final CollectionExpression kpi;
@@ -48,6 +47,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final CollectionExpression report_form_entity;
 	public final CollectionExpression group_right;
 	public final CollectionExpression report_form_entity_count;
+	public final CollectionExpression report_form_group;
 	
 	public Report_formCriteria(Criteria criteria) {
 		super(criteria);
@@ -69,7 +69,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		data_element = new CollectionExpression("data_element", this);
 		section = new CollectionExpression("section", this);
 		user_action = new CollectionExpression("user_action", this);
-		report_form_group = new CollectionExpression("report_form_group", this);
 		validation_rule = new CollectionExpression("validation_rule", this);
 		data_obligation = new CollectionExpression("data_obligation", this);
 		kpi = new CollectionExpression("kpi", this);
@@ -80,6 +79,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		report_form_entity = new CollectionExpression("report_form_entity", this);
 		group_right = new CollectionExpression("group_right", this);
 		report_form_entity_count = new CollectionExpression("report_form_entity_count", this);
+		report_form_group = new CollectionExpression("report_form_group", this);
 	}
 	
 	public Report_formCriteria(PersistentSession session) {
@@ -100,10 +100,6 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public User_actionCriteria createUser_actionCriteria() {
 		return new User_actionCriteria(createCriteria("user_action"));
-	}
-	
-	public Report_form_groupCriteria createReport_form_groupCriteria() {
-		return new Report_form_groupCriteria(createCriteria("report_form_group"));
 	}
 	
 	public Validation_ruleCriteria createValidation_ruleCriteria() {
@@ -144,6 +140,10 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	
 	public Report_form_entity_countCriteria createReport_form_entity_countCriteria() {
 		return new Report_form_entity_countCriteria(createCriteria("report_form_entity_count"));
+	}
+	
+	public Report_form_groupCriteria createReport_form_groupCriteria() {
+		return new Report_form_groupCriteria(createCriteria("report_form_group"));
 	}
 	
 	public Report_form uniqueReport_form() {

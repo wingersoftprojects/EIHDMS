@@ -37,7 +37,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
 	public final CollectionExpression user_action;
-	public final CollectionExpression report_form_group;
 	public final CollectionExpression validation_rule;
 	public final CollectionExpression data_obligation;
 	public final CollectionExpression kpi;
@@ -48,6 +47,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final CollectionExpression report_form_entity;
 	public final CollectionExpression group_right;
 	public final CollectionExpression report_form_entity_count;
+	public final CollectionExpression report_form_group;
 	
 	public Report_formDetachedCriteria() {
 		super(eihdms.Report_form.class, eihdms.Report_formCriteria.class);
@@ -69,7 +69,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
-		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		data_obligation = new CollectionExpression("data_obligation", this.getDetachedCriteria());
 		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
@@ -80,6 +79,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_form_entity = new CollectionExpression("report_form_entity", this.getDetachedCriteria());
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 		report_form_entity_count = new CollectionExpression("report_form_entity_count", this.getDetachedCriteria());
+		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 	}
 	
 	public Report_formDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -102,7 +102,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
-		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 		validation_rule = new CollectionExpression("validation_rule", this.getDetachedCriteria());
 		data_obligation = new CollectionExpression("data_obligation", this.getDetachedCriteria());
 		kpi = new CollectionExpression("kpi", this.getDetachedCriteria());
@@ -113,6 +112,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		report_form_entity = new CollectionExpression("report_form_entity", this.getDetachedCriteria());
 		group_right = new CollectionExpression("group_right", this.getDetachedCriteria());
 		report_form_entity_count = new CollectionExpression("report_form_entity_count", this.getDetachedCriteria());
+		report_form_group = new CollectionExpression("report_form_group", this.getDetachedCriteria());
 	}
 	
 	public Data_elementDetachedCriteria createData_elementCriteria() {
@@ -125,10 +125,6 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public User_actionDetachedCriteria createUser_actionCriteria() {
 		return new User_actionDetachedCriteria(createCriteria("user_action"));
-	}
-	
-	public Report_form_groupDetachedCriteria createReport_form_groupCriteria() {
-		return new Report_form_groupDetachedCriteria(createCriteria("report_form_group"));
 	}
 	
 	public Validation_ruleDetachedCriteria createValidation_ruleCriteria() {
@@ -169,6 +165,10 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Report_form_entity_countDetachedCriteria createReport_form_entity_countCriteria() {
 		return new Report_form_entity_countDetachedCriteria(createCriteria("report_form_entity_count"));
+	}
+	
+	public Report_form_groupDetachedCriteria createReport_form_groupCriteria() {
+		return new Report_form_groupDetachedCriteria(createCriteria("report_form_group"));
 	}
 	
 	public Report_form uniqueReport_form(PersistentSession session) {
