@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -211,9 +212,10 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
         this.count_n2 = 0;
         this.perc_value2 = 0;
 
+        Date aBydate=new GeneralUtilities().get_week_date_to(this.report_period_year, this.report_period_week);
         //get denominator; eligible entities for the report form
-        this.count_d1 = this.getElibileEntities(this.report_form1);
-        this.count_d2 = this.getElibileEntities(this.report_form2);
+        this.count_d1 = this.getElibileEntities(this.report_form1,aBydate);
+        this.count_d2 = this.getElibileEntities(this.report_form2,aBydate);
 
         //get numerator;entities that submitted the report form
         this.count_n1 = this.getReceivedEntities(this.report_form1, this.report_period_year, this.report_period_week);
@@ -345,6 +347,37 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
                 x = 0;
             }
         } catch (PersistentException ex) {
+            Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return x;
+    }
+
+    public int getElibileEntities(Report_form aReport_form, Date aByDate) {
+        int x = 0;
+        ResultSet rs;
+        String sql = "select entity_count from report_form_entity_count where count_date<='" + new SimpleDateFormat("yyyy-MM-dd").format(aByDate) + "' and add_date=("
+                + "select max(add_date) from report_form_entity_count where count_date<='" + new SimpleDateFormat("yyyy-MM-dd").format(aByDate) + "')";
+        try {
+            if (null != aReport_form && null != aByDate) {
+                try (Connection conn = DBConnection.getMySQLConnection();
+                        PreparedStatement ps = conn.prepareStatement(sql);) {
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        x = rs.getInt("entity_count");
+                    }
+                }
+                if (x == 0) {
+                    if (aReport_form.getLowest_report_form_level().equals("Facility")) {
+                        x = Health_facility.queryHealth_facility("is_active=1 and is_deleted=0", null).size();
+                    } else if (aReport_form.getLowest_report_form_level().equals("Parish")) {
+                        x = Parish.queryParish("is_active=1 and is_deleted=0", null).size();
+                    }
+                }
+            } else {
+                //initilaise
+                x = 0;
+            }
+        } catch (SQLException | PersistentException ex) {
             Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return x;

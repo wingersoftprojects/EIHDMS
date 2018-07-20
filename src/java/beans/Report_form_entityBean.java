@@ -6,6 +6,7 @@
 package beans;
 
 import eihdms.Health_facility;
+import eihdms.Parish;
 import eihdms.Report_form;
 import eihdms.Report_form_entity;
 import java.io.Serializable;
@@ -81,7 +82,21 @@ public class Report_form_entityBean extends AbstractBean<Report_form_entity> imp
                 Logger.getLogger(Report_form_entityBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (reportlevel.equals("Parish")) {
-            enitytype = "Parish";
+            try {
+                enitytype = "Parish";
+                List<Parish> PhList = new ArrayList<>();
+                PhList = Parish.queryParish("is_active=1 and is_deleted=0", null);
+                Report_form_entity RfObj;
+                for(Parish PhObj:PhList){
+                    RfObj=new Report_form_entity();
+                    RfObj.setEntity_type(enitytype);
+                    RfObj.setEntity_id(PhObj.getParish_id());
+                    RfObj.setReport_form(aReport_form);
+                    this.Report_form_entityList.add(RfObj);
+                }
+            } catch (PersistentException ex) {
+                Logger.getLogger(Report_form_entityBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }

@@ -52,7 +52,24 @@
                     </p:panelGrid>
                 </p:fieldset>
             </p:panelGrid>
+            <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                <f:facet name="default">
+                    <h:outputText value="Status: StandBy" />
+                </f:facet>
+
+                <f:facet name="start">
+
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="Status: Completed" />
+                </f:facet>
+            </p:ajaxStatus>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage name="/images/ajax-loader.gif" />
+            </p:dialog>
+
         </h:form>
     </ui:define>
-
 </ui:composition>
