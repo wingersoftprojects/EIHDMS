@@ -29,26 +29,31 @@
                         </p:selectOneMenu>
                         <p:commandButton value="RETRIEVE ENTITIES" icon="ui-icon-cancel" action="#{report_form_entityBean.refreshReport_form_entityList(report_form_entityBean.report_formObj)}" update="@form" process="@this"/>
                     </p:panelGrid>
-                    <p:panelGrid id="pnlRetrieved" columns="3">
+                    <p:panelGrid id="pnlRetrieved" columns="5">
+                        <p:outputLabel value=""/>
+                        <p:outputLabel value=""/>
                         <p:outputLabel value=""/>
                         <p:outputLabel value=""/>
                         <h:selectBooleanCheckbox id="all_allow_view" value="#{report_form_entityBean.all_allow}">
-                            <f:ajax listener="#{report_form_entityBean.All_allow(report_form_entityBean.all_allow)}" render="pnlRetrieved"/>
+                            <f:ajax listener="#{report_form_entityBean.multiAllowAll(report_form_entityBean.all_allow)}" render="pnlRetrieved"/>
                         </h:selectBooleanCheckbox>
+                        <p:outputLabel value="#"/>
                         <p:outputLabel value="Entity type" style="font-weight: bold"/>
+                        <p:outputLabel value="Entity Parent" style="font-weight: bold"/>
                         <p:outputLabel value="Entity Name" style="font-weight: bold"/>
                         <p:outputLabel value="Reporting" style="font-weight: bold"/>
-                        <c:forEach var="var" items="#{report_form_entityBean.report_form_entityList}" >
+                        <c:forEach var="var" items="#{report_form_entityBean.report_form_entity_uiList}" >
+                            <p:outputLabel value="#{var.item_no}"/>
                             <p:outputLabel value="#{var.entity_type}"/>
-                            <p:outputLabel value="#{var.entity_id}"/>
-                            <h:selectBooleanCheckbox>
+                            <p:outputLabel value="#{var.entity_parent_name}"/>
+                            <p:outputLabel value="#{var.entity_name}"/>
+                            <h:selectBooleanCheckbox value="#{var.is_checked}">
                                 <f:ajax event="change" render="@this"/>
                             </h:selectBooleanCheckbox>
                         </c:forEach>
                     </p:panelGrid>
-                    <p:panelGrid id="pnlButtons" columns="2">
-                        <p:commandButton value="SAVE" action="#{report_form_entityBean.saveReport_form_entity(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="pnlFilter,pnlRetrieved" update="@form"/>
-                        <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{report_form_entityBean.cancel()}" update="@form" process="@this"/>
+                    <p:panelGrid id="pnlButtons" columns="1">
+                        <p:commandButton value="SAVE" action="#{report_form_entityBean.saveReport_form_entities(report_form_entityBean.report_formObj,loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="pnlFilter,pnlRetrieved,@this" update="@form"/>
                     </p:panelGrid>
                 </p:fieldset>
             </p:panelGrid>
@@ -69,7 +74,7 @@
             <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
                 <p:graphicImage name="/images/ajax-loader.gif" />
             </p:dialog>
-
         </h:form>
     </ui:define>
+
 </ui:composition>

@@ -2397,7 +2397,19 @@ public class UploadBean implements Serializable {
         }
 
     }
-
+    public String getDE_Form(Report_form_group aReport_form_group){
+        String frm = "def_0_0";
+        try{
+        if(aReport_form_group.getDef_name().length() >0){
+            frm = aReport_form_group.getDef_name();
+        }
+        }
+        catch(NullPointerException npe){
+            
+        }
+        return frm;
+    }
+    
     public void generate_validation_report(int batch_id) {
         try {
             Batch b = Batch.getBatchByORMID(batch_id);
@@ -3151,14 +3163,14 @@ public class UploadBean implements Serializable {
         }
     }
     
-    public Interface_data getInterface_dataCell(long aData_element_id) {
+    public Interface_data getInterface_dataCell(String aData_element_code) {
         int n = 0;
         Interface_data interface_data = new Interface_data();
         try {
             n = this.interface_datas.size();
             if (n > 0) {
                 for (int i = 0; i < n; i++) {
-                    if (this.interface_datas.get(i).getData_element().getData_element_id() == aData_element_id) {
+                    if (this.interface_datas.get(i).getData_element().getData_element_code().equals(aData_element_code)) {
                         interface_data = this.interface_datas.get(i);
                         break;
                     }
@@ -3169,6 +3181,24 @@ public class UploadBean implements Serializable {
         }
         return interface_data;
     }
+//    public Interface_data getInterface_dataCell(long aData_element_id) {
+//        int n = 0;
+//        Interface_data interface_data = new Interface_data();
+//        try {
+//            n = this.interface_datas.size();
+//            if (n > 0) {
+//                for (int i = 0; i < n; i++) {
+//                    if (this.interface_datas.get(i).getData_element().getData_element_id()== aData_element_id) {
+//                        interface_data = this.interface_datas.get(i);
+//                        break;
+//                    }
+//                }
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return interface_data;
+//    }
 
     /**
      * @return the health_facility
