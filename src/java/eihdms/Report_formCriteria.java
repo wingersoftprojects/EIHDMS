@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -34,6 +34,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 	public final StringExpression source_system;
 	public final IntegerExpression mode_upload;
 	public final IntegerExpression mode_data_entry;
+	public final IntegerExpression is_patient_level;
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
 	public final CollectionExpression user_action;
@@ -66,6 +67,7 @@ public class Report_formCriteria extends AbstractORMCriteria {
 		source_system = new StringExpression("source_system", this);
 		mode_upload = new IntegerExpression("mode_upload", this);
 		mode_data_entry = new IntegerExpression("mode_data_entry", this);
+		is_patient_level = new IntegerExpression("is_patient_level", this);
 		data_element = new CollectionExpression("data_element", this);
 		section = new CollectionExpression("section", this);
 		user_action = new CollectionExpression("user_action", this);

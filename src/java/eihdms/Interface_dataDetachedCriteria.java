@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -60,6 +60,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 	public final AssociationExpression report_form;
 	public final IntegerExpression report_form_group_id;
 	public final StringExpression entry_mode;
+	public final StringExpression rec_id;
 	
 	public Interface_dataDetachedCriteria() {
 		super(eihdms.Interface_data.class, eihdms.Interface_dataCriteria.class);
@@ -104,6 +105,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 		entry_mode = new StringExpression("entry_mode", this.getDetachedCriteria());
+		rec_id = new StringExpression("rec_id", this.getDetachedCriteria());
 	}
 	
 	public Interface_dataDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -149,6 +151,7 @@ public class Interface_dataDetachedCriteria extends AbstractORMDetachedCriteria 
 		report_form = new AssociationExpression("report_form", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 		entry_mode = new StringExpression("entry_mode", this.getDetachedCriteria());
+		rec_id = new StringExpression("rec_id", this.getDetachedCriteria());
 	}
 	
 	public BatchDetachedCriteria createBatchCriteria() {

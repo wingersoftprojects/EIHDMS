@@ -68,6 +68,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
 import utilities.GeneralUtilities;
+import utilities.Patient_Level_Data;
 
 /**
  *
@@ -1507,6 +1508,21 @@ public class UploadBean implements Serializable {
         }
     }
 
+    public void validate_and_load_data_to_base_patient_level(int batch_id) {
+        String sql = "{call sp_validate_data_patient_level(?,?,?,?)}";
+        ResultSet rs = null;
+        try (Connection conn = loginBean.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            ps.setInt(1, report_form.getReport_form_id());
+            ps.setInt(2, report_form_group.getReport_form_group_id());
+            ps.setInt(3, batch_id);
+            ps.setString(4, report_form.getLowest_report_form_level());
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }
+
     public void validate_and_load_data_to_base_SMS(int batch_id, Report_form report_form_SMS, Report_form_group report_form_groupSMS) {
         String sql = "{call sp_validate_data(?,?,?,?)}";
         ResultSet rs = null;
@@ -1683,7 +1699,10 @@ public class UploadBean implements Serializable {
         //System.out.println("END-BATCH:" + new Date());
         return batch;
     }
-    
+
+    /**
+     * For Web both upload and data entry
+     */
     public void load_interface() {
         Batch batch;
         String sql = "";
@@ -1874,6 +1893,14 @@ public class UploadBean implements Serializable {
         }
     }
 
+    /**
+     * For SMS Entry
+     *
+     * @param interface_dataList
+     * @param report_form_SMS
+     * @param report_form_group_SMS
+     * @param interface_data_sms
+     */
     public void load_interface(List<Interface_data> interface_dataList, Report_form report_form_SMS, Report_form_group report_form_group_SMS, Interface_data_sms interface_data_sms) {
         try {
             PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
@@ -2123,7 +2150,15 @@ public class UploadBean implements Serializable {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    /**
+     * For Mobile App Data
+     *
+     * @param interface_dataList
+     * @param report_form_SMS
+     * @param report_form_group_SMS
+     * @param batch_mob_app
+     */
     public void load_interface(List<Interface_data> interface_dataList, Report_form report_form_SMS, Report_form_group report_form_group_SMS, Batch_mob_app batch_mob_app) {
         try {
             PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
@@ -2372,6 +2407,204 @@ public class UploadBean implements Serializable {
         }
     }
 
+    /**
+     * For Patient Level Data Entry
+     */
+    public void load_interface_patient_level() {
+        Batch batch;
+        String sql = "";
+        if (!interface_datas.isEmpty()) {
+            batch = newBatch();
+            //System.out.println("START-INSERT-INTERFACE: " + new Date());
+            //3,5,5,5,2,4,4=28
+            sql = "INSERT INTO interface_data(batch_id,data_element_id,data_element_value,"
+                    + "health_facility_name,parish_name,sub_county_name,county_name,district_name,"
+                    + "health_facility_id,parish_id,sub_county_id,county_id,district_id,"
+                    + "report_period_year,report_period_quarter,report_period_bi_month,report_period_month,report_period_week,"
+                    + "report_period_from_date,report_period_to_date,"
+                    + "status_u,status_u_desc,is_deleted,is_active,"
+                    + "add_date,add_by,report_form_id,report_form_group_id,entry_mode,rec_id) "
+                    + "VALUES("
+                    + "?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,?,?,?,"
+                    + "?,?,"
+                    + "?,?,?,?,"
+                    + "?,?,?,?,?,?)";
+            try (
+                    Connection connection = loginBean.getMySQLConnection();
+                    PreparedStatement ps = connection.prepareStatement(sql);) {
+                connection.setAutoCommit(false);
+                int j = 0;
+                for (Interface_data i : interface_datas) {
+                    try {
+                        ps.setInt(1, batch.getBatch_id());
+                    } catch (NullPointerException npe) {
+                        ps.setInt(1, 0);
+                        ps.setObject(1, null);
+                    }
+                    try {
+                        ps.setInt(2, i.getData_element().getData_element_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(2, null);
+                    }
+                    try {
+                        ps.setString(3, i.getData_element_value());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(3, null);
+                    }
+                    try {
+                        ps.setString(4, i.getHealth_facility_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(4, null);
+                    }
+                    try {
+                        ps.setString(5, i.getParish_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(5, null);
+                    }
+                    try {
+                        ps.setString(6, i.getSub_county_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(6, null);
+                    }
+                    try {
+                        ps.setString(7, i.getCounty_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(7, null);
+                    }
+                    try {
+                        ps.setString(8, i.getDistrict_name());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(8, null);
+                    }
+                    try {
+                        ps.setInt(9, i.getHealth_facility_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(9, null);
+                    }
+                    try {
+                        ps.setInt(10, i.getParish_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(10, null);
+                    }
+                    try {
+                        ps.setInt(11, i.getSub_county_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(11, null);
+                    }
+                    try {
+                        ps.setInt(12, i.getCounty_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(12, null);
+                    }
+                    try {
+                        ps.setInt(13, i.getDistrict_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(13, null);
+                    }
+                    try {
+                        ps.setInt(14, i.getReport_period_year());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(14, null);
+                    }
+                    try {
+                        ps.setInt(15, i.getReport_period_quarter());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(15, null);
+                    }
+                    try {
+                        ps.setInt(16, i.getReport_period_bi_month());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(16, null);
+                    }
+                    try {
+                        ps.setInt(17, i.getReport_period_month());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(17, null);
+                    }
+                    try {
+                        ps.setInt(18, i.getReport_period_week());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(18, null);
+                    }
+                    try {
+                        ps.setDate(19, new java.sql.Date(i.getReport_period_from_date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setObject(19, null);
+                    }
+                    try {
+                        ps.setDate(20, new java.sql.Date(i.getReport_period_to_date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setDate(20, null);
+                    }
+                    ps.setString(21, "Pass");
+                    ps.setString(22, "Uploaded");
+                    ps.setInt(23, 0);
+                    ps.setInt(24, 1);
+                    try {
+                        ps.setTimestamp(25, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    } catch (NullPointerException npe) {
+                        ps.setTimestamp(25, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    }
+                    try {
+                        ps.setInt(26, loginBean.getUser_detail().getUser_detail_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(26, null);
+                    }
+                    try {
+                        ps.setInt(27, i.getReport_form().getReport_form_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(27, null);
+                    }
+                    try {
+                        ps.setInt(28, i.getReport_form_group_id());
+                    } catch (NullPointerException npe) {
+                        ps.setObject(28, null);
+                    }
+                    try {
+                        ps.setString(29, i.getEntry_mode());
+                    } catch (NullPointerException npe) {
+                        ps.setString(29, null);
+                    }
+                    try {
+                        ps.setString(30, i.getRec_id());
+                    } catch (NullPointerException npe) {
+                        ps.setString(30, null);
+                    }
+                    ps.addBatch();
+                    j++;
+                    if (j % 500 == 0 || j == interface_datas.size()) {
+                        //System.out.println("--execute-J--:" + j);
+                        ps.executeBatch();
+                    }
+                }
+                //System.out.println("--final-J1--:" + j);
+                connection.commit();
+                //System.out.println("--final-J2--:" + j);
+                interface_datas.clear();
+                //System.out.println("END-INSERT-INTERFACE:" + new Date());
+
+                //Load Base Data
+                //System.out.println("START-VALIDATION-LOAD-BASE:" + new Date());
+                validate_and_load_data_to_base_patient_level(batch.getBatch_id());
+                //System.out.println("END-VALIDATION-LOAD-BASE:" + new Date());
+
+                loginBean.saveMessage();
+                //System.out.println("START-VALIDATION-REPORT:" + new Date());
+                generate_validation_report_patient_level(batch.getBatch_id());
+                //System.out.println("END-VALIDATION-REPORT:" + new Date());
+
+                RequestContext.getCurrentInstance().execute("PF('validationReport_patient_level').show();");
+            } catch (SQLException ex) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(ex.getMessage(), ex.getMessage()));
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public void InsertPivotEGPAFSurgeFormData(long aBatchId) {
         String sql = "{call sp_insert_dashboard_surge(?)}";
         try (
@@ -2384,7 +2617,7 @@ public class UploadBean implements Serializable {
         }
 
     }
-    
+
     public void UpdatePivotEGPAFSurgeFormData(long aBatchId) {
         String sql = "{call sp_update_dashboard_surge(?)}";
         try (
@@ -2397,19 +2630,19 @@ public class UploadBean implements Serializable {
         }
 
     }
-    public String getDE_Form(Report_form_group aReport_form_group){
+
+    public String getDE_Form(Report_form_group aReport_form_group) {
         String frm = "def_0_0";
-        try{
-        if(aReport_form_group.getDef_name().length() >0){
-            frm = aReport_form_group.getDef_name();
-        }
-        }
-        catch(NullPointerException npe){
-            
+        try {
+            if (aReport_form_group.getDef_name().length() > 0) {
+                frm = aReport_form_group.getDef_name();
+            }
+        } catch (NullPointerException npe) {
+
         }
         return frm;
     }
-    
+
     public void generate_validation_report(int batch_id) {
         try {
             Batch b = Batch.getBatchByORMID(batch_id);
@@ -2424,6 +2657,108 @@ public class UploadBean implements Serializable {
             passed = 0;
             for (Object[] objects : validations) {
                 ValidationReport vr = new ValidationReport();
+                if (objects[4] != null) {
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    if (objects[1] != null) {
+                        vr.CountyName = objects[1].toString();
+                    } else {
+                        vr.CountyName = "";
+                    }
+                    if (objects[2] != null) {
+                        vr.Sub_countyName = objects[2].toString();
+                    } else {
+                        vr.Sub_countyName = "";
+                    }
+                    if (objects[4] != null) {
+                        vr.FacilityName = objects[4].toString();
+                    } else {
+                        vr.FacilityName = "";
+                    }
+                    vr.ParishName = "";
+                } else if (objects[3] != null) {
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    if (objects[1] != null) {
+                        vr.CountyName = objects[1].toString();
+                    } else {
+                        vr.CountyName = "";
+                    }
+                    if (objects[2] != null) {
+                        vr.Sub_countyName = objects[2].toString();
+                    } else {
+                        vr.Sub_countyName = "";
+                    }
+                    if (objects[3] != null) {
+                        vr.ParishName = objects[3].toString();
+                    } else {
+                        vr.ParishName = "";
+                    }
+                    vr.FacilityName = "";
+                } else {
+                    if (objects[0] != null) {
+                        vr.DistrictName = objects[0].toString();
+                    } else {
+                        vr.DistrictName = "";
+                    }
+                    vr.Sub_countyName = "";
+                    vr.ParishName = "";
+                    vr.FacilityName = "";
+                }
+                try {
+                    vr.setStatus(objects[5].toString());
+                    vr.setValidationDescription(objects[6].toString());
+                    if (objects[5].toString().equals("Fail")) {
+                        failed++;
+                    } else {
+                        passed++;
+                    }
+                } catch (NullPointerException ex) {
+                    vr.setValidationDescription("");
+                }
+                ReportFormName = objects[8].toString();
+                ReportFormGroupName = objects[9].toString();
+                vr.setReportId(counter);
+                tempValidationReports.add(vr);
+                counter++;
+            }
+            validationReportListAll = new ArrayList<>(tempValidationReports);
+            //validationReportList = new ArrayList<>(tempValidationReports);
+
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * For Patient Level
+     *
+     * @param batch_id
+     */
+    public void generate_validation_report_patient_level(int batch_id) {
+        try {
+            Batch b = Batch.getBatchByORMID(batch_id);
+            User_detail user_detail = User_detail.getUser_detailByORMID(b.getAdd_by());
+            batchDetails = new BatchDetails();
+            batchDetails.setBatchUserName(user_detail.getFirst_name() + " " + user_detail.getSecond_name() + " " + user_detail.getThird_name());
+            batchDetails.setBatch(b);
+            List<ValidationReport> tempValidationReports = new ArrayList<>();
+            List<Object[]> validations = EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT DISTINCT district_name,county_name,sub_county_name,parish_name,health_facility_name,status_v,status_v_desc,validation_report.report_form_id,report_form.report_form_name,report_form_group.report_form_group_name,validation_report.rec_id FROM validation_report INNER JOIN report_form ON report_form.report_form_id = validation_report.report_form_id INNER JOIN report_form_group ON validation_report.report_form_group_id = report_form_group.report_form_group_id where batch_id=" + batch_id).list();
+            int counter = 1;
+            failed = 0;
+            passed = 0;
+            for (Object[] objects : validations) {
+                ValidationReport vr = new ValidationReport();
+                if (objects[10] != null) {
+                    vr.PatientIdentifier = objects[10].toString();
+                }
                 if (objects[4] != null) {
                     if (objects[0] != null) {
                         vr.DistrictName = objects[0].toString();
@@ -3068,6 +3403,24 @@ public class UploadBean implements Serializable {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public void refreshData_elements_patient_level(Report_form report_form, Report_form_group report_form_group) {
+        String sql = "";
+        data_elements = new ArrayList<Data_element>();
+        try {
+            if (report_form != null && report_form_group != null) {
+                sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
+                data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
+                this.createInterface_datas(data_elements);
+                load_list_for_entry(report_form);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public void createInterface_datas(List<Data_element> aData_elements) {
@@ -3162,7 +3515,7 @@ public class UploadBean implements Serializable {
             }
         }
     }
-    
+
     public Interface_data getInterface_dataCell(String aData_element_code) {
         int n = 0;
         Interface_data interface_data = new Interface_data();
@@ -3368,6 +3721,15 @@ public class UploadBean implements Serializable {
         private int ReportFormId;
         private String ReportFormName;
         private String ReportFormGroupName;
+        private String PatientIdentifier;
+
+        public String getPatientIdentifier() {
+            return PatientIdentifier;
+        }
+
+        public void setPatientIdentifier(String PatientIdentifier) {
+            this.PatientIdentifier = PatientIdentifier;
+        }
 
         public String getReportFormGroupName() {
             return ReportFormGroupName;
@@ -4095,5 +4457,937 @@ public class UploadBean implements Serializable {
 
     /**
      * End SMS data functions
+     */
+    /**
+     * Start Patient Level Data
+     */
+    private int columns = 1;
+    private List<Patient_Level_Data> patient_level_data_list = new ArrayList<>();
+
+    public List<Patient_Level_Data> getPatient_level_data_list() {
+        return patient_level_data_list;
+    }
+
+    public void setPatient_level_data_list(List<Patient_Level_Data> patient_level_data_list) {
+        this.patient_level_data_list = patient_level_data_list;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
+    }
+    List<Data_element> data_elements_inner;
+
+    public List<Data_element> getData_elements_inner() {
+        return data_elements_inner;
+    }
+
+    public void setData_elements_inner(List<Data_element> data_elements_inner) {
+        this.data_elements_inner = data_elements_inner;
+    }
+
+    public void load_list_for_entry(Report_form report_form_inner) {
+        patient_level_data_list = new ArrayList<>();
+        if (report_form_inner != null) {
+            try {
+                data_elements_inner = Data_element.queryData_element("report_form_id=" + report_form_inner.getReport_form_id(), "group_column_number");
+                patient_level_data_list.add(create_new_Patient_Level_Data(data_elements_inner));
+            } catch (PersistentException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    public void add_new_patient_data() {
+        patient_level_data_list.add(create_new_Patient_Level_Data(data_elements_inner));
+    }
+
+    public void remove_patient_data(Patient_Level_Data pld) {
+        if (patient_level_data_list.size() > 1) {
+            patient_level_data_list.remove(pld);
+        } else {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("There should be a minimum of one patient level record", "There should be a minimum of one patient level record"));
+        }
+    }
+
+    public void save_patient_level_data() {
+        System.out.println(interface_datas.size());
+        un_pivot_patient_level_data();
+        /**
+         * Load Data
+         */
+        load_interface_patient_level();
+    }
+
+    /**
+     * Un Pivot Patient Level Data
+     */
+    public void un_pivot_patient_level_data() {
+        try {
+            interface_datas = new ArrayList<>();
+            for (Patient_Level_Data patient_Level_Data : patient_level_data_list) {
+                Interface_data interface_data;
+                if (patient_Level_Data.getDei_1() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_1());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_1()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_2() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_2());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_2()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_3() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_3());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_3()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_4() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_4());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_4()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_5() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_5());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_5()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_6() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_6());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_6()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_7() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_7());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_7()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_8() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_8());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_8()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_9() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_9());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_9()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_10() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_10());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_10()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_11() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_11());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_11()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_12() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_12());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_12()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_13() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_13());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_13()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_14() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_14());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_14()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_15() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_15());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_15()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_16() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_16());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_16()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_17() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_17());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_17()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_18() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_18());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_18()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_19() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_19());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_19()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_20() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_20());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_20()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_21() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_21());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_21()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_22() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_22());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_22()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_23() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_23());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_23()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_24() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_24());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_24()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_25() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_25());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_25()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_26() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_26());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_26()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_27() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_27());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_27()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_28() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_28());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_28()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_29() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_29());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_29()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_30() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_30());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_30()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_31() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_31());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_31()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_32() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_32());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_32()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_33() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_33());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_33()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_34() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_34());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_34()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_35() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_35());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_35()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_36() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_36());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_36()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_37() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_37());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_37()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_38() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_38());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_38()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_39() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_39());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_39()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_40() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_40());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_40()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_41() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_41());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_41()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_42() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_42());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_42()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_43() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_43());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_43()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_44() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_44());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_44()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_45() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_45());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_45()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_46() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_46());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_46()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_47() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_47());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_47()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_48() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_48());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_48()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_49() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_49());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_49()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_50() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_50());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_50()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_50() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_50());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_50()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_51() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_51());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_51()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_52() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_52());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_52()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_53() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_53());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_53()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_54() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_54());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_54()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_55() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_55());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_55()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_56() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_56());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_56()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_57() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_57());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_57()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_58() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_58());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_58()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_59() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_59());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_59()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_60() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_60());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_60()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_61() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_61());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_61()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_62() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_62());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_62()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_63() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_63());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_63()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_64() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_64());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_64()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_65() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_65());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_65()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_66() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_66());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_66()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_67() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_67());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_67()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_68() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_68());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_68()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_69() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_69());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_69()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_70() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_70());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_70()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_71() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_71());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_71()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_72() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_72());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_72()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_73() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_73());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_73()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_74() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_74());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_74()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_75() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_75());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_75()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_76() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_76());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_76()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_77() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_77());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_77()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_78() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_78());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_78()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_79() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_79());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_79()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+                if (patient_Level_Data.getDei_80() != 0) {
+                    interface_data = new Interface_data();
+                    interface_data.setData_element_value(patient_Level_Data.getDev_80());
+                    interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_80()));
+                    set_other_patient_level_interface_data_values(interface_data);
+                }
+
+                String rec_id = null;
+                /**
+                 * Get Rec_Id
+                 */
+                for (Interface_data temp_i : interface_datas) {
+                    if (temp_i.getData_element().getIs_patient_level_record_id() == 1 && temp_i.getRec_id() == null) {
+                        rec_id = temp_i.getData_element_value();
+                        break;
+                    }
+                }
+                /**
+                 * Set Rec_Id
+                 */
+                for (Interface_data temp_i : interface_datas) {
+                    if (temp_i.getRec_id() == null) {
+                        temp_i.setRec_id(rec_id);
+                        //break;
+                    }
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void set_other_patient_level_interface_data_values(Interface_data interface_data) {
+        try {
+            interface_data.setHealth_facility_id(this.getHealth_facility().getHealth_facility_id());
+            interface_data.setHealth_facility_name(this.getHealth_facility().getHealth_facility_name());
+        } catch (NullPointerException npe) {
+            interface_data.setHealth_facility_id(null);
+            interface_data.setHealth_facility_name(null);
+        }
+        try {
+            interface_data.setDistrict_id(this.getDistrict().getDistrict_id());
+            interface_data.setDistrict_name(this.getDistrict().getDistrict_name());
+        } catch (NullPointerException npe) {
+            interface_data.setDistrict_id(null);
+            interface_data.setDistrict_name(null);
+        }
+        try {
+            interface_data.setCounty_id(this.getCounty().getCounty_id());
+            interface_data.setCounty_name(this.getCounty().getCounty_name());
+        } catch (NullPointerException npe) {
+            interface_data.setCounty_id(null);
+            interface_data.setCounty_name(null);
+        }
+        try {
+            interface_data.setSub_county_id(this.getSub_county().getSub_county_id());
+            interface_data.setSub_county_name(this.getSub_county().getSub_county_name());
+        } catch (NullPointerException npe) {
+            interface_data.setSub_county_id(null);
+            interface_data.setSub_county_name(null);
+        }
+        try {
+            interface_data.setParish_id(this.getParish().getParish_id());
+            interface_data.setParish_name(this.getParish().getParish_name());
+        } catch (NullPointerException npe) {
+            interface_data.setParish_id(null);
+            interface_data.setParish_name(null);
+        }
+        interface_data.setFinancial_year(this.getFinancial_year());
+        interface_data.setReport_period_year(this.getReport_period_year());
+        interface_data.setReport_period_quarter(this.getReport_period_quarter());
+        interface_data.setReport_period_from_date(this.getReport_period_from_date());
+        interface_data.setReport_period_to_date(this.getReport_period_to_date());
+        interface_data.setReport_period_month(this.getReport_period_month());
+        interface_data.setReport_period_week(this.getReport_period_week());
+        interface_data.setReport_period_bi_month(this.getReport_period_bi_month());
+        interface_data.setIs_deleted(0);
+        interface_data.setIs_active(1);
+        interface_data.setReport_form(report_form);
+        interface_data.setReport_form_group_id(report_form_group.getReport_form_group_id());
+        if (report_form.getLowest_report_form_level().equals("Facility")) {
+            this.parish = this.getHealth_facility().getParish();
+            interface_data.setParish_id(this.parish.getParish_id());
+            interface_data.setParish_name(this.parish.getParish_name());
+            this.sub_county = this.parish.getSub_county();
+            interface_data.setSub_county_id(this.sub_county.getSub_county_id());
+            interface_data.setSub_county_name(this.sub_county.getSub_county_name());
+            this.county = this.sub_county.getCounty();
+            interface_data.setCounty_id(this.county.getCounty_id());
+            interface_data.setCounty_name(this.county.getCounty_name());
+            this.district = this.county.getDistrict();
+            interface_data.setDistrict_id(this.district.getDistrict_id());
+            interface_data.setDistrict_name(this.district.getDistrict_name());
+        }
+        if (report_form.getLowest_report_form_level().equals("Parish")) {
+            this.sub_county = this.parish.getSub_county();
+            interface_data.setSub_county_id(this.sub_county.getSub_county_id());
+            interface_data.setSub_county_name(this.sub_county.getSub_county_name());
+            this.county = this.sub_county.getCounty();
+            interface_data.setCounty_id(this.county.getCounty_id());
+            interface_data.setCounty_name(this.county.getCounty_name());
+            this.district = this.county.getDistrict();
+            interface_data.setDistrict_id(this.district.getDistrict_id());
+            interface_data.setDistrict_name(this.district.getDistrict_name());
+        }
+        if (report_form.getLowest_report_form_level().equals("District")) {
+            interface_data.setDistrict_id(this.district.getDistrict_id());
+            interface_data.setDistrict_name(this.district.getDistrict_name());
+        }
+        /**
+         * Entry Mode
+         */
+        interface_data.setEntry_mode("WEB");
+        interface_datas.add(interface_data);
+    }
+
+    private Patient_Level_Data create_new_Patient_Level_Data(List<Data_element> data_element_list) {
+        int count = 1;
+        columns = data_element_list.size();
+        Patient_Level_Data patient_Level_Data = new Patient_Level_Data();
+        for (Data_element data_element : data_element_list) {
+            if (null != data_element.getGroup_column_number()) {
+                switch (data_element.getGroup_column_number()) {
+                    case 1:
+                        patient_Level_Data.setDei_1(data_element.getData_element_id());
+                        break;
+                    case 2:
+                        patient_Level_Data.setDei_2(data_element.getData_element_id());
+                        break;
+                    case 3:
+                        patient_Level_Data.setDei_3(data_element.getData_element_id());
+                        break;
+                    case 4:
+                        patient_Level_Data.setDei_4(data_element.getData_element_id());
+                        break;
+                    case 5:
+                        patient_Level_Data.setDei_5(data_element.getData_element_id());
+                        break;
+                    case 6:
+                        patient_Level_Data.setDei_6(data_element.getData_element_id());
+                        break;
+                    case 7:
+                        patient_Level_Data.setDei_7(data_element.getData_element_id());
+                        break;
+                    case 8:
+                        patient_Level_Data.setDei_8(data_element.getData_element_id());
+                        break;
+                    case 9:
+                        patient_Level_Data.setDei_9(data_element.getData_element_id());
+                        break;
+                    case 10:
+                        patient_Level_Data.setDei_10(data_element.getData_element_id());
+                        break;
+                    case 11:
+                        patient_Level_Data.setDei_11(data_element.getData_element_id());
+                        break;
+                    case 12:
+                        patient_Level_Data.setDei_12(data_element.getData_element_id());
+                        break;
+                    case 13:
+                        patient_Level_Data.setDei_13(data_element.getData_element_id());
+                        break;
+                    case 14:
+                        patient_Level_Data.setDei_14(data_element.getData_element_id());
+                        break;
+                    case 15:
+                        patient_Level_Data.setDei_15(data_element.getData_element_id());
+                        break;
+                    case 16:
+                        patient_Level_Data.setDei_16(data_element.getData_element_id());
+                        break;
+                    case 17:
+                        patient_Level_Data.setDei_17(data_element.getData_element_id());
+                        break;
+                    case 18:
+                        patient_Level_Data.setDei_18(data_element.getData_element_id());
+                        break;
+                    case 19:
+                        patient_Level_Data.setDei_19(data_element.getData_element_id());
+                        break;
+                    case 20:
+                        patient_Level_Data.setDei_20(data_element.getData_element_id());
+                        break;
+                    case 21:
+                        patient_Level_Data.setDei_21(data_element.getData_element_id());
+                        break;
+                    case 22:
+                        patient_Level_Data.setDei_22(data_element.getData_element_id());
+                        break;
+                    case 23:
+                        patient_Level_Data.setDei_23(data_element.getData_element_id());
+                        break;
+                    case 24:
+                        patient_Level_Data.setDei_24(data_element.getData_element_id());
+                        break;
+                    case 25:
+                        patient_Level_Data.setDei_25(data_element.getData_element_id());
+                        break;
+                    case 26:
+                        patient_Level_Data.setDei_26(data_element.getData_element_id());
+                        break;
+                    case 27:
+                        patient_Level_Data.setDei_27(data_element.getData_element_id());
+                        break;
+                    case 28:
+                        patient_Level_Data.setDei_28(data_element.getData_element_id());
+                        break;
+                    case 29:
+                        patient_Level_Data.setDei_29(data_element.getData_element_id());
+                        break;
+                    case 30:
+                        patient_Level_Data.setDei_30(data_element.getData_element_id());
+                        break;
+                    case 31:
+                        patient_Level_Data.setDei_31(data_element.getData_element_id());
+                        break;
+                    case 32:
+                        patient_Level_Data.setDei_32(data_element.getData_element_id());
+                        break;
+                    case 33:
+                        patient_Level_Data.setDei_33(data_element.getData_element_id());
+                        break;
+                    case 34:
+                        patient_Level_Data.setDei_34(data_element.getData_element_id());
+                        break;
+                    case 35:
+                        patient_Level_Data.setDei_35(data_element.getData_element_id());
+                        break;
+                    case 36:
+                        patient_Level_Data.setDei_36(data_element.getData_element_id());
+                        break;
+                    case 37:
+                        patient_Level_Data.setDei_37(data_element.getData_element_id());
+                        break;
+                    case 38:
+                        patient_Level_Data.setDei_38(data_element.getData_element_id());
+                        break;
+                    case 39:
+                        patient_Level_Data.setDei_39(data_element.getData_element_id());
+                        break;
+                    case 40:
+                        patient_Level_Data.setDei_40(data_element.getData_element_id());
+                        break;
+                    case 41:
+                        patient_Level_Data.setDei_41(data_element.getData_element_id());
+                        break;
+                    case 42:
+                        patient_Level_Data.setDei_42(data_element.getData_element_id());
+                        break;
+                    case 43:
+                        patient_Level_Data.setDei_43(data_element.getData_element_id());
+                        break;
+                    case 44:
+                        patient_Level_Data.setDei_44(data_element.getData_element_id());
+                        break;
+                    case 45:
+                        patient_Level_Data.setDei_45(data_element.getData_element_id());
+                        break;
+                    case 46:
+                        patient_Level_Data.setDei_46(data_element.getData_element_id());
+                        break;
+                    case 47:
+                        patient_Level_Data.setDei_47(data_element.getData_element_id());
+                        break;
+                    case 48:
+                        patient_Level_Data.setDei_48(data_element.getData_element_id());
+                        break;
+                    case 49:
+                        patient_Level_Data.setDei_49(data_element.getData_element_id());
+                        break;
+                    case 50:
+                        patient_Level_Data.setDei_50(data_element.getData_element_id());
+                        break;
+                    case 51:
+                        patient_Level_Data.setDei_51(data_element.getData_element_id());
+                        break;
+                    case 52:
+                        patient_Level_Data.setDei_52(data_element.getData_element_id());
+                        break;
+                    case 53:
+                        patient_Level_Data.setDei_53(data_element.getData_element_id());
+                        break;
+                    case 54:
+                        patient_Level_Data.setDei_54(data_element.getData_element_id());
+                        break;
+                    case 55:
+                        patient_Level_Data.setDei_55(data_element.getData_element_id());
+                        break;
+                    case 56:
+                        patient_Level_Data.setDei_56(data_element.getData_element_id());
+                        break;
+                    case 57:
+                        patient_Level_Data.setDei_57(data_element.getData_element_id());
+                        break;
+                    case 58:
+                        patient_Level_Data.setDei_58(data_element.getData_element_id());
+                        break;
+                    case 59:
+                        patient_Level_Data.setDei_59(data_element.getData_element_id());
+                        break;
+                    case 60:
+                        patient_Level_Data.setDei_60(data_element.getData_element_id());
+                        break;
+                    case 61:
+                        patient_Level_Data.setDei_61(data_element.getData_element_id());
+                        break;
+                    case 62:
+                        patient_Level_Data.setDei_62(data_element.getData_element_id());
+                        break;
+                    case 63:
+                        patient_Level_Data.setDei_63(data_element.getData_element_id());
+                        break;
+                    case 64:
+                        patient_Level_Data.setDei_64(data_element.getData_element_id());
+                        break;
+                    case 65:
+                        patient_Level_Data.setDei_65(data_element.getData_element_id());
+                        break;
+                    case 66:
+                        patient_Level_Data.setDei_66(data_element.getData_element_id());
+                        break;
+                    case 67:
+                        patient_Level_Data.setDei_67(data_element.getData_element_id());
+                        break;
+                    case 68:
+                        patient_Level_Data.setDei_68(data_element.getData_element_id());
+                        break;
+                    case 69:
+                        patient_Level_Data.setDei_69(data_element.getData_element_id());
+                        break;
+                    case 70:
+                        patient_Level_Data.setDei_70(data_element.getData_element_id());
+                        break;
+                    case 71:
+                        patient_Level_Data.setDei_71(data_element.getData_element_id());
+                        break;
+                    case 72:
+                        patient_Level_Data.setDei_72(data_element.getData_element_id());
+                        break;
+                    case 73:
+                        patient_Level_Data.setDei_73(data_element.getData_element_id());
+                        break;
+                    case 74:
+                        patient_Level_Data.setDei_74(data_element.getData_element_id());
+                        break;
+                    case 75:
+                        patient_Level_Data.setDei_75(data_element.getData_element_id());
+                        break;
+                    case 76:
+                        patient_Level_Data.setDei_76(data_element.getData_element_id());
+                        break;
+                    case 77:
+                        patient_Level_Data.setDei_77(data_element.getData_element_id());
+                        break;
+                    case 78:
+                        patient_Level_Data.setDei_78(data_element.getData_element_id());
+                        break;
+                    case 79:
+                        patient_Level_Data.setDei_79(data_element.getData_element_id());
+                        break;
+                    case 80:
+                        patient_Level_Data.setDei_80(data_element.getData_element_id());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (count == columns) {
+                break;
+            }
+            count++;
+        }
+        return patient_Level_Data;
+    }
+
+    /**
+     * End Patient Level Data
      */
 }

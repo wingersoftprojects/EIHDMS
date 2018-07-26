@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -548,6 +548,9 @@ public class Report_form implements Serializable {
 	@Column(name="mode_data_entry", nullable=true, length=1)	
 	private Integer mode_data_entry;
 	
+	@Column(name="is_patient_level", nullable=true, length=1)	
+	private Integer is_patient_level;
+	
 	@OneToMany(mappedBy="report_form", targetEntity=eihdms.Data_element.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -756,6 +759,18 @@ public class Report_form implements Serializable {
 	
 	public Integer getMode_data_entry() {
 		return mode_data_entry;
+	}
+	
+	public void setIs_patient_level(int value) {
+		setIs_patient_level(new Integer(value));
+	}
+	
+	public void setIs_patient_level(Integer value) {
+		this.is_patient_level = value;
+	}
+	
+	public Integer getIs_patient_level() {
+		return is_patient_level;
 	}
 	
 	public void setData_element(java.util.Set value) {
