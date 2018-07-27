@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -47,6 +47,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
 	public final StringExpression data_element_code;
+	public final IntegerExpression is_patient_level_record_id;
 	public final CollectionExpression interface_data;
 	public final CollectionExpression base_data;
 	public final CollectionExpression standard_rule;
@@ -84,6 +85,7 @@ public class Data_elementCriteria extends AbstractORMCriteria {
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		data_element_code = new StringExpression("data_element_code", this);
+		is_patient_level_record_id = new IntegerExpression("is_patient_level_record_id", this);
 		interface_data = new CollectionExpression("interface_data", this);
 		base_data = new CollectionExpression("base_data", this);
 		standard_rule = new CollectionExpression("standard_rule", this);

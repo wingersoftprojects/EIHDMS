@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl/>
+            <p:fieldset legend="Data Entry Header" id="data_entry_header">
+                <p:panelGrid columns="8" id="header_panel_grid">
+                    <p:outputLabel for="report_form_id" value="Report Form:" />
+                    <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_formBean.getReport_forms_by_user_patient_level('allow_add','mode_data_entry')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="@form" listener="#{uploadBean.load_list_for_entry(uploadBean.report_form)}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="report_form_group" value="Report Form Group:" />
+                    <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
+                        <f:selectItem itemLabel="" />
+                        <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="@form"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Calendar Year:" for="report_period_year"/>
+                    <p:selectOneMenu id="report_period_year" value="#{uploadBean.report_period_year}" required="true" requiredMessage="Calendar year field is required">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{uploadBean.showquartery()}"/>
+                    <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" rendered="#{uploadBean.showquartery()}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Q1(Jan-Mar)" itemValue="1" />
+                        <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
+                        <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
+                        <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{uploadBean.showbimonthly()}"/>
+                    <p:selectOneMenu id="report_period_bi_month" value="#{uploadBean.report_period_bi_month}" rendered="#{uploadBean.showbimonthly()}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Jan-Feb" itemValue="1" />
+                        <f:selectItem itemLabel="Mar-Apr" itemValue="2" />
+                        <f:selectItem itemLabel="May-Jun" itemValue="3" />
+                        <f:selectItem itemLabel="Jul-Aug" itemValue="4" />
+                        <f:selectItem itemLabel="Sep-Oct" itemValue="5" />
+                        <f:selectItem itemLabel="Nov-Dec" itemValue="6" />
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
+                    <p:inputText id="report_period_week" value="#{uploadBean.report_period_week}" rendered="#{uploadBean.showweekly()}">
+                        <f:validateLongRange minimum="1" maximum="52"/>
+                        <p:ajax event="blur" process="@this" update="@form" listener="#{uploadBean.get_date_from_other_periods()}"/>
+                    </p:inputText>
+                    <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}"/>
+                    <p:selectOneMenu id="report_period_month" value="#{uploadBean.report_period_month}" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Jan" itemValue="1" />
+                        <f:selectItem itemLabel="Feb" itemValue="2" />
+                        <f:selectItem itemLabel="Mar" itemValue="3" />
+                        <f:selectItem itemLabel="Apr" itemValue="4" />
+                        <f:selectItem itemLabel="May" itemValue="5" />
+                        <f:selectItem itemLabel="Jun" itemValue="6" />
+                        <f:selectItem itemLabel="Jul" itemValue="7" />
+                        <f:selectItem itemLabel="Aug" itemValue="8" />
+                        <f:selectItem itemLabel="Sep" itemValue="9" />
+                        <f:selectItem itemLabel="Oct" itemValue="10" />
+                        <f:selectItem itemLabel="Nov" itemValue="11" />
+                        <f:selectItem itemLabel="Dec" itemValue="12" />
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Report Period Start date:" for="report_period_from_date" />
+                    <p:calendar id="report_period_from_date" value="#{uploadBean.report_period_from_date}" title="startdate" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">
+                        <p:ajax event="blur" process="@this"/>
+                    </p:calendar>
+                    <p:outputLabel value="Report Period End Date:" for="report_period_to_date" />
+                    <p:calendar id="report_period_to_date" value="#{uploadBean.report_period_to_date}" title="report_period_to_date" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="End Date field is required">
+                        <p:ajax process="@this"/>
+                    </p:calendar>
+                    <p:outputLabel id="label_lowest_level" value="#{uploadBean.report_form.lowest_report_form_level}"/>
+                    <p:panel id="panel_lowest_level">
+                        <p:autoComplete id="auto_health_facility" value="#{uploadBean.health_facility}"
+                                        completeMethod="#{uploadBean.completeHealth_facility}"
+                                        var="health_facility" itemLabel="#{health_facility.health_facility_name}" itemValue="#{health_facility}" 
+                                        converter="health_facilityConverter" forceSelection="true"
+                                        minQueryLength="3" required="true" requiredMessage="Health Facility Field is required" 
+                                        rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Facility')}">
+                            <p:column headerText="Health Facility Name" style="text-align: left">
+                                <h:outputText value="#{health_facility.health_facility_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Sub County" style="text-align: left">
+                                <h:outputText value="#{health_facility.sub_county.sub_county_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="District" style="text-align: left">
+                                <h:outputText value="#{health_facility.district.district_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:autoComplete id="auto_parish" value="#{uploadBean.parish}"
+                                        completeMethod="#{uploadBean.completeParish}"
+                                        var="parish" itemLabel="#{parish.parish_name}" itemValue="#{parish}"
+                                        converter="parishConverter" forceSelection="true"
+                                        minQueryLength="3" required="true" requiredMessage="Parish Field is required" 
+                                        rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Parish')}">
+                            <p:column headerText="Parish Name" style="text-align: left">
+                                <h:outputText value="#{parish.parish_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Subcounty" style="text-align: left">
+                                <h:outputText value="#{parish.sub_county.sub_county_name}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="District" style="text-align: left">
+                                <h:outputText value="#{parish.sub_county.county.district.district_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                        <p:autoComplete id="auto_distict" value="#{uploadBean.district}"
+                                        completeMethod="#{uploadBean.completeDistrict}"
+                                        var="district" itemLabel="#{district.district_name}" itemValue="#{district}" 
+                                        converter="districtConverter" forceSelection="true"
+                                        minQueryLength="3" required="true" requiredMessage="District Field is required" 
+                                        rendered="#{uploadBean.report_form.lowest_report_form_level.equals('District')}">
+                            <p:column headerText="District Name" style="text-align: left">
+                                <h:outputText value="#{district.district_name}">
+                                </h:outputText>
+                            </p:column>
+                        </p:autoComplete>
+                    </p:panel>
+                    <p:commandButton value="Retrieve Entry Form" action="#{uploadBean.refreshData_elements_patient_level(uploadBean.report_form,uploadBean.report_form_group)}" update="@form"/>
+                </p:panelGrid>
+                <p:panel id="detail_panel_grid" rendered="#{uploadBean.interface_datas.size()>0}">
+                    <ui:include src="#{uploadBean.getDE_Form(uploadBean.report_form_group)}.xhtml"/>
+                </p:panel>
+                <p:commandButton value="SAVE FORM DATA" action="#{uploadBean.save_patient_level_data()}" icon="ui-icon-disk" process="@form" update="@form,:validationreportdialog" oncomplete="PF('validationReport_patient_level').show();" rendered="#{uploadBean.patient_level_data_list.size()>0 and uploadBean.getDE_Form(uploadBean.report_form_group)!='def_0_0'}"/>
+            </p:fieldset>
+        </h:form>
+
+        <ui:include src="dialog_validationreport_patient_level.xhtml"/>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

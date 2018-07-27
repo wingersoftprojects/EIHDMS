@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <table  cellpadding="1" cellspacing="0">
+            <tr valign="top">
+                <td width="63" height="23" style="background: #e4e4e4;border: 1px solid #00000a; padding: 0.05in 0.1in">
+                    <p><font size="2" style="font-size: 10pt"><b>Unique Client ID </b></font>
+                    </p>
+                </td>
+                <td colspan="2" width="112" style="background: #e4e4e4;border: 1px solid #00000a; padding: 0.05in 0.1in">
+                    <p><a name="_GoBack"></a><font size="2" style="font-size: 10pt"><b>Refusal
+                                (R) of treatment or Not Suppressed (NS)</b></font></p>
+                </td>
+                <td width="100" style="background: #e4e4e4;border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0in">
+                    <p><font size="2" style="font-size: 10pt"><b>I</b></font><font size="2" style="font-size: 9pt"><b>f
+                                Refusal (R) Indicates entry point: </b></font><font size="1" style="font-size: 8pt"><i>1:
+                                VMMC, 2:  OPD, 3: Community, 4: APN, 5: In Patient, 6: TB Clinic,
+                                7: Index client testing, 8: MCH, 9: Key Population 10: Other
+                                (specify)</i></font></p>
+                </td>
+                <td width="40" style="background: #e4e4e4;border: 1px solid #00000a; padding: 0.05in 0.1in">
+                    <p><font size="2" style="font-size: 10pt"><b>Age</b></font></p>
+                </td>
+                <td colspan="3" width="64"  style="background: #e4e4e4;border: 1px solid #00000a; padding: 0.05in 0.1in">
+                    <p><font size="2" style="font-size: 10pt"><b>Sex </b></font><font size="2" style="font-size: 9pt"><i>(M/F)</i></font></p>
+                </td>
+                <td colspan="2" width="103"  style="background: #e4e4e4;border: 1px solid #00000a; padding: 0.05in 0.1in">
+                    <p><font size="2" style="font-size: 10pt"><b>Marital Status </b></font><font size="2" style="font-size: 9pt"><i>(S
+                                -single, M-married, W – widowed, SP – separated, U –
+                                undisclosed)</i></font></p>
+                </td>
+                <td colspan="2" width="82"  style="background: #e4e4e4;border: 1px solid #00000a; padding: 0.05in 0.1in">
+                    <p><font size="2" style="font-size: 10pt"><b>Job</b></font></p>
+                </td>
+                <td colspan="2" width="226"  style="background: #e4e4e4;border: 1px solid #00000a; padding: 0.05in 0.1in">
+                    <p><font size="2" style="font-size: 10pt"><b>Reasons (indicate all
+                                that apply)<br/>
+                            </b></font><font size="2" style="font-size: 9pt"><i>1:
+                                Alcohol 2: GBV, 3: Non-Disclosure, 4: Delay at work, 5: Forgot, 6:
+                                Fear of side effects of the drugs, 7: Fear of being associated
+                                with HIV Treatment, 8: Not willing to live on drugs for life 9: 
+                                Other (Specify)</i></font></p>
+                </td>
+                <td colspan="2" width="150" style="background: #e4e4e4;border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0in">
+                    <p><font size="2" style="font-size: 10pt"><b>Comments</b></font></p>
+                </td>
+                <td><p:commandButton value="Add" actionListener="#{uploadBean.add_new_patient_data()}" process="@form" update="@form" rendered="#{uploadBean.patient_level_data_list.size()>0}"/></td>
+                <td></td>
+            </tr>
+            <ui:repeat value="#{uploadBean.patient_level_data_list}" var="p" varStatus="status">
+                <tr valign="top">
+                    <td width="63" height="33" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_1}" size="12"/>
+                    </td>
+                    <td colspan="2" width="112" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_2}"/>
+                    </td>
+                    <td width="100" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_3}"/>
+                    </td>
+                    <td width="40" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_4}" size="3"/>
+                    </td>
+                    <td colspan="3" width="64" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_5}" size="1"/>
+                    </td>
+                    <td colspan="2" width="103" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_6}" size="1"/>
+                    </td>
+                    <td colspan="2" width="82" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_7}"/>
+                    </td>
+                    <td colspan="2" width="82" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_8}"/>
+                    </td>
+                    <td colspan="2" width="82" style="border: 1px solid #00000a;">
+                        <p:inputText value="#{p.dev_9}"/>
+                    </td>
+
+                    <td><p:commandButton value="Add" actionListener="#{uploadBean.add_new_patient_data()}" process="@form" update="@form"/></td>
+                    <td><p:commandButton value="Remove" actionListener="#{uploadBean.remove_patient_data(p)}" process="@form" update="@form"/></td>
+                </tr>
+            </ui:repeat>
+        </table>
+    </h:body>
+
+</html>

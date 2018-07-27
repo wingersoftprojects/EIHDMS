@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -60,6 +60,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 	public final AssociationExpression report_form;
 	public final IntegerExpression report_form_group_id;
 	public final StringExpression entry_mode;
+	public final StringExpression rec_id;
 	
 	public Interface_dataCriteria(Criteria criteria) {
 		super(criteria);
@@ -104,6 +105,7 @@ public class Interface_dataCriteria extends AbstractORMCriteria {
 		report_form = new AssociationExpression("report_form", this);
 		report_form_group_id = new IntegerExpression("report_form_group_id", this);
 		entry_mode = new StringExpression("entry_mode", this);
+		rec_id = new StringExpression("rec_id", this);
 	}
 	
 	public Interface_dataCriteria(PersistentSession session) {

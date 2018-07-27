@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -548,6 +548,9 @@ public class Interface_data implements Serializable {
 	@Column(name="entry_mode", nullable=true, length=20)	
 	private String entry_mode;
 	
+	@Column(name="rec_id", nullable=true, length=100)	
+	private String rec_id;
+	
 	private void setInterface_data_id(int value) {
 		this.interface_data_id = value;
 	}
@@ -866,6 +869,14 @@ public class Interface_data implements Serializable {
 	
 	public String getEntry_mode() {
 		return entry_mode;
+	}
+	
+	public void setRec_id(String value) {
+		this.rec_id = value;
+	}
+	
+	public String getRec_id() {
+		return rec_id;
 	}
 	
 	public void setData_element(eihdms.Data_element value) {

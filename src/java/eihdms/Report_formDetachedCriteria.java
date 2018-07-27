@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: wence.twesigye
+ * Licensee: Ajuna Newton Brian
  * License Type: Purchased
  */
 package eihdms;
@@ -34,6 +34,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final StringExpression source_system;
 	public final IntegerExpression mode_upload;
 	public final IntegerExpression mode_data_entry;
+	public final IntegerExpression is_patient_level;
 	public final CollectionExpression data_element;
 	public final CollectionExpression section;
 	public final CollectionExpression user_action;
@@ -66,6 +67,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		source_system = new StringExpression("source_system", this.getDetachedCriteria());
 		mode_upload = new IntegerExpression("mode_upload", this.getDetachedCriteria());
 		mode_data_entry = new IntegerExpression("mode_data_entry", this.getDetachedCriteria());
+		is_patient_level = new IntegerExpression("is_patient_level", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
@@ -99,6 +101,7 @@ public class Report_formDetachedCriteria extends AbstractORMDetachedCriteria {
 		source_system = new StringExpression("source_system", this.getDetachedCriteria());
 		mode_upload = new IntegerExpression("mode_upload", this.getDetachedCriteria());
 		mode_data_entry = new IntegerExpression("mode_data_entry", this.getDetachedCriteria());
+		is_patient_level = new IntegerExpression("is_patient_level", this.getDetachedCriteria());
 		data_element = new CollectionExpression("data_element", this.getDetachedCriteria());
 		section = new CollectionExpression("section", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
