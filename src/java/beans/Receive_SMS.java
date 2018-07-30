@@ -53,8 +53,6 @@ public class Receive_SMS extends HttpServlet {
             String param2Value = request.getParameter(param2);
             String param3 = "to";
             String param3Value = request.getParameter(param3);
-            String param4 = "sdate";
-            String param4Value = request.getParameter(param4);
             SMSData smsData = new SMSData();
             smsData.load_interface_data_sms(param2Value, param1Value, param3Value);
             out.println("<h1>From: " + param1Value + "</h1>");
