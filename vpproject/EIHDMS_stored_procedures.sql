@@ -3820,7 +3820,7 @@ CALL sp_validate_existing_data (in_report_form_id,frequency_v ,in_batch_id,week_
 CALL sp_move_data_from_interface_to_base_patient_level(in_report_form_id,in_batch_id,in_reporting_level,frequency_v,in_report_form_group_id,week_v,month_v,bi_month_v,quarter_v,year_v);
 -- END Move DATA
 
-END
+END//
 DELIMITER ;
 
 -- ----------------------------
@@ -5680,6 +5680,6 @@ END IF;
 CALL sp_delete_from_interface_data_by_batch_id(in_batch_id);
 -- Delete from interface_data
 
-END
+END //
 DELIMITER ;
 

@@ -478,3 +478,12 @@ alter table report_form modify column last_edit_date datetime;
 create table report_form_entity_count (report_form_entity_count_id int(11) not null auto_increment, report_form_id int(11) not null, entity_count int(11) not null, count_date date not null, is_deleted int(1) not null, is_active int(1) not null, add_date datetime null, add_by int(10), last_edit_date datetime null, last_edit_by int(10), primary key (report_form_entity_count_id)) ENGINE=InnoDB;
 alter table report_form_entity_count add constraint FKreport_for328608 foreign key (report_form_id) references report_form (report_form_id);
 
+/*
+alter_script_25.07.2018
+*/
+alter table report_form add column is_patient_level int(1);
+alter table base_data_46 add column rec_id varchar(100);
+alter table interface_data add column rec_id varchar(100);
+alter table base_data_deleted add column rec_id varchar(100);
+alter table data_element add column is_patient_level_record_id int(1);
+alter table validation_report add column rec_id varchar(100);

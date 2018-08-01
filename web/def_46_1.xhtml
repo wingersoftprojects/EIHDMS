@@ -52,7 +52,6 @@
                 <td colspan="2" width="150" style="background: #e4e4e4;border: 1px solid #00000a; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0in">
                     <p><font size="2" style="font-size: 10pt"><b>Comments</b></font></p>
                 </td>
-                <td><p:commandButton value="Add" actionListener="#{uploadBean.add_new_patient_data()}" process="@form" update="@form" rendered="#{uploadBean.patient_level_data_list.size()>0}"/></td>
                 <td></td>
             </tr>
             <ui:repeat value="#{uploadBean.patient_level_data_list}" var="p" varStatus="status">
@@ -84,7 +83,7 @@
                     <td colspan="2" width="82" style="border: 1px solid #00000a;">
                         <p:inputText value="#{p.dev_9}"/>
                     </td>
-
+                    
                     <td><p:commandButton value="Add" actionListener="#{uploadBean.add_new_patient_data()}" process="@form" update="@form"/></td>
                     <td><p:commandButton value="Remove" actionListener="#{uploadBean.remove_patient_data(p)}" process="@form" update="@form"/></td>
                 </tr>
