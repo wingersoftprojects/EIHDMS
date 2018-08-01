@@ -47,6 +47,7 @@ public class Interface_data_mob_appDetachedCriteria extends AbstractORMDetachedC
 	public final IntegerExpression report_form_id;
 	public final IntegerExpression report_form_group_id;
 	public final StringExpression entry_mode;
+	public final StringExpression rec_id;
 	
 	public Interface_data_mob_appDetachedCriteria() {
 		super(eihdms.Interface_data_mob_app.class, eihdms.Interface_data_mob_appCriteria.class);
@@ -78,6 +79,7 @@ public class Interface_data_mob_appDetachedCriteria extends AbstractORMDetachedC
 		report_form_id = new IntegerExpression("report_form_id", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 		entry_mode = new StringExpression("entry_mode", this.getDetachedCriteria());
+		rec_id = new StringExpression("rec_id", this.getDetachedCriteria());
 	}
 	
 	public Interface_data_mob_appDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -110,6 +112,7 @@ public class Interface_data_mob_appDetachedCriteria extends AbstractORMDetachedC
 		report_form_id = new IntegerExpression("report_form_id", this.getDetachedCriteria());
 		report_form_group_id = new IntegerExpression("report_form_group_id", this.getDetachedCriteria());
 		entry_mode = new StringExpression("entry_mode", this.getDetachedCriteria());
+		rec_id = new StringExpression("rec_id", this.getDetachedCriteria());
 	}
 	
 	public Interface_data_mob_app uniqueInterface_data_mob_app(PersistentSession session) {

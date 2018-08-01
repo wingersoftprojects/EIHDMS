@@ -7896,6 +7896,17 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="rec_id">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>100</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
   </Entity>
   <Entity name="batch_mob_app" Unlogged="false" PKClustered="0">
     <Column name="batch_mob_app_id">

@@ -47,6 +47,7 @@ public class Interface_data_mob_appCriteria extends AbstractORMCriteria {
 	public final IntegerExpression report_form_id;
 	public final IntegerExpression report_form_group_id;
 	public final StringExpression entry_mode;
+	public final StringExpression rec_id;
 	
 	public Interface_data_mob_appCriteria(Criteria criteria) {
 		super(criteria);
@@ -78,6 +79,7 @@ public class Interface_data_mob_appCriteria extends AbstractORMCriteria {
 		report_form_id = new IntegerExpression("report_form_id", this);
 		report_form_group_id = new IntegerExpression("report_form_group_id", this);
 		entry_mode = new StringExpression("entry_mode", this);
+		rec_id = new StringExpression("rec_id", this);
 	}
 	
 	public Interface_data_mob_appCriteria(PersistentSession session) {
