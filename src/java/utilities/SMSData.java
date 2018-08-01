@@ -760,6 +760,7 @@ public class SMSData {
                     interface_data.setAdd_by(interface_data_mob_app.getAdd_by());
                     interface_data.setAdd_date(interface_data_mob_app.getAdd_date());
                     interface_data.setEntry_mode(interface_data_mob_app.getEntry_mode());
+                    interface_data.setRec_id(interface_data_mob_app.getRec_id());
                     //i.setFinancial_year(value);
                     interface_data.setIs_active(1);
                     interface_data.setIs_deleted(0);
