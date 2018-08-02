@@ -209,6 +209,7 @@ public class SMSData {
                          */
                         if (count == object.getNumber_of_separators()) {
                             data_element_sms_positionList = Data_element_sms_position.queryData_element_sms_position("report_form_short_code_id=" + object.getReport_form_short_code_id(), null);
+                            //sms_report_form=object.getReport_form();
                             interface_data_sms.setStatus_f("OK");
                             interface_data_sms.setStatus_f_desc("Valid Data Format");
                         } else {

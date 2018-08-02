@@ -216,10 +216,10 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         this.perc_value2 = 0;
 
         //get denominator; eligible entities for the report form
-        Date aBydate=new GeneralUtilities().get_week_date_to(this.report_period_year, this.report_period_week);
-        
-        this.count_d1 = this.getElibileEntities(this.report_form1,aBydate);
-        this.count_d2 = this.getElibileEntities(this.report_form2,aBydate);
+        Date aBydate = new GeneralUtilities().get_week_date_to(this.report_period_year, this.report_period_week);
+
+        this.count_d1 = this.getElibileEntities(this.report_form1, aBydate);
+        this.count_d2 = this.getElibileEntities(this.report_form2, aBydate);
 
         //get numerator;entities that submitted the report form
         this.count_n1 = this.getReceivedEntities(this.report_form1, this.report_period_year, this.report_period_week);
@@ -275,6 +275,9 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
                 this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 and report_form_code IN(" + ReportFormsCodeStr + ") " + WhereDate2, "add_date DESC");
             } else {
                 this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 " + WhereDate2, "add_date DESC");
+            }
+            if (this.received_SMSs.isEmpty()) {
+                Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", "add_date DESC");
             }
         } catch (PersistentException ex) {
             Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
