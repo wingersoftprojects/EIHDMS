@@ -277,7 +277,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
                 this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 " + WhereDate2, "add_date DESC");
             }
             if (this.received_SMSs.isEmpty()) {
-                Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", "add_date DESC");
+                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", "add_date DESC");
             }
         } catch (PersistentException ex) {
             Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -442,7 +442,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
 
                 }
             }
-        } catch (PersistentException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return entityname;
