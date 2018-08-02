@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flexmonster Pivot Component HTML5 API - All-In-One Demo</title>
+	<link href="../assets/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div id="header">
+		<a id="logo" href="http://www.flexmonster.com/" target="_blank"></a>
+	</div>
+
+	<!-- 1. Create a DIV container to insert the component -->
+	<div id="pivotContainer"></div>
+
+	<!-- 2. Include flexmonster.js file -->
+	<script type="text/javascript" src="flexmonster/flexmonster.js"></script>
+
+	<!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
+    <script type="text/javascript">
+		flexmonster.embedPivotComponent(
+		    "flexmonster/", "pivotContainer", "100%", "500", 
+		    { 
+		        dataSourceType: "csv",
+		        
+		        filename: "http://www.flexmonster.com/download/data.csv",
+		        /* filename: "http://my_host/my_script_returns_data_in.csv_format", */
+
+		        licenseKey: "Z51I-6B26G1-100W-2327-1F0M-0H0Y-2I1I-1W2C-3830-1Y33-2I2W-1Y2D-1R0L"
+		    }, true
+		);
+	</script>
+
+	<!-- 
+		NOTE:
+		To show HTML5 Pivot component demo on the local computer from the folder where it is downloaded, we used remote report in configUrl and set licenseKey inline. 
+		
+		When you put Pivot component on your web server, you will be able to replace configUrl with relative URL and licenseKey could be removed from here - it will be taken from flexmonsterpivottablekey.txt.
+		
+		Please see below the commented flexmonster.embedPivotComponent() which works on web server:
+		
+		flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "535", { 
+			configUrl: "report.xml" 
+		}, true); 
+	-->
+
+	<div class="links-area">
+		<a href="./" id="openFolder" target="_blank"><span>Open source folder</span></a>
+		<a href="http://www.flexmonster.com/api/?section=api" id="docs" target="_blank"><span>See documentation</span></a>
+	</div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 /*
   Integration of Highcharts with Flexmonster Pivot Table & Charts Component
-  Copyright (c) 2017 Flexmonster.com
+  Copyright (c) 2016 Flexmonster.com
   Released under License
 */
 (function() {

@@ -1,14 +1,12 @@
 /*
   Integration of Google Charts with Flexmonster Pivot Table & Charts Component
-  Copyright (c) 2017 Flexmonster.com
+  Copyright (c) 2016 Flexmonster.com
   Released under License
 */
 (function() {
 	FlexmonsterGooglecharts = {};
 
 	FlexmonsterGooglecharts.getData = function(options, callbackHandler, updateHandler) {
-		var type = options.type;
-
 		//define slice to select the data you would like to show (different from data that flexmonster instance is showing)
 		//leave it undefined to get the data that flexmonster instance is showing
 		var slice = options.slice;
@@ -24,7 +22,7 @@
 				if (_prepareDataFunction != undefined) {
 					updateHandler(_prepareDataFunction(data), data);
 				} else {
-					updateHandler(prepareData(data, type), data);
+					updateHandler(prepareData(data), data);
 				}
 			};
 		}
@@ -35,7 +33,7 @@
 				if (_prepareDataFunction != undefined) {
 					callbackHandler(_prepareDataFunction(data), data);
 				} else {
-					callbackHandler(prepareData(data, type), data);
+					callbackHandler(prepareData(data), data);
 				}
 			}, _updateHandler
 		);
@@ -88,21 +86,10 @@
 		return str;
 	}
 
-	function prepareData(data, type) {
+	function prepareData(data) {
 		var output = {};
 		output.options = prepareChartInfo(data);
-		switch (type) {
-			case "area":
-			case "bar":
-			case "column":
-			case "line":
-			case "pie":
-				prepareSingleSeries(output, data);
-				break;
-			case "sankey":
-			default:
-				prepareSeries(output, data);
-		}
+		prepareSeries(output, data);
 		return output;
 	}
 
@@ -117,50 +104,6 @@
 			}*/
 		};
 		return output;
-	}
-	
-	function prepareSingleSeries(output, data) {
-		var table = [];
-		var basedOnRows = false;
-		var basedOnColumns = false;
-		for (var i = 0; i < data.data.length; i++) {
-			if (i == 0) {
-				var headerRow = [];
-				if (data.meta["rAmount"] > 0) {
-					headerRow.push(data.meta["r0Name"]);
-					basedOnRows = true;
-				} else if (data.meta["cAmount"] > 0) {
-					headerRow.push(data.meta["c0Name"]);
-					basedOnColumns = true;
-				}
-				for (var j = 0; j < data.meta["vAmount"]; j++) {
-					headerRow.push(data.meta["v"+j+ "Name"]);
-				}
-				table.push(headerRow);
-			}
-			var record = data.data[i];
-			var recordIsNotAFact = false;
-			var _record = [];
-			if (basedOnRows) {
-				if (record["r0"] == undefined || record["r1"] != undefined || record["c0"] != undefined || record["v0"] == undefined) continue;
-				_record.push(record["r0"]);
-			}
-			if (basedOnColumns) {
-				if (record["c0"] == undefined || record["c1"] != undefined || record["r0"] != undefined || record["v0"] == undefined) continue;
-				_record.push(record["c0"]);
-			}
-			for (var j = 0; j < data.meta["vAmount"]; j++) {
-				if (record["v"+j] == undefined) {
-					recordIsNotAFact = true;
-					continue;
-				}
-				_record.push(!isNaN(record["v"+j]) ? record["v"+j] : 0);
-			}
-			
-			if (recordIsNotAFact) continue;
-			table.push(_record);
-		}
-		output.data = table;
 	}
 	
 	function prepareSeries(output, data) {
