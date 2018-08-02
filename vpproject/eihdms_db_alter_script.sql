@@ -471,6 +471,31 @@ alter table batch_mob_app modify column last_edit_date datetime;
 alter table batch_mob_app add column batch_id int(11);
 
 /*
+alter_script_20.06.2018
+*/
+alter table data_element modify column data_element_name varchar(255);
+alter table data_element modify column data_element_context varchar(255);
+alter table data_element modify column description varchar(255);
+alter table data_element modify column add_date datetime;
+alter table data_element modify column last_edit_date datetime;
+alter table sub_section modify column add_date datetime;
+alter table sub_section modify column last_edit_date datetime;
+alter table sub_section add column rows_count int(11);
+alter table sub_section add column cols_count int(11);
+create table sub_section_cell (sub_section_cell_id int(11) not null auto_increment, sub_section_id int(11) not null, row_no int(11) not null, col_no int(11) not null, col_span int(11), row_span int(11), label_name varchar(100), data_element_id int(11), data_element_value varchar(100), text_color varchar(50), cell_color varchar(50), read_only int(1), is_deleted int(1) not null, is_active int(1) not null, add_date datetime not null, add_by int(10), last_edit_date datetime null, last_edit_by int(10), primary key (sub_section_cell_id)) ENGINE=InnoDB;
+alter table sub_section_cell add constraint FKsub_sectio698396 foreign key (data_element_id) references data_element (data_element_id);
+alter table sub_section_cell add constraint FKsub_sectio34243 foreign key (sub_section_id) references sub_section (sub_section_id);
+
+/*
+alter_script_23.06.2018
+*/
+update data_element AS d set d.data_element_code=(d.data_element_id-get_minimum_data_element_id(d.report_form_id)+1) where (d.data_element_code is null or d.data_element_code='');
+
+alter table report_form_group add column def_name varchar(100);
+alter table data_element add constraint Report_Form_Group_Data_Element_Code unique (report_form_group_id, data_element_code);
+
+
+/*
 alter_script_18.07.2018
 */
 alter table report_form modify column add_date datetime;
@@ -487,3 +512,4 @@ alter table interface_data add column rec_id varchar(100);
 alter table base_data_deleted add column rec_id varchar(100);
 alter table data_element add column is_patient_level_record_id int(1);
 alter table validation_report add column rec_id varchar(100);
+alter table interface_data_mob_app add column rec_id varchar(100);
