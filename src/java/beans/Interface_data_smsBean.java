@@ -276,9 +276,9 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
             } else {
                 this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0 " + WhereDate2, "add_date DESC");
             }
-            if (this.received_SMSs.isEmpty()) {
-                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", "add_date DESC");
-            }
+//            if (this.received_SMSs.isEmpty()) {
+//                this.received_SMSs = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", "add_date DESC");
+//            }
         } catch (PersistentException ex) {
             Logger.getLogger(Report_formBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -432,7 +432,11 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         Phone_contact pc = null;
         String entityname = "";
         try {
-            pc = (Phone_contact) Phone_contact.queryPhone_contact("entity_phone='" + aPhone + "'", null).get(0);
+            List<Phone_contact> tempList = new ArrayList<>();
+            tempList.addAll(Phone_contact.queryPhone_contact("entity_phone='" + aPhone + "'", null));
+            if (tempList.size() > 0) {
+                pc = (Phone_contact) tempList.get(0);
+            }
             if (null != pc) {
                 try {
                     if (pc.getEntity_type().equals("Facility")) {
@@ -441,8 +445,10 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
                 } catch (NullPointerException npe) {
 
                 }
+            } else {
+                entityname = "'" + aPhone + "' Belongs to an UnKnown Entity";
             }
-        } catch (Exception ex) {
+        } catch (PersistentException | IndexOutOfBoundsException ex) {
             Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return entityname;
