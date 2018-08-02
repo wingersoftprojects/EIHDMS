@@ -70,8 +70,14 @@
                             <f:selectItem itemLabel="MOB APP" itemValue="3" />
                             <f:ajax render="@this"/>
                         </p:selectOneMenu>
+                        <p:outputLabel value="Is Patient Level?:" for="is_patient_level"/>
+                        <p:selectOneMenu id="is_patient_level" value="#{report_formBean.selected.is_patient_level}" required="true" requiredMessage="Is patientlevel field is required">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="1" />
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="Is Active?:" for="is_active"/>
-                        <p:selectOneMenu id="is_active" value="#{report_formBean.selected.is_active}" required="true" requiredMessage="Health facility is active field is required">
+                        <p:selectOneMenu id="is_active" value="#{report_formBean.selected.is_active}" required="true" requiredMessage="Is active field is required">
                             <f:selectItem itemLabel="Select One" itemValue="" />
                             <f:selectItem itemLabel="Yes" itemValue="1" />
                             <f:selectItem itemLabel="No" itemValue="0" />
@@ -98,6 +104,9 @@
                     </p:column>
                     <p:column headerText="Level">
                         <h:outputText value="#{item.lowest_report_form_level}"/>
+                    </p:column>
+                    <p:column headerText="Patient Level?">
+                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_patient_level)}"/>
                     </p:column>
                     <p:column headerText="Active?">
                         <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
