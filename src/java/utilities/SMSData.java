@@ -277,6 +277,12 @@ public class SMSData {
                     if (sms_report_form == null) {
                         sms_report_form = outer.getData_element().getReport_form();
                         /**
+                         * If no report form code found
+                         */
+                        if (sms_report_form == null) {
+                            interface_data_sms.setReport_form_code("Unknown");
+                        }
+                        /**
                          * Set interface_data_sms report_form_code
                          */
                         interface_data_sms.setReport_form_code(sms_report_form.getReport_form_code());
@@ -391,6 +397,10 @@ public class SMSData {
             } else {
                 interface_data_sms.setStatus_f("ERR");
                 interface_data_sms.setStatus_f_desc("Invalid Data Format");
+                interface_data_sms.setReport_form_code("Unknown");
+                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
+                transaction.commit();
             }
             //}
         } catch (PersistentException ex) {
