@@ -9,7 +9,10 @@
     <ui:define name="content">
         <h:form>
             <p:panel header="Validation Report" style="border-style: solid;">
-                <p:dataTable value="#{uploadBean.generate_validation_report()}" var="item">
+                <p:dataTable value="#{uploadBean.generate_validation_report()}" var="item" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="Batch Id">
                         <h:outputText value="#{item.batch_id}"/>
                     </p:column>

@@ -54,21 +54,34 @@
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{phone_contactBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="phone_contacts_table" value="#{phone_contactBean.ts}" var="item" rows="10"
+                <p:dataTable id="phone_contacts_table" value="#{phone_contactBean.phone_contact_list}" var="item" rows="10"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,15,30,50,100">
+                             rowsPerPageTemplate="5,10,15,30,50,100" widgetVar="pcTable"
+                             emptyMessage="No Phone Contacts found with given criteria" filteredValue="#{phone_contactBean.filtered_phone_contact_list}">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields(Phone Contacts):" />
+                            <p:inputText id="globalFilter" onkeyup="PF('pcTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Entity District" filterBy="#{item[0]}" filterMatchMode="contains">
+                        <h:outputText value="#{item[0]}"/>
+                    </p:column>
+                    <p:column headerText="Entity Name" filterBy="#{item[1]}" filterMatchMode="contains">
+                        <h:outputText value="#{item[1]}"/>
+                    </p:column>
                     <p:column headerText="Entity ID">
-                        <h:outputText value="#{item.entity_id}"/>
+                        <h:outputText value="#{item[2]}"/>
                     </p:column>
-                    <p:column headerText="Entity Type">
-                        <h:outputText value="#{item.entity_type}"/>
+                    <p:column headerText="Entity Type" filterBy="#{item[3]}" filterMatchMode="contains">
+                        <h:outputText value="#{item[3]}"/>
                     </p:column>
-                    <p:column headerText="Phone Number">
-                        <h:outputText value="#{item.entity_phone}"/>
+                    <p:column headerText="Phone Number" filterBy="#{item[4]}" filterMatchMode="contains">
+                        <h:outputText value="#{item[4]}"/>
                     </p:column>
                     <p:column headerText="Active?">
-                        <h:outputText value="#{generalUtilities.convertYesNo(item.is_active)}"/>
+                        <h:outputText value="#{generalUtilities.convertYesNo(item[5])}"/>
                     </p:column>
                     <p:column headerText="">
                         <p:commandButton value="Edit" action="#{phone_contactBean.edit(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
