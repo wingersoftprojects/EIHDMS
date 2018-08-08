@@ -6,10 +6,14 @@
 package beans;
 
 import eihdms.Access_scope;
+import eihdms.District;
 import eihdms.EIHDMSPersistentManager;
+import eihdms.Health_facility;
 import eihdms.Organisation;
+import eihdms.Parish;
 import eihdms.Phone_contact;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,6 +71,9 @@ public class Phone_contactBean extends AbstractBean<Phone_contact> implements Se
 
     List<Object[]> phone_contact_list;
     List<Object[]> filtered_phone_contact_list;
+    List<Object[]> facility_list;
+    List<Object[]> parish_list;
+    List<Object[]> district_list;
 
     public List<Object[]> getFiltered_phone_contact_list() {
         return filtered_phone_contact_list;
@@ -94,6 +101,51 @@ public class Phone_contactBean extends AbstractBean<Phone_contact> implements Se
 
     public void setPhone_contact_list(List<Object[]> phone_contact_list) {
         this.phone_contact_list = phone_contact_list;
+    }
+
+    public List<Object[]> getFacility_list(District aDistrict) {
+        try {
+            facility_list = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT health_facility_id,health_facility_name"
+                    + " FROM health_facility WHERE district_id='" + aDistrict.getDistrict_id() + "' AND is_active=1");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Phone_contactBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return facility_list;
+    }
+
+    public void setFacility_list(List<Object[]> facility_list) {
+        this.facility_list = facility_list;
+    }
+
+    public List<Object[]> getParish_list(District aDistrict) {
+        try {
+            parish_list = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT parish_id,parish_name FROM parish WHERE sub_county_id IN \n"
+                    + "( SELECT sub_county_id FROM sub_county WHERE county_id IN \n"
+                    + "( SELECT county_id FROM county WHERE district_id='" + aDistrict.getDistrict_id() + "'))");
+        } catch (PersistentException ex) {
+            Logger.getLogger(Phone_contactBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return parish_list;
+    }
+
+    public void setParish_list(List<Object[]> parish_list) {
+        this.parish_list = parish_list;
+    }
+
+    public List<Object[]> getDistrict_list() {
+        try {
+            district_list = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("select district_id,district_name FROM district where is_active=1 AND is_deleted=0").list();
+        } catch (PersistentException ex) {
+            Logger.getLogger(Phone_contactBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return district_list;
+    }
+
+    public void setDistrict_list(List<Object[]> district_list) {
+        this.district_list = district_list;
     }
 
 }

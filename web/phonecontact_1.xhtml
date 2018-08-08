@@ -24,13 +24,7 @@
                             <f:selectItem itemLabel="Parish" itemValue="Parish" />
                             <f:selectItem itemLabel="Facility" itemValue="Facility" />
                             <f:selectItem itemLabel="Organisation" itemValue="Organisation" />
-                            <p:ajax process="@this" update="district"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="District:"/>
-                        <p:selectOneMenu id="district" required="true" requiredMessage="Entity Id field is required">
-                            <f:selectItem itemLabel="Select One"/>
-                            <f:selectItems value="#{phone_contactBean.district_list}" var="item" itemLabel="#{item[1]}" itemValue="#{item[0]}"/>
-                            <p:ajax process="@this" update="entity_id_parish,entity_id_facility,entity_id_organisation"/>
+                            <p:ajax process="@this" update="@form,entity_id_parish,entity_id_parish,entity_id_facility,entity_id_organisation"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='Parish'}"/>
                         <p:selectOneMenu id="entity_id_parish" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='Parish'}" required="true" requiredMessage="Entity Id field is required">
