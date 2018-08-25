@@ -181,7 +181,6 @@ public class Phone_contactBean extends AbstractBean<Phone_contact> implements Se
             Logger.getLogger(Phone_contactBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     public void delete_object(Object[] objects) {
         try {
             if (objects != null) {
