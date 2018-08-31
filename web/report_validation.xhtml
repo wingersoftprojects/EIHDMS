@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        <h:form>
+        <h:form rendered="#{loginBean.IsAllowed(53, 'View')}">
             <p:panel header="Validation Report" style="border-style: solid;">
                 <p:dataTable value="#{uploadBean.generate_validation_report()}" var="item" rows="10"
                          paginator="true"

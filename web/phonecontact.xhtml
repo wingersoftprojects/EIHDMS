@@ -13,21 +13,21 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
+        <h:form rendered="#{loginBean.IsAllowed(52, 'View')}">
             <p:growl id="messages" showDetail="true" />
             <p:panelGrid columns="2">
                 <p:fieldset legend="Phone Contact Detail">
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Entity Type:" for="entity_type"/>
-                        <p:selectOneMenu id="entity_type" value="#{phone_contactBean.selected.entity_type}" required="true" requiredMessage="Entity Type field is required">
+                        <p:selectOneMenu id="entity_type" value="#{phone_contactBean.selected.entity_type}" required="false" requiredMessage="Entity Type field is required">
                             <f:selectItem itemLabel="Select One"/>
                             <f:selectItem itemLabel="Parish" itemValue="Parish" />
                             <f:selectItem itemLabel="Facility" itemValue="Facility" />
                             <f:selectItem itemLabel="Organisation" itemValue="Organisation" />
-                            <p:ajax process="@this" update="district"/>
+                            <p:ajax process="@this" update="district,@form"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="District:"/>
-                        <p:selectOneMenu id="district" value="#{phone_contactBean.adistrict_id}" required="true" requiredMessage="Entity Id field is required">
+                        <p:selectOneMenu id="district" value="#{phone_contactBean.adistrict_id}" required="false" requiredMessage="Entity Id field is required">
                             <f:selectItem itemLabel="Select One"/>
                             <f:selectItems value="#{phone_contactBean.district_list}" var="item" itemLabel="#{item[1]}" itemValue="#{item[0]}"/>
                             <p:ajax process="@this" update="@form"/>
@@ -62,7 +62,7 @@
                 </p:fieldset>
                 <p:dataTable id="phone_contacts_table" value="#{phone_contactBean.phone_contact_list}" var="item" rows="10"
                              paginator="true"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                              rowsPerPageTemplate="5,10,15,30,50,100" widgetVar="pcTable"
                              emptyMessage="No Phone Contacts found with given criteria" filteredValue="#{phone_contactBean.filtered_phone_contact_list}">
                     <f:facet name="header">
@@ -70,6 +70,20 @@
                             <h:outputText value="Search all fields(Phone Contacts):" />
                             <p:inputText id="globalFilter" onkeyup="PF('pcTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                         </p:outputPanel>
+                    </f:facet>
+                    <f:facet name="{Exporters}">
+                        <h:commandLink>
+                            <p:graphicImage name="images/excel.png" width="24"/>
+                            <p:dataExporter type="xls" target="phone_contacts_table" fileName="Phone Contacts" />
+                        </h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage name="images/pdf.png" width="24"/>
+                            <p:dataExporter type="pdf" target="phone_contacts_table" fileName="Phone Contacts"/>
+                        </h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage name="images/csv.png" width="24"/>
+                            <p:dataExporter type="csv" target="phone_contacts_table" fileName="Phone Contacts" />
+                        </h:commandLink>
                     </f:facet>
                     <p:column headerText="Entity District" filterBy="#{item[0]}" filterMatchMode="contains">
                         <h:outputText value="#{item[0]}"/>
@@ -89,10 +103,10 @@
                     <p:column headerText="Active?">
                         <h:outputText value="#{generalUtilities.convertYesNo(item[5])}"/>
                     </p:column>
-                    <p:column headerText="">
+                    <p:column headerText="" exportable="false">
                         <p:commandButton value="Edit" action="#{phone_contactBean.edit_object(item)}" process="@this" update="@form" icon="ui-icon-search" title="View">
                         </p:commandButton>
-                        <p:commandButton value="Delete" actionListener="#{phone_contactBean.edit_object(item)}" update="@form" process="@this">
+                        <p:commandButton value="Delete" actionListener="#{phone_contactBean.delete_object(item)}" update="@form" process="@this">
                             <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="ui-icon-alert" />
                         </p:commandButton>
 
