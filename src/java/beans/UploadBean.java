@@ -822,9 +822,10 @@ public class UploadBean implements Serializable {
         return jSONArray;
     }
 
-    public JSONArray getjSONArray_Dynamic_Pivot(District[] selectedDistricts, Integer[] selectedYears) {
+    public JSONArray getjSONArray_Dynamic_Pivot(District[] selectedDistricts, Integer[] selectedYears, Integer[] selectedDataElements) {
         String YearsStr = "";
         String DistrictsStr = "";
+        String DataElementStr = "";
         JSONArray jArray = new JSONArray();
         base_data_objects = new ArrayList<>();
         if (selectedYears == null || selectedDistricts == null) {
@@ -849,6 +850,15 @@ public class UploadBean implements Serializable {
                 DistrictsStr = DistrictsStr + "," + selectedDistricts[i].getDistrict_id();
             } else {
                 DistrictsStr = "" + selectedDistricts[i].getDistrict_id();
+            }
+        }
+        //get 1,2,3 string format for selected districts
+        y = selectedDataElements.length;
+        for (int i = 0; i < y; i++) {
+            if (DataElementStr.length() > 0) {
+                DataElementStr = DataElementStr + "," + selectedDataElements[i];
+            } else {
+                DataElementStr = "" + selectedDataElements[i];
             }
         }
 
@@ -887,9 +897,13 @@ public class UploadBean implements Serializable {
                     + "INNER JOIN section AS se ON de.section_id = se.section_id\n"
                     + "INNER JOIN sub_section AS ss ON de.sub_section_id = ss.sub_section_id\n"
                     + "LEFT JOIN technical_area AS ta ON de.technical_area_id = ta.technical_area_id WHERE "
-                    + "b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ") AND b.report_form_group_id=" + report_form_group.getReport_form_group_id();
+                    + " b.data_element_id in (" + DataElementStr + ")"
+                    + " AND b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ") AND b.report_form_group_id=" + report_form_group.getReport_form_group_id();
+
+            String sql2 = "CALL sp_select_dyanamic ('" + DistrictsStr + "','" + YearsStr + "','" + DataElementStr + "'," + report_form_group.getReport_form_group_id() + "," + report_form.getReport_form_id() + ");";
             try {
-                base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+                base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql2).list();
+                //base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }

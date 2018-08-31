@@ -790,4 +790,28 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         this.DataseriesChartString2 = DataseriesChartString2;
     }
 
+    List<Interface_data_sms> edit_sms_list;
+    List<Interface_data_sms> edit_sms_list_search;
+
+    public List<Interface_data_sms> getEdit_sms_list() {
+        try {
+            this.edit_sms_list = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", null);
+        } catch (PersistentException ex) {
+            Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return edit_sms_list;
+    }
+
+    public void setEdit_sms_list(List<Interface_data_sms> edit_sms_list) {
+        this.edit_sms_list = edit_sms_list;
+    }
+
+    public List<Interface_data_sms> getEdit_sms_list_search() {
+        return edit_sms_list_search;
+    }
+
+    public void setEdit_sms_list_search(List<Interface_data_sms> edit_sms_list_search) {
+        this.edit_sms_list_search = edit_sms_list_search;
+    }
+
 }

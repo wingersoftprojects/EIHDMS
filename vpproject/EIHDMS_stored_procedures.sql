@@ -5683,3 +5683,54 @@ CALL sp_delete_from_interface_data_by_batch_id(in_batch_id);
 END //
 DELIMITER ;
 
+-- ----------------------------
+-- Procedure structure for sp_select_dyanamic
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_select_dyanamic`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_dyanamic`(IN `in_district_str` varchar(500),IN `in_year_str` varchar(500),IN `in_data_element_str` varchar(500), IN `in_report_form_group_id` int,IN `in_report_form_id` int)
+BEGIN
+SET SESSION group_concat_max_len = 18446744073709551615;
+	
+SET @sql_select_data=
+
+CONCAT('SELECT
+d.district_name,
+c.county_name,
+sc.sub_county_name,
+p.parish_name,
+hf.health_facility_name,
+b.report_period_year,
+b.report_period_quarter,
+b.report_period_bi_month,
+b.report_period_month,
+b.report_period_week,
+se.section_name,
+ss.sub_section_name,
+de.data_element_name,
+b.data_element_value,
+de.data_element_context,
+de.data_type,
+de.data_size,
+de.age_category,
+de.sex_category,
+de.other_category,
+ta.technical_area_name
+FROM
+base_data_',in_report_form_id,' AS b
+LEFT JOIN district AS d ON d.district_id = b.district_id
+LEFT JOIN county AS c ON c.county_id = b.county_id
+LEFT JOIN sub_county AS sc ON sc.sub_county_id = b.sub_county_id
+LEFT JOIN parish AS p ON p.parish_id = b.parish_id
+LEFT JOIN health_facility AS hf ON hf.health_facility_id = b.health_facility_id
+INNER JOIN data_element AS de ON de.data_element_id = b.data_element_id
+INNER JOIN section AS se ON de.section_id = se.section_id
+INNER JOIN sub_section AS ss ON de.sub_section_id = ss.sub_section_id
+LEFT JOIN technical_area AS ta ON de.technical_area_id = ta.technical_area_id WHERE b.data_element_id IN (',in_data_element_str,') and b.district_id in(',in_district_str,') AND report_period_year IN(', in_year_str,') AND b.report_form_group_id=',in_report_form_group_id);
+
+prepare stmt_drop_table from @sql_select_data;
+execute stmt_drop_table;
+
+END
+;;
+DELIMITER ;

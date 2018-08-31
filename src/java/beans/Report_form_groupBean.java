@@ -5,7 +5,7 @@
  */
 package beans;
 
-import eihdms.Report_form_group;
+import eihdms.Data_element;
 import eihdms.EIHDMSPersistentManager;
 import eihdms.Report_form;
 import eihdms.Report_form_group;
@@ -58,6 +58,20 @@ public class Report_form_groupBean extends AbstractBean<Report_form_group> imple
         try {
             if (this.getEntityClass() != null && report_form != null) {
                 temp = (List<Report_form_group>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Report_form_group  d where d.is_deleted<>1 AND d.report_form=" + report_form.getReport_form_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public List<Data_element> get_dataelements(Report_form_group report_form_group) {
+        List<Data_element> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && report_form_group != null) {
+                temp = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Data_element  d where d.is_deleted<>1 AND d.report_form_group=" + report_form_group.getReport_form_group_id()).list();
             } else {
                 temp = new ArrayList<>();
             }

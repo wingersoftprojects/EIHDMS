@@ -63,6 +63,17 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     private String data_element_ids_involved;
 
     private Map<String, Integer> summary_function_map;
+    
+    private Integer[] selectedDataElements;
+
+    public Integer[] getSelectedDataElements() {
+        return selectedDataElements;
+    }
+
+    public void setSelectedDataElements(Integer[] selectedDataElements) {
+        this.selectedDataElements = selectedDataElements;
+    }
+    
 
     public Map<String, Integer> getSummary_function_map() {
         return summary_function_map;
