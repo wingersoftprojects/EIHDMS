@@ -5734,3 +5734,27 @@ execute stmt_drop_table;
 END
 ;;
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS `sp_delete_dashboard_surge`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_dashboard_surge`(
+	IN in_batch_id int(11),IN in_report_form_code varchar(100)
+)
+BEGIN 
+DELETE FROM dashboard_surge WHERE batch_id=in_batch_id;
+DELETE FROM validation_report WHERE batch_id=in_batch_id;
+
+-- Delete Base data
+select * from report_form where report_form_code=in_report_form_code;
+IF FOUND_ROWS()>0 THEN
+		SET @sqltext=concat('DELETE FROM base_data_',(select report_form_id from report_form where report_form_code=in_report_form_code),' WHERE batch_id=',in_batch_id);
+
+		PREPARE stmt FROM @sqltext;
+		EXECUTE stmt;
+		DEALLOCATE PREPARE stmt;
+
+END IF;
+END
+;;
+DELIMITER ;

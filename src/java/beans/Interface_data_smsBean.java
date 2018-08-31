@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -795,7 +796,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
 
     public List<Interface_data_sms> getEdit_sms_list() {
         try {
-            this.edit_sms_list = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", null);
+            this.edit_sms_list = Interface_data_sms.queryInterface_data_sms("is_active=1 and is_deleted=0", "interface_data_sms_id desc");
         } catch (PersistentException ex) {
             Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
         }

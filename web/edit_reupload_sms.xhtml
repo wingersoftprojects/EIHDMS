@@ -15,6 +15,46 @@
     <ui:define name="content">
         <h:form rendered="#{loginBean.IsAllowed(0, 'View')}">
             <p:growl id="messages" showDetail="true" />
+            <p:panel>
+                <p:panelGrid columns="4">
+                    <p:outputLabel value="SMS:" for="sms"/>
+                    <p:inputText id="sms" value="#{uploadBean.interface_data_sms_edit.sms}" required="true" requiredMessage="SMS Required"/>
+                    <p:outputLabel value="Phone:" for="phone"/>
+                    <p:inputText id="phone" value="#{uploadBean.interface_data_sms_edit.phone}" required="true" requiredMessage="SMS Required"/>
+                    <p:outputLabel value="Calendar Year:" for="report_period_year"/>
+                    <p:selectOneMenu id="report_period_year" value="#{uploadBean.edit_sms_year}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                        <p:ajax process="@this" update="@form"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
+                    <p:inputText id="report_period_week" value="#{uploadBean.edit_sms_week}">
+                        <f:validateLongRange minimum="1" maximum="52"/>
+                        <p:ajax event="blur" process="@this" update="@form"/>
+                    </p:inputText>
+                    <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}"/>
+                    <p:selectOneMenu id="report_period_month" value="#{uploadBean.edit_sms_month}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItem itemLabel="Jan" itemValue="1" />
+                        <f:selectItem itemLabel="Feb" itemValue="2" />
+                        <f:selectItem itemLabel="Mar" itemValue="3" />
+                        <f:selectItem itemLabel="Apr" itemValue="4" />
+                        <f:selectItem itemLabel="May" itemValue="5" />
+                        <f:selectItem itemLabel="Jun" itemValue="6" />
+                        <f:selectItem itemLabel="Jul" itemValue="7" />
+                        <f:selectItem itemLabel="Aug" itemValue="8" />
+                        <f:selectItem itemLabel="Sep" itemValue="9" />
+                        <f:selectItem itemLabel="Oct" itemValue="10" />
+                        <f:selectItem itemLabel="Nov" itemValue="11" />
+                        <f:selectItem itemLabel="Dec" itemValue="12" />
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="SAVE DATA" action="#{uploadBean.save_edit_sms()}" update="@form"/>
+                </p:panelGrid>
+            </p:panel>
             <p:dataTable id="table_received_sms" var="sms" value="#{interface_data_smsBean.edit_sms_list}" draggableRows="false" 
                          paginator="true" tableStyle="width:auto;" rows="50" rowsPerPageTemplate="10,50,100,200,400,1000,2000" 
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {Exporters}" widgetVar="edit_smsTable"
@@ -38,11 +78,11 @@
                     </h:commandLink>
                 </f:facet>
                 <f:facet name="header">
-                        <p:outputPanel>
-                            <h:outputText value="Search all fields(Phone or Facility Report Form or SMS):" />
-                            <p:inputText id="globalFilter" onkeyup="PF('edit_smsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-                        </p:outputPanel>
-                    </f:facet>
+                    <p:outputPanel>
+                        <h:outputText value="Search all fields(Phone or Facility Report Form or SMS):" />
+                        <p:inputText id="globalFilter" onkeyup="PF('edit_smsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
                 <p:column headerText="Report Form" style="font-size: 12px;" filterBy="#{sms.report_form_code}" filterMatchMode="contains">
                     <h:outputText value="#{sms.report_form_code}" />
                 </p:column>
@@ -70,6 +110,13 @@
                     <h:outputText value="#{sms.status_v}" rendered="#{sms.status_v=='Passed'}"/>
                     <h:outputText value="#{sms.status_v}" style="color: red" rendered="#{sms.status_v=='ERR'}"/>
                     <h:outputText value="#{sms.status_v}" style="color: red" rendered="#{sms.status_v=='Failed'}"/>
+                </p:column>
+                <p:column headerText="Batch Id">
+                    <h:outputText value="#{sms.batch_id}"/>
+                </p:column>
+                <p:column headerText="">
+                    <p:commandButton value="Edit" action="#{uploadBean.edit_sms(sms)}" process="@this" update="@form" icon="ui-icon-search" title="View">
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>

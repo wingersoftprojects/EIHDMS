@@ -6,6 +6,7 @@
 package utilities;
 
 import beans.UploadBean;
+import connections.DBConnection;
 import eihdms.Batch_mob_app;
 import eihdms.County;
 import eihdms.Data_element;
@@ -25,6 +26,10 @@ import eihdms.Report_form_entity;
 import eihdms.Report_form_group;
 import eihdms.Report_form_short_code;
 import eihdms.Sub_county;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +40,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import org.joda.time.DateTime;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
@@ -113,6 +120,331 @@ public class SMSData {
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    public void edit_and_reupload_sms(Interface_data_sms interface_data_sms, Integer edit_sms_year, Integer edit_sms_week, Integer edit_sms_month) {
+        try {
+            List<Interface_data> interface_datas = new ArrayList<>();
+            List<Data_element_sms_position> data_element_sms_positionList = new ArrayList<>();
+            /**
+             * Read form being loaded
+             */
+            if (!"".equals(interface_data_sms.getReport_form_code()) && interface_data_sms.getReport_form_code() != null) {
+                sms_report_form = Report_form.loadReport_formByQuery("report_form_code='" + interface_data_sms.getReport_form_code() + "'", null);
+            }
+            /**
+             * Delete from base data and dashboard surge
+             */
+            if (interface_data_sms.getBatch_id() != null && interface_data_sms.getReport_form_code() != null) {
+                String sql = "{call sp_delete_dashboard_surge(?,?)}";
+                ResultSet rs = null;
+                try (Connection conn = DBConnection.getMySQLConnection();
+                        PreparedStatement ps = conn.prepareStatement(sql);) {
+                    ps.setInt(1, interface_data_sms.getBatch_id());
+                    ps.setString(2, interface_data_sms.getReport_form_code());
+                    rs = ps.executeQuery();
+                    //FacesContext context = FacesContext.getCurrentInstance();
+                    //context.addMessage(null, new FacesMessage("Deleted successfully", "Deleted successfully"));
+                } catch (SQLException se) {
+//                    System.err.println(se.getMessage());
+//                    FacesContext context = FacesContext.getCurrentInstance();
+//                    context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
+                    Logger.getLogger(SMSData.class.getName()).log(Level.SEVERE, null, se);
+                }
+            }
+            /**
+             * Periods
+             */
+            Calendar calendar = new GregorianCalendar();
+            Date trialTime = interface_data_sms.getAdd_date();
+            calendar.setTime(trialTime);
+            //System.out.println("Week number:" + (calendar.get(Calendar.WEEK_OF_YEAR) - 1));
+            //i.setReport_period_week(calendar.get(Calendar.WEEK_OF_YEAR));
+            if (edit_sms_week == null) {
+                report_period_week = calendar.get(Calendar.WEEK_OF_YEAR) - 1;
+            } else {
+                report_period_week = edit_sms_week;
+            }
+            if (edit_sms_year == null) {
+                report_period_year = calendar.get(Calendar.YEAR);
+            } else {
+                report_period_year = edit_sms_year;
+            }
+            if (edit_sms_month == null) {
+                report_period_month = calendar.get(Calendar.MONTH);
+            } else {
+                report_period_month = edit_sms_month;
+            }
+
+            /**
+             * Quarterly Report_forms
+             */
+            switch (calendar.get(Calendar.MONTH)) {
+                case 0:
+                    report_period_quarter = 4;
+                    break;
+                case 3:
+                    report_period_quarter = 1;
+                    break;
+                case 6:
+                    report_period_quarter = 2;
+                    break;
+                case 9:
+                    report_period_quarter = 3;
+                    break;
+                default:
+                    break;
+            }
+            /**
+             * Bi-Monthly Report_forms
+             */
+            switch (calendar.get(Calendar.MONTH)) {
+                case 0:
+                    report_period_bi_month = 6;
+                    break;
+                case 2:
+                    report_period_bi_month = 1;
+                    break;
+                case 4:
+                    report_period_bi_month = 2;
+                    break;
+                case 6:
+                    report_period_bi_month = 3;
+                    break;
+                case 8:
+                    report_period_bi_month = 4;
+                    break;
+                case 10:
+                    report_period_bi_month = 5;
+                    break;
+                default:
+                    break;
+            }
+
+            /**
+             * Periods
+             */
+            /**
+             * Read report form short code list
+             */
+            List<Report_form_short_code> report_form_short_codeList = new ArrayList<>();
+            if (sms_report_form != null) {
+                report_form_short_codeList = Report_form_short_code.queryReport_form_short_code("report_form_id=" + sms_report_form.getReport_form_id(), null);
+            } else {
+                report_form_short_codeList = Report_form_short_code.queryReport_form_short_code(null, null);
+            }
+            if (report_form_short_codeList.size() > 0) {
+                /**
+                 * Loop through available short codes for one that starts like
+                 * current SMS
+                 */
+                for (Report_form_short_code object : report_form_short_codeList) {
+                    String sms = interface_data_sms.getSms();
+                    if (sms.toUpperCase().startsWith(object.getStart_code().toUpperCase())) {
+                        sms = sms.replace(object.getStart_code(), "");
+                        int count = sms.length() - sms.replace(".", "").length();
+                        /**
+                         * Check if number of separators equals those in SMS
+                         */
+                        if (count == object.getNumber_of_separators()) {
+                            data_element_sms_positionList = Data_element_sms_position.queryData_element_sms_position("report_form_short_code_id=" + object.getReport_form_short_code_id(), null);
+                            //sms_report_form=object.getReport_form();
+                            interface_data_sms.setStatus_f("OK");
+                            interface_data_sms.setStatus_f_desc("Valid Data Format");
+                        } else {
+                            interface_data_sms.setStatus_f("ERR");
+                            interface_data_sms.setStatus_f_desc("Invalid Data Format (Reason: Data Incomplete)");
+                        }
+                        break;
+                    }
+                }
+            }
+            /**
+             * Get location info from phone number
+             */
+            /**
+             * Get entity phone where phone number used for multiple entities
+             */
+            Phone_contact phone_contact = new Phone_contact();// = Phone_contact.loadPhone_contactByQuery("entity_phone='" + phone + "'", null);
+            if (data_element_sms_positionList.size() > 0) {
+                Data_element_sms_position data_element_sms_position = data_element_sms_positionList.get(0);
+                Report_form report_form_temp = data_element_sms_position.getReport_form_short_code().getReport_form();
+                List<Report_form_entity> report_form_entityList = new ArrayList<>(report_form_temp.getReport_form_entity());
+                if (report_form_entityList.isEmpty()) {
+                    phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + interface_data_sms.getPhone() + "'", null);
+                    if (phone_contact == null) {
+                        phone_contact = new Phone_contact();
+                    }
+                } else {
+                    List<Phone_contact> phone_contactList = Phone_contact.queryPhone_contact("entity_phone='" + interface_data_sms.getPhone() + "'", null);
+                    for (Report_form_entity report_form_entity : report_form_entityList) {
+                        for (Phone_contact phone_contact_temp : phone_contactList) {
+                            if (phone_contact_temp.getEntity_id() == report_form_entity.getEntity_id() && phone_contact_temp.getEntity_type().toUpperCase().equals(report_form_entity.getEntity_type().toUpperCase())) {
+                                phone_contact = phone_contact_temp;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (phone_contact.getPhone_contact_id() != 0) {
+                set_sms_location(phone_contact);
+            } else {
+                interface_data_sms.setStatus_f("ERR");
+                interface_data_sms.setStatus_f_desc("Unknown Sender");
+            }
+            /**
+             * Return invalid SMS is size=0
+             */
+            if (data_element_sms_positionList.size() > 0) {
+
+                /**
+                 * Split SMS into an array of strings
+                 */
+                String[] smsStrings = interface_data_sms.getSms().split("\\.");
+
+                for (Data_element_sms_position outer : data_element_sms_positionList) {
+                    Interface_data i = new Interface_data();
+                    i.setData_element(outer.getData_element());
+                    i.setData_element_value(smsStrings[outer.getValue_position() - 1]);
+                    i.setAdd_by(1);
+                    i.setAdd_date(new Timestamp(new Date().getTime()));
+                    i.setEntry_mode("SMS");
+                    //i.setFinancial_year(value);
+                    i.setIs_active(1);
+                    i.setIs_deleted(0);
+                    if (sms_report_form == null) {
+                        sms_report_form = outer.getData_element().getReport_form();
+                        /**
+                         * If no report form code found
+                         */
+                        if (sms_report_form == null) {
+                            interface_data_sms.setReport_form_code("Unknown");
+                        }
+                        /**
+                         * Set interface_data_sms report_form_code
+                         */
+                        interface_data_sms.setReport_form_code(sms_report_form.getReport_form_code());
+
+                        if (sms_report_form.getReport_form_frequency().equals("Weekly")) {
+                            /**
+                             * Weekly Report_forms
+                             */
+                            switch (calendar.get(Calendar.WEEK_OF_YEAR)) {
+                                case 1:
+                                    /**
+                                     * To cater for december last week ending in
+                                     * the year
+                                     */
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) > 10) {
+                                        report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if (sms_report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+                            /**
+                             * Bi-Monthly Report_forms
+                             */
+                            switch (calendar.get(Calendar.MONTH)) {
+                                case 0:
+                                    /**
+                                     * To cater for december
+                                     */
+                                    report_period_year = calendar.get(Calendar.YEAR) - 1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        /**
+                         * Terminates if the deadline has passed
+                         */
+//                        Deadline deadline = check_deadline(sms_report_form);
+//                        if (deadline.deadline_passed) {
+//                            PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+//                            interface_data_sms.setStatus_v("ERR");
+//                            interface_data_sms.setStatus_v_desc(deadline.getDeadline_reason());
+//                            EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
+//                            transaction.commit();
+//                            return;
+//                        }
+                        get_date_from_other_periods();
+
+                    }
+                    i.setReport_form(sms_report_form);
+                    sms_report_form_group = outer.getData_element().getReport_form_group();
+                    i.setReport_form_group_id(outer.getData_element().getReport_form_group().getReport_form_group_id());
+
+                    /**
+                     * Get reporting periods
+                     */
+                    i.setFinancial_year(this.getFinancial_year());
+                    i.setReport_period_year(this.getReport_period_year());
+                    i.setReport_period_quarter(this.getReport_period_quarter());
+                    i.setReport_period_from_date(this.getReport_period_from_date());
+                    i.setReport_period_to_date(this.getReport_period_to_date());
+                    i.setReport_period_month(this.getReport_period_month());
+                    i.setReport_period_week(this.getReport_period_week());
+                    i.setReport_period_bi_month(this.getReport_period_bi_month());
+
+                    /**
+                     * End set reporting periods
+                     */
+//                    i.setReport_period_from_date(new Date());
+//                    i.setReport_period_to_date(new Date());
+                    if (phone_contact.getPhone_contact_id() > 0) {
+                        switch (phone_contact.getEntity_type()) {
+                            case "District":
+                                i.setDistrict_id(smsDistrict.getDistrict_id());
+                                i.setDistrict_name(smsDistrict.getDistrict_name());
+                                break;
+                            case "Parish":
+                                i.setDistrict_id(smsParish.getSub_county().getCounty().getDistrict().getDistrict_id());
+                                i.setDistrict_name(smsParish.getSub_county().getCounty().getDistrict().getDistrict_name());
+                                i.setCounty_id(smsParish.getSub_county().getCounty().getCounty_id());
+                                i.setCounty_name(smsParish.getSub_county().getCounty().getCounty_name());
+                                i.setSub_county_id(smsParish.getSub_county().getSub_county_id());
+                                i.setSub_county_name(smsParish.getSub_county().getSub_county_name());
+                                i.setParish_id(smsParish.getParish_id());
+                                i.setParish_name(smsParish.getParish_name());
+                                break;
+                            case "Facility":
+                                i.setDistrict_id(smsHealth_facility.getDistrict().getDistrict_id());
+                                i.setDistrict_name(smsHealth_facility.getDistrict().getDistrict_name());
+                                i.setCounty_id(smsHealth_facility.getSub_county().getCounty().getCounty_id());
+                                i.setCounty_name(smsHealth_facility.getSub_county().getCounty().getCounty_name());
+                                i.setSub_county_id(smsHealth_facility.getSub_county().getSub_county_id());
+                                i.setSub_county_name(smsHealth_facility.getSub_county().getSub_county_name());
+                                i.setParish_id(smsHealth_facility.getParish().getParish_id());
+                                i.setParish_name(smsHealth_facility.getParish().getParish_name());
+                                i.setHealth_facility_id(smsHealth_facility.getHealth_facility_id());
+                                i.setHealth_facility_name(smsHealth_facility.getHealth_facility_name());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    interface_datas.add(i);
+                }
+                UploadBean uploadBean = new UploadBean();
+                uploadBean.load_interface(interface_datas, sms_report_form, sms_report_form_group, interface_data_sms);
+                System.out.println(interface_datas.size());
+            } else {
+                interface_data_sms.setStatus_f("ERR");
+                interface_data_sms.setStatus_f_desc("Invalid Data Format");
+                interface_data_sms.setReport_form_code("Unknown");
+                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
+                transaction.commit();
+            }
+            //}
+        } catch (PersistentException ex) {
+            Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -407,6 +739,7 @@ public class SMSData {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     District smsDistrict;
     County smsCounty;
     Sub_county smsSub_county;

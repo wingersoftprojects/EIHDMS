@@ -26,10 +26,11 @@
                                 <p:submenu label="Data" icon="ui-icon-circle-plus">
                                     <p:menuitem value="Data Upload"  action="upload?faces-redirect=true" icon="ui-icon-arrowthick-1-n" actionListener="#{uploadBean.load_location_hierarchy()}"/>
                                     <p:submenu label="Data Entry" icon="ui-icon-pencil">
-                                    <p:menuitem value="Basic"  action="dataentry_basic?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
-                                    <p:menuitem value="Customized"  action="dataentry_custom?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
-                                    <p:menuitem value="Patient Level"  action="dataentry_patient_level?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
-                                </p:submenu>
+                                        <p:menuitem value="Basic"  action="dataentry_basic?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
+                                        <p:menuitem value="Customized"  action="dataentry_custom?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
+                                        <p:menuitem value="Patient Level"  action="dataentry_patient_level?faces-redirect=true" icon="ui-icon-pencil" update="messages"/>
+                                    </p:submenu>
+                                    <p:menuitem value="Edit SMS"  action="edit_reupload_sms?faces-redirect=true" icon="ui-icon-arrowthick-1-n"/>
                                 </p:submenu>
                                 <p:submenu label="Settings" icon="ui-icon-gear">
                                     <p:submenu label="Location Settings" icon="ui-icon-info">
