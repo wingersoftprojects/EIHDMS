@@ -125,6 +125,7 @@ public class SMSData {
 
     public void edit_and_reupload_sms(Interface_data_sms interface_data_sms, Integer edit_sms_year, Integer edit_sms_week, Integer edit_sms_month) {
         try {
+            String sms = interface_data_sms.getSms();
             List<Interface_data> interface_datas = new ArrayList<>();
             List<Data_element_sms_position> data_element_sms_positionList = new ArrayList<>();
             /**
@@ -240,7 +241,6 @@ public class SMSData {
                  * current SMS
                  */
                 for (Report_form_short_code object : report_form_short_codeList) {
-                    String sms = interface_data_sms.getSms();
                     if (sms.toUpperCase().startsWith(object.getStart_code().toUpperCase())) {
                         sms = sms.replace(object.getStart_code(), "");
                         int count = sms.length() - sms.replace(".", "").length();
@@ -302,7 +302,7 @@ public class SMSData {
                 /**
                  * Split SMS into an array of strings
                  */
-                String[] smsStrings = interface_data_sms.getSms().split("\\.");
+                String[] smsStrings = sms.split("\\.");
 
                 for (Data_element_sms_position outer : data_element_sms_positionList) {
                     Interface_data i = new Interface_data();
@@ -375,6 +375,8 @@ public class SMSData {
 //                        }
                         get_date_from_other_periods();
 
+                    } else {
+                        get_date_from_other_periods();
                     }
                     i.setReport_form(sms_report_form);
                     sms_report_form_group = outer.getData_element().getReport_form_group();
