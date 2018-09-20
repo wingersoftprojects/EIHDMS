@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -476,25 +476,25 @@ public class Data_element implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) }, foreignKey=@ForeignKey(name="FKdata_eleme957620"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form report_form;
 	
 	@ManyToOne(targetEntity=eihdms.Section.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="section_id", referencedColumnName="section_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="section_id", referencedColumnName="section_id", nullable=false) }, foreignKey=@ForeignKey(name="FKdata_eleme646763"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Section section;
 	
 	@ManyToOne(targetEntity=eihdms.Sub_section.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="sub_section_id", referencedColumnName="sub_section_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="sub_section_id", referencedColumnName="sub_section_id", nullable=false) }, foreignKey=@ForeignKey(name="FKdata_eleme615147"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_section sub_section;
 	
 	@ManyToOne(targetEntity=eihdms.Report_form_group.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="report_form_group_id", referencedColumnName="report_form_group_id") })	
+	@JoinColumns(value={ @JoinColumn(name="report_form_group_id", referencedColumnName="report_form_group_id") }, foreignKey=@ForeignKey(name="FKdata_eleme532133"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form_group report_form_group;
 	
@@ -527,7 +527,7 @@ public class Data_element implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Technical_area.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="technical_area_id", referencedColumnName="technical_area_id") })	
+	@JoinColumns(value={ @JoinColumn(name="technical_area_id", referencedColumnName="technical_area_id") }, foreignKey=@ForeignKey(name="FKdata_eleme387873"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Technical_area technical_area;
 	

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -465,7 +465,7 @@ public class User_detail implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.User_category.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="user_category_id", referencedColumnName="user_category_id") })	
+	@JoinColumns(value={ @JoinColumn(name="user_category_id", referencedColumnName="user_category_id") }, foreignKey=@ForeignKey(name="FKuser_detai88210"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.User_category user_category;
 	
@@ -492,7 +492,7 @@ public class User_detail implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Organisation.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="organisation_id", referencedColumnName="organisation_id") })	
+	@JoinColumns(value={ @JoinColumn(name="organisation_id", referencedColumnName="organisation_id") }, foreignKey=@ForeignKey(name="FKuser_detai192219"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Organisation organisation;
 	

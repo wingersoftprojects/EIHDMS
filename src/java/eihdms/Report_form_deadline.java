@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -420,7 +420,7 @@ public class Report_form_deadline implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") })	
+	@JoinColumns(value={ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id") }, foreignKey=@ForeignKey(name="FKreport_for555710"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form report_form;
 	

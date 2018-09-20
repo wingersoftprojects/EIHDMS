@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -404,7 +404,7 @@ public class Login_session implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.User_detail.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="user_detail_id", referencedColumnName="user_detail_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="user_detail_id", referencedColumnName="user_detail_id", nullable=false) }, foreignKey=@ForeignKey(name="FKlogin_sess511752"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.User_detail user_detail;
 	

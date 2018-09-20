@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -404,7 +404,7 @@ public class Deadline_reminder implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Report_form_deadline.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="report_form_deadline_id", referencedColumnName="report_form_deadline_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="report_form_deadline_id", referencedColumnName="report_form_deadline_id", nullable=false) }, foreignKey=@ForeignKey(name="FKdeadline_r994913"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form_deadline report_form_deadline;
 	

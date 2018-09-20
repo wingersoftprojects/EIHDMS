@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -439,7 +439,7 @@ public class Sub_county implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.County.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="county_id", referencedColumnName="county_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="county_id", referencedColumnName="county_id", nullable=false) }, foreignKey=@ForeignKey(name="FKsub_county278438"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.County county;
 	

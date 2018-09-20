@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -404,7 +404,7 @@ public class Kpi_summary_function implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Kpi.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="kpi_id", referencedColumnName="kpi_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="kpi_id", referencedColumnName="kpi_id", nullable=false) }, foreignKey=@ForeignKey(name="FKkpi_summar177936"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Kpi kpi;
 	

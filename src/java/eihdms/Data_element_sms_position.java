@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
-@Table(name="data_element_sms_position", uniqueConstraints={ @UniqueConstraint(columnNames={ "data_element_id" }) })
+@Table(name="data_element_sms_position", uniqueConstraints={ @UniqueConstraint(name="desp_data_element", columnNames={ "data_element_id" }) })
 public class Data_element_sms_position implements Serializable {
 	public Data_element_sms_position() {
 	}
@@ -412,7 +412,7 @@ public class Data_element_sms_position implements Serializable {
 	
 	@OneToOne(optional=false, targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="data_element_id", referencedColumnName="data_element_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="data_element_id", referencedColumnName="data_element_id", nullable=false) }, foreignKey=@ForeignKey(name="FKdata_eleme360408"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Data_element data_element;
 	
@@ -424,7 +424,7 @@ public class Data_element_sms_position implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Report_form_short_code.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="report_form_short_code_id", referencedColumnName="report_form_short_code_id") })	
+	@JoinColumns(value={ @JoinColumn(name="report_form_short_code_id", referencedColumnName="report_form_short_code_id") }, foreignKey=@ForeignKey(name="FKdata_eleme644022"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form_short_code report_form_short_code;
 	
