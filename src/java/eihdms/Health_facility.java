@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -471,43 +471,43 @@ public class Health_facility implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Region.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="region_id", referencedColumnName="region_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="region_id", referencedColumnName="region_id", nullable=false) }, foreignKey=@ForeignKey(name="FKhealth_fac465036"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Region region;
 	
 	@ManyToOne(targetEntity=eihdms.District.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="district_id", referencedColumnName="district_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="district_id", referencedColumnName="district_id", nullable=false) }, foreignKey=@ForeignKey(name="FKhealth_fac659595"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.District district;
 	
 	@ManyToOne(targetEntity=eihdms.Sub_district.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="sub_district_id", referencedColumnName="sub_district_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="sub_district_id", referencedColumnName="sub_district_id", nullable=false) }, foreignKey=@ForeignKey(name="FKhealth_fac502352"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_district sub_district;
 	
 	@ManyToOne(targetEntity=eihdms.County.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="county_id", referencedColumnName="county_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="county_id", referencedColumnName="county_id", nullable=false) }, foreignKey=@ForeignKey(name="FKhealth_fac733174"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.County county;
 	
 	@ManyToOne(targetEntity=eihdms.Sub_county.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id", nullable=false) }, foreignKey=@ForeignKey(name="FKhealth_fac673453"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_county sub_county;
 	
 	@ManyToOne(targetEntity=eihdms.Parish.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="parish_id", referencedColumnName="parish_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="parish_id", referencedColumnName="parish_id", nullable=false) }, foreignKey=@ForeignKey(name="FKhealth_fac544787"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Parish parish;
 	
 	@ManyToOne(targetEntity=eihdms.Facility_level.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="facility_level_id", referencedColumnName="facility_level_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="facility_level_id", referencedColumnName="facility_level_id", nullable=false) }, foreignKey=@ForeignKey(name="FKhealth_fac314664"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Facility_level facility_level;
 	

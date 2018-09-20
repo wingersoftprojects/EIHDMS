@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -452,43 +452,43 @@ public class Access_scope implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.User_detail.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="user_detail_id", referencedColumnName="user_detail_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="user_detail_id", referencedColumnName="user_detail_id", nullable=false) }, foreignKey=@ForeignKey(name="FKaccess_sco501789"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.User_detail user_detail;
 	
 	@ManyToOne(targetEntity=eihdms.Region.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="region_id", referencedColumnName="region_id") })	
+	@JoinColumns(value={ @JoinColumn(name="region_id", referencedColumnName="region_id") }, foreignKey=@ForeignKey(name="FKaccess_sco658777"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Region region;
 	
 	@ManyToOne(targetEntity=eihdms.District.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="district_id", referencedColumnName="district_id") })	
+	@JoinColumns(value={ @JoinColumn(name="district_id", referencedColumnName="district_id") }, foreignKey=@ForeignKey(name="FKaccess_sco464218"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.District district;
 	
 	@ManyToOne(targetEntity=eihdms.County.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="county_id", referencedColumnName="county_id") })	
+	@JoinColumns(value={ @JoinColumn(name="county_id", referencedColumnName="county_id") }, foreignKey=@ForeignKey(name="FKaccess_sco114602"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.County county;
 	
 	@ManyToOne(targetEntity=eihdms.Sub_county.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id") })	
+	@JoinColumns(value={ @JoinColumn(name="sub_county_id", referencedColumnName="sub_county_id") }, foreignKey=@ForeignKey(name="FKaccess_sco450360"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_county sub_county;
 	
 	@ManyToOne(targetEntity=eihdms.Parish.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="parish_id", referencedColumnName="parish_id") })	
+	@JoinColumns(value={ @JoinColumn(name="parish_id", referencedColumnName="parish_id") }, foreignKey=@ForeignKey(name="FKaccess_sco579026"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Parish parish;
 	
 	@ManyToOne(targetEntity=eihdms.Health_facility.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="health_facility_id", referencedColumnName="health_facility_id") })	
+	@JoinColumns(value={ @JoinColumn(name="health_facility_id", referencedColumnName="health_facility_id") }, foreignKey=@ForeignKey(name="FKaccess_sco613427"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Health_facility health_facility;
 	

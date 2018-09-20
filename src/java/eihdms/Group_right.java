@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
-@Table(name="group_right", uniqueConstraints={ @UniqueConstraint(columnNames={ "group_detail_id", "report_form_id" }) })
+@Table(name="group_right", uniqueConstraints={ @UniqueConstraint(name="u_group_template", columnNames={ "group_detail_id", "report_form_id" }) })
 public class Group_right implements Serializable {
 	public Group_right() {
 	}
@@ -412,13 +412,13 @@ public class Group_right implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Group_detail.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="group_detail_id", referencedColumnName="group_detail_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="group_detail_id", referencedColumnName="group_detail_id", nullable=false) }, foreignKey=@ForeignKey(name="FKgroup_righ111908"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Group_detail group_detail;
 	
 	@ManyToOne(targetEntity=eihdms.Report_form.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) })	
+	@JoinColumns(value={ @JoinColumn(name="report_form_id", referencedColumnName="report_form_id", nullable=false) }, foreignKey=@ForeignKey(name="FKgroup_righ718480"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Report_form report_form;
 	

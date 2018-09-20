@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: Ajuna Newton Brian
+ * Licensee: bajuna
  * License Type: Purchased
  */
 package eihdms;
@@ -420,13 +420,13 @@ public class Sub_section_cell implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Sub_section.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="sub_section_id", referencedColumnName="sub_section_id") })	
+	@JoinColumns(value={ @JoinColumn(name="sub_section_id", referencedColumnName="sub_section_id") }, foreignKey=@ForeignKey(name="FKsub_sectio34243"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Sub_section sub_section;
 	
 	@ManyToOne(targetEntity=eihdms.Section.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="section_id", referencedColumnName="section_id") })	
+	@JoinColumns(value={ @JoinColumn(name="section_id", referencedColumnName="section_id") }, foreignKey=@ForeignKey(name="FKsub_sectio65859"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Section section;
 	
@@ -447,7 +447,7 @@ public class Sub_section_cell implements Serializable {
 	
 	@ManyToOne(targetEntity=eihdms.Data_element.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="data_element_id", referencedColumnName="data_element_id") })	
+	@JoinColumns(value={ @JoinColumn(name="data_element_id", referencedColumnName="data_element_id") }, foreignKey=@ForeignKey(name="FKsub_sectio698396"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Data_element data_element;
 	
