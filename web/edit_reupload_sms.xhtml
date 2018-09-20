@@ -17,10 +17,6 @@
             <p:growl id="messages" showDetail="true" />
             <p:panel>
                 <p:panelGrid columns="4">
-                    <p:outputLabel value="SMS:" for="sms"/>
-                    <p:inputText id="sms" value="#{uploadBean.interface_data_sms_edit.sms}" required="true" requiredMessage="SMS Required"/>
-                    <p:outputLabel value="Phone:" for="phone"/>
-                    <p:inputText id="phone" value="#{uploadBean.interface_data_sms_edit.phone}" required="true" requiredMessage="SMS Required"/>
                     <p:outputLabel value="Calendar Year:" for="report_period_year"/>
                     <p:selectOneMenu id="report_period_year" value="#{uploadBean.edit_sms_year}">
                         <f:selectItem itemLabel="Select One" itemValue="" />
@@ -30,12 +26,7 @@
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
                         <p:ajax process="@this" update="@form"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
-                    <p:inputText id="report_period_week" value="#{uploadBean.edit_sms_week}">
-                        <f:validateLongRange minimum="1" maximum="52"/>
-                        <p:ajax event="blur" process="@this" update="@form"/>
-                    </p:inputText>
-                    <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}"/>
+					<p:outputLabel value="Month:" for="report_period_month"/>
                     <p:selectOneMenu id="report_period_month" value="#{uploadBean.edit_sms_month}">
                         <f:selectItem itemLabel="Select One" itemValue="" />
                         <f:selectItem itemLabel="Jan" itemValue="1" />
@@ -52,6 +43,16 @@
                         <f:selectItem itemLabel="Dec" itemValue="12" />
                         <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
                     </p:selectOneMenu>
+                    <p:outputLabel value="Week:" for="report_period_week"/>
+                    <p:inputText id="report_period_week" value="#{uploadBean.edit_sms_week}">
+                        <f:validateLongRange minimum="1" maximum="52"/>
+                        <p:ajax event="blur" process="@this" update="@form"/>
+                    </p:inputText>
+					<p:outputLabel value="Phone:" for="phone"/>
+                    <p:inputText id="phone" value="#{uploadBean.interface_data_sms_edit.phone}" required="true" requiredMessage="SMS Required"/>
+					<p:outputLabel value="SMS:" for="sms"/>
+                    <p:inputText id="sms" value="#{uploadBean.interface_data_sms_edit.sms}" required="true" requiredMessage="SMS Required"/>
+
                     <p:commandButton value="SAVE DATA" action="#{uploadBean.save_edit_sms()}" update="@form"/>
                 </p:panelGrid>
             </p:panel>
