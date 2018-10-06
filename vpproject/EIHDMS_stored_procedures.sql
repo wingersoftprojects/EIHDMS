@@ -13,7 +13,7 @@ File Encoding         : 65001
 Date: 2017-03-21 18:44:57
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS=1;
 
 -- ----------------------------
 -- Procedure structure for sp_add_entry_mode_to_base

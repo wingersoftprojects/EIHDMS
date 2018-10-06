@@ -29,6 +29,7 @@
                             <f:selectItem itemLabel="Weekly" itemValue="Weekly" />
                             <f:selectItem itemLabel="Quarterly" itemValue="Quarterly" />
                             <f:selectItem itemLabel="Bi-Monthly" itemValue="Bi-Monthly" />
+                            <f:selectItem itemLabel="Annually" itemValue="Annually" />
                             <p:ajax process="@this" update="report_form_id"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="report_form_id" value="Report Form:" />
@@ -39,7 +40,7 @@
                         </p:selectOneMenu>
                         <h:commandButton value="SHOW REPORT" action="#{uploadBean.refreshGroupList(data_obligationBean.selected_year,uploadBean.report_form_frequency,uploadBean.report_form)}" />
                     </p:panelGrid>
-                    
+
                     <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Monthly'}">
                         <p:columnGroup type="header">
                             <p:row>
@@ -103,7 +104,7 @@
                             </p:column>
                         </p:subTable>
                     </p:dataTable>
-                    
+
                     <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Bi-Monthly'}">
                         <p:columnGroup type="header">
                             <p:row>
@@ -143,7 +144,7 @@
                             </p:column>
                         </p:subTable>
                     </p:dataTable>
-                    
+
                     <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Quarterly'}">
                         <p:columnGroup type="header">
                             <p:row>
@@ -175,7 +176,7 @@
                             </p:column>
                         </p:subTable>
                     </p:dataTable>
-                    
+
                     <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Weekly'}">
                         <p:columnGroup type="header">
                             <p:row>
@@ -414,7 +415,31 @@
                             </p:column>
                         </p:subTable>
                     </p:dataTable>
-                    
+
+                    <p:dataTable var="rf" value="#{uploadBean.report_formList}" rendered="#{uploadBean.report_form_frequency=='Annually'}">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Report Form Group" />
+
+                                <p:column headerText="Entries" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:subTable value="#{uploadBean.returnReport_form_groupList(rf)}" var="fg">
+                            <f:facet name="header">
+                                <h:outputText value="#{rf.report_form_name}" />
+                            </f:facet>
+                            <p:column>
+                                <h:outputText value="#{fg.report_form_group_name}" />
+                            </p:column>                            
+                            <p:column>
+                                <center>
+                                    <h:outputText value="#{uploadBean.getLoadedEntitiesAnnually(rf, fg, data_obligationBean.selected_year)}" />
+                                </center>
+                            </p:column>
+
+                        </p:subTable>
+                    </p:dataTable>
+
                 </p:fieldset>
             </h:form>
         </f:view>

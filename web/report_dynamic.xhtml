@@ -84,7 +84,7 @@
                     </c:if>
                     <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears)};
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)};
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,
@@ -121,7 +121,8 @@
                     </c:if>
                     <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears)};
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)};
+                            
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,

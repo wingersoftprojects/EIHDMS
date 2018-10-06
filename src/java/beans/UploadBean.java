@@ -4152,6 +4152,29 @@ public class UploadBean implements Serializable {
         }
         return les;
     }
+    public String getLoadedEntitiesAnnually(Report_form rf, Report_form_group fg, int y) {
+        String les = "";
+        int lei = 0;
+        String sql = "select sum(l.loaded_entities) as loaded_entities from loaded_data_summary l \n"
+                + "where l.report_form_id=" + rf.getReport_form_id() + " AND report_form_group_id=" + fg.getReport_form_group_id() + " \n"
+                + "AND l.report_period_year=" + y;
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                lei = rs.getInt("loaded_entities");
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        if (lei == 0) {
+            les = "";
+        } else {
+            les = Integer.toString(lei);
+        }
+        return les;
+    }
     
     public String getLoadedEntitiesWeekly(Report_form rf, Report_form_group fg, int y, int w) {
         String les = "";
