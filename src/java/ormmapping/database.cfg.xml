@@ -258,7 +258,7 @@
   </Setting>
   <Setting type="1048576">
     <Driver>MySQL5 (Connector/J Driver)</Driver>
-    <DriverFiles>F:\NetBeansProjects\PropertyManagementSystem\src\java\libraries\mysql-connector-java-5.1.26.jar</DriverFiles>
+    <DriverFiles>F:\NetBeansProjects\PropertyManagementSystem\src\java\libraries\mysql-connector-java-5.1.7-bin.jar</DriverFiles>
     <Dialect>org.hibernate.dialect.MySQL5InnoDBDialect</Dialect>
     <DriverClass>com.mysql.jdbc.Driver</DriverClass>
     <URL>jdbc:mysql://localhost:3306/eihdms</URL>

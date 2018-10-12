@@ -29,6 +29,7 @@ public class Phone_contactDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final StringExpression user_name;
 	
 	public Phone_contactDetachedCriteria() {
 		super(eihdms.Phone_contact.class, eihdms.Phone_contactCriteria.class);
@@ -42,6 +43,7 @@ public class Phone_contactDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		user_name = new StringExpression("user_name", this.getDetachedCriteria());
 	}
 	
 	public Phone_contactDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -56,6 +58,7 @@ public class Phone_contactDetachedCriteria extends AbstractORMDetachedCriteria {
 		add_by = new IntegerExpression("add_by", this.getDetachedCriteria());
 		last_edit_date = new TimestampExpression("last_edit_date", this.getDetachedCriteria());
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
+		user_name = new StringExpression("user_name", this.getDetachedCriteria());
 	}
 	
 	public Phone_contact uniquePhone_contact(PersistentSession session) {

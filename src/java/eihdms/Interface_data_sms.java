@@ -420,6 +420,12 @@ public class Interface_data_sms implements Serializable {
 	@Column(name="batch_id", nullable=true, length=11)	
 	private Integer batch_id;
 	
+	@Column(name="entity_type", nullable=true, length=20)	
+	private String entity_type;
+	
+	@Column(name="entity_id", nullable=true, length=11)	
+	private int entity_id;
+	
 	private void setInterface_data_sms_id(int value) {
 		this.interface_data_sms_id = value;
 	}
@@ -578,6 +584,22 @@ public class Interface_data_sms implements Serializable {
 	
 	public Integer getBatch_id() {
 		return batch_id;
+	}
+	
+	public void setEntity_type(String value) {
+		this.entity_type = value;
+	}
+	
+	public String getEntity_type() {
+		return entity_type;
+	}
+	
+	public void setEntity_id(int value) {
+		this.entity_id = value;
+	}
+	
+	public int getEntity_id() {
+		return entity_id;
 	}
 	
 	public boolean equals(Object obj) {

@@ -29,6 +29,7 @@ public class Phone_contactCriteria extends AbstractORMCriteria {
 	public final IntegerExpression add_by;
 	public final TimestampExpression last_edit_date;
 	public final IntegerExpression last_edit_by;
+	public final StringExpression user_name;
 	
 	public Phone_contactCriteria(Criteria criteria) {
 		super(criteria);
@@ -42,6 +43,7 @@ public class Phone_contactCriteria extends AbstractORMCriteria {
 		add_by = new IntegerExpression("add_by", this);
 		last_edit_date = new TimestampExpression("last_edit_date", this);
 		last_edit_by = new IntegerExpression("last_edit_by", this);
+		user_name = new StringExpression("user_name", this);
 	}
 	
 	public Phone_contactCriteria(PersistentSession session) {

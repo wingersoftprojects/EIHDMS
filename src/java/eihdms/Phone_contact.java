@@ -396,6 +396,9 @@ public class Phone_contact implements Serializable {
 	@Column(name="last_edit_by", nullable=true, length=10)	
 	private Integer last_edit_by;
 	
+	@Column(name="user_name", nullable=true, length=100)	
+	private String user_name;
+	
 	private void setPhone_contact_id(int value) {
 		this.phone_contact_id = value;
 	}
@@ -486,6 +489,14 @@ public class Phone_contact implements Serializable {
 	
 	public Integer getLast_edit_by() {
 		return last_edit_by;
+	}
+	
+	public void setUser_name(String value) {
+		this.user_name = value;
+	}
+	
+	public String getUser_name() {
+		return user_name;
 	}
 	
 	public boolean equals(Object obj) {
