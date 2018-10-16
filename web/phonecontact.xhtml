@@ -56,6 +56,8 @@
                             <f:selectItem itemLabel="No" itemValue="0" />
                             <f:ajax render="@this"/>
                         </p:selectOneMenu>
+                        <p:outputLabel value="Name of User:" for="phone_user_name" />
+                        <p:inputText id="phone_user_name" value="#{phone_contactBean.selected.user_name}"/>
                         <p:commandButton value="SAVE" action="#{phone_contactBean.save(loginBean.user_detail.user_detail_id)}" icon="ui-icon-disk" process="entity_type,entity_id_parish,entity_id_facility,entity_id_organisation,phone_number,@this" update="@form"/>
                         <p:commandButton value="CLEAR" icon="ui-icon-cancel" action="#{phone_contactBean.cancel()}" update="@form" process="@this"/>
                     </p:panelGrid>
@@ -99,6 +101,9 @@
                     </p:column>
                     <p:column headerText="Phone Number" filterBy="#{item[4]}" filterMatchMode="contains">
                         <h:outputText value="#{item[4]}"/>
+                    </p:column>
+                    <p:column headerText="Phone User">
+                        <h:outputText value="#{item[6]}"/>
                     </p:column>
                     <p:column headerText="Active?">
                         <h:outputText value="#{generalUtilities.convertYesNo(item[5])}"/>

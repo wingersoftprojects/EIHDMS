@@ -2,14 +2,404 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./layout.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
-
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{dashboard_surgeBean.initDashboard()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
     <ui:define name="content">
-        <h:form>
-            <p:growl id="messages" showDetail="true" />
-            
-        </h:form>
+        <f:view>
+            <script type="text/javascript" src="resources/js/fusioncharts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.charts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.theme.fint.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts-jquery-plugin.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.widgets.js"></script>
+            <h:form>
+                <p:growl/>
+                <p:fieldset legend="EGPAF Surge Form Dashboard (ONLY DATA FROM AUGUST 2018 ONWARDS IS AVAILABLE!)">
+                    <div class="ui-fluid">
+                        <p:panelGrid columns="8" id="panelFilter">
+                            <p:outputLabel value="Year" />
+                            <p:outputLabel value="Month" />
+                            <p:outputLabel value="From Week" />
+                            <p:outputLabel value="To Week" />
+                            <p:outputLabel value="District:" for="district" />
+                            <p:selectCheckboxMenu id="district" value="#{dashboard_surgeBean.selectedDistricts}" label="" style="width:150px" converter="districtConverter">
+                                <f:selectItems value="#{dashboard_surgeBean.districts}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
+                                <p:ajax update="facility"/>
+                            </p:selectCheckboxMenu>
+                            <p:outputLabel value="Select Indicator for the Trend Graph" />
+                            <p:commandButton id="cmdbSearch" value="APPLY  FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                                <p:ajax listener="#{dashboard_surgeBean.refreshDashboard(dashboard_surgeBean.year_value,dashboard_surgeBean.month_value,dashboard_surgeBean.week_value,dashboard_surgeBean.week_value2,dashboard_surgeBean.selectedDistricts,dashboard_surgeBean.selectedFacilities,dashboard_surgeBean.indicator_id)}" process="panelFilter" update="pnlgCharts pnlgTrends"/>
+                            </p:commandButton>
+
+                            <p:selectOneMenu id="year" value="#{dashboard_surgeBean.year_value}" editable="true">
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="month" value="#{dashboard_surgeBean.month_value}">
+                                <f:selectItem itemLabel="" itemValue="0" />
+                                <f:selectItem itemLabel="Jan" itemValue="1" />
+                                <f:selectItem itemLabel="Feb" itemValue="2" />
+                                <f:selectItem itemLabel="Mar" itemValue="3" />
+                                <f:selectItem itemLabel="Apr" itemValue="4" />
+                                <f:selectItem itemLabel="May" itemValue="5" />
+                                <f:selectItem itemLabel="Jun" itemValue="6" />
+                                <f:selectItem itemLabel="Jul" itemValue="7" />
+                                <f:selectItem itemLabel="Aug" itemValue="8" />
+                                <f:selectItem itemLabel="Sep" itemValue="9" />
+                                <f:selectItem itemLabel="Oct" itemValue="10" />
+                                <f:selectItem itemLabel="Nov" itemValue="11" />
+                                <f:selectItem itemLabel="Dec" itemValue="12" />
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="week" value="#{dashboard_surgeBean.week_value}" editable="false">
+                                <f:selectItems value="#{dashboard_surgeBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
+                                <p:ajax/>
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="week2" value="#{dashboard_surgeBean.week_value2}" editable="false">
+                                <f:selectItems value="#{dashboard_surgeBean.weekList}" var="w" itemLabel="#{w.report_form_code}" itemValue="#{w.is_active}"/>
+                                <p:ajax/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Facility:" for="facility" />
+                            <p:selectCheckboxMenu id="facility" value="#{dashboard_surgeBean.selectedFacilities}" label="" style="width:150px" converter="health_facilityConverter">
+                                <f:selectItems value="#{dashboard_surgeBean.facilities}" var="fs" itemValue="#{fs}" itemLabel="#{fs.health_facility_name}" />
+                            </p:selectCheckboxMenu>
+                            <p:selectOneMenu id="trend" value="#{dashboard_surgeBean.indicator_id}">
+                                <f:selectItem itemLabel="% Viral Load Testing Coverage" itemValue="1" />
+                                <f:selectItem itemLabel="% missed appointment during the week" itemValue="2" />
+                                <f:selectItem itemLabel="% missed appointment prev. week and brought back" itemValue="3" />
+                                <f:selectItem itemLabel="HTS Yield" itemValue="4" />
+                                <f:selectItem itemLabel="Total/% started on ART" itemValue="5" />
+                            </p:selectOneMenu>
+                            <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                                <p:ajax listener="#{dashboard_surgeBean.resetDashboard()}" process="panelFilter" update="panelFilter pnlgCharts pnlgTrends"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </div>
+                    <h:panelGrid columns="5" id="pnlgCharts">
+                        <h:panelGrid id="pnlgChart1" style="text-align: center">
+                            <div id="chart1"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n1} viral load tests / #{dashboard_surgeBean.count_d1} attended" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(1)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind1 = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart1',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "% Viral Load Testing Coverage",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint",
+                                                "decimals": "1"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#C02133"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#E96B25"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#488A7E"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "#{dashboard_surgeBean.perc_value1}"
+                                                    }]
+                                            }
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid id="pnlgChart2" style="text-align: center;">
+                            <div id="chart2"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n2} clients missed / #{dashboard_surgeBean.count_d2} total appointments" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(2)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
+
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind2 = new FusionCharts({
+                                        type: 'pie2d',
+                                        renderAt: 'chart2',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "% of clients missed appointment during the week",
+                                                "numberPrefix": "$",
+                                                "showPercentValues": "1",
+                                                "showPercentInTooltip": "0",
+                                                "decimals": "1",
+                                                "palettecolors": "#C02133,#488A7E",
+                                                "theme": "fint",
+                                                "decimals": "1"
+                                            },
+                                            "data": #{dashboard_surgeBean.dataChartString2}
+                                        }
+                                    }).render();
+
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid id="pnlgChart3" style="text-align: center">
+                            <div id="chart3"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n3} missed and brought back / #{dashboard_surgeBean.count_d3} missed last week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(3)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
+
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind3 = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart3',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "% of clients missed appointment during the previous week and brought back into care",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint",
+                                                "decimals": "1"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#C02133"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#E96B25"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#488A7E"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "#{dashboard_surgeBean.perc_value3}"
+                                                    }]
+                                            }
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid id="pnlgChart4" style="text-align: center;">
+                            <div id="chart4"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind4 = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart4',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "HTS Yield",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint",
+                                                "decimals": "1"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#C02133"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#E96B25"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#488A7E"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "#{dashboard_surgeBean.perc_value4}"
+                                                    }]
+                                            }
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid id="pnlgChart5" style="text-align: center;">
+                            <div id="chart5"></div>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n5} newly initiated on ART / #{dashboard_surgeBean.count_d5} clients newly tested" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(5)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartind5 = new FusionCharts({
+                                        type: 'angulargauge',
+                                        renderAt: 'chart5',
+                                        width: '250',
+                                        height: '250',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "Total/% started on ART",
+                                                "lowerLimit": "0",
+                                                "upperLimit": "100",
+                                                "lowerLimitDisplay": "0%",
+                                                "upperLimitDisplay": "100%",
+                                                "showValue": "1",
+                                                "valueBelowPivot": "1",
+                                                "numberSuffix": "%",
+                                                "theme": "fint",
+                                                "decimals": "1"
+                                            },
+                                            "colorRange": {
+                                                "color": [
+                                                    {
+                                                        "minValue": "0",
+                                                        "maxValue": "50",
+                                                        "code": "#C02133"
+                                                    },
+                                                    {
+                                                        "minValue": "50",
+                                                        "maxValue": "75",
+                                                        "code": "#E96B25"
+                                                    },
+                                                    {
+                                                        "minValue": "75",
+                                                        "maxValue": "100",
+                                                        "code": "#488A7E"
+                                                    }
+                                                ]
+                                            },
+                                            "dials": {
+                                                "dial": [{
+                                                        "value": "#{dashboard_surgeBean.perc_value5}"
+                                                    }]
+                                            }
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" id="pnlgTrends">
+                        <h:panelGrid id="pnlgTrend1">
+                            <div id="chart-trend1"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var charttrend = new FusionCharts({
+                                        type: 'mscombidy2d',
+                                        renderAt: 'chart-trend1',
+                                        width: '100%',
+                                        height: '350',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "Trend for #{dashboard_surgeBean.getIndicatorStringById(dashboard_surgeBean.indicator_id)}",
+                                                "subCaption": "Showing EITHER selected range OR previous 28 weeks from selected/current Week",
+                                                "xAxisName": "Week",
+                                                "yAxisName": "Percentage(%)",
+                                                "numberSuffix": "%",
+                                                "paletteColors": "#2696D1,#E96B25",
+                                                "bgColor": "#ffffff",
+                                                "borderAlpha": "20",
+                                                "canvasBorderAlpha": "0",
+                                                "usePlotGradientColor": "0",
+                                                "plotBorderAlpha": "10",
+                                                "placevaluesInside": "1",
+                                                "rotatevalues": "1",
+                                                "valueFontColor": "#ffffff",
+                                                "showXAxisLine": "1",
+                                                "xAxisLineColor": "#999999",
+                                                "divlineColor": "#999999",
+                                                "divLineIsDashed": "1",
+                                                "showAlternateHGridColor": "0",
+                                                "subcaptionFontBold": "0",
+                                                "subcaptionFontSize": "14",
+                                                "showValues": "1"
+                                            },
+                                            "categories": #{dashboard_surgeBean.categoriesChartString},
+                                            "dataset": #{dashboard_surgeBean.dataseriesChartString}
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+            <ui:include src="dialog_egpaf_surge.xhtml"/>
+        </f:view>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
     </ui:define>
 
 </ui:composition>
