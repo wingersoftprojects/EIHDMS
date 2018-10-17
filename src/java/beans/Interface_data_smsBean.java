@@ -7,6 +7,8 @@ package beans;
 
 import com.google.gson.Gson;
 import connections.DBConnection;
+import eihdms.District;
+import eihdms.EIHDMSPersistentManager;
 import eihdms.Health_facility;
 import eihdms.Interface_data_sms;
 import eihdms.Parish;
@@ -94,7 +96,7 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
         Report_form week = null;
         GeneralUtilities gu = new GeneralUtilities();
         int i = 1;
-        while (i <= 10) {
+        while (i <= 53) {
             week = new Report_form();
             week.setIs_active(aTopWeek);
             week.setReport_form_code(aTopWeek + " (" + gu.get_week_dates_from_year_and_week(aYear, aTopWeek) + ")");
@@ -450,6 +452,45 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
                 entityname = "'" + aPhone + "' Belongs to an UnKnown Entity";
             }
         } catch (PersistentException | IndexOutOfBoundsException ex) {
+            Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return entityname;
+    }
+
+    public String getEntityNameByID(String aEntityType, int aEntityID) {
+        String entityname = "";
+        try {
+
+            if (null != aEntityType && aEntityID > 0) {
+                try {
+                    if (aEntityType.equals("Facility")) {
+                        entityname = Health_facility.getHealth_facilityByORMID(aEntityID, null).getHealth_facility_name();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                entityname = "Belongs to an UnKnown Entity";
+            }
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        return entityname;
+    }
+
+    public String getDistrictNameByFacilityName(String aFacility) {
+        String entityname = "";
+        ResultSet rs = null;
+        String sql = "select district_name from district WHERE district_id IN ("
+                + "select district_id from health_facility WHERE health_facility_name='" + aFacility + "')";
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                entityname = rs.getString("district_name");
+            }
+
+        } catch (SQLException ex) {
             Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return entityname;
