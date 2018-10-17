@@ -2881,6 +2881,23 @@ BEGIN
 END
 ;;
 DELIMITER ;
+-- ----------------------------
+-- Procedure structure for sp_update_entity_id
+-- ----------------------------
+
+DROP PROCEDURE IF EXISTS sp_update_entity_id;
+DELIMITER //
+CREATE PROCEDURE sp_update_entity_id
+(
+	IN in_interface_data_sms_id int,
+	IN in_phone varchar(100)
+) 
+BEGIN 
+	UPDATE interface_data_sms ids INNER JOIN phone_contact pc ON pc.entity_phone=ids.phone  
+	SET ids.entity_type=pc.entity_type,ids.entity_id=pc.entity_id 
+	WHERE pc.entity_phone=in_phone AND interface_data_sms_id=in_interface_data_sms_id;
+END//
+DELIMITER ;
 
 -- ----------------------------
 -- Procedure structure for sp_update_location_id

@@ -90,7 +90,7 @@ public class Interface_data_mob_appBean extends AbstractBean<Interface_data_mob_
         Report_form week = null;
         GeneralUtilities gu = new GeneralUtilities();
         int i = 1;
-        while (i <= 10) {
+        while (i <= 53) {
             week = new Report_form();
             week.setIs_active(aTopWeek);
             week.setReport_form_code(aTopWeek + " (" + gu.get_week_dates_from_year_and_week(aYear, aTopWeek) + ")");

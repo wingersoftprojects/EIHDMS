@@ -5,6 +5,7 @@
  */
 package utilities;
 
+import beans.LoginBean;
 import beans.UploadBean;
 import connections.DBConnection;
 import eihdms.Batch_mob_app;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import org.joda.time.DateTime;
 import org.orm.PersistentException;
@@ -61,6 +63,8 @@ public class SMSData {
         d.load_interface_data_sms("107 MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "WTL");
         //d.decode_and_load_sms("MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "107");
     }
+    @ManagedProperty("#{loginBean}")
+    private LoginBean loginBean;
     Report_form_group sms_report_form_group = null;
     Report_form sms_report_form = null;
     private Integer report_period_year;
@@ -116,6 +120,7 @@ public class SMSData {
 
                 transaction.commit();
                 this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
+                this.update_sms_enity_id(interface_data_sms, phone);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -448,6 +453,20 @@ public class SMSData {
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void update_sms_enity_id(Interface_data_sms aInterface_data_sms, String phone) {
+        String sql = "{call sp_update_entity_id(?,?)}";
+        ResultSet rs = null;
+        try (Connection conn = getLoginBean().getMySQLConnection_System_User();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            ps.setInt(1, aInterface_data_sms.getInterface_data_sms_id());
+            ps.setString(2, aInterface_data_sms.getPhone());
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+
     }
 
     public void decode_and_load_sms(String sms, String phone, String report_form_code, Interface_data_sms interface_data_sms) {
@@ -1055,6 +1074,20 @@ public class SMSData {
             return deadline;
         }
         return deadline;
+    }
+
+    /**
+     * @return the loginBean
+     */
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    /**
+     * @param loginBean the loginBean to set
+     */
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
     }
 
     /**
