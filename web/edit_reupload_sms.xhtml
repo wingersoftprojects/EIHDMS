@@ -26,7 +26,7 @@
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
                         <p:ajax process="@this" update="@form"/>
                     </p:selectOneMenu>
-					<p:outputLabel value="Month:" for="report_period_month"/>
+                    <p:outputLabel value="Month:" for="report_period_month"/>
                     <p:selectOneMenu id="report_period_month" value="#{uploadBean.edit_sms_month}">
                         <f:selectItem itemLabel="Select One" itemValue="" />
                         <f:selectItem itemLabel="Jan" itemValue="1" />
@@ -48,9 +48,9 @@
                         <f:validateLongRange minimum="1" maximum="52"/>
                         <p:ajax event="blur" process="@this" update="@form"/>
                     </p:inputText>
-					<p:outputLabel value="Phone:" for="phone"/>
+                    <p:outputLabel value="Phone:" for="phone"/>
                     <p:inputText id="phone" value="#{uploadBean.interface_data_sms_edit.phone}" required="true" requiredMessage="SMS Required"/>
-					<p:outputLabel value="SMS:" for="sms"/>
+                    <p:outputLabel value="SMS:" for="sms"/>
                     <p:inputText id="sms" value="#{uploadBean.interface_data_sms_edit.sms}" required="true" requiredMessage="SMS Required"/>
 
                     <p:commandButton value="SAVE DATA" action="#{uploadBean.save_edit_sms()}" update="@form"/>
@@ -88,7 +88,10 @@
                     <h:outputText value="#{sms.report_form_code}" />
                 </p:column>
                 <p:column headerText="Health Facility" style="font-size: 12px;">
-                    <h:outputText value="#{interface_data_smsBean.getEntityNameByPhone(sms.phone)}" />
+                    <h:outputText value="#{interface_data_smsBean.getEntityNameByID(sms.entity_type,sms.entity_id)}" />
+                </p:column>
+                <p:column headerText="District" style="font-size: 12px;">
+                    <h:outputText value="#{interface_data_smsBean.getDistrictNameByFacilityName(interface_data_smsBean.getEntityNameByID(sms.entity_type,sms.entity_id))}" />
                 </p:column>
                 <p:column headerText="Sender" style="font-size: 12px;" filterBy="#{sms.phone}" filterMatchMode="contains">
                     <h:outputText value="#{sms.phone}" />

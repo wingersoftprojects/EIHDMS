@@ -5,6 +5,7 @@
  */
 package utilities;
 
+import beans.LoginBean;
 import beans.UploadBean;
 import connections.DBConnection;
 import eihdms.Batch_mob_app;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import org.joda.time.DateTime;
 import org.orm.PersistentException;
@@ -116,6 +118,7 @@ public class SMSData {
 
                 transaction.commit();
                 this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
+                this.update_sms_enity_id(interface_data_sms, phone);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -448,6 +451,21 @@ public class SMSData {
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void update_sms_enity_id(Interface_data_sms aInterface_data_sms, String phone) {
+        String sql = "{call sp_update_entity_id(?,?)}";
+        ResultSet rs = null;
+        LoginBean aLoginBean = new LoginBean();
+        try (Connection conn = aLoginBean.getMySQLConnection_System_User();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            ps.setInt(1, aInterface_data_sms.getInterface_data_sms_id());
+            ps.setString(2, aInterface_data_sms.getPhone());
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+
     }
 
     public void decode_and_load_sms(String sms, String phone, String report_form_code, Interface_data_sms interface_data_sms) {
@@ -1058,6 +1076,7 @@ public class SMSData {
         }
         return deadline;
     }
+
 
     /**
      * Inner class for deadline object Created by: Brian Newton Ajuna Date
