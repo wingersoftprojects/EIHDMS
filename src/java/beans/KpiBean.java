@@ -63,7 +63,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     private String data_element_ids_involved;
 
     private Map<String, Integer> summary_function_map;
-    
+
     private Integer[] selectedDataElements;
 
     public Integer[] getSelectedDataElements() {
@@ -73,7 +73,6 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     public void setSelectedDataElements(Integer[] selectedDataElements) {
         this.selectedDataElements = selectedDataElements;
     }
-    
 
     public Map<String, Integer> getSummary_function_map() {
         return summary_function_map;
@@ -285,13 +284,13 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     public String union_string(String ids_involved, String Years, String Districts) {
         String temp = "";
         try {
-            List<Object[]> objects = EIHDMSPersistentManager.instance().getSession().createSQLQuery("select distinct report_form_id,data_element_name from data_element where data_element_id in (" + ids_involved + ")").list();
+            List<Object[]> objects = EIHDMSPersistentManager.instance().getSession().createSQLQuery("select distinct report_form_id,data_element_name,report_form_group_id from data_element where data_element_id in (" + ids_involved + ")").list();
             int counter = 0;
             for (Object[] object_array : objects) {
                 if (counter == 0) {
-                    temp += "select * from base_data_" + object_array[0].toString() + " where data_element_id in (" + ids_involved + ") AND report_period_year in (" + Years + ") AND district_id in (" + Districts + ")";
+                    temp += "select * from base_data_" + object_array[0].toString() + "_" + object_array[2].toString() + " where data_element_id in (" + ids_involved + ") AND report_period_year in (" + Years + ") AND district_id in (" + Districts + ")";
                 } else {
-                    temp += " UNION select * from base_data_" + object_array[0].toString() + " where data_element_id in (" + ids_involved + ") AND report_period_year in (" + Years + ") AND district_id in (" + Districts + ")";
+                    temp += " UNION select * from base_data_" + object_array[0].toString() + "_" + object_array[2].toString() + " where data_element_id in (" + ids_involved + ") AND report_period_year in (" + Years + ") AND district_id in (" + Districts + ")";
                 }
                 counter++;
             }
