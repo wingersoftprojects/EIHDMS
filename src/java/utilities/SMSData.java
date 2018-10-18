@@ -63,8 +63,6 @@ public class SMSData {
         d.load_interface_data_sms("107 MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "WTL");
         //d.decode_and_load_sms("MA.a.400.b.359.c.50.d.98.e.10.f.50.g.0.h.n.i.y", "256782760115", "107");
     }
-    @ManagedProperty("#{loginBean}")
-    private LoginBean loginBean;
     Report_form_group sms_report_form_group = null;
     Report_form sms_report_form = null;
     private Integer report_period_year;
@@ -458,7 +456,8 @@ public class SMSData {
     public void update_sms_enity_id(Interface_data_sms aInterface_data_sms, String phone) {
         String sql = "{call sp_update_entity_id(?,?)}";
         ResultSet rs = null;
-        try (Connection conn = getLoginBean().getMySQLConnection_System_User();
+        LoginBean aLoginBean = new LoginBean();
+        try (Connection conn = aLoginBean.getMySQLConnection_System_User();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, aInterface_data_sms.getInterface_data_sms_id());
             ps.setString(2, aInterface_data_sms.getPhone());
@@ -1076,19 +1075,6 @@ public class SMSData {
         return deadline;
     }
 
-    /**
-     * @return the loginBean
-     */
-    public LoginBean getLoginBean() {
-        return loginBean;
-    }
-
-    /**
-     * @param loginBean the loginBean to set
-     */
-    public void setLoginBean(LoginBean loginBean) {
-        this.loginBean = loginBean;
-    }
 
     /**
      * Inner class for deadline object Created by: Brian Newton Ajuna Date

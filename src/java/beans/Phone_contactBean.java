@@ -11,7 +11,9 @@ import eihdms.Health_facility;
 import eihdms.Parish;
 import eihdms.Phone_contact;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.orm.PersistentException;
+import org.orm.PersistentTransaction;
 
 /**
  *
@@ -57,8 +60,15 @@ public class Phone_contactBean extends AbstractBean<Phone_contact> implements Se
             Phone_contact phone_contact = Phone_contact.loadPhone_contactByQuery("entity_phone='" + this.getSelected().getEntity_phone() + "'", null);
             if (phone_contact != null) {
                 FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage("Phone number already used for another entity!", "Phone number already used for another entity!"));
-                return;
+                
+                phone_contact.setLast_edit_date(new Timestamp(new Date().getTime()));
+                phone_contact.setLast_edit_by(loginBean.getUser_detail().getUser_detail_id());
+                
+                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                EIHDMSPersistentManager.instance().getSession().merge(phone_contact);
+                transaction.commit();
+                context.addMessage(null, new FacesMessage("Completed Successfully!", "Phone contact Details Updated!"));
+                
             }
         } catch (PersistentException ex) {
             Logger.getLogger(Phone_contactBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -166,7 +176,7 @@ public class Phone_contactBean extends AbstractBean<Phone_contact> implements Se
     public void edit_object(Object[] objects) {
         try {
             if (objects != null) {
-                Phone_contact phone_contact = Phone_contact.getPhone_contactByORMID((int) objects[6]);
+                Phone_contact phone_contact = Phone_contact.getPhone_contactByORMID((int) objects[7]);
                 if (phone_contact.getEntity_type().equals("Parish")) {
                     Parish parish = Parish.getParishByORMID(phone_contact.getEntity_id());
                     adistrict_id = parish.getSub_county().getCounty().getDistrict().getDistrict_id();
@@ -181,6 +191,7 @@ public class Phone_contactBean extends AbstractBean<Phone_contact> implements Se
             Logger.getLogger(Phone_contactBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public void delete_object(Object[] objects) {
         try {
             if (objects != null) {
