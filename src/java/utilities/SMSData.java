@@ -118,7 +118,7 @@ public class SMSData {
 
                 transaction.commit();
                 this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
-                this.update_sms_enity_id(interface_data_sms, phone);
+                //this.update_sms_enity_id(interface_data_sms, phone);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -1076,7 +1076,6 @@ public class SMSData {
         }
         return deadline;
     }
-
 
     /**
      * Inner class for deadline object Created by: Brian Newton Ajuna Date
