@@ -601,6 +601,8 @@ public class SMSData {
                 }
             }
             if (phone_contact.getPhone_contact_id() != 0) {
+                interface_data_sms.setEntity_id(phone_contact.getEntity_id());
+                interface_data_sms.setEntity_type(phone_contact.getEntity_type());
                 set_sms_location(phone_contact);
             } else {
                 interface_data_sms.setStatus_f("ERR");

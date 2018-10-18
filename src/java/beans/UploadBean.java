@@ -78,7 +78,7 @@ import utilities.SMSData;
 @ManagedBean
 @SessionScoped
 public class UploadBean implements Serializable {
-    
+
     private JSONArray jSONArray;
     private List<String> rowdatas;
     private Report_form_group report_form_group;
@@ -103,7 +103,7 @@ public class UploadBean implements Serializable {
     private Parish parish;
     private List<Data_element> data_elements;
     private Health_facility health_facility;
-    
+
     private Integer report_period_year;
     private Integer report_period_month;
     private Integer report_period_week;
@@ -112,178 +112,178 @@ public class UploadBean implements Serializable {
     private String insert_string;
     private String table_string;
     private String database_type = "MY SQL";
-    
+
     private List<ValidationReport> validationReportList;
     private List<ValidationReport> validationReportListAll;
     private List<ValidationReport> validationReportSelected;
     private List<ValidationReport> validationReportFiltered;
-    
+
     String report_form_name;
     List<String> report_form_nameList;
-    
+
     private int passed;
     private int failed;
-    
+
     private String ReportFormName;
     private String ReportFormGroupName;
-    
+
     private District[] selectedDistricts;
     private Parish[] selectedParishes;
     private Health_facility[] selectedHealth_facilities;
-    
+
     private Integer[] selectedYears;
     private Integer[] selectedMonths;
     private Integer[] selectedQuarters;
     private Integer[] selectedWeeks;
     private Integer[] selectedBiMonths;
-    
+
     List<Section> sections;
     List<Sub_section> sub_sections;
-    
+
     public List<Section> getSections() {
         return sections;
     }
-    
+
     public void setSections(List<Section> sections) {
         this.sections = sections;
     }
-    
+
     public List<Sub_section> getSub_sections() {
         return sub_sections;
     }
-    
+
     public void setSub_sections(List<Sub_section> sub_sections) {
         this.sub_sections = sub_sections;
     }
-    
+
     public String getReportFormGroupName() {
         return ReportFormGroupName;
     }
-    
+
     public void setReportFormGroupName(String ReportFormGroupName) {
         this.ReportFormGroupName = ReportFormGroupName;
     }
-    
+
     public String getReportFormName() {
         return ReportFormName;
     }
-    
+
     public void setReportFormName(String ReportFormName) {
         this.ReportFormName = ReportFormName;
     }
-    
+
     public Integer[] getSelectedYears() {
         return selectedYears;
     }
-    
+
     public void setSelectedYears(Integer[] selectedYears) {
         this.selectedYears = selectedYears;
     }
-    
+
     public Integer[] getSelectedMonths() {
         return selectedMonths;
     }
-    
+
     public void setSelectedMonths(Integer[] selectedMonths) {
         this.selectedMonths = selectedMonths;
     }
-    
+
     public Integer[] getSelectedQuarters() {
         return selectedQuarters;
     }
-    
+
     public void setSelectedQuarters(Integer[] selectedQuarters) {
         this.selectedQuarters = selectedQuarters;
     }
-    
+
     public Integer[] getSelectedWeeks() {
         return selectedWeeks;
     }
-    
+
     public void setSelectedWeeks(Integer[] selectedWeeks) {
         this.selectedWeeks = selectedWeeks;
     }
-    
+
     public Integer[] getSelectedBiMonths() {
         return selectedBiMonths;
     }
-    
+
     public void setSelectedBiMonths(Integer[] selectedBiMonths) {
         this.selectedBiMonths = selectedBiMonths;
     }
-    
+
     private List<Interface_data> interface_datas;
     private List<Base_data> base_datas;
     private List<Object[]> base_data_objects;
-    
+
     String BaseDataStr = "";
-    
+
     public List<Object[]> getBase_data_objects() {
         return base_data_objects;
     }
-    
+
     public void setBase_data_objects(List<Object[]> base_data_objects) {
         this.base_data_objects = base_data_objects;
     }
-    
+
     private List<LocationHierarchy> locationHierarchyList;
-    
+
     public List<LocationHierarchy> getLocationHierarchyList() {
         return locationHierarchyList;
     }
-    
+
     public void setLocationHierarchyList(List<LocationHierarchy> locationHierarchyList) {
         this.locationHierarchyList = locationHierarchyList;
     }
-    
+
     public List<ValidationReport> getValidationReportListAll() {
         return validationReportListAll;
     }
-    
+
     public void setValidationReportListAll(List<ValidationReport> validationReportListAll) {
         this.validationReportListAll = validationReportListAll;
     }
-    
+
     public String getBaseDataStr() {
         return BaseDataStr;
     }
-    
+
     public void setBaseDataStr(String BaseDataStr) {
         this.BaseDataStr = BaseDataStr;
     }
-    
+
     public List<Base_data> getBase_datas() {
         return base_datas;
     }
-    
+
     public void setBase_datas(List<Base_data> base_datas) {
         this.base_datas = base_datas;
     }
-    
+
     public District[] getSelectedDistricts() {
         return selectedDistricts;
     }
-    
+
     public void setSelectedDistricts(District[] selectedDistricts) {
         this.selectedDistricts = selectedDistricts;
     }
-    
+
     public Parish[] getSelectedParishes() {
         return selectedParishes;
     }
-    
+
     public void setSelectedParishes(Parish[] selectedParishes) {
         this.selectedParishes = selectedParishes;
     }
-    
+
     public Health_facility[] getSelectedHealth_facilities() {
         return selectedHealth_facilities;
     }
-    
+
     public void setSelectedHealth_facilities(Health_facility[] selectedHealth_facilities) {
         this.selectedHealth_facilities = selectedHealth_facilities;
     }
-    
+
     public List<District> getdistricts() {
         List<District> districtList = new ArrayList<>();
         try {
@@ -294,7 +294,7 @@ public class UploadBean implements Serializable {
         }
         return districtList;
     }
-    
+
     public List<Parish> getparishes() {
         List<Parish> parishList = new ArrayList<>();
         try {
@@ -305,7 +305,7 @@ public class UploadBean implements Serializable {
         }
         return parishList;
     }
-    
+
     public List<County> getts_county(District d) {
         List<County> temp = new ArrayList<>();
         try {
@@ -319,7 +319,7 @@ public class UploadBean implements Serializable {
         }
         return temp;
     }
-    
+
     public List<Sub_county> getts_sub_county(County c) {
         List<Sub_county> temp = new ArrayList<>();
         try {
@@ -333,7 +333,7 @@ public class UploadBean implements Serializable {
         }
         return temp;
     }
-    
+
     public List<Parish> getts_parish(Sub_county sc) {
         List<Parish> temp = new ArrayList<>();
         try {
@@ -347,7 +347,7 @@ public class UploadBean implements Serializable {
         }
         return temp;
     }
-    
+
     public List<Health_facility> getts_health_facility(Sub_county sc) {
         List<Health_facility> temp = new ArrayList<>();
         try {
@@ -361,7 +361,7 @@ public class UploadBean implements Serializable {
         }
         return temp;
     }
-    
+
     public List<Health_facility> gethealth_facilities() {
         List<Health_facility> health_facilityList = new ArrayList<>();
         try {
@@ -370,31 +370,31 @@ public class UploadBean implements Serializable {
         }
         return health_facilityList;
     }
-    
+
     public int getPassed() {
         return passed;
     }
-    
+
     public void setPassed(int passed) {
         this.passed = passed;
     }
-    
+
     public int getFailed() {
         return failed;
     }
-    
+
     public void setFailed(int failed) {
         this.failed = failed;
     }
-    
+
     public String getReport_form_name() {
         return report_form_name;
     }
-    
+
     public void setReport_form_name(String report_form_name) {
         this.report_form_name = report_form_name;
     }
-    
+
     public List<String> getReport_form_nameList() {
         List<String> aList = new ArrayList<>();
         try {
@@ -405,11 +405,11 @@ public class UploadBean implements Serializable {
         this.report_form_nameList = aList;
         return report_form_nameList;
     }
-    
+
     public void setReport_form_nameList(List<String> report_form_nameList) {
         this.report_form_nameList = report_form_nameList;
     }
-    
+
     public boolean show_facility_level() {
         if (report_form == null) {
             return false;
@@ -418,7 +418,7 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public boolean show_parish_level() {
         if (report_form == null) {
             return false;
@@ -427,7 +427,7 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public boolean show_district_level() {
         if (report_form == null) {
             return false;
@@ -436,7 +436,7 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public boolean showweekly() {
         if (report_form == null) {
             return false;
@@ -445,7 +445,7 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public boolean showmonthly() {
         if (report_form == null) {
             return false;
@@ -454,7 +454,7 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public boolean showmonthly2() {
         if (report_form == null) {
             return false;
@@ -463,7 +463,7 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public List<Integer> weeks() {
         List<Integer> temp = new ArrayList<>();
         for (int x = 1; x < 54; x++) {
@@ -471,7 +471,7 @@ public class UploadBean implements Serializable {
         }
         return temp;
     }
-    
+
     public void get_date_from_other_periods() {
         if (report_form != null) {
             /**
@@ -516,7 +516,7 @@ public class UploadBean implements Serializable {
                         report_period_to_date = sdf.parse(31 + "/" + 12 + "/" + report_period_year);
                     }
                 } catch (ParseException ex) {
-                    
+
                 }
             }
 
@@ -551,13 +551,13 @@ public class UploadBean implements Serializable {
                         report_period_to_date = sdf.parse(31 + "/" + 12 + "/" + report_period_year);
                     }
                 } catch (ParseException ex) {
-                    
+
                 }
             }
-            
+
         }
     }
-    
+
     public boolean showbimonthly() {
         if (report_form == null) {
             return false;
@@ -566,7 +566,7 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public boolean showquartery() {
         if (report_form == null) {
             return false;
@@ -575,191 +575,191 @@ public class UploadBean implements Serializable {
         }
         return false;
     }
-    
+
     public BatchDetails getBatchDetails() {
         return batchDetails;
     }
-    
+
     public void setBatchDetails(BatchDetails batchDetails) {
         this.batchDetails = batchDetails;
     }
-    
+
     public List<ValidationReport> getValidationReportList() {
         return validationReportList;
     }
-    
+
     public void setValidationReportList(List<ValidationReport> validationReportList) {
         this.validationReportList = validationReportList;
     }
-    
+
     public List<ValidationReport> getValidationReportSelected() {
         return validationReportSelected;
     }
-    
+
     public void setValidationReportSelected(List<ValidationReport> validationReportSelected) {
         this.validationReportSelected = validationReportSelected;
     }
-    
+
     public Integer getReport_period_year() {
         return report_period_year;
     }
-    
+
     public void setReport_period_year(Integer report_period_year) {
         this.report_period_year = report_period_year;
     }
-    
+
     public Integer getReport_period_month() {
         return report_period_month;
     }
-    
+
     public void setReport_period_month(Integer report_period_month) {
         this.report_period_month = report_period_month;
     }
-    
+
     public Integer getReport_period_week() {
         return report_period_week;
     }
-    
+
     public void setReport_period_week(Integer report_period_week) {
         this.report_period_week = report_period_week;
     }
-    
+
     public Interface_dataBean getInterface_dataBean() {
         return interface_dataBean;
     }
-    
+
     public void setInterface_dataBean(Interface_dataBean interface_dataBean) {
         this.interface_dataBean = interface_dataBean;
     }
-    
+
     public Base_dataBean getBase_dataBean() {
         return base_dataBean;
     }
-    
+
     public void setBase_dataBean(Base_dataBean base_dataBean) {
         this.base_dataBean = base_dataBean;
     }
-    
+
     public Region getRegion() {
         return region;
     }
-    
+
     public void setRegion(Region region) {
         this.region = region;
     }
-    
+
     public District getDistrict() {
         return district;
     }
-    
+
     public void setDistrict(District district) {
         this.district = district;
     }
-    
+
     public County getCounty() {
         return county;
     }
-    
+
     public void setCounty(County county) {
         this.county = county;
     }
-    
+
     public Sub_county getSub_county() {
         return sub_county;
     }
-    
+
     public void setSub_county(Sub_county sub_county) {
         this.sub_county = sub_county;
     }
-    
+
     public Parish getParish() {
         return parish;
     }
-    
+
     public void setParish(Parish parish) {
         this.parish = parish;
     }
-    
+
     public LoginBean getLoginBean() {
         return loginBean;
     }
-    
+
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-    
+
     public Date getReport_period_from_date() {
         return report_period_from_date;
     }
-    
+
     public void setReport_period_from_date(Date report_period_from_date) {
         this.report_period_from_date = report_period_from_date;
     }
-    
+
     public Date getReport_period_to_date() {
         return report_period_to_date;
     }
-    
+
     public void setReport_period_to_date(Date report_period_to_date) {
         this.report_period_to_date = report_period_to_date;
     }
-    
+
     public Financial_year getFinancial_year() {
         return financial_year;
     }
-    
+
     public void setFinancial_year(Financial_year financial_year) {
         this.financial_year = financial_year;
     }
-    
+
     public Integer getReport_period_quarter() {
         return report_period_quarter;
     }
-    
+
     public void setReport_period_quarter(Integer report_period_quarter) {
         this.report_period_quarter = report_period_quarter;
     }
-    
+
     public String getReport_period_name() {
         return report_period_name;
     }
-    
+
     public void setReport_period_name(String report_period_name) {
         this.report_period_name = report_period_name;
     }
-    
+
     public Integer getReport_period_bi_month() {
         return report_period_bi_month;
     }
-    
+
     public void setReport_period_bi_month(Integer report_period_bi_month) {
         this.report_period_bi_month = report_period_bi_month;
     }
-    
+
     public String getDatabase_type() {
         return database_type;
     }
-    
+
     public void setDatabase_type(String database_type) {
         this.database_type = database_type;
     }
-    
+
     public String getInsert_string() {
         return insert_string;
     }
-    
+
     public void setInsert_string(String insert_string) {
         this.insert_string = insert_string;
     }
-    
+
     public String getTable_string() {
         return table_string;
     }
-    
+
     public void setTable_string(String table_string) {
         this.table_string = table_string;
     }
-    
+
     public JSONArray getjSONArray() {
         jSONArray = new JSONArray();
         JSONArray jArray = new JSONArray();
@@ -783,7 +783,7 @@ public class UploadBean implements Serializable {
             }
             jObj.put("DataElementValue", new JSONObject().put("type", "number"));
             jArray.put(jObj);
-            
+
             if (interface_datas == null) {
                 interface_datas = new ArrayList<>();
             }
@@ -822,7 +822,7 @@ public class UploadBean implements Serializable {
         }
         return jSONArray;
     }
-    
+
     public JSONArray getjSONArray_Dynamic_Pivot(District[] selectedDistricts, Integer[] selectedYears, Integer[] selectedDataElements) {
         String YearsStr = "";
         String DistrictsStr = "";
@@ -862,45 +862,36 @@ public class UploadBean implements Serializable {
                 DataElementStr = "" + selectedDataElements[i];
             }
         }
-        
+
         GeneralUtilities.flushandclearsession();
         if (report_form != null && report_form_group != null) {
             String sql = "SELECT\n"
-                    + "d.district_name,\n"
-                    + "c.county_name,\n"
-                    + "sc.sub_county_name,\n"
+                    + "district_name,\n"
+                    + "county_name,\n"
+                    + "sub_county_name,\n"
                     + "p.parish_name,\n"
-                    + "hf.health_facility_name,\n"
+                    + "health_facility_name,\n"
                     + "b.report_period_year,\n"
                     + "b.report_period_quarter,\n"
                     + "b.report_period_bi_month,\n"
                     + "b.report_period_month,\n"
                     + "b.report_period_week,\n"
-                    + "se.section_name,\n"
-                    + "ss.sub_section_name,\n"
-                    + "de.data_element_name,\n"
-                    + "b.data_element_value,\n"
-                    + "de.data_element_context,\n"
-                    + "de.data_type,\n"
-                    + "de.data_size,\n"
-                    + "de.age_category,\n"
-                    + "de.sex_category,\n"
-                    + "de.other_category,\n"
-                    + "ta.technical_area_name\n"
+                    + "section_name,\n"
+                    + "sub_section_name,\n"
+                    + "data_element_name,\n"
+                    + "data_element_value,\n"
+                    + "data_element_context,\n"
+                    + "data_type,\n"
+                    + "data_size,\n"
+                    + "age_category,\n"
+                    + "sex_category,\n"
+                    + "other_category,\n"
+                    + "technical_area_name\n"
                     + "FROM\n"
-                    + "base_data_" + report_form.getReport_form_id() + " AS b\n"
-                    + "LEFT JOIN district AS d ON d.district_id = b.district_id\n"
-                    + "LEFT JOIN county AS c ON c.county_id = b.county_id\n"
-                    + "LEFT JOIN sub_county AS sc ON sc.sub_county_id = b.sub_county_id\n"
-                    + "LEFT JOIN parish AS p ON p.parish_id = b.parish_id\n"
-                    + "LEFT JOIN health_facility AS hf ON hf.health_facility_id = b.health_facility_id\n"
-                    + "INNER JOIN data_element AS de ON de.data_element_id = b.data_element_id\n"
-                    + "INNER JOIN section AS se ON de.section_id = se.section_id\n"
-                    + "INNER JOIN sub_section AS ss ON de.sub_section_id = ss.sub_section_id\n"
-                    + "LEFT JOIN technical_area AS ta ON de.technical_area_id = ta.technical_area_id WHERE "
+                    + "base_data_" + report_form.getReport_form_id() + "_" + report_form_group.getReport_form_group_id() + " AS b\n"
                     + " b.data_element_id in (" + DataElementStr + ")"
                     + " AND b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ") AND b.report_form_group_id=" + report_form_group.getReport_form_group_id();
-            
+
             String sql2 = "CALL sp_select_dyanamic ('" + DistrictsStr + "','" + YearsStr + "','" + DataElementStr + "'," + report_form_group.getReport_form_group_id() + "," + report_form.getReport_form_id() + ");";
             try {
                 base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql2).list();
@@ -909,7 +900,7 @@ public class UploadBean implements Serializable {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         jSONArray = new JSONArray();
         load_json_array_from_base_data_array(jSONArray, jArray, "dynamic");
         return jSONArray;
@@ -941,7 +932,7 @@ public class UploadBean implements Serializable {
             if (report_form.getLowest_report_form_level().equals("District")) {
                 jObj.put("District", new JSONObject().put("type", "string"));
             }
-            
+
             if (report_form.getReport_form_frequency().equals("Weekly")) {
                 jObj.put("Week", new JSONObject().put("type", "number"));
                 jObj.put("Month", new JSONObject().put("type", "number"));
@@ -963,10 +954,10 @@ public class UploadBean implements Serializable {
             jObj.put("SexCategory", new JSONObject().put("type", "string"));
             jObj.put("OtherCategory", new JSONObject().put("type", "string"));
             jObj.put("TechnicalArea", new JSONObject().put("type", "string"));
-            
+
             jObj.put("DataElementValue", new JSONObject().put("type", "number"));
             jArray.put(jObj);
-            
+
             if (base_data_objects == null) {
                 base_data_objects = new ArrayList<>();
             }
@@ -1012,7 +1003,7 @@ public class UploadBean implements Serializable {
                         jObj.put("Quarter", Integer.parseInt(base_data[6].toString()));
                     }
                     jObj.put("Year", Integer.parseInt(base_data[5].toString()));
-                    
+
                     jObj.put("Section", base_data[10].toString());
                     jObj.put("SubSection", base_data[11].toString());
                     try {
@@ -1067,7 +1058,7 @@ public class UploadBean implements Serializable {
         String WeekStr = "";
         BaseDataStr = "";
         GeneralUtilities.flushandclearsession();
-        
+
         if (report_form != null) {
             String sql = "SELECT\n"
                     + "d.district_name,\n"
@@ -1217,7 +1208,7 @@ public class UploadBean implements Serializable {
                 default:
                     break;
             }
-            
+
             if (report_form != null) {
                 String sql = "SELECT\n"
                         + "d.district_name,\n"
@@ -1324,38 +1315,38 @@ public class UploadBean implements Serializable {
         jSONArray = new JSONArray();
         load_json_array_from_base_data_array(jSONArray, jArray, "delete_data");
     }
-    
+
     public JSONArray getjSONArray_Delete() {
         return jSONArray;
     }
-    
+
     public void setjSONArray(JSONArray jSONArray) {
         this.jSONArray = jSONArray;
     }
-    
+
     public Report_form_group getReport_form_group() {
         return report_form_group;
     }
-    
+
     public void setReport_form_group(Report_form_group report_form_group) {
         this.report_form_group = report_form_group;
     }
-    
+
     public Report_form getReport_form() {
         return report_form;
     }
-    
+
     public void setReport_form(Report_form report_form) {
         this.report_form = report_form;
     }
-    
+
     public List<Report_form_group> getReport_form_groups() {
         try {
             if (report_form != null) {
                 report_form_groups = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), null);
             } else {
                 report_form_groups = new ArrayList<>();
-                
+
             }
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class
@@ -1363,42 +1354,42 @@ public class UploadBean implements Serializable {
         }
         return report_form_groups;
     }
-    
+
     public void setReport_form_groups(List<Report_form_group> report_form_groups) {
         this.report_form_groups = report_form_groups;
     }
-    
+
     public List<Report_form> getReport_forms() {
         try {
             report_forms = Report_form.queryReport_form(null, null);
-            
+
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return report_forms;
     }
-    
+
     public void setReport_forms(List<Report_form> report_forms) {
         this.report_forms = report_forms;
     }
-    
+
     public List<String> getRowdatas() {
         return rowdatas;
     }
-    
+
     public void setRowdatas(List<String> rowdatas) {
         this.rowdatas = rowdatas;
     }
-    
+
     public List<Interface_data> getInterface_datas() {
         return interface_datas;
     }
-    
+
     public void setInterface_datas(List<Interface_data> interface_datas) {
         this.interface_datas = interface_datas;
     }
-    
+
     public void handleFileUpload(FileUploadEvent event) {
         try (InputStream inputStream = event.getFile().getInputstream()) {
             uploadexcel(inputStream);
@@ -1406,7 +1397,7 @@ public class UploadBean implements Serializable {
             e.printStackTrace();
         }
     }
-    
+
     public void handleFileUploadgenerate_insertstring(FileUploadEvent event) {
         try {
             InputStream inputStream = event.getFile().getInputstream();
@@ -1416,15 +1407,15 @@ public class UploadBean implements Serializable {
         }
     }
     private String validationtext;
-    
+
     public String getValidationtext() {
         return validationtext;
     }
-    
+
     public void setValidationtext(String validationtext) {
         this.validationtext = validationtext;
     }
-    
+
     public String validate_upload_procedure(int batch_id, String reporting_level_name, String reporting_name) {
         String validation_rule_name = "";
         try {
@@ -1446,7 +1437,7 @@ public class UploadBean implements Serializable {
                     }
                 } catch (SQLException se) {
                     System.err.println(se.getMessage());
-                    
+
                 }
             }
         } catch (PersistentException ex) {
@@ -1455,7 +1446,7 @@ public class UploadBean implements Serializable {
         }
         return validation_rule_name;
     }
-    
+
     public String validate_upload_existing_data(String reporting_hierarchy, int financial_year, int quarter, int month, int week, int calendar_year) {
         String condition = "";
         condition += "CONCAT(d.district_name,CASE WHEN sub_county_name IS NULL THEN '' ELSE sub_county_name END,CASE WHEN parish_name IS NULL THEN '' ELSE parish_name END,CASE WHEN health_facility_name IS NULL THEN '' ELSE health_facility_name END)='" + reporting_hierarchy + "'";
@@ -1497,7 +1488,7 @@ public class UploadBean implements Serializable {
         }
         return validation_rule_name;
     }
-    
+
     private void set_Status_V(Interface_data interface_data) {
         if (!validationtext.isEmpty()) {
             interface_data.setStatus_v("Fail");
@@ -1507,7 +1498,7 @@ public class UploadBean implements Serializable {
             interface_data.setStatus_v_desc("Validated and ready for moving");
         }
     }
-    
+
     public void validate_and_load_data_to_base(int batch_id) {
         String sql = "{call sp_validate_data(?,?,?,?)}";
         ResultSet rs = null;
@@ -1522,7 +1513,7 @@ public class UploadBean implements Serializable {
             System.err.println(se.getMessage());
         }
     }
-    
+
     public void validate_and_load_data_to_base_patient_level(int batch_id) {
         String sql = "{call sp_validate_data_patient_level(?,?,?,?)}";
         ResultSet rs = null;
@@ -1537,7 +1528,7 @@ public class UploadBean implements Serializable {
             System.err.println(se.getMessage());
         }
     }
-    
+
     public void validate_and_load_data_to_base_SMS(int batch_id, Report_form report_form_SMS, Report_form_group report_form_groupSMS) {
         String sql = "{call sp_validate_data(?,?,?,?)}";
         ResultSet rs = null;
@@ -1552,7 +1543,7 @@ public class UploadBean implements Serializable {
             System.err.println(se.getMessage());
         }
     }
-    
+
     public void delete_base_data(String delete_by) {
         if (BaseDataStr.length() == 0) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -1581,7 +1572,7 @@ public class UploadBean implements Serializable {
             refresh_delete_data_by_period();
         }
     }
-    
+
     public void load_interface_old() {
 //        if (!interface_datas.isEmpty()) {
 //            try {
@@ -1668,7 +1659,7 @@ public class UploadBean implements Serializable {
 //            }
 //        }
     }
-    
+
     public Batch newBatch() {
         PersistentSession session;
         PersistentTransaction transaction;
@@ -1691,7 +1682,7 @@ public class UploadBean implements Serializable {
         //System.out.println("END-BATCH:" + new Date());
         return batch;
     }
-    
+
     public Batch newBatch_SMS(PersistentTransaction transaction) {
         //PersistentSession session;
         Batch batch = null;
@@ -2619,7 +2610,7 @@ public class UploadBean implements Serializable {
             }
         }
     }
-    
+
     public void InsertPivotEGPAFSurgeFormData(long aBatchId) {
         String sql = "{call sp_insert_dashboard_surge(?)}";
         try (
@@ -2630,9 +2621,9 @@ public class UploadBean implements Serializable {
         } catch (SQLException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public void UpdatePivotEGPAFSurgeFormData(long aBatchId) {
         String sql = "{call sp_update_dashboard_surge(?)}";
         try (
@@ -2643,9 +2634,9 @@ public class UploadBean implements Serializable {
         } catch (SQLException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public String getDE_Form(Report_form_group aReport_form_group) {
         String frm = "def_0_0";
         try {
@@ -2653,11 +2644,11 @@ public class UploadBean implements Serializable {
                 frm = aReport_form_group.getDef_name();
             }
         } catch (NullPointerException npe) {
-            
+
         }
         return frm;
     }
-    
+
     public void generate_validation_report(int batch_id) {
         try {
             Batch b = Batch.getBatchByORMID(batch_id);
@@ -2853,7 +2844,7 @@ public class UploadBean implements Serializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public String generate_validation_report_SMS(int batch_id) {
         String validationError = "";
         try {
@@ -2959,7 +2950,7 @@ public class UploadBean implements Serializable {
         }
         return validationError;
     }
-    
+
     public List<ValidationReport> generate_validation_report() {
         validationReportList = new ArrayList<>();
         try {
@@ -2975,7 +2966,7 @@ public class UploadBean implements Serializable {
                 vr.setReportFormGroupName(objects[5].toString());
                 //tempValidationReports.add(vr);
                 validationReportList.add(vr);
-                
+
             }
             //validationReportList = new ArrayList<>(tempValidationReports);
         } catch (PersistentException ex) {
@@ -2984,7 +2975,7 @@ public class UploadBean implements Serializable {
         }
         return validationReportList;
     }
-    
+
     public void uploadexcel(InputStream inputStream) {
         //FileInputStream fis = null;
         try {
@@ -3049,12 +3040,12 @@ public class UploadBean implements Serializable {
                 } else {
                     tempcounter = 1;
                 }
-                
+
                 for (Data_element de : data_elements) {
                     demap.put(tempcounter, de);
                     tempcounter++;
                 }
-                
+
                 Iterator<Row> rowIterator = sheet.iterator();
                 int x = 0;
                 //iterating over each row
@@ -3093,7 +3084,7 @@ public class UploadBean implements Serializable {
                                 return;
                             }
                         }
-                        
+
                         Iterator<Cell> cellIterator2 = row.cellIterator();
                         if (row.getRowNum() > 0) {
                             if (report_form.getLowest_report_form_level().equals("Facility")) {
@@ -3182,24 +3173,24 @@ public class UploadBean implements Serializable {
                     }
                     x++;
                 }
-                
+
             }
             //fis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-            
+
         } catch (InvalidFormatException ex) {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
-            
+
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void read_excel_data(Interface_data interface_data, Map.Entry pair, Cell cell) {
         /**
          * Set Entry Mode
@@ -3244,7 +3235,7 @@ public class UploadBean implements Serializable {
         }
         setlocationids(interface_data);
     }
-    
+
     public void generate_insertstring(InputStream inputStream) {
         //FileInputStream fis = null;
         try {
@@ -3264,7 +3255,7 @@ public class UploadBean implements Serializable {
 
             //int numberOfSheets = workbook.getNumberOfSheets();
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
-            
+
             Iterator<Row> rowIterator = sheet.iterator();
             int x = 0;
             //iterating over each row
@@ -3342,7 +3333,7 @@ public class UploadBean implements Serializable {
                                             data_values += ("'" + cell.getRichStringCellValue() + "'");
                                             break;
                                     }
-                                    
+
                                 }
                             }
                             if (counter > 0) {
@@ -3383,7 +3374,7 @@ public class UploadBean implements Serializable {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-            
+
         } catch (InvalidFormatException ex) {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -3403,7 +3394,7 @@ public class UploadBean implements Serializable {
     public void setData_elements(List<Data_element> data_elements) {
         this.data_elements = data_elements;
     }
-    
+
     public void refreshData_elements(Report_form report_form, Report_form_group report_form_group) {
         String sql = "";
         data_elements = new ArrayList<Data_element>();
@@ -3412,15 +3403,15 @@ public class UploadBean implements Serializable {
                 sql = "select de from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " order by fg.group_order,de.group_column_number ASC";
                 data_elements = (List<Data_element>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
                 this.createInterface_datas(data_elements);
-                
+
             }
         } catch (Exception ex) {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public void refreshData_elements_patient_level(Report_form report_form, Report_form_group report_form_group) {
         String sql = "";
         data_elements = new ArrayList<Data_element>();
@@ -3435,9 +3426,9 @@ public class UploadBean implements Serializable {
             Logger.getLogger(UploadBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public void createInterface_datas(List<Data_element> aData_elements) {
         Interface_data interface_data;
         if (null != aData_elements) {
@@ -3530,7 +3521,7 @@ public class UploadBean implements Serializable {
             }
         }
     }
-    
+
     public Interface_data getInterface_dataCell(String aData_element_code) {
         int n = 0;
         Interface_data interface_data = new Interface_data();
@@ -3581,43 +3572,43 @@ public class UploadBean implements Serializable {
     public void setHealth_facility(Health_facility health_facility) {
         this.health_facility = health_facility;
     }
-    
+
     public List<Health_facility> completeHealth_facility(String query) {
         List<Health_facility> filteredHealth_facilities = new ArrayList<>();
         try {
             filteredHealth_facilities = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select hf FROM Health_facility  hf where hf.is_deleted<>1 AND hf.is_active<>0 AND hf.health_facility_name like '%" + query + "%'").list();
-            
+
         } catch (PersistentException ex) {
             Logger.getLogger(Health_facilityBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return filteredHealth_facilities;
     }
-    
+
     public List<Parish> completeParish(String query) {
         List<Parish> filteredParishes = new ArrayList<>();
         try {
             filteredParishes = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select p FROM Parish  p where p.is_deleted<>1 AND p.is_active<>0 AND p.parish_name like '%" + query + "%'").list();
-            
+
         } catch (PersistentException ex) {
             Logger.getLogger(ParishBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return filteredParishes;
     }
-    
+
     public List<District> completeDistrict(String query) {
         List<District> filteredDistricts = new ArrayList<>();
         try {
             filteredDistricts = (List<District>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM District  d where d.is_deleted<>1 AND d.is_active<>0 AND d.district_name like '%" + query + "%'").list();
-            
+
         } catch (PersistentException ex) {
             Logger.getLogger(DistrictBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return filteredDistricts;
     }
-    
+
     public void dataentry_load_interface() {
         if (!interface_datas.isEmpty()) {
             try {
@@ -3695,7 +3686,7 @@ public class UploadBean implements Serializable {
                 }
                 transaction.commit();
                 loginBean.saveMessage();
-                
+
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class
                         .getName()).log(Level.SEVERE, null, ex);
@@ -3716,11 +3707,11 @@ public class UploadBean implements Serializable {
      */
     public void setValidationReportFiltered(List<ValidationReport> validationReportFiltered) {
         this.validationReportFiltered = validationReportFiltered;
-        
+
     }
-    
+
     public class ValidationReport {
-        
+
         private String FacilityName;
         private String DistrictName;
         private String CountyName;
@@ -3732,157 +3723,157 @@ public class UploadBean implements Serializable {
         private int batch_id;
         private String AddDate;
         private int ReportId;
-        
+
         private int ReportFormId;
         private String ReportFormName;
         private String ReportFormGroupName;
         private String PatientIdentifier;
-        
+
         public String getPatientIdentifier() {
             return PatientIdentifier;
         }
-        
+
         public void setPatientIdentifier(String PatientIdentifier) {
             this.PatientIdentifier = PatientIdentifier;
         }
-        
+
         public String getReportFormGroupName() {
             return ReportFormGroupName;
         }
-        
+
         public void setReportFormGroupName(String ReportFormGroupName) {
             this.ReportFormGroupName = ReportFormGroupName;
         }
-        
+
         public int getReportFormId() {
             return ReportFormId;
         }
-        
+
         public void setReportFormId(int ReportFormId) {
             this.ReportFormId = ReportFormId;
         }
-        
+
         public String getReportFormName() {
             return ReportFormName;
         }
-        
+
         public void setReportFormName(String ReportFormName) {
             this.ReportFormName = ReportFormName;
         }
-        
+
         public int getReportId() {
             return ReportId;
         }
-        
+
         public void setReportId(int ReportId) {
             this.ReportId = ReportId;
         }
-        
+
         public String getCountyName() {
             return CountyName;
         }
-        
+
         public void setCountyName(String CountyName) {
             this.CountyName = CountyName;
         }
-        
+
         public String getAddDate() {
             return AddDate;
         }
-        
+
         public void setAddDate(String AddDate) {
             this.AddDate = AddDate;
         }
-        
+
         public String getAddedBy() {
             return AddedBy;
         }
-        
+
         public void setAddedBy(String AddedBy) {
             this.AddedBy = AddedBy;
         }
-        
+
         public int getBatch_id() {
             return batch_id;
         }
-        
+
         public void setBatch_id(int batch_id) {
             this.batch_id = batch_id;
         }
-        
+
         public String getStatus() {
             return Status;
         }
-        
+
         public void setStatus(String Status) {
             this.Status = Status;
         }
-        
+
         public String getFacilityName() {
             return FacilityName;
         }
-        
+
         public void setFacilityName(String FacilityName) {
             this.FacilityName = FacilityName;
         }
-        
+
         public String getValidationDescription() {
             return ValidationDescription;
         }
-        
+
         public void setValidationDescription(String ValidationDescription) {
             this.ValidationDescription = ValidationDescription;
         }
-        
+
         public String getDistrictName() {
             return DistrictName;
         }
-        
+
         public void setDistrictName(String DistrictName) {
             this.DistrictName = DistrictName;
         }
-        
+
         public String getParishName() {
             return ParishName;
         }
-        
+
         public String getSub_countyName() {
             return Sub_countyName;
         }
-        
+
         public void setSub_countyName(String Sub_countyName) {
             this.Sub_countyName = Sub_countyName;
         }
-        
+
         public void setParishName(String ParishName) {
             this.ParishName = ParishName;
         }
-        
+
     }
-    
+
     public class BatchDetails {
-        
+
         private Batch batch;
         private String BatchUserName;
-        
+
         public Batch getBatch() {
             return batch;
         }
-        
+
         public void setBatch(Batch batch) {
             this.batch = batch;
         }
-        
+
         public String getBatchUserName() {
             return BatchUserName;
         }
-        
+
         public void setBatchUserName(String BatchUserName) {
             this.BatchUserName = BatchUserName;
         }
-        
+
     }
-    
+
     public void setlocationids(Interface_data id) {
         for (LocationHierarchy lh : locationHierarchyList) {
             if (report_form.getLowest_report_form_level().equals("Facility")) {
@@ -3911,7 +3902,7 @@ public class UploadBean implements Serializable {
             }
         }
     }
-    
+
     public void load_location_hierarchy() {
         String sql = "SELECT * FROM vw_location;";
         ResultSet rs = null;
@@ -3941,11 +3932,11 @@ public class UploadBean implements Serializable {
             //context.addMessage(null, new FacesMessage(se.getMessage(), se.getMessage()));
 
         }
-        
+
     }
-    
+
     public class LocationHierarchy {
-        
+
         private int district_id;
         private int county_id;
         private int sub_county_id;
@@ -3956,116 +3947,116 @@ public class UploadBean implements Serializable {
         private String sub_county_name;
         private String parish_name;
         private String health_facility_name;
-        
+
         public int getDistrict_id() {
             return district_id;
         }
-        
+
         public void setDistrict_id(int district_id) {
             this.district_id = district_id;
         }
-        
+
         public int getCounty_id() {
             return county_id;
         }
-        
+
         public void setCounty_id(int county_id) {
             this.county_id = county_id;
         }
-        
+
         public int getSub_county_id() {
             return sub_county_id;
         }
-        
+
         public void setSub_county_id(int sub_county_id) {
             this.sub_county_id = sub_county_id;
         }
-        
+
         public int getParish_id() {
             return parish_id;
         }
-        
+
         public void setParish_id(int parish_id) {
             this.parish_id = parish_id;
         }
-        
+
         public int getHealth_facility_id() {
             return health_facility_id;
         }
-        
+
         public void setHealth_facility_id(int health_facility_id) {
             this.health_facility_id = health_facility_id;
         }
-        
+
         public String getDistrict_name() {
             return district_name;
         }
-        
+
         public void setDistrict_name(String district_name) {
             this.district_name = district_name;
         }
-        
+
         public String getCounty_name() {
             return county_name;
         }
-        
+
         public void setCounty_name(String county_name) {
             this.county_name = county_name;
         }
-        
+
         public String getSub_county_name() {
             return sub_county_name;
         }
-        
+
         public void setSub_county_name(String sub_county_name) {
             this.sub_county_name = sub_county_name;
         }
-        
+
         public String getParish_name() {
             return parish_name;
         }
-        
+
         public void setParish_name(String parish_name) {
             this.parish_name = parish_name;
         }
-        
+
         public String getHealth_facility_name() {
             return health_facility_name;
         }
-        
+
         public void setHealth_facility_name(String health_facility_name) {
             this.health_facility_name = health_facility_name;
         }
     }
     private String report_form_frequency;
     private List<Object[]> loaded_data_objects;
-    
+
     private List<Report_form_group> report_form_groupList;
     private List<Report_form> report_formList;
-    
+
     public List<Report_form_group> returnReport_form_groupList(Report_form report_form) {
         report_form_groupList = new ArrayList<>();
         try {
             report_form_groupList = Report_form_group.queryReport_form_group("report_form_id=" + report_form.getReport_form_id(), "group_order ASC");
-            
+
         } catch (PersistentException ex) {
             Logger.getLogger(Data_elementBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return report_form_groupList;
     }
-    
+
     public void refreshGroupList(int aYear, String aFrequency, Report_form aReport_form) {
         String sql = "";
         base_data_objects = new ArrayList<>();
         if (aYear == 0 || aFrequency.length() == 0) {
             report_formList = null;
         }
-        
+
         if (aReport_form != null) {
             try {
                 report_formList = Report_form.queryReport_form("report_form_frequency='" + aFrequency + "' AND report_form_id=" + aReport_form.getReport_form_id(), "report_form_name ASC");
-                
+
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class
                         .getName()).log(Level.SEVERE, null, ex);
@@ -4073,14 +4064,14 @@ public class UploadBean implements Serializable {
         } else {
             try {
                 report_formList = Report_form.queryReport_form("report_form_frequency='" + aFrequency + "' AND report_form_id>0", "report_form_name ASC");
-                
+
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+
     public String getLoadedEntitiesMonthly(Report_form rf, Report_form_group fg, int y, int m) {
         String les = "";
         int lei = 0;
@@ -4104,7 +4095,7 @@ public class UploadBean implements Serializable {
         }
         return les;
     }
-    
+
     public String getLoadedEntitiesBiMonthly(Report_form rf, Report_form_group fg, int y, int bm) {
         String les = "";
         int lei = 0;
@@ -4128,7 +4119,7 @@ public class UploadBean implements Serializable {
         }
         return les;
     }
-    
+
     public String getLoadedEntitiesQuarterly(Report_form rf, Report_form_group fg, int y, int q) {
         String les = "";
         int lei = 0;
@@ -4152,6 +4143,7 @@ public class UploadBean implements Serializable {
         }
         return les;
     }
+
     public String getLoadedEntitiesAnnually(Report_form rf, Report_form_group fg, int y) {
         String les = "";
         int lei = 0;
@@ -4175,7 +4167,7 @@ public class UploadBean implements Serializable {
         }
         return les;
     }
-    
+
     public String getLoadedEntitiesWeekly(Report_form rf, Report_form_group fg, int y, int w) {
         String les = "";
         int lei = 0;
@@ -4255,7 +4247,7 @@ public class UploadBean implements Serializable {
     public void setReport_formList(List<Report_form> report_formList) {
         this.report_formList = report_formList;
     }
-    
+
     public List<Section> returnSections(Report_form report_form, Report_form_group report_form_group) {
         String sql = "";
         sections = new ArrayList<Section>();
@@ -4272,7 +4264,7 @@ public class UploadBean implements Serializable {
         }
         return sections;
     }
-    
+
     public List<Sub_section> returnSub_sections(Report_form report_form, Report_form_group report_form_group, Section section) {
         String sql = "";
         sub_sections = new ArrayList<Sub_section>();
@@ -4280,7 +4272,7 @@ public class UploadBean implements Serializable {
             if (report_form != null && report_form_group != null && section != null) {
                 sql = "select distinct de.sub_section from Data_element de INNER JOIN de.report_form_group fg where de.report_form=" + report_form + " and de.report_form_group=" + report_form_group + " and de.section=" + section + " order by fg.group_order,de.group_column_number ASC";
                 sub_sections = (List<Sub_section>) EIHDMSPersistentManager.instance().getSession().createQuery(sql).list();
-                
+
             }
         } catch (Exception ex) {
             Logger.getLogger(UploadBean.class
@@ -4312,7 +4304,7 @@ public class UploadBean implements Serializable {
                 } else {
                     interface_data_sms.save();
                 }
-                
+
                 transaction.commit();
 
                 //loginBean.saveMessage ();
@@ -4322,7 +4314,7 @@ public class UploadBean implements Serializable {
             }
         }
     }
-    
+
     public void decode_and_load_sms(String sms, String phone, String report_form_code) {
         try {
             interface_datas = new ArrayList<>();
@@ -4372,7 +4364,7 @@ public class UploadBean implements Serializable {
                      * Split SMS into an array of strings
                      */
                     String[] smsStrings = sms.split(".");
-                    
+
                     for (Data_element_sms_position outer : data_element_sms_positionList) {
                         Interface_data i = new Interface_data();
                         i.setData_element(outer.getData_element());
@@ -4407,7 +4399,7 @@ public class UploadBean implements Serializable {
                                     break;
                                 default:
                                     break;
-                                
+
                             }
                         }
                     }
@@ -4444,7 +4436,7 @@ public class UploadBean implements Serializable {
                         break;
                     default:
                         break;
-                    
+
                 }
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class
@@ -4452,43 +4444,43 @@ public class UploadBean implements Serializable {
             }
         }
     }
-    
+
     public District getSmsDistrict() {
         return smsDistrict;
     }
-    
+
     public void setSmsDistrict(District smsDistrict) {
         this.smsDistrict = smsDistrict;
     }
-    
+
     public County getSmsCounty() {
         return smsCounty;
     }
-    
+
     public void setSmsCounty(County smsCounty) {
         this.smsCounty = smsCounty;
     }
-    
+
     public Sub_county getSmsSub_county() {
         return smsSub_county;
     }
-    
+
     public void setSmsSub_county(Sub_county smsSub_county) {
         this.smsSub_county = smsSub_county;
     }
-    
+
     public Parish getSmsParish() {
         return smsParish;
     }
-    
+
     public void setSmsParish(Parish smsParish) {
         this.smsParish = smsParish;
     }
-    
+
     public Health_facility getSmsHealth_facility() {
         return smsHealth_facility;
     }
-    
+
     public void setSmsHealth_facility(Health_facility smsHealth_facility) {
         this.smsHealth_facility = smsHealth_facility;
     }
@@ -4501,32 +4493,32 @@ public class UploadBean implements Serializable {
      */
     private int columns = 1;
     private List<Patient_Level_Data> patient_level_data_list = new ArrayList<>();
-    
+
     public List<Patient_Level_Data> getPatient_level_data_list() {
         return patient_level_data_list;
     }
-    
+
     public void setPatient_level_data_list(List<Patient_Level_Data> patient_level_data_list) {
         this.patient_level_data_list = patient_level_data_list;
     }
-    
+
     public int getColumns() {
         return columns;
     }
-    
+
     public void setColumns(int columns) {
         this.columns = columns;
     }
     List<Data_element> data_elements_inner;
-    
+
     public List<Data_element> getData_elements_inner() {
         return data_elements_inner;
     }
-    
+
     public void setData_elements_inner(List<Data_element> data_elements_inner) {
         this.data_elements_inner = data_elements_inner;
     }
-    
+
     public void load_list_for_entry(Report_form report_form_inner) {
         patient_level_data_list = new ArrayList<>();
         if (report_form_inner != null) {
@@ -4536,14 +4528,14 @@ public class UploadBean implements Serializable {
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
     }
-    
+
     public void add_new_patient_data() {
         patient_level_data_list.add(create_new_Patient_Level_Data(data_elements_inner));
     }
-    
+
     public void remove_patient_data(Patient_Level_Data pld) {
         if (patient_level_data_list.size() > 1) {
             patient_level_data_list.remove(pld);
@@ -4552,7 +4544,7 @@ public class UploadBean implements Serializable {
             context.addMessage(null, new FacesMessage("There should be a minimum of one patient level record", "There should be a minimum of one patient level record"));
         }
     }
-    
+
     public void save_patient_level_data() {
         System.out.println(interface_datas.size());
         un_pivot_patient_level_data();
@@ -5056,7 +5048,7 @@ public class UploadBean implements Serializable {
                     interface_data.setData_element(Data_element.getData_elementByORMID(patient_Level_Data.getDei_80()));
                     set_other_patient_level_interface_data_values(interface_data);
                 }
-                
+
                 String rec_id = null;
                 /**
                  * Get Rec_Id
@@ -5081,7 +5073,7 @@ public class UploadBean implements Serializable {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void set_other_patient_level_interface_data_values(Interface_data interface_data) {
         try {
             interface_data.setHealth_facility_id(this.getHealth_facility().getHealth_facility_id());
@@ -5165,7 +5157,7 @@ public class UploadBean implements Serializable {
         interface_data.setEntry_mode("WEB");
         interface_datas.add(interface_data);
     }
-    
+
     private Patient_Level_Data create_new_Patient_Level_Data(List<Data_element> data_element_list) {
         int count = 1;
         columns = data_element_list.size();
@@ -5435,46 +5427,46 @@ public class UploadBean implements Serializable {
     private Integer edit_sms_week;
     private Integer edit_sms_month;
     private Integer edit_sms_year;
-    
+
     public Interface_data_sms getInterface_data_sms_edit() {
         return interface_data_sms_edit;
     }
-    
+
     public void setInterface_data_sms_edit(Interface_data_sms interface_data_sms_edit) {
         this.interface_data_sms_edit = interface_data_sms_edit;
     }
-    
+
     public Integer getEdit_sms_week() {
         return edit_sms_week;
     }
-    
+
     public void setEdit_sms_week(Integer edit_sms_week) {
         this.edit_sms_week = edit_sms_week;
     }
-    
+
     public Integer getEdit_sms_month() {
         return edit_sms_month;
     }
-    
+
     public void setEdit_sms_month(Integer edit_sms_month) {
         this.edit_sms_month = edit_sms_month;
     }
-    
+
     public Integer getEdit_sms_year() {
         return edit_sms_year;
     }
-    
+
     public void setEdit_sms_year(Integer edit_sms_year) {
         this.edit_sms_year = edit_sms_year;
     }
-    
+
     public void edit_sms(Interface_data_sms interface_data_sms) {
         edit_sms_month = null;
         edit_sms_week = null;
         edit_sms_year = null;
         interface_data_sms_edit = interface_data_sms;
     }
-    
+
     public void save_edit_sms() {
         if (interface_data_sms_edit.getInterface_data_sms_id() == 0) {
             FacesContext.getCurrentInstance().addMessage("Please select SMS to edit!", new FacesMessage("Please select SMS to edit!"));
