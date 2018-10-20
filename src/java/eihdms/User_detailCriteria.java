@@ -37,10 +37,12 @@ public class User_detailCriteria extends AbstractORMCriteria {
 	public final IntegerExpression last_edit_by;
 	public final IntegerExpression organisationId;
 	public final AssociationExpression organisation;
+	public final StringExpression email_address;
 	public final CollectionExpression group_user;
 	public final CollectionExpression login_session;
 	public final CollectionExpression user_action;
 	public final CollectionExpression access_scope;
+	public final CollectionExpression forgotPassword;
 	
 	public User_detailCriteria(Criteria criteria) {
 		super(criteria);
@@ -62,10 +64,12 @@ public class User_detailCriteria extends AbstractORMCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this);
 		organisationId = new IntegerExpression("organisation.organisation_id", this);
 		organisation = new AssociationExpression("organisation", this);
+		email_address = new StringExpression("email_address", this);
 		group_user = new CollectionExpression("group_user", this);
 		login_session = new CollectionExpression("login_session", this);
 		user_action = new CollectionExpression("user_action", this);
 		access_scope = new CollectionExpression("access_scope", this);
+		forgotPassword = new CollectionExpression("forgotPassword", this);
 	}
 	
 	public User_detailCriteria(PersistentSession session) {
@@ -98,6 +102,10 @@ public class User_detailCriteria extends AbstractORMCriteria {
 	
 	public Access_scopeCriteria createAccess_scopeCriteria() {
 		return new Access_scopeCriteria(createCriteria("access_scope"));
+	}
+	
+	public ForgotPasswordCriteria createForgotPasswordCriteria() {
+		return new ForgotPasswordCriteria(createCriteria("forgotPassword"));
 	}
 	
 	public User_detail uniqueUser_detail() {

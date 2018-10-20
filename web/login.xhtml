@@ -27,13 +27,62 @@
                                 <h:panelGrid style="border-style: none;">
                                     <p:outputLabel value="EIHDMS Login" style="font-size: 16px; font-weight: bold;"/>
                                 </h:panelGrid>
-                                <p:panelGrid columns="2">
+                                <p:panelGrid columns="2" rendered="#{loginBean.action.equals('login')}">
                                     <p:outputLabel value="Username:" for="username" />
                                     <p:inputText id="username" value="#{loginBean.username}" title="Username" required="true" requiredMessage="The Username field is required."/>
                                     <p:outputLabel value="Password:" for="password" />
                                     <p:password id="password" value="#{loginBean.password}" title="Password" required="true" requiredMessage="The Password field is required."/>
                                 </p:panelGrid>
-                                <p:commandButton value="Login" icon="ui-icon-key" action="#{loginBean.login}" update="@form"/>
+                                <p:commandButton value="Login" icon="ui-icon-key" action="#{loginBean.login}" update="@form" rendered="#{loginBean.action.equals('login')}"/>
+                                <p:commandButton value="Change Password" update="@form" process="@this" icon="fa fa-exchange" rendered="#{loginBean.action.equals('login')}">
+                                    <f:setPropertyActionListener target="#{loginBean.action}" value="#{'changepw'}"/>
+                                </p:commandButton>
+                                <br/>
+                                <br/>
+                                <p:commandLink value="Forgot Password" process="@this" update="@form" rendered="#{loginBean.action.equals('login')}">
+                                    <f:setPropertyActionListener target="#{loginBean.action}" value="#{'forgotpassword'}"/>
+                                </p:commandLink>
+                                <p:panel rendered="#{loginBean.action.equals('changepw')}">
+                                    <h1><h:outputText value="Change Password"/></h1>
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel value="Username:" for="username2" />
+                                        <p:inputText id="username2" value="#{loginBean.username}" title="Username" required="true" requiredMessage="The Current Username field is required.">
+
+                                        </p:inputText>
+                                        <p:outputLabel value="Password:" for="password2" />
+                                        <p:password id="password2" value="#{loginBean.password}" title="Password" required="true" requiredMessage="The Current Password field is required."/>
+                                        <p:outputLabel value="New Password:" for="newpassword" />
+                                        <p:password id="newpassword" value="#{loginBean.newpassword}" title="Password" required="true" requiredMessage="The New Password field is required." match="retypenewpassword" feedback="true" inline="true"/>
+                                        <p:outputLabel value="Retype Password:" for="retypenewpassword" />
+                                        <p:password id="retypenewpassword" value="#{loginBean.retypenewpassword}" title="Password" required="true" requiredMessage="The Retype Password field is required."/>
+                                        <p:commandButton value="Change Password" icon="fa fa-exchange" update="@form" process="@this,username2,password2,newpassword,retypenewpassword" action="#{loginBean.changepassword()}"/>
+                                        <p:commandButton value="Cancel" update="@form" process="@this" icon="fa fa-remove">
+                                            <f:setPropertyActionListener target="#{loginBean.action}" value="#{'login'}"/>
+                                        </p:commandButton>
+                                    </p:panelGrid>
+                                </p:panel>
+                                <p:panel rendered="#{loginBean.action.equals('forgotpassword')}">
+                                    <h1><h:outputText value="Change Password"/></h1>
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel value="Username:" for="username3" />
+                                        <p:inputText id="username3" value="#{loginBean.username}" title="Username" required="true" requiredMessage="The Current Username field is required.">
+
+                                        </p:inputText>
+                                        <p:outputLabel value="Verification Code:" for="verificationcode" />
+                                        <p:inputText id="verificationcode" value="#{loginBean.verificationcode}" title="verificationcode" required="true" requiredMessage="The Verification code field is required."/>
+                                        <p:outputLabel value="New Password:" for="newpassword2" />
+                                        <p:password id="newpassword2" value="#{loginBean.newpassword}" title="Password" required="true" requiredMessage="The New Password field is required." match="retypenewpassword2" feedback="true" inline="true"/>
+                                        <p:outputLabel value="Retype Password:" for="retypenewpassword2" />
+                                        <p:password id="retypenewpassword2" value="#{loginBean.retypenewpassword}" title="Password" required="true" requiredMessage="The Retype Password field is required."/>
+                                        <p:commandButton value="Send Code" icon="fa fa-exchange" update="@form" process="@this,username3" action="#{loginBean.send_verification_code(loginBean.username)}"/>
+                                        <p:commandButton value="Change Password" icon="fa fa-exchange" update="@form" process="@this,username3,verificationcode,newpassword2,retypenewpassword2" action="#{loginBean.forgotpassword()}"/>
+                                        <p:commandButton value="Cancel" update="@form" process="@this" icon="fa fa-remove">
+                                            <f:setPropertyActionListener target="#{loginBean.action}" value="#{'login'}"/>
+                                        </p:commandButton>
+                                    </p:panelGrid>
+                                </p:panel>
+                                <br/>
+                                <p:outputLabel value="#{loginBean.messageString}" rendered="#{loginBean.messageString.length()!=0}" style="color: red"/>
                             </center>
                         </p:panel>
                     </h:form>

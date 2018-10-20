@@ -37,10 +37,12 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression last_edit_by;
 	public final IntegerExpression organisationId;
 	public final AssociationExpression organisation;
+	public final StringExpression email_address;
 	public final CollectionExpression group_user;
 	public final CollectionExpression login_session;
 	public final CollectionExpression user_action;
 	public final CollectionExpression access_scope;
+	public final CollectionExpression forgotPassword;
 	
 	public User_detailDetachedCriteria() {
 		super(eihdms.User_detail.class, eihdms.User_detailCriteria.class);
@@ -62,10 +64,12 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		organisationId = new IntegerExpression("organisation.organisation_id", this.getDetachedCriteria());
 		organisation = new AssociationExpression("organisation", this.getDetachedCriteria());
+		email_address = new StringExpression("email_address", this.getDetachedCriteria());
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
 		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
 		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
+		forgotPassword = new CollectionExpression("forgotPassword", this.getDetachedCriteria());
 	}
 	
 	public User_detailDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -88,10 +92,12 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 		last_edit_by = new IntegerExpression("last_edit_by", this.getDetachedCriteria());
 		organisationId = new IntegerExpression("organisation.organisation_id", this.getDetachedCriteria());
 		organisation = new AssociationExpression("organisation", this.getDetachedCriteria());
+		email_address = new StringExpression("email_address", this.getDetachedCriteria());
 		group_user = new CollectionExpression("group_user", this.getDetachedCriteria());
 		login_session = new CollectionExpression("login_session", this.getDetachedCriteria());
 		user_action = new CollectionExpression("user_action", this.getDetachedCriteria());
 		access_scope = new CollectionExpression("access_scope", this.getDetachedCriteria());
+		forgotPassword = new CollectionExpression("forgotPassword", this.getDetachedCriteria());
 	}
 	
 	public User_categoryDetachedCriteria createUser_categoryCriteria() {
@@ -116,6 +122,10 @@ public class User_detailDetachedCriteria extends AbstractORMDetachedCriteria {
 	
 	public Access_scopeDetachedCriteria createAccess_scopeCriteria() {
 		return new Access_scopeDetachedCriteria(createCriteria("access_scope"));
+	}
+	
+	public ForgotPasswordDetachedCriteria createForgotPasswordCriteria() {
+		return new ForgotPasswordDetachedCriteria(createCriteria("forgotPassword"));
 	}
 	
 	public User_detail uniqueUser_detail(PersistentSession session) {

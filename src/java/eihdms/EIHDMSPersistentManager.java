@@ -96,6 +96,7 @@ public class EIHDMSPersistentManager extends PersistentManager {
 		aMetadataSources.addAnnotatedClass(eihdms.Sub_section_cell.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Report_form_entity_count.class);
 		aMetadataSources.addAnnotatedClass(eihdms.Report_form_group.class);
+		aMetadataSources.addAnnotatedClass(eihdms.ForgotPassword.class);
 	}
 	
 	public String getProjectName() {

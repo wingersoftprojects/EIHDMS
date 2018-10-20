@@ -7,6 +7,7 @@ package beans;
 
 import eihdms.User_detail;
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -167,5 +168,16 @@ public class User_detailBean extends AbstractBean<User_detail> implements Serial
     public void setConfirmPassword(String ConfirmPassword) {
         this.ConfirmPassword = ConfirmPassword;
     }
+    
+    private List<User_detail> searchUser;
+
+    public List<User_detail> getSearchUser() {
+        return searchUser;
+    }
+
+    public void setSearchUser(List<User_detail> searchUser) {
+        this.searchUser = searchUser;
+    }
+    
 
 }
