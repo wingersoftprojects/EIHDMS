@@ -1,0 +1,3 @@
+alter table user_detail add column email_address varchar(100);
+create table ForgotPassword (forgot_password_id int(11) not null auto_increment, expirydate datetime not null, code int(11) not null, user_detail_id int(11) not null, primary key (forgot_password_id)) ENGINE=InnoDB;
+alter table ForgotPassword add constraint Forgot_Password_User foreign key (user_detail_id) references user_detail (user_detail_id);

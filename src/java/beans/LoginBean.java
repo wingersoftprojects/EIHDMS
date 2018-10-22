@@ -8,6 +8,8 @@ package beans;
 import configurations.ConfigurationsFileBean;
 import connections.DBConnection;
 import eihdms.App_db_user_map;
+import eihdms.EIHDMSPersistentManager;
+import eihdms.ForgotPassword;
 import eihdms.Group_right;
 import eihdms.Login_session;
 import eihdms.User_detail;
@@ -16,7 +18,10 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -26,11 +31,14 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.joda.time.DateTime;
 import org.orm.PersistentException;
 import org.orm.PersistentManager;
+import org.orm.PersistentTransaction;
 import utilities.EIHDMSPersistentManager2;
 import utilities.GeneralUtilities;
 import utilities.Security;
+import utilities.SendMail;
 
 /**
  *
@@ -50,6 +58,34 @@ public class LoginBean implements Serializable {
     private String login_session_id;
     private PersistentManager _instance;
     private App_db_user_map app_db_user_map;
+
+    private String newpassword;
+    private String retypenewpassword;
+    private int verificationcode;
+
+    public int getVerificationcode() {
+        return verificationcode;
+    }
+
+    public void setVerificationcode(int verificationcode) {
+        this.verificationcode = verificationcode;
+    }
+
+    public String getNewpassword() {
+        return newpassword;
+    }
+
+    public void setNewpassword(String newpassword) {
+        this.newpassword = newpassword;
+    }
+
+    public String getRetypenewpassword() {
+        return retypenewpassword;
+    }
+
+    public void setRetypenewpassword(String retypenewpassword) {
+        this.retypenewpassword = retypenewpassword;
+    }
 
     public PersistentManager getInstance() {
         return _instance;
@@ -388,4 +424,148 @@ public class LoginBean implements Serializable {
         this.app_db_user_map = app_db_user_map;
     }
 
+    public void send_verification_code(String username_forgot_password) throws FileNotFoundException {
+        try {
+            User_detail user2 = User_detail.loadUser_detailByQuery("user_name='" + username_forgot_password + "'", null);
+            if (user2 != null) {
+                PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                Random rand = new Random();
+                int value = rand.nextInt(1000);
+                ForgotPassword forgotPassword = new ForgotPassword();
+                DateTime dateTime = new DateTime(new Date());
+                dateTime.plusDays(1).toDate();
+                forgotPassword.setExpirydate(new Timestamp(dateTime.plusDays(1).toDate().getTime()));
+                forgotPassword.setCode(value + 3000);
+                forgotPassword.setUser_detail(user2);
+                forgotPassword.save();
+                transaction.commit();
+                SendMail sendMail = new SendMail(user2.getEmail_address(), "EIHDMS System Password Change", "Dear " + user2.getEmail_address() + ",\n\n Kindly use the Verification Code: " + forgotPassword.getCode() + " to change your password");
+                sendMail.send();
+                //LogFile.write_log(getClientComputerName(getClientIp(request)), getClientIp(request), "VERIFICATION CODE", username, "Verification Code Sent Successfully!");
+                messageString = "Kindly check your email a verification code has been sent!";
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please check your email for the verification code!", "Please check your email for the verification code!"));
+            } else {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Username!", "Invalid Username!"));
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String forgotpassword() {
+        //user = null;
+        //setIsloggedin(false);
+        try {
+            User_detail user2 = User_detail.loadUser_detailByQuery("user_name='" + username + "'", null);
+            if (user2 != null) {
+                List<ForgotPassword> forgotPasswords = ForgotPassword.queryForgotPassword("user_detail_id=" + user2.getUser_detail_id() + " and code=" + verificationcode + " and expirydate>='" + GeneralUtilities.simpleDateFormatDate2().format(new Date()) + "'", null);
+                if (forgotPasswords.size() > 0) {
+                    if (!newpassword.equals(retypenewpassword)) {
+                        messageString = "New Password does not match with Re-entered Password!";
+                        action = "forgotpassword";
+                        return "login?faces-redirect=true";
+                    }
+                    if (newpassword.length() < 6) {
+                        messageString = "New Password should be atleast 6 characters";
+                        action = "forgotpassword";
+                        return "login?faces-redirect=true";
+                    }
+                    try {
+                        PersistentTransaction t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                        user2.setUser_password(Security.Encrypt(newpassword));
+                        user2.setLast_edit_by(user2.getUser_detail_id());
+                        user2.setLast_edit_date(new Timestamp(new Date().getTime()));
+                        EIHDMSPersistentManager.instance().getSession().merge(user2);
+                        t.commit();
+                    } catch (PersistentException ex) {
+                        Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    messageString = "";
+                    action = "login";
+                    setUsername("");
+                    setPassword("");
+                    setIsloggedin(false);
+                    prelogout();
+                    messageString = "Password changed successfuly!";
+                    return "login?faces-redirect=true";
+                } else {
+                    messageString = "Invalid Code!";
+                    action = "forgotpassword";
+                    return "login?faces-redirect=true";
+                }
+            }
+        } catch (PersistentException ex) {
+            Logger.getLogger(NavigationBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        messageString = "Invalid Username or Password!";
+        action = "forgotpassword";
+        return "forgotpassword?faces-redirect=true";
+    }
+
+    public String changepassword() {
+        user_detail = null;
+        //setIsloggedin(false);
+        try {
+            user_detail = User_detail.loadUser_detailByQuery("user_name='" + username + "'", null);
+        } catch (PersistentException ex) {
+            Logger.getLogger(NavigationBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (user_detail != null) {
+            if (!newpassword.equals(retypenewpassword)) {
+//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation", "New Password does not match with Re-entered Password!");
+//                RequestContext.getCurrentInstance().showMessageInDialog(message);
+                messageString = "New Password does not match with Re-entered Password!";
+                action = "changepw";
+                return "login?faces-redirect=true";
+            }
+            if (newpassword.length() < 6) {
+//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation", "Please enter the Contact Name!");
+//                RequestContext.getCurrentInstance().showMessageInDialog(message);
+                messageString = "New Password should be atleast 6 characters";
+                action = "changepw";
+                return "login?faces-redirect=true";
+            }
+
+            if (!Security.Decrypt(user_detail.getUser_password()).equals(password)) {
+                messageString = "Invalid Username or Password!";
+                action = "changepw";
+                return "login?faces-redirect=true";
+            }
+
+            try {
+                PersistentTransaction t = EIHDMSPersistentManager.instance().getSession().beginTransaction();
+                user_detail.setUser_password(Security.Encrypt(newpassword));
+                user_detail.setLast_edit_by(user_detail.getUser_detail_id());
+                user_detail.setLast_edit_date(new Timestamp(new Date().getTime()));
+                EIHDMSPersistentManager.instance().getSession().merge(user_detail);
+                t.commit();
+            } catch (PersistentException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            messageString = "";
+            action = "login";
+            setUsername("");
+            setPassword("");
+            setIsloggedin(false);
+            user_detail = null;
+            prelogout();
+            return "login?faces-redirect=true";
+        } else {
+            messageString = "Invalid Username or Password!";
+            action = "changepw";
+            return "login?faces-redirect=true";
+        }
+
+    }
 }

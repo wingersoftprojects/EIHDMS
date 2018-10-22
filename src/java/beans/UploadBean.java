@@ -991,10 +991,10 @@ public class UploadBean implements Serializable {
                     }
                     if (report_form.getReport_form_frequency().equals("Weekly")) {
                         jObj.put("Week", Integer.parseInt(base_data[9].toString()));
-                        jObj.put("Month", Integer.parseInt(base_data[8].toString()));
+                        jObj.put("Month", GeneralUtilities.convert_int_month_to_string_month(Integer.parseInt(base_data[8].toString())));
                     }
                     if (report_form.getReport_form_frequency().equals("Monthly")) {
-                        jObj.put("Month", Integer.parseInt(base_data[8].toString()));
+                        jObj.put("Month", GeneralUtilities.convert_int_month_to_string_month(Integer.parseInt(base_data[8].toString())));
                     }
                     if (report_form.getReport_form_frequency().equals("Bi-Monthly")) {
                         jObj.put("Bi-Month", Integer.parseInt(base_data[7].toString()));

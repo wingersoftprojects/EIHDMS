@@ -392,6 +392,10 @@ public class User_detail implements Serializable {
 			for(int i = 0; i < lAccess_scopes.length; i++) {
 				lAccess_scopes[i].setUser_detail(null);
 			}
+			eihdms.ForgotPassword[] lForgotPasswords = (eihdms.ForgotPassword[])getForgotPassword().toArray(new eihdms.ForgotPassword[getForgotPassword().size()]);
+			for(int i = 0; i < lForgotPasswords.length; i++) {
+				lForgotPasswords[i].setUser_detail(null);
+			}
 			return delete();
 		}
 		catch(Exception e) {
@@ -425,6 +429,10 @@ public class User_detail implements Serializable {
 			eihdms.Access_scope[] lAccess_scopes = (eihdms.Access_scope[])getAccess_scope().toArray(new eihdms.Access_scope[getAccess_scope().size()]);
 			for(int i = 0; i < lAccess_scopes.length; i++) {
 				lAccess_scopes[i].setUser_detail(null);
+			}
+			eihdms.ForgotPassword[] lForgotPasswords = (eihdms.ForgotPassword[])getForgotPassword().toArray(new eihdms.ForgotPassword[getForgotPassword().size()]);
+			for(int i = 0; i < lForgotPasswords.length; i++) {
+				lForgotPasswords[i].setUser_detail(null);
 			}
 			try {
 				session.delete(this);
@@ -496,6 +504,9 @@ public class User_detail implements Serializable {
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private eihdms.Organisation organisation;
 	
+	@Column(name="email_address", nullable=true, length=100)	
+	private String email_address;
+	
 	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.Group_user.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -515,6 +526,11 @@ public class User_detail implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set access_scope = new java.util.HashSet();
+	
+	@OneToMany(mappedBy="user_detail", targetEntity=eihdms.ForgotPassword.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set forgotPassword = new java.util.HashSet();
 	
 	private void setUser_detail_id(int value) {
 		this.user_detail_id = value;
@@ -640,6 +656,14 @@ public class User_detail implements Serializable {
 		return last_edit_by;
 	}
 	
+	public void setEmail_address(String value) {
+		this.email_address = value;
+	}
+	
+	public String getEmail_address() {
+		return email_address;
+	}
+	
 	public void setUser_category(eihdms.User_category value) {
 		this.user_category = value;
 	}
@@ -689,6 +713,15 @@ public class User_detail implements Serializable {
 	
 	public java.util.Set getAccess_scope() {
 		return access_scope;
+	}
+	
+	
+	public void setForgotPassword(java.util.Set value) {
+		this.forgotPassword = value;
+	}
+	
+	public java.util.Set getForgotPassword() {
+		return forgotPassword;
 	}
 	
 	

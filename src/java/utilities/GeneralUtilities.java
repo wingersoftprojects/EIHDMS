@@ -711,6 +711,53 @@ public class GeneralUtilities implements Serializable {
         }
         return weeks;
     }
+
+    public static String convert_int_month_to_string_month(Integer month) {
+        String month_string = "";
+        if (null != month) {
+            switch (month) {
+                case 1:
+                    month_string = "01" + "-January";
+                    break;
+                case 2:
+                    month_string = "02" + "-February";
+                    break;
+                case 3:
+                    month_string = "03" + "-March";
+                    break;
+                case 4:
+                    month_string = "04" + "-April";
+                    break;
+                case 5:
+                    month_string = "05" + "-May";
+                    break;
+                case 6:
+                    month_string = "06" + "-June";
+                    break;
+                case 7:
+                    month_string = "07" + "-July";
+                    break;
+                case 8:
+                    month_string = "08" + "-August";
+                    break;
+                case 9:
+                    month_string = "09" + "-September";
+                    break;
+                case 10:
+                    month_string = 10 + "-October";
+                    break;
+                case 11:
+                    month_string = 11 + "-November";
+                    break;
+                case 12:
+                    month_string = 12 + "-December";
+                    break;
+                default:
+                    break;
+            }
+        }
+        return month_string;
+    }
 //    public static void main(String[] args) {
 //        DateTime dt = new DateTime(2018, 5, 8, 0, 0, 0, 0);
 //        GeneralUtilities gn=new GeneralUtilities();
@@ -721,4 +768,7 @@ public class GeneralUtilities implements Serializable {
 //        System.out.println(gn.get_weeks_in_a_year(2017));
 //        System.out.println(gn.get_weeks_in_a_year(2016));
 //    }
+    public static SimpleDateFormat simpleDateFormatDate2() {
+        return new SimpleDateFormat("yyyy-MM-ddd H:mm:ss");
+    }
 }

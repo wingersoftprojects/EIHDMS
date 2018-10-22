@@ -15,7 +15,7 @@ public class Decrypte {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println(Security.Decrypt("u6aXN3H8D2X6k6T7c6s6k6H5J5m4o5m3N5P2c3c1R3FTi5A4"));
+        System.out.println(Security.Decrypt("w8kse8J3R7m3c9R2V8R1y2wmP2eeN1uti6AsF1kyP6ssm9Fug8u2"));
     }
     
 }

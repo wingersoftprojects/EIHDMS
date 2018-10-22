@@ -13,7 +13,7 @@
             <f:event listener="#{user_detailBean.initializelist()}" type="preRenderView" />        
             <f:event listener="#{user_categoryBean.initializelist()}" type="preRenderView" />
             <f:event listener="#{access_scopeBean.initializelist()}" type="preRenderView" />
-            
+
         </f:metadata>
     </ui:define>
     <ui:define name="content">
@@ -35,9 +35,9 @@
                     </p:panelGrid>
                 </p:fieldset>
                 <p:dataTable id="user_category_table" value="#{user_categoryBean.ts}" var="item" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,30,50,100">
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,30,50,100">
                     <p:column headerText="User Category Name">
                         #{item.user_category_name}
                     </p:column>
@@ -73,19 +73,21 @@
                         <p:selectBooleanCheckbox id="override_password" value="#{user_detailBean.overridePassword}" rendered="#{user_detailBean.selected.user_detail_id>0}" required="true" requiredMessage="Override password field is needed">
                             <p:ajax process="@this" update="@form"/>
                         </p:selectBooleanCheckbox>
-                        
+
                         <p:outputLabel value="Password:" id="label_password" for="password" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
                         <p:password id="password" value="#{user_detailBean.selected.user_password}" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
-                        
+
                         <p:outputLabel value="Confirm Password:" id="label_confirm_password" for="confirm_password" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
                         <p:password id="confirm_password" value="#{user_detailBean.confirmPassword}" required="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}" requiredMessage="Confirm password is required" rendered="#{(user_detailBean.selected.user_detail_id==0) or (user_detailBean.selected.user_detail_id>0 and user_detailBean.overridePassword)}"/>
-                        
+
                         <p:outputLabel value="First Name:" for="first_name"/>
                         <p:inputText id="first_name" value="#{user_detailBean.selected.first_name}" required="true" requiredMessage="First Name is required"/>
                         <p:outputLabel value="Second Name:" for="second_name"/>
                         <p:inputText id="second_name" value="#{user_detailBean.selected.second_name}" required="true" requiredMessage="Second Name is required"/>
                         <p:outputLabel value="Third Name:" for="third_name"/>
                         <p:inputText id="third_name" value="#{user_detailBean.selected.third_name}" required="false"/>
+                        <p:outputLabel value="Email Address:" for="email_address"/>
+                        <p:inputText id="email_address" value="#{user_detailBean.selected.email_address}" required="true" requiredMessage="Email Address field is required"/>
                         <p:outputLabel value="Is General Admin?:" for="is_user_gen_admin"/>
                         <p:selectOneMenu id="is_user_gen_admin" value="#{user_detailBean.selected.is_user_gen_admin}" required="true" requiredMessage="Is general admin field is required">
                             <f:selectItem itemLabel="" itemValue=""/>
@@ -102,15 +104,28 @@
                         <p:commandButton value="CLEAR" action="#{user_detailBean.cancel()}" icon="ui-icon-cancel" process="@this" update="@form"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <p:dataTable id="user_detail_table" value="#{user_detailBean.ts}" var="item">
-                    <p:column headerText="Username">
+                <p:dataTable id="user_detail_table" value="#{user_detailBean.ts}" var="item" rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,30,50,100,500" widgetVar="userTable"
+                             emptyMessage="No User found with given criteria" filteredValue="#{user_detailBean.searchUser}">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('userTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Username" filterBy="#{item.user_name}" filterMatchMode="contains">
                         #{item.user_name}
                     </p:column>
-                    <p:column headerText="First Name">
+                    <p:column headerText="First Name" filterBy="#{item.first_name}" filterMatchMode="contains">
                         #{item.first_name}
                     </p:column>
-                    <p:column headerText="Second Name">
+                    <p:column headerText="Second Name" filterBy="#{item.second_name}" filterMatchMode="contains">
                         #{item.second_name}
+                    </p:column>
+                    <p:column headerText="Email Address" filterBy="#{item.email_address}" filterMatchMode="contains">
+                        #{item.email_address}
                     </p:column>
                     <p:column headerText="User Category">
                         #{item.user_category.user_category_name}
