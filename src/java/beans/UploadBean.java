@@ -892,9 +892,9 @@ public class UploadBean implements Serializable {
                     + " b.data_element_id in (" + DataElementStr + ")"
                     + " AND b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ") AND b.report_form_group_id=" + report_form_group.getReport_form_group_id();
 
-            String sql2 = "CALL sp_select_dyanamic ('" + DistrictsStr + "','" + YearsStr + "','" + DataElementStr + "'," + report_form_group.getReport_form_group_id() + "," + report_form.getReport_form_id() + ");";
+            //String sql2 = "CALL sp_select_dyanamic ('" + DistrictsStr + "','" + YearsStr + "','" + DataElementStr + "'," + report_form_group.getReport_form_group_id() + "," + report_form.getReport_form_id() + ");";
             try {
-                base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql2).list();
+                base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
                 //base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
