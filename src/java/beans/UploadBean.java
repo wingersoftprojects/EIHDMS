@@ -869,7 +869,7 @@ public class UploadBean implements Serializable {
                     + "district_name,\n"
                     + "county_name,\n"
                     + "sub_county_name,\n"
-                    + "p.parish_name,\n"
+                    + "parish_name,\n"
                     + "health_facility_name,\n"
                     + "b.report_period_year,\n"
                     + "b.report_period_quarter,\n"
@@ -889,7 +889,7 @@ public class UploadBean implements Serializable {
                     + "technical_area_name\n"
                     + "FROM\n"
                     + "base_data_" + report_form.getReport_form_id() + "_" + report_form_group.getReport_form_group_id() + " AS b\n"
-                    + " b.data_element_id in (" + DataElementStr + ")"
+                    + " where b.data_element_id in (" + DataElementStr + ")"
                     + " AND b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ") AND b.report_form_group_id=" + report_form_group.getReport_form_group_id();
 
             //String sql2 = "CALL sp_select_dyanamic ('" + DistrictsStr + "','" + YearsStr + "','" + DataElementStr + "'," + report_form_group.getReport_form_group_id() + "," + report_form.getReport_form_id() + ");";
