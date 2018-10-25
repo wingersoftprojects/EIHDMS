@@ -935,16 +935,16 @@ public class UploadBean implements Serializable {
 
             if (report_form.getReport_form_frequency().equals("Weekly")) {
                 jObj.put("Week", new JSONObject().put("type", "number"));
-                jObj.put("Month", new JSONObject().put("type", "number"));
+                jObj.put("Month", new JSONObject().put("type", "string"));
             }
             if (report_form.getReport_form_frequency().equals("Monthly")) {
-                jObj.put("Month", new JSONObject().put("type", "number"));
+                jObj.put("Month", new JSONObject().put("type", "string"));
             }
             if (report_form.getReport_form_frequency().equals("Bi-Monthly")) {
                 jObj.put("Bi-Month", new JSONObject().put("type", "number"));
             }
             if (report_form.getReport_form_frequency().equals("Quarterly")) {
-                jObj.put("Quarter", new JSONObject().put("type", "number"));
+                jObj.put("Quarter", new JSONObject().put("type", "string"));
             }
             jObj.put("Year", new JSONObject().put("type", "number"));
             jObj.put("Section", new JSONObject().put("type", "string"));
@@ -1000,7 +1000,7 @@ public class UploadBean implements Serializable {
                         jObj.put("Bi-Month", Integer.parseInt(base_data[7].toString()));
                     }
                     if (report_form.getReport_form_frequency().equals("Quarterly")) {
-                        jObj.put("Quarter", Integer.parseInt(base_data[6].toString()));
+                        jObj.put("Quarter", GeneralUtilities.convert_int_quarter_to_string_quarter(Integer.parseInt(base_data[6].toString())));
                     }
                     jObj.put("Year", Integer.parseInt(base_data[5].toString()));
 

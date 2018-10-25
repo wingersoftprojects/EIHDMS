@@ -712,6 +712,29 @@ public class GeneralUtilities implements Serializable {
         return weeks;
     }
 
+    public static String convert_int_quarter_to_string_quarter(Integer quarter) {
+        String quarter_string = "";
+        if (quarter != null) {
+            switch (quarter) {
+                case 1:
+                    quarter_string = "01" + " Quarter";
+                    break;
+                case 2:
+                    quarter_string = "02" + " Quarter";
+                    break;
+                case 3:
+                    quarter_string = "03" + " Quarter";
+                    break;
+                case 4:
+                    quarter_string = "04" + " Quarter";
+                    break;
+                default:
+                    break;
+            }
+        }
+        return quarter_string;
+    }
+
     public static String convert_int_month_to_string_month(Integer month) {
         String month_string = "";
         if (null != month) {
@@ -768,6 +791,7 @@ public class GeneralUtilities implements Serializable {
 //        System.out.println(gn.get_weeks_in_a_year(2017));
 //        System.out.println(gn.get_weeks_in_a_year(2016));
 //    }
+
     public static SimpleDateFormat simpleDateFormatDate2() {
         return new SimpleDateFormat("yyyy-MM-ddd H:mm:ss");
     }
