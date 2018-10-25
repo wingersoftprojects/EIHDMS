@@ -33,10 +33,13 @@
                                     <p:outputLabel value="Password:" for="password" />
                                     <p:password id="password" value="#{loginBean.password}" title="Password" required="true" requiredMessage="The Password field is required."/>
                                 </p:panelGrid>
+                                <br/>                               
                                 <p:commandButton value="Login" icon="ui-icon-key" action="#{loginBean.login}" update="@form" rendered="#{loginBean.action.equals('login')}"/>
+                                <td/>
                                 <p:commandButton value="Change Password" update="@form" process="@this" icon="fa fa-exchange" rendered="#{loginBean.action.equals('login')}">
                                     <f:setPropertyActionListener target="#{loginBean.action}" value="#{'changepw'}"/>
                                 </p:commandButton>
+
                                 <br/>
                                 <br/>
                                 <p:commandLink value="Forgot Password" process="@this" update="@form" rendered="#{loginBean.action.equals('login')}">

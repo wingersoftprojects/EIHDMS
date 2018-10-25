@@ -481,19 +481,24 @@ public class Interface_data_smsBean extends AbstractBean<Interface_data_sms> imp
     public String getDistrictNameByFacilityName(String aFacility) {
         String entityname = "";
         ResultSet rs = null;
-        String sql = "select district_name from district WHERE district_id IN ("
-                + "select district_id from health_facility WHERE health_facility_name='" + aFacility + "')";
-        try (Connection conn = DBConnection.getMySQLConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);) {
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                entityname = rs.getString("district_name");
-            }
+        if (null != aFacility) {
+            String sql = "select district_name from district WHERE district_id IN ("
+                    + "select district_id from health_facility WHERE health_facility_name='" + aFacility + "')";
+            try (Connection conn = DBConnection.getMySQLConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql);) {
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    entityname = rs.getString("district_name");
+                }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Interface_data_smsBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            entityname = "";
         }
         return entityname;
+
     }
 
     /**
