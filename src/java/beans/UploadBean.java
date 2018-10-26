@@ -66,6 +66,7 @@ import org.orm.PersistentTransaction;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import utilities.GeneralUtilities;
 import utilities.Patient_Level_Data;
@@ -823,14 +824,24 @@ public class UploadBean implements Serializable {
         return jSONArray;
     }
 
-    public JSONArray getjSONArray_Dynamic_Pivot(District[] selectedDistricts, Integer[] selectedYears, Integer[] selectedDataElements) {
+    public void clear_jSONArray(){
+        jSONArray=new JSONArray();
+    }
+    
+    public void load_jSONArray(District[] selectedDistricts, Integer[] selectedYears, Integer[] selectedDataElements) {
+
+        JSONArray jArray = new JSONArray();
+        jSONArray = new JSONArray();
+
         String YearsStr = "";
         String DistrictsStr = "";
         String DataElementStr = "";
-        JSONArray jArray = new JSONArray();
+        if (jSONArray == null) {
+            jSONArray = new JSONArray();
+        }
         base_data_objects = new ArrayList<>();
         if (selectedYears == null || selectedDistricts == null) {
-            return jArray;
+            jSONArray = new JSONArray();
         }
         //get 1016,2015,2013 string format for selected years
         int x = 0;
@@ -893,16 +904,28 @@ public class UploadBean implements Serializable {
                     + " AND b.district_id in(" + DistrictsStr + ") AND report_period_year IN( " + YearsStr + ") AND b.report_form_group_id=" + report_form_group.getReport_form_group_id();
 
             //String sql2 = "CALL sp_select_dyanamic ('" + DistrictsStr + "','" + YearsStr + "','" + DataElementStr + "'," + report_form_group.getReport_form_group_id() + "," + report_form.getReport_form_id() + ");";
-            try {
-                base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
-                //base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
-            } catch (PersistentException ex) {
+//            try {
+//                base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+//                //base_data_objects = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
+//            } catch (PersistentException ex) {
+//                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            try (Connection conn = DBConnection.getMySQLConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql);) {
+                ResultSet rs = ps.executeQuery();
+                load_json_array_from_base_data_array2(jSONArray, jArray, "dynamic", rs);
+            } catch (SQLException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        //load_json_array_from_base_data_array(jSONArray, jArray, "dynamic");
 
-        jSONArray = new JSONArray();
-        load_json_array_from_base_data_array(jSONArray, jArray, "dynamic");
+    }
+
+    public JSONArray getjSONArray_Dynamic_Pivot() {
+        if (jSONArray == null) {
+            jSONArray = new JSONArray();
+        }
         return jSONArray;
     }
 
@@ -1045,6 +1068,135 @@ public class UploadBean implements Serializable {
                 }
             }
             jSONArray = jArray;
+        }
+    }
+
+    public void load_json_array_from_base_data_array2(JSONArray jsona, JSONArray jArray, String context, ResultSet rs) {
+        if (report_form != null) {
+            try {
+                JSONObject jObj = new JSONObject();
+                jObj.put("DataElement", new JSONObject().put("type", "string"));
+                if (report_form.getLowest_report_form_level().equals("Facility")) {
+                    jObj.put("District", new JSONObject().put("type", "string"));
+                    jObj.put("County", new JSONObject().put("type", "string"));
+                    jObj.put("Subcounty", new JSONObject().put("type", "string"));
+                    jObj.put("Facility", new JSONObject().put("type", "string"));
+                }
+                if (report_form.getLowest_report_form_level().equals("Parish")) {
+                    jObj.put("District", new JSONObject().put("type", "string"));
+                    jObj.put("County", new JSONObject().put("type", "string"));
+                    jObj.put("Subcounty", new JSONObject().put("type", "string"));
+                    jObj.put("Parish", new JSONObject().put("type", "string"));
+                }
+                if (report_form.getLowest_report_form_level().equals("District")) {
+                    jObj.put("District", new JSONObject().put("type", "string"));
+                }
+
+                if (report_form.getReport_form_frequency().equals("Weekly")) {
+                    jObj.put("Week", new JSONObject().put("type", "number"));
+                    jObj.put("Month", new JSONObject().put("type", "string"));
+                }
+                if (report_form.getReport_form_frequency().equals("Monthly")) {
+                    jObj.put("Month", new JSONObject().put("type", "string"));
+                }
+                if (report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+                    jObj.put("Bi-Month", new JSONObject().put("type", "number"));
+                }
+                if (report_form.getReport_form_frequency().equals("Quarterly")) {
+                    jObj.put("Quarter", new JSONObject().put("type", "string"));
+                }
+                jObj.put("Year", new JSONObject().put("type", "number"));
+                jObj.put("Section", new JSONObject().put("type", "string"));
+                jObj.put("SubSection", new JSONObject().put("type", "string"));
+                jObj.put("DataElementContext", new JSONObject().put("type", "string"));
+                jObj.put("AgeCategory", new JSONObject().put("type", "string"));
+                jObj.put("SexCategory", new JSONObject().put("type", "string"));
+                jObj.put("OtherCategory", new JSONObject().put("type", "string"));
+                jObj.put("TechnicalArea", new JSONObject().put("type", "string"));
+
+                jObj.put("DataElementValue", new JSONObject().put("type", "number"));
+                jArray.put(jObj);
+
+//            if (base_data_objects == null) {
+//                base_data_objects = new ArrayList<>();
+//            }
+                int counter = 1;
+                while (rs.next()) {
+                    if (rs.getString("data_type").equals("integer") || rs.getString("data_type").equals("float")) {
+                        jObj = new JSONObject();
+                        jObj.put("DataElement", rs.getString("data_element_name"));
+                        if (report_form.getLowest_report_form_level().equals("Facility")) {
+                            jObj.put("District", rs.getString("district_name"));
+                            jObj.put("County", rs.getString("county_name"));
+                            jObj.put("Subcounty", rs.getString("sub_county_name"));
+                            jObj.put("Facility", rs.getString("health_facility_name"));
+                        }
+                        if (report_form.getLowest_report_form_level().equals("Parish")) {
+                            jObj.put("District", rs.getString("district_name"));
+                            jObj.put("County", rs.getString("county_name"));
+                            jObj.put("Subcounty", rs.getString("sub_county_name"));
+                            jObj.put("Parish", rs.getString("parish_name"));
+                        }
+                        if (report_form.getLowest_report_form_level().equals("District")) {
+                            jObj.put("District", rs.getString("district_name"));
+                        }
+                        try {
+                            jObj.put("DataElementValue", rs.getFloat("data_element_value"));
+                        } catch (SQLException | JSONException ex) {
+                            jObj.put("DataElementValue", 0);
+                        }
+                        if (report_form.getReport_form_frequency().equals("Weekly")) {
+                            jObj.put("Week", rs.getInt("report_period_week"));
+                            jObj.put("Month", GeneralUtilities.convert_int_month_to_string_month(rs.getInt("report_period_month")));
+                        }
+                        if (report_form.getReport_form_frequency().equals("Monthly")) {
+                            jObj.put("Month", GeneralUtilities.convert_int_month_to_string_month(rs.getInt("report_period_month")));
+                        }
+                        if (report_form.getReport_form_frequency().equals("Bi-Monthly")) {
+                            jObj.put("Bi-Month", rs.getInt("report_period_bi_month"));
+                        }
+                        if (report_form.getReport_form_frequency().equals("Quarterly")) {
+                            jObj.put("Quarter", GeneralUtilities.convert_int_quarter_to_string_quarter(rs.getInt("report_period_quarter")));
+                        }
+                        jObj.put("Year", rs.getInt("report_period_year"));
+
+                        jObj.put("Section", rs.getString("section_name"));
+                        jObj.put("SubSection", rs.getString("sub_section_name"));
+                        try {
+                            jObj.put("DataElementContext", rs.getString("data_element_context"));
+                        } catch (Exception ex) {
+                            jObj.put("DataElementContext", "");
+                        }
+                        try {
+                            jObj.put("AgeCategory", rs.getString("age_category"));
+                        } catch (Exception ex) {
+                            jObj.put("AgeCategory", "");
+                        }
+                        try {
+                            jObj.put("SexCategory", rs.getString("sex_category"));
+                        } catch (Exception ex) {
+                            jObj.put("SexCategory", "");
+                        }
+                        try {
+                            jObj.put("OtherCategory", rs.getString("other_category"));
+                        } catch (Exception ex) {
+                            jObj.put("OtherCategory", "");
+                        }
+                        try {
+                            jObj.put("TechnicalArea", rs.getString("technical_area_name"));
+                        } catch (Exception ex) {
+                            jObj.put("TechnicalArea", "");
+                        }
+                        jArray.put(jObj);
+                    }
+                    System.out.println(counter);
+                    counter++;
+                }
+                rs.close();
+                jSONArray = jArray;
+            } catch (SQLException ex) {
+                Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
