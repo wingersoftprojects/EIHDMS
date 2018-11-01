@@ -1,3 +1,5 @@
+DROP PROCEDURE IF EXISTS `sp_split_base_data_into_report_form_groups`;
+delimiter ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_split_base_data_into_report_form_groups`(IN `in_report_form_id` int)
 BEGIN
 	
@@ -49,3 +51,5 @@ DEALLOCATE PREPARE stmt1;
 	
 	
 END
+;;
+delimiter ;

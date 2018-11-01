@@ -118,7 +118,7 @@ public class SMSData {
 
                 transaction.commit();
                 this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
-                //this.update_sms_enity_id(interface_data_sms, phone);
+                this.update_sms_enity_id(interface_data_sms, phone);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -600,13 +600,14 @@ public class SMSData {
                     }
                 }
             }
+             
             if (phone_contact.getPhone_contact_id() != 0) {
-                interface_data_sms.setEntity_id(phone_contact.getEntity_id());
-                interface_data_sms.setEntity_type(phone_contact.getEntity_type());
+//                interface_data_sms.setEntity_id(phone_contact.getEntity_id());
+//                interface_data_sms.setEntity_type(phone_contact.getEntity_type());
                 set_sms_location(phone_contact);
             } else {
                 interface_data_sms.setStatus_f("ERR");
-                interface_data_sms.setStatus_f_desc("Unknown Sender");
+                interface_data_sms.setStatus_f_desc("UnMapped Entity");
             }
             /**
              * Return invalid SMS is size=0

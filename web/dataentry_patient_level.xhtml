@@ -32,7 +32,14 @@
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
                         <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
-                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-4}" itemValue="#{generalUtilities.getCurrentYear()-4}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-5}" itemValue="#{generalUtilities.getCurrentYear()-5}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-6}" itemValue="#{generalUtilities.getCurrentYear()-6}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-7}" itemValue="#{generalUtilities.getCurrentYear()-7}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-8}" itemValue="#{generalUtilities.getCurrentYear()-8}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-9}" itemValue="#{generalUtilities.getCurrentYear()-9}" />
+                        <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-10}" itemValue="#{generalUtilities.getCurrentYear()-10}" />
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="report_period_quarter,report_period_bi_month,report_period_week,report_period_month,report_period_from_date,report_period_to_date"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Quarter:" for="report_period_quarter" rendered="#{uploadBean.showquartery()}"/>
                     <p:selectOneMenu id="report_period_quarter" value="#{uploadBean.report_period_quarter}" rendered="#{uploadBean.showquartery()}">
@@ -41,7 +48,7 @@
                         <f:selectItem itemLabel="Q2(Apr-Jun)" itemValue="2" />
                         <f:selectItem itemLabel="Q3(Jul-Sep)" itemValue="3" />
                         <f:selectItem itemLabel="Q4(Oct-Dec)" itemValue="4" />
-                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="report_period_from_date,report_period_to_date"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Bi-Month:" for="report_period_bi_month" rendered="#{uploadBean.showbimonthly()}"/>
                     <p:selectOneMenu id="report_period_bi_month" value="#{uploadBean.report_period_bi_month}" rendered="#{uploadBean.showbimonthly()}">
@@ -52,12 +59,12 @@
                         <f:selectItem itemLabel="Jul-Aug" itemValue="4" />
                         <f:selectItem itemLabel="Sep-Oct" itemValue="5" />
                         <f:selectItem itemLabel="Nov-Dec" itemValue="6" />
-                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="report_period_from_date,report_period_to_date"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
                     <p:inputText id="report_period_week" value="#{uploadBean.report_period_week}" rendered="#{uploadBean.showweekly()}">
                         <f:validateLongRange minimum="1" maximum="52"/>
-                        <p:ajax event="blur" process="@this" update="@form" listener="#{uploadBean.get_date_from_other_periods()}"/>
+                        <p:ajax event="blur" process="@this" update="report_period_from_date,report_period_to_date" listener="#{uploadBean.get_date_from_other_periods()}"/>
                     </p:inputText>
                     <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}"/>
                     <p:selectOneMenu id="report_period_month" value="#{uploadBean.report_period_month}" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}">
@@ -74,7 +81,7 @@
                         <f:selectItem itemLabel="Oct" itemValue="10" />
                         <f:selectItem itemLabel="Nov" itemValue="11" />
                         <f:selectItem itemLabel="Dec" itemValue="12" />
-                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="@form"/>
+                        <p:ajax process="@this" listener="#{uploadBean.get_date_from_other_periods()}" update="report_period_from_date,report_period_to_date"/>
                     </p:selectOneMenu>
                     <p:outputLabel value="Report Period Start date:" for="report_period_from_date" />
                     <p:calendar id="report_period_from_date" value="#{uploadBean.report_period_from_date}" title="startdate" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="Start Date field is required">

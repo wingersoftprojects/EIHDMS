@@ -18,30 +18,30 @@
                         <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_view')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="report_form_group,dataelements" listener="#{uploadBean.clear_jSONArray()}"/>
+                            <p:ajax process="@this" update="@form"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="report_form_group" value="Report Form Group:" />
                         <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
                             <f:selectItem itemLabel="" />
                             <f:selectItems value="#{report_form_groupBean.getts(uploadBean.report_form)}" var="item" itemLabel="#{item.report_form_group_name}" itemValue="#{item}"/>
-                            <p:ajax process="@this" update="dataelements" listener="#{uploadBean.clear_jSONArray()}"/>
+                            <p:ajax process="@this" update="dataelements"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="dataelements" value="Selected Data Elements:" />
-                        <p:selectCheckboxMenu id="dataelements" value="#{kpiBean.selectedDataElements}" showHeader="false" label="" required="true" requiredMessage="Data Elements Are Required">
+                        <p:selectCheckboxMenu id="dataelements" value="#{kpiBean.selectedDataElements}" label="" required="true" requiredMessage="Data Elements Are Required">
                             <f:selectItems value="#{report_form_groupBean.get_dataelements(uploadBean.report_form_group)}" var="de" itemLabel="#{de.data_element_name}" itemValue="#{de.data_element_id}" />
-                            <p:ajax process="@this" listener="#{uploadBean.clear_jSONArray()}"/>
+                            <p:ajax process="@this"/>
                         </p:selectCheckboxMenu>
                         <p:outputLabel for="years" value="Calender Year:" />
                         <p:selectCheckboxMenu id="years" value="#{kpiBean.selectedYears}" label="" required="true" requiredMessage="Calener Year(s) required">
                             <f:selectItems value="#{kpiBean.years}" />
-                            <p:ajax process="@this" listener="#{uploadBean.clear_jSONArray()}"/>
+                            <p:ajax process="@this"/>
                         </p:selectCheckboxMenu>
                         <p:outputLabel for="district" value="District:" />
                         <p:selectCheckboxMenu id="district" value="#{kpiBean.selectedDistricts}" label="" panelStyle="width:150px" converter="districtConverter" required="true" requiredMessage="District(s) required">
                             <f:selectItems value="#{kpiBean.districts}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
                         </p:selectCheckboxMenu>
 
-                        <p:commandButton value="Show Report" update="@form" action="#{uploadBean.load_jSONArray(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)}"/>
+                        <p:commandButton value="Show Report" update="@form"/>
                     </p:panelGrid>
 
                     <!-- 1. Create a DIV container to insert the component -->
@@ -50,7 +50,7 @@
                     <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
                     <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)};
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,
@@ -84,7 +84,7 @@
                     </c:if>
                     <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)};
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,
@@ -121,8 +121,8 @@
                     </c:if>
                     <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
                         <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
-
+                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)};
+                            
                             var report = {
                                 classicView: true,
                                 configuratorActive: false,

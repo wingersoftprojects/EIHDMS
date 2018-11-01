@@ -69,6 +69,7 @@ public class SendMail {
         Properties props = new Properties();
         props.put("mail.smtp.host", "true");
         props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.trust", GlobalSettingsBean.getEMAIL_HOST());
         props.put("mail.smtp.host", GlobalSettingsBean.getEMAIL_HOST());
         props.put("mail.smtp.port", GlobalSettingsBean.getEMAIL_PORT());
         props.put("mail.smtp.auth", "true");
