@@ -27,7 +27,7 @@
                             <p:ajax process="@this" update="dataelements" listener="#{uploadBean.clear_jSONArray()}"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="dataelements" value="Selected Data Elements:" />
-                        <p:selectCheckboxMenu id="dataelements" value="#{kpiBean.selectedDataElements}" showHeader="false" label="" required="true" requiredMessage="Data Elements Are Required">
+                        <p:selectCheckboxMenu id="dataelements" value="#{kpiBean.selectedDataElements}" showHeader="true" label="" required="true" requiredMessage="Data Elements Are Required">
                             <f:selectItems value="#{report_form_groupBean.get_dataelements(uploadBean.report_form_group)}" var="de" itemLabel="#{de.data_element_name}" itemValue="#{de.data_element_id}" />
                             <p:ajax process="@this" listener="#{uploadBean.clear_jSONArray()}"/>
                         </p:selectCheckboxMenu>

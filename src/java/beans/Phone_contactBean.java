@@ -142,7 +142,7 @@ public class Phone_contactBean extends AbstractBean<Phone_contact> implements Se
     public List<Object[]> getParish_list(Integer aDistrict_id) {
         if (aDistrict_id != null) {
             try {
-                parish_list = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT parish_id,parish_name FROM parish WHERE sub_county_id IN \n"
+                parish_list = (List<Object[]>) EIHDMSPersistentManager.instance().getSession().createSQLQuery("SELECT parish_name,parish_id FROM parish  WHERE sub_county_id IN \n"
                         + "( SELECT sub_county_id FROM sub_county WHERE county_id IN \n"
                         + "( SELECT county_id FROM county WHERE district_id='" + aDistrict_id + "'))").list();
             } catch (PersistentException ex) {

@@ -13,12 +13,12 @@
         <h:form>
             <p:growl/>
             <p:fieldset legend="Data Entry Header" id="data_entry_header">
-                <p:panelGrid columns="8" id="header_panel_grid">
+                <p:panelGrid columns="6" id="header_panel_grid">
                     <p:outputLabel for="report_form_id" value="Report Form:" />
                     <p:selectOneMenu id="report_form_id" value="#{uploadBean.report_form}" style="width:125px" required="true" requiredMessage="Field Form is Required" converter="report_formConverter">
                         <f:selectItem itemLabel="" />
                         <f:selectItems value="#{report_formBean.getReport_forms_by_user('allow_add','mode_data_entry')}" var="item" itemLabel="#{item.report_form_name}" itemValue="#{item}"/>
-                        <p:ajax process="@this" update="@form"/>
+                        <p:ajax event="change" process="@this" update="@form"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="report_form_group" value="Report Form Group:" />
                     <p:selectOneMenu id="report_form_group" value="#{uploadBean.report_form_group}" style="width:125px" required="true" requiredMessage="Report Form Group field is Required" converter="report_form_groupConverter">
@@ -65,7 +65,7 @@
                     <p:outputLabel value="Week:" for="report_period_week" rendered="#{uploadBean.showweekly()}"/>
                     <p:inputText id="report_period_week" value="#{uploadBean.report_period_week}" rendered="#{uploadBean.showweekly()}">
                         <f:validateLongRange minimum="1" maximum="52"/>
-                        <p:ajax event="blur" process="@this" update="report_period_from_date,report_period_to_date" listener="#{uploadBean.get_date_from_other_periods()}"/>
+                        <p:ajax event="blur" process="@this" update="report_period_month,report_period_from_date,report_period_to_date" listener="#{uploadBean.get_date_from_other_periods()}"/>
                     </p:inputText>
                     <p:outputLabel value="Month:" for="report_period_month" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}"/>
                     <p:selectOneMenu id="report_period_month" value="#{uploadBean.report_period_month}" rendered="#{uploadBean.showmonthly() or uploadBean.showweekly()}">
@@ -92,58 +92,26 @@
                     <p:calendar id="report_period_to_date" value="#{uploadBean.report_period_to_date}" title="report_period_to_date" pattern="dd/MM/yyyy" navigator="true" size="11" required="true" requiredMessage="End Date field is required">
                         <p:ajax process="@this"/>
                     </p:calendar>
-                    <p:outputLabel id="label_lowest_level" value="#{uploadBean.report_form.lowest_report_form_level}"/>
-                    <p:panel id="panel_lowest_level">
-                        <p:autoComplete id="auto_health_facility" value="#{uploadBean.health_facility}"
-                                        completeMethod="#{uploadBean.completeHealth_facility}"
-                                        var="health_facility" itemLabel="#{health_facility.health_facility_name}" itemValue="#{health_facility}" 
-                                        converter="health_facilityConverter" forceSelection="true"
-                                        minQueryLength="3" required="true" requiredMessage="Health Facility Field is required" 
-                                        rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Facility')}">
-                            <p:column headerText="Health Facility Name" style="text-align: left">
-                                <h:outputText value="#{health_facility.health_facility_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Sub County" style="text-align: left">
-                                <h:outputText value="#{health_facility.sub_county.sub_county_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="District" style="text-align: left">
-                                <h:outputText value="#{health_facility.district.district_name}">
-                                </h:outputText>
-                            </p:column>
-                        </p:autoComplete>
-                        <p:autoComplete id="auto_parish" value="#{uploadBean.parish}"
-                                        completeMethod="#{uploadBean.completeParish}"
-                                        var="parish" itemLabel="#{parish.parish_name}" itemValue="#{parish}"
-                                        converter="parishConverter" forceSelection="true"
-                                        minQueryLength="3" required="true" requiredMessage="Parish Field is required" 
-                                        rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Parish')}">
-                            <p:column headerText="Parish Name" style="text-align: left">
-                                <h:outputText value="#{parish.parish_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Subcounty" style="text-align: left">
-                                <h:outputText value="#{parish.sub_county.sub_county_name}">
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="District" style="text-align: left">
-                                <h:outputText value="#{parish.sub_county.county.district.district_name}">
-                                </h:outputText>
-                            </p:column>
-                        </p:autoComplete>
-                        <p:autoComplete id="auto_distict" value="#{uploadBean.district}"
-                                        completeMethod="#{uploadBean.completeDistrict}"
-                                        var="district" itemLabel="#{district.district_name}" itemValue="#{district}" 
-                                        converter="districtConverter" forceSelection="true"
-                                        minQueryLength="3" required="true" requiredMessage="District Field is required" 
-                                        rendered="#{uploadBean.report_form.lowest_report_form_level.equals('District')}">
-                            <p:column headerText="District Name" style="text-align: left">
-                                <h:outputText value="#{district.district_name}">
-                                </h:outputText>
-                            </p:column>
-                        </p:autoComplete>
-                    </p:panel>
+                    <p:outputLabel value="District"/>
+                    <p:selectOneMenu id="district" value="#{uploadBean.district}" required="false" requiredMessage="No District Selected" converter="districtConverter">
+                        <f:selectItem itemLabel="--select a district--"/>
+                        <f:selectItems value="#{districtBean.tsActive}" var="item" itemLabel="#{item.district_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this" update="label_parish_list,label_facility_list"/>
+                    </p:selectOneMenu>                    
+                    <p:outputLabel id="label_parish" value="#{uploadBean.report_form.lowest_report_form_level}" rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Parish')}"/>
+                    <p:selectOneMenu id="label_parish_list" value="#{uploadBean.parish}" rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Parish')}" required="true" requiredMessage="Select a Parish" converter="parishConverter">
+                        <f:selectItem itemLabel="--select a parish--"/>
+                        <f:selectItems value="#{parishBean.getParish_list(uploadBean.district)}" var="item" itemLabel="#{item.parish_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel id="label_facility" value="#{uploadBean.report_form.lowest_report_form_level}" rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Facility')}"/>
+                    <p:selectOneMenu id="label_facility_list" value="#{uploadBean.health_facility}" rendered="#{uploadBean.report_form.lowest_report_form_level.equals('Facility')}" required="true" requiredMessage="Select a Facility" converter="health_facilityConverter">
+                        <f:selectItem itemLabel="--select a facility--"/>
+                        <f:selectItems value="#{health_facilityBean.getFacility_list(uploadBean.district)}" var="item" itemLabel="#{item.health_facility_name}" itemValue="#{item}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>      
+
                     <p:commandButton value="Retrieve Entry Form" action="#{uploadBean.refreshData_elements(uploadBean.report_form,uploadBean.report_form_group)}" update="@form"/>
                 </p:panelGrid>
                 <p:accordionPanel multiple="true" id="detail_panel_grid">

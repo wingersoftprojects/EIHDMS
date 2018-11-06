@@ -42,6 +42,7 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
     private Sub_countyBean sub_countyBean;
     @ManagedProperty("#{parishBean}")
     private ParishBean parishBean;
+    List<Object[]> facility_list;
 
     public Health_facilityBean() {
         super(Health_facility.class);
@@ -98,6 +99,7 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
             }
         }
     }
+
     public List<Health_facility> getts(Parish parish) {
         List<Health_facility> temp = new ArrayList<>();
         try {
@@ -112,10 +114,9 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
         return temp;
     }
 
-    
     public List<Health_facility> getts_id(int aParish_id) {
         List<Health_facility> temp = new ArrayList<>();
-        
+
         try {
             if (this.getEntityClass() != null && aParish_id != 0) {
                 temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Health_facility  d where d.is_deleted<>1 AND d.parish=" + aParish_id).list();
@@ -127,7 +128,6 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
         }
         return temp;
     }
-
 
     public void getLocationTreeNodeByDistrict_F(District aDistrict) {
         LocationTreeNode = new DefaultTreeNode("LocationTreeNode", null);
@@ -257,6 +257,20 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
      */
     public void setDistrictBean(DistrictBean districtBean) {
         this.districtBean = districtBean;
+    }
+
+    public List<Health_facility> getFacility_list(District aDistrict) {
+        List<Health_facility> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && aDistrict != null) {
+                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select c FROM Health_facility  c where c.is_deleted<>1 AND c.district=" + aDistrict.getDistrict_id()).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
     }
 
 }

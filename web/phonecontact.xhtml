@@ -41,11 +41,13 @@
                         <p:selectOneMenu id="entity_id_facility" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='Facility'}" required="true" requiredMessage="Entity Id field is required">
                             <f:selectItem itemLabel="Select One"/>
                             <f:selectItems value="#{phone_contactBean.getFacility_list(phone_contactBean.adistrict_id)}" var="item" itemLabel="#{item[1]}" itemValue="#{item[0]}"/>
+                        <p:ajax process="@this"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Entity Name:" rendered="#{phone_contactBean.selected.entity_type =='Organisation'}"/>
                         <p:selectOneMenu id="entity_id_organisation" value="#{phone_contactBean.selected.entity_id}" rendered="#{phone_contactBean.selected.entity_type =='Organisation'}" required="true" requiredMessage="Entity Id field is required">
                             <f:selectItem itemLabel="Select One"/>
                             <f:selectItems value="#{organisationBean.tsActive}" var="item" itemLabel="#{item.organisation_name}" itemValue="#{item.organisation_id}"/>
+                        <p:ajax process="@this"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Phone Number:" for="phone_number"/>
                         <p:inputMask id="phone_number" value="#{phone_contactBean.selected.entity_phone}" mask="999999999999" placeholder="e.g 256706267475"/>

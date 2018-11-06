@@ -30,6 +30,8 @@ import org.orm.PersistentException;
 @SessionScoped
 public class ParishBean extends AbstractBean<Parish> implements Serializable {
 
+    List<Object[]> parish_list;
+
     public ParishBean() {
         super(Parish.class);
     }
@@ -64,9 +66,10 @@ public class ParishBean extends AbstractBean<Parish> implements Serializable {
         }
         return temp;
     }
+
     public List<Parish> getts_id(int aDistrict_id) {
         List<Parish> temp = new ArrayList<>();
-        
+
         try {
             if (this.getEntityClass() != null && aDistrict_id != 0) {
                 temp = (List<Parish>) EIHDMSPersistentManager.instance().getSession().createQuery("select d FROM Parish  d where d.is_deleted<>1 AND d.district=" + aDistrict_id).list();
@@ -78,7 +81,8 @@ public class ParishBean extends AbstractBean<Parish> implements Serializable {
         }
         return temp;
     }
-        public Parish getParish_by_id(int aParish_id){
+
+    public Parish getParish_by_id(int aParish_id) {
         try {
             return (Parish) Parish.queryParish("is_active=1 and is_deleted=0 and parish_id=" + aParish_id, null).get(0);
         } catch (PersistentException ex) {
@@ -87,5 +91,23 @@ public class ParishBean extends AbstractBean<Parish> implements Serializable {
         }
     }
 
+    public List<Parish> getParish_list(District aDistrict) {
+        List<Parish> temp = new ArrayList<>();
+        try {
+            if (this.getEntityClass() != null && aDistrict != null) {
+                String sql = "SELECT p.* FROM parish p WHERE p.sub_county_id IN \n"
+                        + "( SELECT s.sub_county_id FROM sub_county s WHERE s.county_id IN \n"
+                        + "( SELECT c.county_id FROM county c WHERE c.district_id=" + aDistrict.getDistrict_id() + "))";
+//                System.out.println(sql);
+                temp = EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).addEntity(Parish.class).list();
+            } else {
+                temp = new ArrayList<>();
+            }
+        } catch (PersistentException | HibernateException ex) {
+            Logger.getLogger(AbstractBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+
+    }
 
 }
