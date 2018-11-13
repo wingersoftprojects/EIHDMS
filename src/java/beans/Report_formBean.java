@@ -95,7 +95,7 @@ public class Report_formBean extends AbstractBean<Report_form> implements Serial
                 String RFIDs = "";
                 RFIDs = loginBean.getUser_report_form_str(allow);
                 if (RFIDs.length() > 0) {
-                    return Report_form.queryReport_form("is_active=1 and is_deleted=0 and report_form_id IN(" + RFIDs + ")", null);
+                    return Report_form.queryReport_form("is_active=1 and is_deleted=0 and report_form_id IN(" + RFIDs + ")", "report_form_name asc");
                 } else {
                     return null;
                 }

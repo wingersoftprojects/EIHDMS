@@ -263,7 +263,7 @@ public class Health_facilityBean extends AbstractBean<Health_facility> implement
         List<Health_facility> temp = new ArrayList<>();
         try {
             if (this.getEntityClass() != null && aDistrict != null) {
-                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select c FROM Health_facility  c where c.is_deleted<>1 AND c.district=" + aDistrict.getDistrict_id()).list();
+                temp = (List<Health_facility>) EIHDMSPersistentManager.instance().getSession().createQuery("select c FROM Health_facility  c where c.is_deleted<>1 AND c.district=" + aDistrict.getDistrict_id() + " ORDER BY c.health_facility_name ASC").list();
             } else {
                 temp = new ArrayList<>();
             }

@@ -529,7 +529,7 @@ public class KpiBean extends AbstractBean<Kpi> implements Serializable {
     public List<District> getDistricts() {
         List<District> districtList = new ArrayList<>();
         try {
-            districtList = District.queryDistrict("is_deleted=0", "district_name");
+            districtList = District.queryDistrict("is_deleted=0", "district_name asc");
         } catch (PersistentException | NullPointerException ex) {
         }
         this.districts = districtList;

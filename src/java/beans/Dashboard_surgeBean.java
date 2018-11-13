@@ -288,7 +288,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                 ChartDataArray2.add(lv);
                 if (ChartDataArray2.size() > 0) {
                     this.DataChartString2 = gson.toJson(ChartDataArray2);
-                    System.out.println("DataChartString2:" + DataChartString2);
+                    //System.out.println("DataChartString2:" + DataChartString2);
                 }
 
                 //indicator-3:c/b*100%
@@ -347,7 +347,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         }
 
         //for the trend
-        System.out.println("sql2:" + sql2);
+        //System.out.println("sql2:" + sql2);
         this.refreshBarChartdata(sql2, aIndicatorId);
 
         //for the dialog list

@@ -118,7 +118,7 @@ public class SMSData {
 
                 transaction.commit();
                 this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
-                this.update_sms_enity_id(interface_data_sms, phone);
+//                this.update_sms_enity_id(interface_data_sms, phone);
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -454,6 +454,7 @@ public class SMSData {
     }
 
     public void update_sms_enity_id(Interface_data_sms aInterface_data_sms, String phone) {
+//        System.err.println("I'm here");
         String sql = "{call sp_update_entity_id(?,?)}";
         ResultSet rs = null;
         LoginBean aLoginBean = new LoginBean();
@@ -463,6 +464,7 @@ public class SMSData {
             ps.setString(2, aInterface_data_sms.getPhone());
             rs = ps.executeQuery();
         } catch (SQLException se) {
+            se.printStackTrace();
             System.err.println(se.getMessage());
         }
 
@@ -470,8 +472,10 @@ public class SMSData {
 
     public void decode_and_load_sms(String sms, String phone, String report_form_code, Interface_data_sms interface_data_sms) {
         try {
+            
             List<Interface_data> interface_datas = new ArrayList<>();
             List<Data_element_sms_position> data_element_sms_positionList = new ArrayList<>();
+            
             /**
              * Read form being loaded
              */
@@ -756,7 +760,9 @@ public class SMSData {
                 PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                 EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
                 transaction.commit();
+                
             }
+            this.update_sms_enity_id(interface_data_sms, phone);
             //}
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);

@@ -97,7 +97,7 @@ public class ParishBean extends AbstractBean<Parish> implements Serializable {
             if (this.getEntityClass() != null && aDistrict != null) {
                 String sql = "SELECT p.* FROM parish p WHERE p.sub_county_id IN \n"
                         + "( SELECT s.sub_county_id FROM sub_county s WHERE s.county_id IN \n"
-                        + "( SELECT c.county_id FROM county c WHERE c.district_id=" + aDistrict.getDistrict_id() + "))";
+                        + "( SELECT c.county_id FROM county c WHERE c.district_id=" + aDistrict.getDistrict_id() + ")) ORDER BY p.parish_name ASC ";
 //                System.out.println(sql);
                 temp = EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).addEntity(Parish.class).list();
             } else {
