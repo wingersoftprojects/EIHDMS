@@ -325,7 +325,8 @@ public class Data_elementBean extends AbstractBean<Data_element> implements Seri
 
                 if (lowestreportformlevel.equals("District")) {
                     try {
-                        sql = "SELECT DISTINCT district_name FROM vw_location where district_id IN (" + DistrictsStr + ") and d_is_active=1 order by district_name";
+                        sql = "SELECT DISTINCT district_name,district_id FROM vw_location where district_id IN (" + DistrictsStr + ") and d_is_active=1 order by district_name";
+                        
                         List<Object[]> objects = EIHDMSPersistentManager.instance().getSession().createSQLQuery(sql).list();
                         for (Object[] obj : objects) {
                             rowIndex = rowIndex + 1;
