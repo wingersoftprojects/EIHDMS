@@ -230,7 +230,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         Date current_date = Calendar.getInstance().getTime();
         aCurrentWeek = Integer.parseInt(new GeneralUtilities().get_week_from_date(current_date, ""));
         if (aWeek == aWeek2) {
-            aWeekFrom = aWeek - 28;
+            aWeekFrom = aWeek - 6;
             aWeekTo = aWeek;
         } else {
             aWeekFrom = aWeek;
