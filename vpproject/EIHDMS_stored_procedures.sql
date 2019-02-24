@@ -455,6 +455,8 @@ END;
 CLOSE cur_section;
 -- End Section
 
+-- Split base_data table into report_form_groups
+CALL sp_split_base_data_into_report_form_groups(report_form_id_v);
 
 END
 ;;

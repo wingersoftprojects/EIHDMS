@@ -44,6 +44,8 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import javax.persistence.PersistenceContextType;
+import org.hibernate.Transaction;
 import org.joda.time.DateTime;
 import org.orm.PersistentException;
 import org.orm.PersistentTransaction;
@@ -117,8 +119,9 @@ public class SMSData {
                 }
 
                 transaction.commit();
-                this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
-//                this.update_sms_enity_id(interface_data_sms, phone);
+                this.update_sms_enity_id(interface_data_sms, phone);
+//                this.decode_and_load_sms(interface_data_sms.getSms(), phone, interface_data_sms.getReport_form_code(), interface_data_sms);
+
                 //loginBean.saveMessage ();
             } catch (PersistentException ex) {
                 Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -462,7 +465,11 @@ public class SMSData {
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, aInterface_data_sms.getInterface_data_sms_id());
             ps.setString(2, aInterface_data_sms.getPhone());
+            System.out.println(ps);
             rs = ps.executeQuery();
+            
+            this.decode_and_load_sms(aInterface_data_sms.getSms(), phone, aInterface_data_sms.getReport_form_code(), aInterface_data_sms);
+
         } catch (SQLException se) {
             se.printStackTrace();
             System.err.println(se.getMessage());
@@ -472,10 +479,10 @@ public class SMSData {
 
     public void decode_and_load_sms(String sms, String phone, String report_form_code, Interface_data_sms interface_data_sms) {
         try {
-            
+//            this.update_sms_enity_id(interface_data_sms, phone);
             List<Interface_data> interface_datas = new ArrayList<>();
             List<Data_element_sms_position> data_element_sms_positionList = new ArrayList<>();
-            
+
             /**
              * Read form being loaded
              */
@@ -604,7 +611,7 @@ public class SMSData {
                     }
                 }
             }
-             
+
             if (phone_contact.getPhone_contact_id() != 0) {
 //                interface_data_sms.setEntity_id(phone_contact.getEntity_id());
 //                interface_data_sms.setEntity_type(phone_contact.getEntity_type());
@@ -760,9 +767,9 @@ public class SMSData {
                 PersistentTransaction transaction = EIHDMSPersistentManager.instance().getSession().beginTransaction();
                 EIHDMSPersistentManager.instance().getSession().merge(interface_data_sms);
                 transaction.commit();
-                
+
             }
-            this.update_sms_enity_id(interface_data_sms, phone);
+
             //}
         } catch (PersistentException ex) {
             Logger.getLogger(UploadBean.class.getName()).log(Level.SEVERE, null, ex);
