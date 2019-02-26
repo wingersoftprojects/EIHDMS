@@ -459,20 +459,22 @@ public class SMSData {
     public void update_sms_enity_id(Interface_data_sms aInterface_data_sms, String phone) {
 //        System.err.println("I'm here");
         String sql = "{call sp_update_entity_id(?,?)}";
-        ResultSet rs = null;
+        //ResultSet rs = null;
         LoginBean aLoginBean = new LoginBean();
         try (Connection conn = aLoginBean.getMySQLConnection_System_User();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, aInterface_data_sms.getInterface_data_sms_id());
             ps.setString(2, aInterface_data_sms.getPhone());
-            System.out.println(ps);
-            rs = ps.executeQuery();
-            
+            //System.out.println(ps);
+            //rs = 
+            ps.executeUpdate();
+            EIHDMSPersistentManager.instance().getSession().refresh(aInterface_data_sms);
             this.decode_and_load_sms(aInterface_data_sms.getSms(), phone, aInterface_data_sms.getReport_form_code(), aInterface_data_sms);
-
         } catch (SQLException se) {
             se.printStackTrace();
             System.err.println(se.getMessage());
+        } catch (PersistentException ex) {
+            Logger.getLogger(SMSData.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
