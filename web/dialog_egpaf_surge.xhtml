@@ -37,7 +37,7 @@
                             </h:commandLink>
                         </f:facet>
                         <p:column headerText="District">
-                            <h:outputText value="#{dashboard_surgeBean.getHfById(item.district_id).district.district_name}"/>
+                            <h:outputText value="#{dashboard_surgeBean.getDsById(item.district_id).district_name}"/>
                         </p:column>
                         <p:column headerText="Health Facility">
                             <h:outputText value="#{dashboard_surgeBean.getHfById(item.health_facility_id).health_facility_name}"/>

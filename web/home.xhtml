@@ -107,24 +107,54 @@
                                                 "valueBelowPivot": "1",
                                                 "numberSuffix": "%",
                                                 "theme": "fint",
-                                                "decimals": "1"
+                                                "decimals": "1",
+                                                "adjustTM": "1",
+                                                "majorTMNumber": "0"
                                             },
                                             "colorRange": {
                                                 "color": [
                                                     {
                                                         "minValue": "0",
-                                                        "maxValue": "50",
+                                                        "maxValue": "80",
                                                         "code": "#C02133"
                                                     },
                                                     {
-                                                        "minValue": "50",
-                                                        "maxValue": "75",
+                                                        "minValue": "80",
+                                                        "maxValue": "90",
                                                         "code": "#E96B25"
                                                     },
                                                     {
-                                                        "minValue": "75",
+                                                        "minValue": "90",
                                                         "maxValue": "100",
                                                         "code": "#488A7E"
+                                                    }
+                                                ]
+                                            },trendpoints: {
+                                                point: [
+                                                    {
+                                                        startvalue: "95",
+                                                        displayvalue: "Target",
+                                                        thickness: "0",
+                                                        color: "#F80000",
+                                                        usemarker: "1",
+                                                        markerbordercolor: "#F80000",
+                                                        markertooltext: "95%"
+                                                    },
+                                                    {
+                                                        startvalue: "80",
+                                                        displayvalue: "80%",
+                                                        thickness: "1",
+                                                        color: "#000000",
+                                                        usemarker: "0",
+                                                        markerbordercolor: "#000000"
+                                                    },
+                                                    {
+                                                        startvalue: "90",
+                                                        displayvalue: "90%",
+                                                        thickness: "1",
+                                                        color: "#000000",
+                                                        usemarker: "0",
+                                                        markerbordercolor: "#000000"
                                                     }
                                                 ]
                                             },
@@ -301,22 +331,24 @@
                                                 "valueBelowPivot": "1",
                                                 "numberSuffix": "%",
                                                 "theme": "fint",
-                                                "decimals": "1"
+                                                "decimals": "1",
+                                                "adjustTM": "1",
+                                                "majorTMNumber": "0"
                                             },
                                             "colorRange": {
                                                 "color": [
                                                     {
                                                         "minValue": "0",
-                                                        "maxValue": "50",
+                                                        "maxValue": "80",
                                                         "code": "#C02133"
                                                     },
                                                     {
-                                                        "minValue": "50",
-                                                        "maxValue": "75",
+                                                        "minValue": "80",
+                                                        "maxValue": "90",
                                                         "code": "#E96B25"
                                                     },
                                                     {
-                                                        "minValue": "75",
+                                                        "minValue": "90",
                                                         "maxValue": "100",
                                                         "code": "#488A7E"
                                                     }
@@ -326,6 +358,35 @@
                                                 "dial": [{
                                                         "value": "#{dashboard_surgeBean.perc_value5}"
                                                     }]
+                                            },
+                                            trendpoints: {
+                                                point: [
+                                                    {
+                                                        startvalue: "95",
+                                                        displayvalue: "Target",
+                                                        thickness: "0",
+                                                        color: "#F80000",
+                                                        usemarker: "1",
+                                                        markerbordercolor: "#F80000",
+                                                        markertooltext: "95%"
+                                                    },
+                                                    {
+                                                        startvalue: "80",
+                                                        displayvalue: "80%",
+                                                        thickness: "1",
+                                                        color: "#000000",
+                                                        usemarker: "0",
+                                                        markerbordercolor: "#000000"
+                                                    },
+                                                    {
+                                                        startvalue: "90",
+                                                        displayvalue: "90%",
+                                                        thickness: "1",
+                                                        color: "#000000",
+                                                        usemarker: "0",
+                                                        markerbordercolor: "#000000"
+                                                    }
+                                                ]
                                             }
                                         }
                                     }).render();

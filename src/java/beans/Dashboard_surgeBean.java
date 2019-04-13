@@ -479,6 +479,15 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         }
     }
 
+    public District getDsById(int aDsId) {
+        try {
+            return District.getDistrictByORMID(aDsId);
+        } catch (PersistentException ex) {
+            Logger.getLogger(Dashboard_surgeBean.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public void refreshReportDetail(int aIndicator) {
         this.indicator_id = aIndicator;
     }
