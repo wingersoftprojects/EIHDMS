@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Wence
  * License Type: Purchased
  */
 package eihdms;

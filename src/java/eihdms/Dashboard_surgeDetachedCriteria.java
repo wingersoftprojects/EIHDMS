@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Wence
  * License Type: Purchased
  */
 package eihdms;
@@ -48,6 +48,10 @@ public class Dashboard_surgeDetachedCriteria extends AbstractORMDetachedCriteria
 	public final FloatExpression perc_miss_appoint_prev;
 	public final FloatExpression perc_hts_yield;
 	public final FloatExpression perc_start_art;
+	public final FloatExpression targ_htc_tst_pos;
+	public final FloatExpression targ_tx_new;
+	public final FloatExpression perc_htc_tst_pos;
+	public final FloatExpression perc_tx_new;
 	
 	public Dashboard_surgeDetachedCriteria() {
 		super(eihdms.Dashboard_surge.class, eihdms.Dashboard_surgeCriteria.class);
@@ -80,6 +84,10 @@ public class Dashboard_surgeDetachedCriteria extends AbstractORMDetachedCriteria
 		perc_miss_appoint_prev = new FloatExpression("perc_miss_appoint_prev", this.getDetachedCriteria());
 		perc_hts_yield = new FloatExpression("perc_hts_yield", this.getDetachedCriteria());
 		perc_start_art = new FloatExpression("perc_start_art", this.getDetachedCriteria());
+		targ_htc_tst_pos = new FloatExpression("targ_htc_tst_pos", this.getDetachedCriteria());
+		targ_tx_new = new FloatExpression("targ_tx_new", this.getDetachedCriteria());
+		perc_htc_tst_pos = new FloatExpression("perc_htc_tst_pos", this.getDetachedCriteria());
+		perc_tx_new = new FloatExpression("perc_tx_new", this.getDetachedCriteria());
 	}
 	
 	public Dashboard_surgeDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -113,6 +121,10 @@ public class Dashboard_surgeDetachedCriteria extends AbstractORMDetachedCriteria
 		perc_miss_appoint_prev = new FloatExpression("perc_miss_appoint_prev", this.getDetachedCriteria());
 		perc_hts_yield = new FloatExpression("perc_hts_yield", this.getDetachedCriteria());
 		perc_start_art = new FloatExpression("perc_start_art", this.getDetachedCriteria());
+		targ_htc_tst_pos = new FloatExpression("targ_htc_tst_pos", this.getDetachedCriteria());
+		targ_tx_new = new FloatExpression("targ_tx_new", this.getDetachedCriteria());
+		perc_htc_tst_pos = new FloatExpression("perc_htc_tst_pos", this.getDetachedCriteria());
+		perc_tx_new = new FloatExpression("perc_tx_new", this.getDetachedCriteria());
 	}
 	
 	public Dashboard_surge uniqueDashboard_surge(PersistentSession session) {

@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: Wence
  * License Type: Purchased
  */
 package eihdms;
@@ -48,6 +48,10 @@ public class Dashboard_surgeCriteria extends AbstractORMCriteria {
 	public final FloatExpression perc_miss_appoint_prev;
 	public final FloatExpression perc_hts_yield;
 	public final FloatExpression perc_start_art;
+	public final FloatExpression targ_htc_tst_pos;
+	public final FloatExpression targ_tx_new;
+	public final FloatExpression perc_htc_tst_pos;
+	public final FloatExpression perc_tx_new;
 	
 	public Dashboard_surgeCriteria(Criteria criteria) {
 		super(criteria);
@@ -80,6 +84,10 @@ public class Dashboard_surgeCriteria extends AbstractORMCriteria {
 		perc_miss_appoint_prev = new FloatExpression("perc_miss_appoint_prev", this);
 		perc_hts_yield = new FloatExpression("perc_hts_yield", this);
 		perc_start_art = new FloatExpression("perc_start_art", this);
+		targ_htc_tst_pos = new FloatExpression("targ_htc_tst_pos", this);
+		targ_tx_new = new FloatExpression("targ_tx_new", this);
+		perc_htc_tst_pos = new FloatExpression("perc_htc_tst_pos", this);
+		perc_tx_new = new FloatExpression("perc_tx_new", this);
 	}
 	
 	public Dashboard_surgeCriteria(PersistentSession session) {
