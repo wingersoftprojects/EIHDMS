@@ -87,7 +87,7 @@
                         <h:panelGrid id="pnlgChart1" style="text-align: center">
                             <div id="chart1"></div>
                             <p:commandLink value="#{dashboard_surgeBean.count_n1} viral load tests / #{dashboard_surgeBean.count_d1} attended" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(1)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
-                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind1 = new FusionCharts({
@@ -129,7 +129,7 @@
                                                         "code": "#488A7E"
                                                     }
                                                 ]
-                                            }, trendpoints: {
+                                            },trendpoints: {
                                                 point: [
                                                     {
                                                         startvalue: "95",
@@ -171,7 +171,7 @@
                         <h:panelGrid id="pnlgChart2" style="text-align: center;">
                             <div id="chart2"></div>
                             <p:commandLink value="#{dashboard_surgeBean.count_n2} clients missed / #{dashboard_surgeBean.count_d2} total appointments" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(2)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
-                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
 
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
@@ -202,7 +202,7 @@
                         <h:panelGrid id="pnlgChart3" style="text-align: center">
                             <div id="chart3"></div>
                             <p:commandLink value="#{dashboard_surgeBean.count_n3} missed and brought back / #{dashboard_surgeBean.count_d3} missed last week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(3)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
-                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
 
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
@@ -257,7 +257,7 @@
                         <h:panelGrid id="pnlgChart4" style="text-align: center;">
                             <div id="chart4"></div>
                             <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
-                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind4 = new FusionCharts({
@@ -311,7 +311,7 @@
                         <h:panelGrid id="pnlgChart5" style="text-align: center;">
                             <div id="chart5"></div>
                             <p:commandLink value="#{dashboard_surgeBean.count_n5} newly initiated on ART / #{dashboard_surgeBean.count_d5} clients newly tested" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(5)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
-                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
+                            <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facilities reported)"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
                                     var chartind5 = new FusionCharts({
@@ -394,148 +394,7 @@
                             </script>
                         </h:panelGrid>
                     </h:panelGrid>
-                    <h:panelGrid columns="2" id="pnlgTrends">
-                        <h:panelGrid columns="2" id="pnlgTargets">
-                            <h:panelGrid id="pnlgChart6" style="text-align: center;">
-                                <div id="chart6"></div>
-                                <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
-                                <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
-                                <script type="text/javascript">
-                                    FusionCharts.ready(function () {
-                                        var chartind4 = new FusionCharts({
-                                            type: 'angulargauge',
-                                            renderAt: 'chart6',
-                                            width: '250',
-                                            height: '250',
-                                            dataFormat: 'json',
-                                            dataSource: {
-                                                "chart": {
-                                                    "caption": "HTS Yield",
-                                                    "lowerLimit": "0",
-                                                    "upperLimit": "100",
-                                                    "lowerLimitDisplay": "0%",
-                                                    "upperLimitDisplay": "100%",
-                                                    "showValue": "1",
-                                                    "valueBelowPivot": "1",
-                                                    "numberSuffix": "%",
-                                                    "theme": "fint",
-                                                    "decimals": "1"
-                                                },
-                                                "colorRange": {
-                                                    "color": [
-                                                        {
-                                                            "minValue": "0",
-                                                            "maxValue": "50",
-                                                            "code": "#C02133"
-                                                        },
-                                                        {
-                                                            "minValue": "50",
-                                                            "maxValue": "75",
-                                                            "code": "#E96B25"
-                                                        },
-                                                        {
-                                                            "minValue": "75",
-                                                            "maxValue": "100",
-                                                            "code": "#488A7E"
-                                                        }
-                                                    ]
-                                                },
-                                                "dials": {
-                                                    "dial": [{
-                                                            "value": "#{dashboard_surgeBean.perc_value4}"
-                                                        }]
-                                                }
-                                            }
-                                        }).render();
-                                    });
-                                </script>
-                            </h:panelGrid>
-                            <h:panelGrid id="pnlgChart7" style="text-align: center;">
-                                <div id="chart7"></div>
-                                <p:commandLink value="#{dashboard_surgeBean.count_n5} newly initiated on ART / #{dashboard_surgeBean.count_d5} clients newly tested" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(5)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
-                                <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
-                                <script type="text/javascript">
-                                    FusionCharts.ready(function () {
-                                        var chartind5 = new FusionCharts({
-                                            type: 'angulargauge',
-                                            renderAt: 'chart7',
-                                            width: '250',
-                                            height: '250',
-                                            dataFormat: 'json',
-                                            dataSource: {
-                                                "chart": {
-                                                    "caption": "Total/% started on ART",
-                                                    "lowerLimit": "0",
-                                                    "upperLimit": "100",
-                                                    "lowerLimitDisplay": "0%",
-                                                    "upperLimitDisplay": "100%",
-                                                    "showValue": "1",
-                                                    "valueBelowPivot": "1",
-                                                    "numberSuffix": "%",
-                                                    "theme": "fint",
-                                                    "decimals": "1",
-                                                    "adjustTM": "1",
-                                                    "majorTMNumber": "0"
-                                                },
-                                                "colorRange": {
-                                                    "color": [
-                                                        {
-                                                            "minValue": "0",
-                                                            "maxValue": "80",
-                                                            "code": "#C02133"
-                                                        },
-                                                        {
-                                                            "minValue": "80",
-                                                            "maxValue": "90",
-                                                            "code": "#E96B25"
-                                                        },
-                                                        {
-                                                            "minValue": "90",
-                                                            "maxValue": "100",
-                                                            "code": "#488A7E"
-                                                        }
-                                                    ]
-                                                },
-                                                "dials": {
-                                                    "dial": [{
-                                                            "value": "#{dashboard_surgeBean.perc_value5}"
-                                                        }]
-                                                },
-                                                trendpoints: {
-                                                    point: [
-                                                        {
-                                                            startvalue: "95",
-                                                            displayvalue: "Target",
-                                                            thickness: "0",
-                                                            color: "#F80000",
-                                                            usemarker: "1",
-                                                            markerbordercolor: "#F80000",
-                                                            markertooltext: "95%"
-                                                        },
-                                                        {
-                                                            startvalue: "80",
-                                                            displayvalue: "80%",
-                                                            thickness: "1",
-                                                            color: "#000000",
-                                                            usemarker: "0",
-                                                            markerbordercolor: "#000000"
-                                                        },
-                                                        {
-                                                            startvalue: "90",
-                                                            displayvalue: "90%",
-                                                            thickness: "1",
-                                                            color: "#000000",
-                                                            usemarker: "0",
-                                                            markerbordercolor: "#000000"
-                                                        }
-                                                    ]
-                                                }
-                                            }
-                                        }).render();
-                                    });
-                                </script>
-                            </h:panelGrid>
-                        </h:panelGrid>
+                    <h:panelGrid columns="1" id="pnlgTrends">
                         <h:panelGrid id="pnlgTrend1">
                             <div id="chart-trend1"></div>
                             <script type="text/javascript">
@@ -543,7 +402,7 @@
                                     var charttrend = new FusionCharts({
                                         type: 'mscombidy2d',
                                         renderAt: 'chart-trend1',
-                                        width: '50%',
+                                        width: '100%',
                                         height: '350',
                                         dataFormat: 'json',
                                         dataSource: {
