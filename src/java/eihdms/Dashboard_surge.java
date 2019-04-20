@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: rlumala
  * License Type: Purchased
  */
 package eihdms;
@@ -455,6 +455,18 @@ public class Dashboard_surge implements Serializable {
 	@Column(name="perc_start_art", nullable=true)	
 	private Float perc_start_art;
 	
+	@Column(name="targ_htc_tst_pos", nullable=true)	
+	private Float targ_htc_tst_pos;
+	
+	@Column(name="targ_tx_new", nullable=true)	
+	private Float targ_tx_new;
+	
+	@Column(name="perc_htc_tst_pos", nullable=true)	
+	private Float perc_htc_tst_pos;
+	
+	@Column(name="perc_tx_new", nullable=true)	
+	private Float perc_tx_new;
+	
 	private void setDashboard_surge_id(int value) {
 		this.dashboard_surge_id = value;
 	}
@@ -793,6 +805,54 @@ public class Dashboard_surge implements Serializable {
 	
 	public Float getPerc_start_art() {
 		return perc_start_art;
+	}
+	
+	public void setTarg_htc_tst_pos(float value) {
+		setTarg_htc_tst_pos(new Float(value));
+	}
+	
+	public void setTarg_htc_tst_pos(Float value) {
+		this.targ_htc_tst_pos = value;
+	}
+	
+	public Float getTarg_htc_tst_pos() {
+		return targ_htc_tst_pos;
+	}
+	
+	public void setTarg_tx_new(float value) {
+		setTarg_tx_new(new Float(value));
+	}
+	
+	public void setTarg_tx_new(Float value) {
+		this.targ_tx_new = value;
+	}
+	
+	public Float getTarg_tx_new() {
+		return targ_tx_new;
+	}
+	
+	public void setPerc_htc_tst_pos(float value) {
+		setPerc_htc_tst_pos(new Float(value));
+	}
+	
+	public void setPerc_htc_tst_pos(Float value) {
+		this.perc_htc_tst_pos = value;
+	}
+	
+	public Float getPerc_htc_tst_pos() {
+		return perc_htc_tst_pos;
+	}
+	
+	public void setPerc_tx_new(float value) {
+		setPerc_tx_new(new Float(value));
+	}
+	
+	public void setPerc_tx_new(Float value) {
+		this.perc_tx_new = value;
+	}
+	
+	public Float getPerc_tx_new() {
+		return perc_tx_new;
 	}
 	
 	public boolean equals(Object obj) {

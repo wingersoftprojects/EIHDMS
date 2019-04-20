@@ -8,7 +8,7 @@
  */
 
 /**
- * Licensee: bajuna
+ * Licensee: rlumala
  * License Type: Purchased
  */
 package eihdms;
