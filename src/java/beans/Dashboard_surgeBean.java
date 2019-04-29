@@ -80,15 +80,20 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
     private int count_n6;
     private int count_d6;
     private float perc_value6;
+    private int count_n7;
+    private int count_d7;
+    private float perc_value7;
     private String DataChartString2;
     private String DataChartString4;
     private String DataChartString5;
     private String DataChartString6;
+    private String DataChartString7;
     private List<Report_form> weekList = new ArrayList<>();
     private District[] selectedDistricts;
     private Health_facility[] selectedFacilities;
     private List<District> districts;
     private List<Health_facility> facilities;
+    private String RangeDesc;
 
     public Dashboard_surgeBean() {
         super(Dashboard_surge.class);
@@ -120,6 +125,10 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             return "HTS Yield";
         } else if (aIndicatorId == 5) {
             return "Total/% started on ART";
+        } else if (aIndicatorId == 6) {
+            return "TST_POS Output vs Target";
+        } else if (aIndicatorId == 7) {
+            return "TX_NEW Output vs Target";
         } else {
             return "";
         }
@@ -183,17 +192,21 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         String sql1 = "SELECT "
                 + "sum(a) as a,sum(b) as b,sum(b_prev) as b_prev,sum(c) as c,sum(d) as d,sum(e) as e,sum(f) as f,sum(g) as g,sum(h) as h,sum(i) as i,sum(j) as j,sum(k) as k,sum(l) as l,"
                 + "avg(perc_test_coverage) as perc_test_coverage,avg(perc_miss_appoint_cur) as perc_miss_appoint_cur,avg(perc_miss_appoint_prev) as perc_miss_appoint_prev,"
-                + "avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art "
-                + "FROM dashboard_surge WHERE 1=1";
-        String sql2 = "SELECT report_period_year,report_period_week,"
+                + "avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art,"
+                + "sum(vt.targ_htc_tst_pos) as targ_htc_tst_pos,sum(vt.targ_tx_new) as targ_tx_new "
+                + "FROM dashboard_surge ds left join view_facility_targets_annually vt on ds.report_period_year=vt.report_period_year and ds.health_facility_id=vt.health_facility_id "
+                + "WHERE 1=1";
+        String sql2 = "SELECT ds.report_period_year,report_period_week,"
                 + "avg(perc_test_coverage) as perc_test_coverage,avg(perc_miss_appoint_cur) as perc_miss_appoint_cur,"
-                + "avg(perc_miss_appoint_prev) as perc_miss_appoint_prev,avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art "
-                + "FROM dashboard_surge WHERE 1=1";
-        String order2 = " ORDER BY report_period_year ASC,report_period_week ASC";
+                + "avg(perc_miss_appoint_prev) as perc_miss_appoint_prev,avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art,"
+                + "avg(100*(f/NULLIF(vt.targ_htc_tst_pos,0))) as perc_htc_tst_pos,avg(100*(h/NULLIF(vt.targ_tx_new,0))) as perc_tx_new "
+                + "FROM dashboard_surge ds left join view_facility_targets_annually vt on ds.report_period_year=vt.report_period_year and ds.health_facility_id=vt.health_facility_id "
+                + " WHERE 1=1";
+        String order2 = " ORDER BY ds.report_period_year ASC,report_period_week ASC";
         String where1 = "";
         String where2 = "";
         if (aYear > 0) {
-            where1 = where1 + " and report_period_year=" + aYear;
+            where1 = where1 + " and ds.report_period_year=" + aYear;
         }
         if (aMonth > 0) {
             where1 = where1 + " and (MONTH(report_period_from_date)>=" + aMonth + " and MONTH(report_period_from_date)<=" + aMonth + ")";
@@ -218,7 +231,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         try {
             String aFIDs = this.getFacilitiesStr();
             if (aFIDs.length() > 0) {
-                where1 = where1 + " and health_facility_id IN(" + aFIDs + ")";
+                where1 = where1 + " and ds.health_facility_id IN(" + aFIDs + ")";
             }
         } catch (NullPointerException npe) {
             //skip 
@@ -237,8 +250,13 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             aWeekTo = aWeek2;
         }
         where2 = where2 + " and report_period_week between " + aWeekFrom + " and " + aWeekTo;
-        sql2 = sql2 + where2 + " GROUP BY report_period_year,report_period_week " + order2;
-
+        sql2 = sql2 + where2 + " GROUP BY ds.report_period_year,report_period_week " + order2;
+        if (aWeekFrom <= 0) {
+            this.RangeDesc = "To Week " + aWeekTo;
+        } else {
+            this.RangeDesc = "Week " + aWeekFrom + " to Week " + aWeekTo;
+        }
+        //System.out.println("SQL-INDICATORS:" + sql1);
         //for the indicator charts
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql1);) {
@@ -341,6 +359,429 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                 } catch (NullPointerException npe) {
                     this.perc_value5 = 0;
                 }
+
+                //indicator-6:f/targ_htc_tst_pos*100%
+                try {
+                    this.count_n6 = rs.getInt("f");
+                } catch (NullPointerException npe) {
+                    this.count_n6 = 0;
+                }
+                try {
+                    this.count_d6 = rs.getInt("targ_htc_tst_pos");
+                } catch (NullPointerException npe) {
+                    this.count_d6 = 0;
+                }
+                if (this.count_d6 > 0) {
+                    this.perc_value6 = 100 * (this.count_n6 / this.count_d6);
+                } else {
+                    this.perc_value6 = 0;
+                }
+
+                //indicator-7:h/targ_tx_new*100%
+                try {
+                    this.count_n7 = rs.getInt("h");
+                } catch (NullPointerException npe) {
+                    this.count_n7 = 0;
+                }
+                try {
+                    this.count_d7 = rs.getInt("targ_tx_new");
+                } catch (NullPointerException npe) {
+                    this.count_d7 = 0;
+                }
+                if (this.count_d7 > 0) {
+                    this.perc_value7 = 100 * (this.count_n7 / this.count_d7);
+                } else {
+                    this.perc_value7 = 0;
+                }
+            }
+        } catch (SQLException se1) {
+            System.err.println("refreshDashboard1-Charts:" + se1.getMessage());
+        }
+
+        //for the trend
+        //System.out.println("sql2:" + sql2);
+        this.refreshBarChartdata(sql2, aIndicatorId);
+
+        //for the dialog list
+        try {
+            //this.Dashboard_surgeList = Dashboard_surge.queryDashboard_surge("1=1" + where1, null);
+            this.Dashboard_surgeList.clear();
+            this.refreshDashboardList(where1);
+            this.count_n = this.Dashboard_surgeList.size();
+        } catch (Exception ex) {
+            Logger.getLogger(Dashboard_surgeBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void refreshDashboardList(String aWhere) {
+        ResultSet rs = null;
+        String sql = "SELECT "
+                + "dashboard_surge_id,report_form_id,"
+                + "ds.health_facility_id,parish_id,sub_county_id,district_id,"
+                + "report_period_week,ds.report_period_year,report_period_from_date,report_period_to_date,"
+                + "a,b,b_prev,c,d,e,f,g,h,i,j,k,l,"
+                + "perc_test_coverage,perc_miss_appoint_cur,perc_miss_appoint_prev,"
+                + "perc_hts_yield,perc_start_art,batch_id,"
+                + "vt.targ_htc_tst_pos,vt.targ_tx_new,"
+                + "100*(f/NULLIF(vt.targ_htc_tst_pos,0)) as perc_htc_tst_pos,100*(h/NULLIF(vt.targ_tx_new,0)) as perc_tx_new "
+                + "FROM dashboard_surge ds left join view_facility_targets_annually vt on ds.report_period_year=vt.report_period_year and ds.health_facility_id=vt.health_facility_id "
+                + "WHERE 1=1";
+        sql = sql + aWhere;
+        //System.out.println("SQL-DIALOG:" + sql);
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Dashboard_surge ds = new Dashboard_surge();
+                this.setObjectFromResultset(ds, rs);
+                this.Dashboard_surgeList.add(ds);
+            }
+        } catch (SQLException se) {
+            System.err.println("refreshDashboardList:" + se.getMessage());
+        }
+    }
+
+    public void setObjectFromResultset(Dashboard_surge aDashboard_surge, ResultSet aResultSet) {
+        try {
+            try {
+                aDashboard_surge.setDistrict_id(aResultSet.getInt("district_id"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setHealth_facility_id(aResultSet.getInt("health_facility_id"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setReport_period_year(aResultSet.getInt("report_period_year"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setReport_period_week(aResultSet.getInt("report_period_week"));
+            } catch (NullPointerException npe) {
+
+            }
+
+            try {
+                aDashboard_surge.setPerc_test_coverage(aResultSet.getFloat("perc_test_coverage"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setPerc_miss_appoint_cur(aResultSet.getFloat("perc_miss_appoint_cur"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setPerc_miss_appoint_prev(aResultSet.getFloat("perc_miss_appoint_prev"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setPerc_hts_yield(aResultSet.getFloat("perc_hts_yield"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setPerc_start_art(aResultSet.getFloat("perc_start_art"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setPerc_htc_tst_pos(aResultSet.getFloat("perc_htc_tst_pos"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setPerc_tx_new(aResultSet.getFloat("perc_tx_new"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setA(aResultSet.getInt("a"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setB(aResultSet.getInt("b"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setB_prev(aResultSet.getInt("b_prev"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setC(aResultSet.getInt("c"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setD(aResultSet.getInt("d"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setE(aResultSet.getInt("e"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setF(aResultSet.getInt("f"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setG(aResultSet.getInt("g"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setH(aResultSet.getInt("h"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setI(aResultSet.getInt("i"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setJ(aResultSet.getInt("j"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setK(aResultSet.getInt("k"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setL(aResultSet.getInt("l"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setTarg_htc_tst_pos(aResultSet.getFloat("targ_htc_tst_pos"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aDashboard_surge.setTarg_tx_new(aResultSet.getFloat("targ_tx_new"));
+            } catch (NullPointerException npe) {
+
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }
+
+    public void refreshDashboard_old(int aYear, int aMonth, int aWeek, int aWeek2, District[] aSelectedDistricts, Health_facility[] aSelectedFacilities, int aIndicatorId) {
+        ResultSet rs = null;
+        ResultSet rs2 = null;
+        Gson gson;
+        String sql1 = "SELECT "
+                + "sum(a) as a,sum(b) as b,sum(b_prev) as b_prev,sum(c) as c,sum(d) as d,sum(e) as e,sum(f) as f,sum(g) as g,sum(h) as h,sum(i) as i,sum(j) as j,sum(k) as k,sum(l) as l,"
+                + "avg(perc_test_coverage) as perc_test_coverage,avg(perc_miss_appoint_cur) as perc_miss_appoint_cur,avg(perc_miss_appoint_prev) as perc_miss_appoint_prev,"
+                + "avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art "
+                + "FROM dashboard_surge WHERE 1=1";
+        String sql2 = "SELECT report_period_year,report_period_week,"
+                + "avg(perc_test_coverage) as perc_test_coverage,avg(perc_miss_appoint_cur) as perc_miss_appoint_cur,"
+                + "avg(perc_miss_appoint_prev) as perc_miss_appoint_prev,avg(perc_hts_yield) as perc_hts_yield,avg(perc_start_art) as perc_start_art "
+                + "FROM dashboard_surge WHERE 1=1";
+        String order2 = " ORDER BY report_period_year ASC,report_period_week ASC";
+        String where1 = "";
+        String where2 = "";
+        if (aYear > 0) {
+            where1 = where1 + " and report_period_year=" + aYear;
+        }
+        if (aMonth > 0) {
+            where1 = where1 + " and (MONTH(report_period_from_date)>=" + aMonth + " and MONTH(report_period_from_date)<=" + aMonth + ")";
+        }
+        if (aWeek > 0 && aWeek2 == 0) {
+            where1 = where1 + " and report_period_week=" + aWeek;
+        }
+        if (aWeek2 > 0 && aWeek == 0) {
+            where1 = where1 + " and report_period_week=" + aWeek2;
+        }
+        if (aWeek > 0 && aWeek2 > 0) {
+            where1 = where1 + " and report_period_week>=" + aWeek + " and report_period_week<=" + aWeek2;
+        }
+        try {
+            String aDIDs = this.getDistrictsStr();
+            if (aDIDs.length() > 0) {
+                where1 = where1 + " and district_id IN (" + aDIDs + ")";
+            }
+        } catch (NullPointerException npe) {
+            //skip 
+        }
+        try {
+            String aFIDs = this.getFacilitiesStr();
+            if (aFIDs.length() > 0) {
+                where1 = where1 + " and health_facility_id IN(" + aFIDs + ")";
+            }
+        } catch (NullPointerException npe) {
+            //skip 
+        }
+        sql1 = sql1 + where1;
+        int aWeekFrom = 0;
+        int aWeekTo = 0;
+        int aCurrentWeek = 0;
+        Date current_date = Calendar.getInstance().getTime();
+        aCurrentWeek = Integer.parseInt(new GeneralUtilities().get_week_from_date(current_date, ""));
+        if (aWeek == aWeek2) {
+            aWeekFrom = aWeek - 6;
+            aWeekTo = aWeek;
+        } else {
+            aWeekFrom = aWeek;
+            aWeekTo = aWeek2;
+        }
+        where2 = where2 + " and report_period_week between " + aWeekFrom + " and " + aWeekTo;
+        sql2 = sql2 + where2 + " GROUP BY report_period_year,report_period_week " + order2;
+        if (aWeekFrom <= 0) {
+            this.RangeDesc = "To Week " + aWeekTo;
+        } else {
+            this.RangeDesc = "Week " + aWeekFrom + " to Week " + aWeekTo;
+        }
+        //for the indicator charts
+        try (Connection conn = DBConnection.getMySQLConnection();
+                PreparedStatement ps = conn.prepareStatement(sql1);) {
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                DecimalFormat myFormatter = new DecimalFormat("###,###");
+                Map<String, String> lv;
+                //indicator-1:d/a*100%
+                try {
+                    this.count_n1 = rs.getInt("d");
+                } catch (NullPointerException npe) {
+                    this.count_n1 = 0;
+                }
+                try {
+                    this.count_d1 = rs.getInt("a");
+                } catch (NullPointerException npe) {
+                    this.count_d1 = 0;
+                }
+                try {
+                    this.perc_value1 = rs.getFloat("perc_test_coverage");
+                } catch (NullPointerException npe) {
+                    this.perc_value1 = 0;
+                }
+
+                //indicator-2:b/(a+b)*100%
+                try {
+                    this.count_n2 = rs.getInt("b");
+                } catch (NullPointerException npe) {
+                    this.count_n2 = 0;
+                }
+                try {
+                    this.count_d2 = rs.getInt("a") + rs.getInt("b");
+                } catch (NullPointerException npe) {
+                    this.count_d2 = 0;
+                }
+
+                gson = new Gson();
+                this.DataChartString2 = "[]";
+                List<Object> ChartDataArray2 = new ArrayList<>();
+                lv = new HashMap<String, String>();
+                lv.put("label", "Missed");
+                lv.put("value", myFormatter.format(rs.getFloat("perc_miss_appoint_cur")));
+                ChartDataArray2.add(lv);
+                lv = new HashMap<String, String>();
+                lv.put("label", "Attended");
+                lv.put("value", myFormatter.format(100 - rs.getFloat("perc_miss_appoint_cur")));
+                ChartDataArray2.add(lv);
+                if (ChartDataArray2.size() > 0) {
+                    this.DataChartString2 = gson.toJson(ChartDataArray2);
+                    //System.out.println("DataChartString2:" + DataChartString2);
+                }
+
+                //indicator-3:c/b*100%
+                try {
+                    this.count_n3 = rs.getInt("c");
+                } catch (NullPointerException npe) {
+                    this.count_n3 = 0;
+                }
+                try {
+                    this.count_d3 = rs.getInt("b_prev");
+                } catch (NullPointerException npe) {
+                    this.count_d3 = 0;
+                }
+                try {
+                    this.perc_value3 = rs.getFloat("perc_miss_appoint_prev");
+                } catch (NullPointerException npe) {
+                    this.perc_value3 = 0;
+                }
+
+                //indicator-4:f/e*100%
+                try {
+                    this.count_n4 = rs.getInt("f");
+                } catch (NullPointerException npe) {
+                    this.count_n4 = 0;
+                }
+                try {
+                    this.count_d4 = rs.getInt("e");
+                } catch (NullPointerException npe) {
+                    this.count_d4 = 0;
+                }
+                try {
+                    this.perc_value4 = rs.getFloat("perc_hts_yield");
+                } catch (NullPointerException npe) {
+                    this.perc_value4 = 0;
+                }
+
+                //indicator-5:
+                try {
+                    this.count_n5 = rs.getInt("h");
+                } catch (NullPointerException npe) {
+                    this.count_n5 = 0;
+                }
+                try {
+                    this.count_d5 = rs.getInt("f");
+                } catch (NullPointerException npe) {
+                    this.count_d5 = 0;
+                }
+                try {
+                    this.perc_value5 = rs.getFloat("perc_start_art");
+                } catch (NullPointerException npe) {
+                    this.perc_value5 = 0;
+                }
+
+                //indicator-6:f/targ_htc_tst_pos*100%
+                try {
+                    this.count_n6 = rs.getInt("f");
+                } catch (NullPointerException npe) {
+                    this.count_n6 = 0;
+                }
+                try {
+                    this.count_d6 = rs.getInt("e");
+                } catch (NullPointerException npe) {
+                    this.count_d6 = 0;
+                }
+                try {
+                    this.perc_value6 = rs.getFloat("perc_hts_yield");
+                } catch (NullPointerException npe) {
+                    this.perc_value6 = 0;
+                }
+
+                //indicator-7:h/targ_tx_new*100%
+                try {
+                    this.count_n7 = rs.getInt("h");
+                } catch (NullPointerException npe) {
+                    this.count_n7 = 0;
+                }
+                try {
+                    this.count_d7 = rs.getInt("f");
+                } catch (NullPointerException npe) {
+                    this.count_d7 = 0;
+                }
+                try {
+                    this.perc_value7 = rs.getFloat("perc_start_art");
+                } catch (NullPointerException npe) {
+                    this.perc_value7 = 0;
+                }
             }
         } catch (SQLException se1) {
             System.err.println("refreshDashboard1-Charts:" + se1.getMessage());
@@ -374,7 +815,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         ArrayList<Object> dataSeriesArray2 = new ArrayList<>();
         String SerieName1 = "", SerieName2 = "";
         String SerieString1 = "", SerieString2 = "";
-
+        //System.out.println("SQL-TRENDS:" + sql);
         try (Connection conn = DBConnection.getMySQLConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             rs2 = ps.executeQuery();
@@ -431,6 +872,26 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                     lv = new LinkedHashMap<String, String>();
                     try {
                         lv.put("value", myFormatter.format(rs2.getFloat("perc_start_art")));
+                    } catch (NullPointerException npe) {
+                        lv.put("value", "0");
+                    }
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                } else if (aIndicatorId == 6) {
+                    //perc_htc_tst_pos
+                    lv = new LinkedHashMap<String, String>();
+                    try {
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_htc_tst_pos")));
+                    } catch (NullPointerException npe) {
+                        lv.put("value", "0");
+                    }
+                    dataSeriesArray1.add(lv);
+                    dataSeriesArray2.add(lv);
+                } else if (aIndicatorId == 7) {
+                    //perc_tx_new
+                    lv = new LinkedHashMap<String, String>();
+                    try {
+                        lv.put("value", myFormatter.format(rs2.getFloat("perc_tx_new")));
                     } catch (NullPointerException npe) {
                         lv.put("value", "0");
                     }
@@ -1239,6 +1700,76 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
      */
     public void setWeek_value2(int week_value2) {
         this.week_value2 = week_value2;
+    }
+
+    /**
+     * @return the RangeDesc
+     */
+    public String getRangeDesc() {
+        return RangeDesc;
+    }
+
+    /**
+     * @param RangeDesc the RangeDesc to set
+     */
+    public void setRangeDesc(String RangeDesc) {
+        this.RangeDesc = RangeDesc;
+    }
+
+    /**
+     * @return the count_d7
+     */
+    public int getCount_d7() {
+        return count_d7;
+    }
+
+    /**
+     * @param count_d7 the count_d7 to set
+     */
+    public void setCount_d7(int count_d7) {
+        this.count_d7 = count_d7;
+    }
+
+    /**
+     * @return the perc_value7
+     */
+    public float getPerc_value7() {
+        return perc_value7;
+    }
+
+    /**
+     * @param perc_value7 the perc_value7 to set
+     */
+    public void setPerc_value7(float perc_value7) {
+        this.perc_value7 = perc_value7;
+    }
+
+    /**
+     * @return the DataChartString7
+     */
+    public String getDataChartString7() {
+        return DataChartString7;
+    }
+
+    /**
+     * @param DataChartString7 the DataChartString7 to set
+     */
+    public void setDataChartString7(String DataChartString7) {
+        this.DataChartString7 = DataChartString7;
+    }
+
+    /**
+     * @return the count_n7
+     */
+    public int getCount_n7() {
+        return count_n7;
+    }
+
+    /**
+     * @param count_n7 the count_n7 to set
+     */
+    public void setCount_n7(int count_n7) {
+        this.count_n7 = count_n7;
     }
 
 }

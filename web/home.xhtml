@@ -77,6 +77,8 @@
                                 <f:selectItem itemLabel="% missed appointment prev. week and brought back" itemValue="3" />
                                 <f:selectItem itemLabel="HTS Yield" itemValue="4" />
                                 <f:selectItem itemLabel="Total/% started on ART" itemValue="5" />
+                                <f:selectItem itemLabel="TST_POS Output vs Target" itemValue="6" />
+                                <f:selectItem itemLabel="TX_NEW Output vs Target" itemValue="7" />
                             </p:selectOneMenu>
                             <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
                                 <p:ajax listener="#{dashboard_surgeBean.resetDashboard()}" process="panelFilter" update="panelFilter pnlgCharts pnlgTrends"/>
@@ -256,7 +258,7 @@
                         </h:panelGrid>
                         <h:panelGrid id="pnlgChart4" style="text-align: center;">
                             <div id="chart4"></div>
-                            <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                            <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested positive / #{dashboard_surgeBean.count_d4} tested during the week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                             <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
                             <script type="text/javascript">
                                 FusionCharts.ready(function () {
@@ -398,11 +400,11 @@
                         <h:panelGrid columns="2" id="pnlgTargets">
                             <h:panelGrid id="pnlgChart6" style="text-align: center;">
                                 <div id="chart6"></div>
-                                <p:commandLink value="#{dashboard_surgeBean.count_n4} clients newly tested / #{dashboard_surgeBean.count_d4} tested during the week" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(4)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                                <p:commandLink value="#{dashboard_surgeBean.count_n6} clients newly tested positive / #{dashboard_surgeBean.count_d6} HTC_TST_POS Target" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(6)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                                 <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
                                 <script type="text/javascript">
                                     FusionCharts.ready(function () {
-                                        var chartind4 = new FusionCharts({
+                                        var chartind6 = new FusionCharts({
                                             type: 'angulargauge',
                                             renderAt: 'chart6',
                                             width: '250',
@@ -410,7 +412,7 @@
                                             dataFormat: 'json',
                                             dataSource: {
                                                 "chart": {
-                                                    "caption": "HTS Yield",
+                                                    "caption": "TST_POS Output vs Target",
                                                     "lowerLimit": "0",
                                                     "upperLimit": "100",
                                                     "lowerLimitDisplay": "0%",
@@ -442,7 +444,7 @@
                                                 },
                                                 "dials": {
                                                     "dial": [{
-                                                            "value": "#{dashboard_surgeBean.perc_value4}"
+                                                            "value": "#{dashboard_surgeBean.perc_value6}"
                                                         }]
                                                 }
                                             }
@@ -452,11 +454,11 @@
                             </h:panelGrid>
                             <h:panelGrid id="pnlgChart7" style="text-align: center;">
                                 <div id="chart7"></div>
-                                <p:commandLink value="#{dashboard_surgeBean.count_n5} newly initiated on ART / #{dashboard_surgeBean.count_d5} clients newly tested" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(5)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
+                                <p:commandLink value="#{dashboard_surgeBean.count_n7} newly initiated on ART / #{dashboard_surgeBean.count_d7} TX_New Target" style="color: #2696D1;" action="#{dashboard_surgeBean.refreshReportDetail(7)}" update=":detailreportdialog" oncomplete="PF('detailReport').show();"/>
                                 <p:outputLabel value="(#{dashboard_surgeBean.count_n} health facility report(s))"/>
                                 <script type="text/javascript">
                                     FusionCharts.ready(function () {
-                                        var chartind5 = new FusionCharts({
+                                        var chartind7 = new FusionCharts({
                                             type: 'angulargauge',
                                             renderAt: 'chart7',
                                             width: '250',
@@ -464,7 +466,7 @@
                                             dataFormat: 'json',
                                             dataSource: {
                                                 "chart": {
-                                                    "caption": "Total/% started on ART",
+                                                    "caption": "TX_NEW Output vs Target",
                                                     "lowerLimit": "0",
                                                     "upperLimit": "100",
                                                     "lowerLimitDisplay": "0%",
@@ -498,7 +500,7 @@
                                                 },
                                                 "dials": {
                                                     "dial": [{
-                                                            "value": "#{dashboard_surgeBean.perc_value5}"
+                                                            "value": "#{dashboard_surgeBean.perc_value7}"
                                                         }]
                                                 },
                                                 trendpoints: {
@@ -549,13 +551,13 @@
                                         dataSource: {
                                             "chart": {
                                                 "caption": "Trend for #{dashboard_surgeBean.getIndicatorStringById(dashboard_surgeBean.indicator_id)}",
-                                                "subCaption": "Showing EITHER selected range OR previous 6 weeks from selected/current Week",
+                                                "subCaption": "#{dashboard_surgeBean.rangeDesc}",
                                                 "xAxisName": "Week",
                                                 "yAxisName": "Percentage(%)",
                                                 "numberSuffix": "%",
-                                                "paletteColors": "#2696D1,#E96B25",
+                                                "paletteColors": "#194788,#E96B25",
                                                 "bgColor": "#ffffff",
-                                                "borderAlpha": "20",
+                                                "borderAlpha": "0",
                                                 "canvasBorderAlpha": "0",
                                                 "usePlotGradientColor": "0",
                                                 "plotBorderAlpha": "10",

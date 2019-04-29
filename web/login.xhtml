@@ -93,13 +93,13 @@
             </div>
         </div>
         <h:form>
-            <p:idleMonitor timeout="960000">
+            <p:idleMonitor timeout="1200000">
                 <p:ajax event="idle" listener="#{loginBean.redirectifnotloggedin()}" update="@all" oncomplete="logout()"/>
             </p:idleMonitor>
         </h:form>
         <script>
             function logout() {
-                window.location = '/';
+               window.location = '/';
             }
         </script>
         <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">

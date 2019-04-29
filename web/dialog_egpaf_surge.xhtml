@@ -36,63 +36,71 @@
                                 <p:dataExporter type="xml" target="table_dialog" fileName="EGPAF_Surge_List" />
                             </h:commandLink>
                         </f:facet>
-                        <p:column headerText="District">
+                        <p:column headerText="District" style="font-size: 12px;">
                             <h:outputText value="#{dashboard_surgeBean.getDsById(item.district_id).district_name}"/>
                         </p:column>
-                        <p:column headerText="Health Facility">
+                        <p:column headerText="Health Facility" style="font-size: 12px;">
                             <h:outputText value="#{dashboard_surgeBean.getHfById(item.health_facility_id).health_facility_name}"/>
                         </p:column>
-                        <p:column headerText="Year">
+                        <p:column headerText="Year" style="font-size: 12px;">
                             <h:outputText value="#{item.report_period_year}"/>
                         </p:column>
-                        <p:column headerText="Week">
+                        <p:column headerText="Week" style="font-size: 12px;">
                             <h:outputText value="#{item.report_period_week}"/>
                         </p:column>
-                        <p:column headerText="Indicator %">
+                        <p:column headerText="Indicator %" style="font-size: 12px;">
                             <h:outputText value="#{item.perc_test_coverage}" rendered="#{dashboard_surgeBean.indicator_id==1}"/>
                             <h:outputText value="#{item.perc_miss_appoint_cur}" rendered="#{dashboard_surgeBean.indicator_id==2}"/>
                             <h:outputText value="#{item.perc_miss_appoint_prev}" rendered="#{dashboard_surgeBean.indicator_id==3}"/>
                             <h:outputText value="#{item.perc_hts_yield}" rendered="#{dashboard_surgeBean.indicator_id==4}"/>
                             <h:outputText value="#{item.perc_start_art}" rendered="#{dashboard_surgeBean.indicator_id==5}"/>
+                            <h:outputText value="#{item.perc_htc_tst_pos}" rendered="#{dashboard_surgeBean.indicator_id==6}"/>
+                            <h:outputText value="#{item.perc_tx_new}" rendered="#{dashboard_surgeBean.indicator_id==7}"/>
                         </p:column>
-                        <p:column headerText="a">
+                        <p:column headerText="a" style="font-size: 12px;">
                             <h:outputText value="#{item.a}"/>
                         </p:column>
-                        <p:column headerText="b">
+                        <p:column headerText="b" style="font-size: 12px;">
                             <h:outputText value="#{item.b}"/>
                         </p:column>
-                        <p:column headerText="bp">
+                        <p:column headerText="bp" style="font-size: 12px;">
                             <h:outputText value="#{item.b_prev}"/>
                         </p:column>
-                        <p:column headerText="c">
+                        <p:column headerText="c" style="font-size: 12px;">
                             <h:outputText value="#{item.c}"/>
                         </p:column>
-                        <p:column headerText="d">
+                        <p:column headerText="d" style="font-size: 12px;">
                             <h:outputText value="#{item.d}"/>
                         </p:column>
-                        <p:column headerText="e">
+                        <p:column headerText="e" style="font-size: 12px;">
                             <h:outputText value="#{item.e}"/>
                         </p:column>
-                        <p:column headerText="f">
+                        <p:column headerText="f" style="font-size: 12px;">
                             <h:outputText value="#{item.f}"/>
                         </p:column>
-                        <p:column headerText="g">
+                        <p:column headerText="g" style="font-size: 12px;">
                             <h:outputText value="#{item.g}"/>
                         </p:column>
-                        <p:column headerText="h">
+                        <p:column headerText="h" style="font-size: 12px;">
                             <h:outputText value="#{item.h}"/>
                         </p:column>
-                        <p:column headerText="i">
+                        <p:column headerText="i" style="font-size: 12px;">
                             <h:outputText value="#{item.i}"/>
                         </p:column>
-                        <p:column headerText="j">
+                        <p:column headerText="j" style="font-size: 12px;">
                             <h:outputText value="#{item.j}"/>
                         </p:column>
-                        <p:column headerText="k">
+                        <p:column headerText="k" style="font-size: 12px;">
                             <h:outputText value="#{item.k}"/>
                         </p:column>
-                        <p:column headerText="l">
+                        <p:column headerText="l" style="font-size: 12px;">
                             <h:outputText value="#{item.l}"/>
+                        </p:column>
+                        <p:column headerText="HTC_TST_POS Target" style="font-size: 12px;">
+                            <h:outputText value="#{item.targ_htc_tst_pos}"/>
+                        </p:column>
+                        <p:column headerText="TX_New Target" style="font-size: 12px;">
+                            <h:outputText value="#{item.targ_tx_new}"/>
                         </p:column>
                     </p:dataTable>
                 </p:panel>
