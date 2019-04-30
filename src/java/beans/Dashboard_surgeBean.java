@@ -207,6 +207,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         String where2 = "";
         if (aYear > 0) {
             where1 = where1 + " and ds.report_period_year=" + aYear;
+            where2 = where2 + " and ds.report_period_year=" + aYear;
         }
         if (aMonth > 0) {
             where1 = where1 + " and (MONTH(report_period_from_date)>=" + aMonth + " and MONTH(report_period_from_date)<=" + aMonth + ")";
@@ -224,6 +225,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             String aDIDs = this.getDistrictsStr();
             if (aDIDs.length() > 0) {
                 where1 = where1 + " and district_id IN (" + aDIDs + ")";
+                where2 = where2 + " and district_id IN (" + aDIDs + ")";
             }
         } catch (NullPointerException npe) {
             //skip 
@@ -232,6 +234,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
             String aFIDs = this.getFacilitiesStr();
             if (aFIDs.length() > 0) {
                 where1 = where1 + " and ds.health_facility_id IN(" + aFIDs + ")";
+                where2 = where2 + " and ds.health_facility_id IN(" + aFIDs + ")";
             }
         } catch (NullPointerException npe) {
             //skip 
@@ -372,7 +375,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                     this.count_d6 = 0;
                 }
                 if (this.count_d6 > 0) {
-                    this.perc_value6 = 100 * (this.count_n6 / this.count_d6);
+                    this.perc_value6 = 100 * this.count_n6 / this.count_d6;
                 } else {
                     this.perc_value6 = 0;
                 }
@@ -389,7 +392,7 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
                     this.count_d7 = 0;
                 }
                 if (this.count_d7 > 0) {
-                    this.perc_value7 = 100 * (this.count_n7 / this.count_d7);
+                    this.perc_value7 = 100 * this.count_n7 / this.count_d7;
                 } else {
                     this.perc_value7 = 0;
                 }
