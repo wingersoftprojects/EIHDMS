@@ -2,7 +2,7 @@ CREATE VIEW view_facility_targets_annually AS
 select bd.health_facility_id,bd.report_period_year,
 GROUP_CONCAT(DISTINCT if(de.data_element_code ='5', CEILING(bd.data_element_value/52), NULL)) AS 'targ_htc_tst_pos', 
 GROUP_CONCAT(DISTINCT if(de.data_element_code = '7', CEILING(bd.data_element_value/52), NULL)) AS 'targ_tx_new'  
-from base_data_X bd 
+from base_data_x bd 
 inner join data_element de on bd.report_form_id=de.report_form_id and bd.report_form_group_id=de.report_form_group_id and bd.data_element_id=de.data_element_id 
 GROUP BY bd.health_facility_id,bd.report_period_year;
 
@@ -18,7 +18,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_select_raw_art_retention`(
 	IN in_batch_id int(11)
 )
 BEGIN 
-	SELECT * FROM base_data_67 WHERE batch_id=in_batch_id order by base_data_id ASC;
+	SELECT * FROM base_data_x WHERE batch_id=in_batch_id order by base_data_id ASC;
 END
 ;;
 DELIMITER ;

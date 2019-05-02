@@ -41,119 +41,121 @@
                             <f:selectItems value="#{kpiBean.districts}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
                         </p:selectCheckboxMenu>
 
-                        <p:commandButton value="Show Report" update="@form" action="#{uploadBean.load_jSONArray(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)}"/>
+                        <p:commandButton value="Show Report" update="pivot_panel_grid" action="#{uploadBean.load_jSONArray(kpiBean.selectedDistricts,kpiBean.selectedYears,kpiBean.selectedDataElements)}"/>
                     </p:panelGrid>
 
-                    <!-- 1. Create a DIV container to insert the component -->
-                    <div id="pivotContainer"></div>
-                    <h:outputScript name="./component/flexmonster/flexmonster.js"/>
-                    <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
-                    <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
-                        <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
-                            var report = {
-                                classicView: true,
-                                configuratorActive: false,
-                                configuratorButton: true,
-                                showTotals: false,
-                                showGrandTotals: false,
-                                dataSourceType: "json",
-                                data: jsonData,
-                                rows: [
-                                    {uniqueName: "District"}
-                                ],
-                                columns: [
-                                    {uniqueName: "DataElement", sortName: "asc"}
-                                ],
-                                measures: [
-                                    {uniqueName: "DataElementValue", format: "decimal"}
-                                ],
-                                formats: [
-                                    {
-                                        name: "decimal",
-                                        decimalPlaces: 1
-                                    }
-                                ],
-                                expandAll: true,
-                                drillAll: true,
-                                licenseKey: "Z7IJ-XIGG53-735V5K-3G375G-1C1H38-6P6W4P-4R6J53-5E3S0P-33216V-022Y"
-                            };
-                            //flexmonster.expandAllData();
-                            flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-                        </script>
-                    </c:if>
-                    <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
-                        <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
-                            var report = {
-                                classicView: true,
-                                configuratorActive: false,
-                                configuratorButton: true,
-                                showTotals: false,
-                                showGrandTotals: false,
-                                dataSourceType: "json",
-                                data: jsonData,
-                                rows: [
-                                    {uniqueName: "District"},
-                                    {uniqueName: "County"},
-                                    {uniqueName: "Subcounty"},
-                                    {uniqueName: "Parish"}
-                                ],
-                                columns: [
-                                    {uniqueName: "DataElement", sortName: "asc"}
-                                ],
-                                measures: [
-                                    {uniqueName: "DataElementValue", format: "decimal"}
-                                ],
-                                formats: [
-                                    {
-                                        name: "decimal",
-                                        decimalPlaces: 1
-                                    }
-                                ],
-                                expandAll: true,
-                                drillAll: true,
-                                licenseKey: "Z7IJ-XIGG53-735V5K-3G375G-1C1H38-6P6W4P-4R6J53-5E3S0P-33216V-022Y"
-                            };
-                            //flexmonster.expandAllData();
-                            flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-                        </script>
-                    </c:if>
-                    <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
-                        <script type="text/javascript">
-                            var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
+                    <p:panelGrid id="pivot_panel_grid">
+                        <!-- 1. Create a DIV container to insert the component -->
+                        <div id="pivotContainer"></div>
+                        <h:outputScript name="./component/flexmonster/flexmonster.js"/>
+                        <!-- 3. Embed the component using flexmonster.embedPivotComponent() -->
+                        <c:if  test="#{uploadBean.report_form==null or uploadBean.report_form.lowest_report_form_level=='Facility'}">
+                            <script type="text/javascript">
+                                var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
+                                var report = {
+                                    classicView: true,
+                                    configuratorActive: false,
+                                    configuratorButton: true,
+                                    showTotals: false,
+                                    showGrandTotals: false,
+                                    dataSourceType: "json",
+                                    data: jsonData,
+                                    rows: [
+                                        {uniqueName: "District"}
+                                    ],
+                                    columns: [
+                                        {uniqueName: "DataElement", sortName: "asc"}
+                                    ],
+                                    measures: [
+                                        {uniqueName: "DataElementValue", format: "decimal"}
+                                    ],
+                                    formats: [
+                                        {
+                                            name: "decimal",
+                                            decimalPlaces: 1
+                                        }
+                                    ],
+                                    expandAll: true,
+                                    drillAll: true,
+                                    licenseKey: "Z7IJ-XIGG53-735V5K-3G375G-1C1H38-6P6W4P-4R6J53-5E3S0P-33216V-022Y"
+                                };
+                                //flexmonster.expandAllData();
+                                flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                            </script>
+                        </c:if>
+                        <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='Parish'}">
+                            <script type="text/javascript">
+                                var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
+                                var report = {
+                                    classicView: true,
+                                    configuratorActive: false,
+                                    configuratorButton: true,
+                                    showTotals: false,
+                                    showGrandTotals: false,
+                                    dataSourceType: "json",
+                                    data: jsonData,
+                                    rows: [
+                                        {uniqueName: "District"},
+                                        {uniqueName: "County"},
+                                        {uniqueName: "Subcounty"},
+                                        {uniqueName: "Parish"}
+                                    ],
+                                    columns: [
+                                        {uniqueName: "DataElement", sortName: "asc"}
+                                    ],
+                                    measures: [
+                                        {uniqueName: "DataElementValue", format: "decimal"}
+                                    ],
+                                    formats: [
+                                        {
+                                            name: "decimal",
+                                            decimalPlaces: 1
+                                        }
+                                    ],
+                                    expandAll: true,
+                                    drillAll: true,
+                                    licenseKey: "Z7IJ-XIGG53-735V5K-3G375G-1C1H38-6P6W4P-4R6J53-5E3S0P-33216V-022Y"
+                                };
+                                //flexmonster.expandAllData();
+                                flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                            </script>
+                        </c:if>
+                        <c:if  test="#{uploadBean.report_form.lowest_report_form_level=='District'}">
+                            <script type="text/javascript">
+                                var jsonData = #{uploadBean.getjSONArray_Dynamic_Pivot()};
 
-                            var report = {
-                                classicView: true,
-                                configuratorActive: false,
-                                configuratorButton: true,
-                                showTotals: false,
-                                showGrandTotals: false,
-                                dataSourceType: "json",
-                                data: jsonData,
-                                rows: [
-                                    {uniqueName: "District"}
-                                ],
-                                columns: [
-                                    {uniqueName: "DataElement", sortName: "asc"}
-                                ],
-                                measures: [
-                                    {uniqueName: "DataElementValue", format: "decimal"}
-                                ],
-                                formats: [
-                                    {
-                                        name: "decimal",
-                                        decimalPlaces: 1
-                                    }
-                                ],
-                                expandAll: true,
-                                drillAll: true,
-                                licenseKey: "Z7IJ-XIGG53-735V5K-3G375G-1C1H38-6P6W4P-4R6J53-5E3S0P-33216V-022Y"
-                            };
-                            //flexmonster.expandAllData();
-                            flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
-                        </script>
-                    </c:if>
+                                var report = {
+                                    classicView: true,
+                                    configuratorActive: false,
+                                    configuratorButton: true,
+                                    showTotals: false,
+                                    showGrandTotals: false,
+                                    dataSourceType: "json",
+                                    data: jsonData,
+                                    rows: [
+                                        {uniqueName: "District"}
+                                    ],
+                                    columns: [
+                                        {uniqueName: "DataElement", sortName: "asc"}
+                                    ],
+                                    measures: [
+                                        {uniqueName: "DataElementValue", format: "decimal"}
+                                    ],
+                                    formats: [
+                                        {
+                                            name: "decimal",
+                                            decimalPlaces: 1
+                                        }
+                                    ],
+                                    expandAll: true,
+                                    drillAll: true,
+                                    licenseKey: "Z7IJ-XIGG53-735V5K-3G375G-1C1H38-6P6W4P-4R6J53-5E3S0P-33216V-022Y"
+                                };
+                                //flexmonster.expandAllData();
+                                flexmonster.embedPivotComponent("flexmonster/", "pivotContainer", "100%", "500", report, true);
+                            </script>
+                        </c:if>
+                    </p:panelGrid>
                 </p:fieldset>
             </h:form>
         </f:view>

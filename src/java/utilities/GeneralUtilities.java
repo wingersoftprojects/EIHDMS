@@ -795,4 +795,82 @@ public class GeneralUtilities implements Serializable {
     public static SimpleDateFormat simpleDateFormatDate2() {
         return new SimpleDateFormat("yyyy-MM-ddd H:mm:ss");
     }
+    
+    public String convertMonthNoToName(int aMonthNumber, int aShort) {
+        String ms = "";
+        if (aMonthNumber == 1) {
+            if (aShort == 1) {
+                ms = "Jan";
+            } else {
+                ms = "January";
+            }
+        } else if (aMonthNumber == 2) {
+            if (aShort == 1) {
+                ms = "Feb";
+            } else {
+                ms = "Febuary";
+            }
+        } else if (aMonthNumber == 3) {
+            if (aShort == 1) {
+                ms = "Mar";
+            } else {
+                ms = "March";
+            }
+        } else if (aMonthNumber == 4) {
+            if (aShort == 1) {
+                ms = "Apr";
+            } else {
+                ms = "April";
+            }
+        } else if (aMonthNumber == 5) {
+            if (aShort == 1) {
+                ms = "May";
+            } else {
+                ms = "May";
+            }
+        } else if (aMonthNumber == 6) {
+            if (aShort == 1) {
+                ms = "Jun";
+            } else {
+                ms = "June";
+            }
+        } else if (aMonthNumber == 7) {
+            if (aShort == 1) {
+                ms = "Jul";
+            } else {
+                ms = "July";
+            }
+        } else if (aMonthNumber == 8) {
+            if (aShort == 1) {
+                ms = "Aug";
+            } else {
+                ms = "August";
+            }
+        } else if (aMonthNumber == 9) {
+            if (aShort == 1) {
+                ms = "Sep";
+            } else {
+                ms = "September";
+            }
+        } else if (aMonthNumber == 10) {
+            if (aShort == 1) {
+                ms = "Oct";
+            } else {
+                ms = "October";
+            }
+        } else if (aMonthNumber == 11) {
+            if (aShort == 1) {
+                ms = "Nov";
+            } else {
+                ms = "November";
+            }
+        } else if (aMonthNumber == 12) {
+            if (aShort == 1) {
+                ms = "Dec";
+            } else {
+                ms = "December";
+            }
+        }
+        return ms;
+    }
 }

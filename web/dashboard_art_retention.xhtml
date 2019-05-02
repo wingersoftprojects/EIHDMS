@@ -65,107 +65,113 @@
                             </p:commandButton>
                         </p:panelGrid>
                     </div>
+                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="1" id="pnlgChart">
+                            <div id="chart1"></div>
+                            <script type="text/javascript">
+                                FusionCharts.ready(function () {
+                                    var chartid = new FusionCharts({
+                                        type: 'mscombidy2d',
+                                        renderAt: 'chart1',
+                                        width: '30%',
+                                        height: '350',
+                                        dataFormat: 'json',
+                                        dataSource: {
+                                            "chart": {
+                                                "caption": "Early ART Retention Chart",
+                                                "subCaption": "",
+                                                "xAxisName": "Month",
+                                                "yAxisName": "Patients active on ART",
+                                                "numberSuffix": "",
+                                                "paletteColors": "#194788,#E96B25",
+                                                "bgColor": "#ffffff",
+                                                "borderAlpha": "0",
+                                                "canvasBorderAlpha": "0",
+                                                "usePlotGradientColor": "0",
+                                                "plotBorderAlpha": "10",
+                                                "placevaluesInside": "1",
+                                                "rotatevalues": "1",
+                                                "valueFontColor": "#ffffff",
+                                                "showXAxisLine": "1",
+                                                "xAxisLineColor": "#999999",
+                                                "divlineColor": "#999999",
+                                                "divLineIsDashed": "1",
+                                                "showAlternateHGridColor": "0",
+                                                "subcaptionFontBold": "0",
+                                                "subcaptionFontSize": "14",
+                                                "showValues": "1",
+                                                "numberScaleValue":"1",
+                                                "numberScaleUnit":""
+                                            },
+                                            "categories": #{art_retentionBean.categoriesChartString},
+                                            "dataset": #{art_retentionBean.dataseriesChartString}
+                                        }
+                                    }).render();
+                                });
+                            </script>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" id="pnlgData">
+                            <p:dataTable id="dtblData" widgetVar="reportList" value="#{art_retentionBean.art_retentionList}" var="item" rows="10"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                         rowsPerPageTemplate="10,20,40,100,500" 
+                                         emptyMessage="No record found with given criteria">
+                                <f:facet name="{Exporters}">
+                                    <h:commandLink>
+                                        <p:graphicImage name="images/pdf.png" width="24"/>
+                                        <p:dataExporter type="pdf" target="dtblData" fileName="Early_ART_Retention"/>
+                                    </h:commandLink>
 
-                    <h:panelGrid columns="1" id="pnlgChart">
-                        <div id="chart1"></div>
-                        <script type="text/javascript">
-                            FusionCharts.ready(function () {
-                                var chartid = new FusionCharts({
-                                    type: 'mscombidy2d',
-                                    renderAt: 'chart1',
-                                    width: '50%',
-                                    height: '350',
-                                    dataFormat: 'json',
-                                    dataSource: {
-                                        "chart": {
-                                            "caption": "Early ART Retention Dashboard",
-                                            "subCaption": "",
-                                            "xAxisName": "Month",
-                                            "yAxisName": "Number of Patients",
-                                            "numberSuffix": "",
-                                            "paletteColors": "#194788,#E96B25",
-                                            "bgColor": "#ffffff",
-                                            "borderAlpha": "0",
-                                            "canvasBorderAlpha": "0",
-                                            "usePlotGradientColor": "0",
-                                            "plotBorderAlpha": "10",
-                                            "placevaluesInside": "1",
-                                            "rotatevalues": "1",
-                                            "valueFontColor": "#ffffff",
-                                            "showXAxisLine": "1",
-                                            "xAxisLineColor": "#999999",
-                                            "divlineColor": "#999999",
-                                            "divLineIsDashed": "1",
-                                            "showAlternateHGridColor": "0",
-                                            "subcaptionFontBold": "0",
-                                            "subcaptionFontSize": "14",
-                                            "showValues": "1"
-                                        },
-                                        "categories": #{art_retentionBean.categoriesChartString},
-                                        "dataset": #{art_retentionBean.dataseriesChartString}
-                                    }
-                                }).render();
-                            });
-                        </script>
-                    </h:panelGrid>
-                    <h:panelGrid columns="1" id="pnlgData">
-                        <p:dataTable id="dtblData" widgetVar="reportList" value="#{art_retentionBean.art_retentionList}" var="item" rows="20"
-                                     paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
-                                     rowsPerPageTemplate="20,40,100,500" 
-                                     emptyMessage="No record found with given criteria">
-                            <f:facet name="{Exporters}">
-                                <h:commandLink>
-                                    <p:graphicImage name="images/pdf.png" width="24"/>
-                                    <p:dataExporter type="pdf" target="dtblData" fileName="Early_ART_Retention"/>
-                                </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage name="images/csv.png" width="24"/>
+                                        <p:dataExporter type="csv" target="dtblData" fileName="Early_ART_Retention" />
+                                    </h:commandLink>
 
-                                <h:commandLink>
-                                    <p:graphicImage name="images/csv.png" width="24"/>
-                                    <p:dataExporter type="csv" target="dtblData" fileName="Early_ART_Retention" />
-                                </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage name="images/excel.png" width="24"/>
+                                        <p:dataExporter type="xls" target="dtblData" fileName="Early_ART_Retention" />
+                                    </h:commandLink>
 
-                                <h:commandLink>
-                                    <p:graphicImage name="images/excel.png" width="24"/>
-                                    <p:dataExporter type="xls" target="dtblData" fileName="Early_ART_Retention" />
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage name="images/xml.png" width="24"/>
-                                    <p:dataExporter type="xml" target="dtblData" fileName="Early_ART_Retention" />
-                                </h:commandLink>
-                            </f:facet>
-                            <p:column headerText="District" style="font-size: 12px;">
-                                <h:outputText value="#{item.district_name}"/>
-                            </p:column>
-                            <p:column headerText="Health Facility" style="font-size: 12px;">
-                                <h:outputText value="#{item.health_facility_name}"/>
-                            </p:column>
-                            <p:column headerText="Cohort Start Year" style="font-size: 12px;">
-                                <h:outputText value="#{item.cohort_start_year}"/>
-                            </p:column>
-                            <p:column headerText="Cohort Start Month" style="font-size: 12px;">
-                                <h:outputText value="#{item.cohort_start_month}"/>
-                            </p:column>
-                            <p:column headerText="Mo" style="font-size: 12px;">
-                                <h:outputText value="#{item.mo}"/>
-                            </p:column>
-                            <p:column headerText="M1" style="font-size: 12px;">
-                                <h:outputText value="#{item.m1}"/>
-                            </p:column>
-                            <p:column headerText="M2" style="font-size: 12px;">
-                                <h:outputText value="#{item.m2}"/>
-                            </p:column>
-                            <p:column headerText="M3" style="font-size: 12px;">
-                                <h:outputText value="#{item.m3}"/>
-                            </p:column>
-                            <p:column headerText="M4" style="font-size: 12px;">
-                                <h:outputText value="#{item.m4}"/>
-                            </p:column>
-                            <p:column headerText="M5" style="font-size: 12px;">
-                                <h:outputText value="#{item.m5}"/>
-                            </p:column>
-                        </p:dataTable>
+                                    <h:commandLink>
+                                        <p:graphicImage name="images/xml.png" width="24"/>
+                                        <p:dataExporter type="xml" target="dtblData" fileName="Early_ART_Retention" />
+                                    </h:commandLink>
+                                </f:facet>
+                                <f:facet name="header">
+                                    <h:outputLabel value="Early ART Retention Data"/>
+                                </f:facet>
+                                <p:column headerText="District" style="font-size: 12px;">
+                                    <h:outputText value="#{item.district_name}"/>
+                                </p:column>
+                                <p:column headerText="Health Facility" style="font-size: 12px;">
+                                    <h:outputText value="#{item.health_facility_name}"/>
+                                </p:column>
+                                <p:column headerText="Cohort Start Year" style="font-size: 12px;">
+                                    <h:outputText value="#{item.cohort_start_year}"/>
+                                </p:column>
+                                <p:column headerText="Cohort Start Month" style="font-size: 12px;">
+                                    <h:outputText value="#{generalUtilities.convertMonthNoToName(item.cohort_start_month,1)}"/>
+                                </p:column>
+                                <p:column headerText="Mo" style="font-size: 12px;">
+                                    <h:outputText value="#{item.mo}"/>
+                                </p:column>
+                                <p:column headerText="M1" style="font-size: 12px;">
+                                    <h:outputText value="#{item.m1}"/>
+                                </p:column>
+                                <p:column headerText="M2" style="font-size: 12px;">
+                                    <h:outputText value="#{item.m2}"/>
+                                </p:column>
+                                <p:column headerText="M3" style="font-size: 12px;">
+                                    <h:outputText value="#{item.m3}"/>
+                                </p:column>
+                                <p:column headerText="M4" style="font-size: 12px;">
+                                    <h:outputText value="#{item.m4}"/>
+                                </p:column>
+                                <p:column headerText="M5" style="font-size: 12px;">
+                                    <h:outputText value="#{item.m5}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
             </h:form>
