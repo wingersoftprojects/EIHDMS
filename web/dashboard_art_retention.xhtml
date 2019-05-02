@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event listener="#{art_retentionBean.initDashboard()}" type="preRenderView" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <f:view>
+            <script type="text/javascript" src="resources/js/fusioncharts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.charts.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.theme.fint.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts-jquery-plugin.js"></script>
+            <script type="text/javascript" src="resources/js/fusioncharts.widgets.js"></script>
+            <h:form>
+                <p:growl/>
+                <p:fieldset legend="Early ART Retention Dashboard">
+                    <div class="ui-fluid">
+                        <p:panelGrid columns="5" id="panelFilter">
+                            <p:outputLabel value="Cohort Start Year" />
+                            <p:outputLabel value="Cohort Start Month" />
+                            <p:outputLabel value="District:" for="district" />
+                            <p:selectCheckboxMenu id="district" value="#{art_retentionBean.selectedDistricts}" label="" style="width:150px" converter="districtConverter">
+                                <f:selectItems value="#{art_retentionBean.districts}" var="ds" itemValue="#{ds}" itemLabel="#{ds.district_name}" />
+                                <p:ajax update="facility"/>
+                            </p:selectCheckboxMenu>
+                            <p:commandButton id="cmdbSearch" value="APPLY  FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                                <p:ajax listener="#{art_retentionBean.refreshDashboard(art_retentionBean.year_value,art_retentionBean.month_value,art_retentionBean.selectedDistricts,art_retentionBean.selectedFacilities)}" process="panelFilter" update="pnlgChart pnlgData"/>
+                            </p:commandButton>
+
+                            <p:selectOneMenu id="year" value="#{art_retentionBean.year_value}" editable="true">
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()}" itemValue="#{generalUtilities.getCurrentYear()}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-1}" itemValue="#{generalUtilities.getCurrentYear()-1}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-2}" itemValue="#{generalUtilities.getCurrentYear()-2}" />
+                                <f:selectItem itemLabel="#{generalUtilities.getCurrentYear()-3}" itemValue="#{generalUtilities.getCurrentYear()-3}" />
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="month" value="#{art_retentionBean.month_value}">
+                                <f:selectItem itemLabel="" itemValue="0" />
+                                <f:selectItem itemLabel="Jan" itemValue="1" />
+                                <f:selectItem itemLabel="Feb" itemValue="2" />
+                                <f:selectItem itemLabel="Mar" itemValue="3" />
+                                <f:selectItem itemLabel="Apr" itemValue="4" />
+                                <f:selectItem itemLabel="May" itemValue="5" />
+                                <f:selectItem itemLabel="Jun" itemValue="6" />
+                                <f:selectItem itemLabel="Jul" itemValue="7" />
+                                <f:selectItem itemLabel="Aug" itemValue="8" />
+                                <f:selectItem itemLabel="Sep" itemValue="9" />
+                                <f:selectItem itemLabel="Oct" itemValue="10" />
+                                <f:selectItem itemLabel="Nov" itemValue="11" />
+                                <f:selectItem itemLabel="Dec" itemValue="12" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Facility:" for="facility" />
+                            <p:selectCheckboxMenu id="facility" value="#{art_retentionBean.selectedFacilities}" label="" style="width:150px" converter="health_facilityConverter">
+                                <f:selectItems value="#{art_retentionBean.facilities}" var="fs" itemValue="#{fs}" itemLabel="#{fs.health_facility_name}" />
+                            </p:selectCheckboxMenu>
+                            <p:commandButton id="cmdbReset" value="RESET FILTER" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                                <p:ajax listener="#{art_retentionBean.resetDashboard()}" process="panelFilter" update="panelFilter pnlgChart pnlgData"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </div>
+
+                    <h:panelGrid columns="1" id="pnlgChart">
+                        <div id="chart1"></div>
+                        <script type="text/javascript">
+                            FusionCharts.ready(function () {
+                                var chartid = new FusionCharts({
+                                    type: 'mscombidy2d',
+                                    renderAt: 'chart1',
+                                    width: '50%',
+                                    height: '350',
+                                    dataFormat: 'json',
+                                    dataSource: {
+                                        "chart": {
+                                            "caption": "Early ART Retention Dashboard",
+                                            "subCaption": "",
+                                            "xAxisName": "Month",
+                                            "yAxisName": "Number of Patients",
+                                            "numberSuffix": "",
+                                            "paletteColors": "#194788,#E96B25",
+                                            "bgColor": "#ffffff",
+                                            "borderAlpha": "0",
+                                            "canvasBorderAlpha": "0",
+                                            "usePlotGradientColor": "0",
+                                            "plotBorderAlpha": "10",
+                                            "placevaluesInside": "1",
+                                            "rotatevalues": "1",
+                                            "valueFontColor": "#ffffff",
+                                            "showXAxisLine": "1",
+                                            "xAxisLineColor": "#999999",
+                                            "divlineColor": "#999999",
+                                            "divLineIsDashed": "1",
+                                            "showAlternateHGridColor": "0",
+                                            "subcaptionFontBold": "0",
+                                            "subcaptionFontSize": "14",
+                                            "showValues": "1"
+                                        },
+                                        "categories": #{art_retentionBean.categoriesChartString},
+                                        "dataset": #{art_retentionBean.dataseriesChartString}
+                                    }
+                                }).render();
+                            });
+                        </script>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" id="pnlgData">
+                        <p:dataTable id="dtblData" widgetVar="reportList" value="#{art_retentionBean.art_retentionList}" var="item" rows="20"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="20,40,100,500" 
+                                     emptyMessage="No record found with given criteria">
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="dtblData" fileName="Early_ART_Retention"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="dtblData" fileName="Early_ART_Retention" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="dtblData" fileName="Early_ART_Retention" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="dtblData" fileName="Early_ART_Retention" />
+                                </h:commandLink>
+                            </f:facet>
+                            <p:column headerText="District" style="font-size: 12px;">
+                                <h:outputText value="#{item.district_name}"/>
+                            </p:column>
+                            <p:column headerText="Health Facility" style="font-size: 12px;">
+                                <h:outputText value="#{item.health_facility_name}"/>
+                            </p:column>
+                            <p:column headerText="Cohort Start Year" style="font-size: 12px;">
+                                <h:outputText value="#{item.cohort_start_year}"/>
+                            </p:column>
+                            <p:column headerText="Cohort Start Month" style="font-size: 12px;">
+                                <h:outputText value="#{item.cohort_start_month}"/>
+                            </p:column>
+                            <p:column headerText="Mo" style="font-size: 12px;">
+                                <h:outputText value="#{item.mo}"/>
+                            </p:column>
+                            <p:column headerText="M1" style="font-size: 12px;">
+                                <h:outputText value="#{item.m1}"/>
+                            </p:column>
+                            <p:column headerText="M2" style="font-size: 12px;">
+                                <h:outputText value="#{item.m2}"/>
+                            </p:column>
+                            <p:column headerText="M3" style="font-size: 12px;">
+                                <h:outputText value="#{item.m3}"/>
+                            </p:column>
+                            <p:column headerText="M4" style="font-size: 12px;">
+                                <h:outputText value="#{item.m4}"/>
+                            </p:column>
+                            <p:column headerText="M5" style="font-size: 12px;">
+                                <h:outputText value="#{item.m5}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </f:view>
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="default">
+                <h:outputText value="Status: StandBy" />
+            </f:facet>
+
+            <f:facet name="start">
+
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Status: Completed" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/ajax-loader.gif" />
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

@@ -824,10 +824,10 @@ public class UploadBean implements Serializable {
         return jSONArray;
     }
 
-    public void clear_jSONArray(){
-        jSONArray=new JSONArray();
+    public void clear_jSONArray() {
+        jSONArray = new JSONArray();
     }
-    
+
     public void load_jSONArray(District[] selectedDistricts, Integer[] selectedYears, Integer[] selectedDataElements) {
 
         JSONArray jArray = new JSONArray();
@@ -1864,6 +1864,7 @@ public class UploadBean implements Serializable {
      */
     public void load_interface() {
         Batch batch;
+        String report_form_code = "";
         String sql = "";
         if (!interface_datas.isEmpty()) {
             batch = newBatch();
@@ -1890,6 +1891,9 @@ public class UploadBean implements Serializable {
                 connection.setAutoCommit(false);
                 int j = 0;
                 for (Interface_data i : interface_datas) {
+                    if (j == 0) {
+                        report_form_code = i.getReport_form().getReport_form_code();
+                    }
                     try {
                         ps.setInt(1, batch.getBatch_id());
                     } catch (NullPointerException npe) {
@@ -2043,6 +2047,12 @@ public class UploadBean implements Serializable {
                 generate_validation_report(batch.getBatch_id());
                 //System.out.println("END-VALIDATION-REPORT:" + new Date());
 
+                //pivot if form is retention
+                if (report_form_code.equals("ART Retention")) {
+                    new Art_retentionBean().pivotArtRetention(batch.getBatch_id());
+                }
+
+                //show validation report
                 RequestContext.getCurrentInstance().execute("PF('validationReport').show();");
             } catch (SQLException ex) {
                 FacesContext context = FacesContext.getCurrentInstance();

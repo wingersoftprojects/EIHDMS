@@ -164,6 +164,8 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
         this.indicator_id = 1;
         this.month_value = 0;
         this.refreshWeeks(this.year_value, this.week_value);
+        selectedDistricts = new District[0];
+        selectedFacilities = new Health_facility[0];
         this.refreshDashboard(this.year_value, this.month_value, this.week_value, this.week_value2, this.selectedDistricts, this.selectedFacilities, this.indicator_id);
     }
 
@@ -1677,7 +1679,9 @@ public class Dashboard_surgeBean extends AbstractBean<Dashboard_surge> implement
     public List<Health_facility> getFacilities() {
         List<Health_facility> facilityList = new ArrayList<>();
         try {
-            facilityList = Health_facility.queryHealth_facility("is_deleted=0 and district_id IN(" + this.getDistrictsStr() + ")", "district_id,health_facility_name");
+            if (this.getDistrictsStr().length() > 0) {
+                facilityList = Health_facility.queryHealth_facility("is_deleted=0 and district_id IN(" + this.getDistrictsStr() + ")", "district_id,health_facility_name");
+            }
         } catch (PersistentException | NullPointerException ex) {
         }
         this.facilities = facilityList;
