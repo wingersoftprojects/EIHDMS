@@ -39,7 +39,7 @@ import org.orm.PersistentException;
  */
 @ManagedBean
 @SessionScoped
-public class Art_retentionBean implements Serializable {
+public class Art_retentionBean_old2 implements Serializable {
 
     @ManagedProperty("#{loginBean}")
     private LoginBean loginBean;
@@ -81,6 +81,8 @@ public class Art_retentionBean implements Serializable {
             int Am1 = 0;
             int Am2 = 0;
             int Am3 = 0;
+            int Am4 = 0;
+            int Am5 = 0;
             int col = 1;
             while (rs.next()) {
                 if (col == 1) {
@@ -144,11 +146,25 @@ public class Art_retentionBean implements Serializable {
                     } catch (NullPointerException npe) {
                         Am3 = 0;
                     }
+                    col = col + 1;
+                } else if (col == 7) {
+                    try {
+                        Am4 = rs.getInt("data_element_value");
+                    } catch (NullPointerException npe) {
+                        Am4 = 0;
+                    }
+                    col = col + 1;
+                } else if (col == 8) {
+                    try {
+                        Am5 = rs.getInt("data_element_value");
+                    } catch (NullPointerException npe) {
+                        Am5 = 0;
+                    }
                     long aID = this.getPivotArtRetention(Ahealth_facility_id, Ay, Am);
                     if (aID == 0) {
-                        this.pivotInsertArtRetention(aBatchId, Adistrict_id, Adistrict_name, Ahealth_facility_id, Ahealth_facility_name, Ay, Am, Am0, Am1, Am2, Am3);
+                        this.pivotInsertArtRetention(aBatchId, Adistrict_id, Adistrict_name, Ahealth_facility_id, Ahealth_facility_name, Ay, Am, Am0, Am1, Am2, Am3, Am4, Am5);
                     } else {
-                        this.pivotUpdateArtRetention(aBatchId, Adistrict_id, Adistrict_name, Ahealth_facility_id, Ahealth_facility_name, Ay, Am, Am0, Am1, Am2, Am3, aID);
+                        this.pivotUpdateArtRetention(aBatchId, Adistrict_id, Adistrict_name, Ahealth_facility_id, Ahealth_facility_name, Ay, Am, Am0, Am1, Am2, Am3, Am4, Am5, aID);
                     }
                     col = 1;
                 }
@@ -170,10 +186,10 @@ public class Art_retentionBean implements Serializable {
         }
     }
 
-    public void pivotInsertArtRetention(long aBatchId, int Adistrict_id, String Adistrict_name, int Ahealth_facility_id, String Ahealth_facility_name, int Ay, int Am, int Am0, int Am1, int Am2, int Am3) {
+    public void pivotInsertArtRetention(long aBatchId, int Adistrict_id, String Adistrict_name, int Ahealth_facility_id, String Ahealth_facility_name, int Ay, int Am, int Am0, int Am1, int Am2, int Am3, int Am4, int Am5) {
         String sql = "INSERT INTO art_retention_pivot("
                 + "batch_id,district_id,district_name,health_facility_id,health_facility_name,"
-                + "y,m,m0,m1,m2,m3) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                + "y,m,m0,m1,m2,m3,m4,m5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try (Connection conn = DBConnection.getMySQLConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, aBatchId);
@@ -211,6 +227,16 @@ public class Art_retentionBean implements Serializable {
             } else {
                 ps.setInt(11, 0);
             }
+            if (Am4 >= 0) {
+                ps.setInt(12, Am4);
+            } else {
+                ps.setInt(12, 0);
+            }
+            if (Am5 >= 0) {
+                ps.setInt(13, Am5);
+            } else {
+                ps.setInt(13, 0);
+            }
             //System.out.println("INSERT:" + ps.toString());
             ps.executeUpdate();
         } catch (SQLException se) {
@@ -218,10 +244,10 @@ public class Art_retentionBean implements Serializable {
         }
     }
 
-    public void pivotUpdateArtRetention(long aBatchId, int Adistrict_id, String Adistrict_name, int Ahealth_facility_id, String Ahealth_facility_name, int Ay, int Am, int Am0, int Am1, int Am2, int Am3, long aID) {
+    public void pivotUpdateArtRetention(long aBatchId, int Adistrict_id, String Adistrict_name, int Ahealth_facility_id, String Ahealth_facility_name, int Ay, int Am, int Am0, int Am1, int Am2, int Am3, int Am4, int Am5, long aID) {
         String sql = "UPDATE art_retention_pivot SET "
                 + "batch_id=?,"
-                + "m0=?,m1=?,m2=?,m3=? WHERE art_retention_pivot_id=?";
+                + "m0=?,m1=?,m2=?,m3=?,m4=?,m5=? WHERE art_retention_pivot_id=?";
         try (Connection conn = DBConnection.getMySQLConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, aBatchId);
@@ -229,7 +255,9 @@ public class Art_retentionBean implements Serializable {
             ps.setInt(3, Am1);
             ps.setInt(4, Am2);
             ps.setInt(5, Am3);
-            ps.setLong(6, aID);
+            ps.setInt(6, Am4);
+            ps.setInt(7, Am5);
+            ps.setLong(8, aID);
             //System.out.println("UPDATE:" + ps.toString());
             ps.executeUpdate();
         } catch (SQLException se) {
@@ -285,12 +313,12 @@ public class Art_retentionBean implements Serializable {
         ResultSet rs = null;
         ResultSet rs2 = null;
         Gson gson;
-        String sql1 = "SELECT sum(m0) as m0,sum(m1) as m1,sum(m2) as m2,sum(m3) as m3 "
+        String sql1 = "SELECT sum(m0) as m0,sum(m1) as m1,sum(m2) as m2,sum(m3) as m3,sum(m4) as m4,sum(m5) as m5 "
                 + "FROM art_retention_pivot pv left join health_facility hf on pv.health_facility_id=hf.health_facility_id "
                 + " left join district d on pv.district_id=d.district_id "
                 + "WHERE 1=1";
         String sql2 = "SELECT d.district_name,hf.health_facility_name,pv.district_id,pv.health_facility_id,"
-                + "y,m,m0,m1,m2,m3 "
+                + "y,m,m0,m1,m2,m3,m4,m5 "
                 + "FROM art_retention_pivot pv left join health_facility hf on pv.health_facility_id=hf.health_facility_id "
                 + " left join district d on pv.district_id=d.district_id "
                 + "WHERE 1=1";
@@ -333,7 +361,7 @@ public class Art_retentionBean implements Serializable {
             this.Art_retentionList.clear();
             this.refreshDashboardList(sql2);
         } catch (Exception ex) {
-            Logger.getLogger(Art_retentionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Art_retentionBean_old2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -393,6 +421,17 @@ public class Art_retentionBean implements Serializable {
             try {
                 aArt_retention.setM3(aResultSet.getInt("m3"));
             } catch (NullPointerException npe) {
+
+            }
+            try {
+                aArt_retention.setM4(aResultSet.getInt("m4"));
+            } catch (NullPointerException npe) {
+
+            }
+            try {
+                aArt_retention.setM5(aResultSet.getInt("m5"));
+            } catch (NullPointerException npe) {
+
             }
         } catch (SQLException se) {
             System.err.println(se.getMessage());
@@ -431,6 +470,13 @@ public class Art_retentionBean implements Serializable {
                 lv = new LinkedHashMap<String, String>();
                 lv.put("label", "M3");
                 categoryarray.add(lv);
+                lv = new LinkedHashMap<String, String>();
+                lv.put("label", "M4");
+                categoryarray.add(lv);
+                lv = new LinkedHashMap<String, String>();
+                lv.put("label", "M5");
+                categoryarray.add(lv);
+
                 // dataseries
                 lv = new LinkedHashMap<String, String>();
                 try {
@@ -464,7 +510,22 @@ public class Art_retentionBean implements Serializable {
                 }
                 dataSeriesArray1.add(lv);
                 dataSeriesArray2.add(lv);
-                
+                lv = new LinkedHashMap<String, String>();
+                try {
+                    lv.put("value", Integer.toString(rs2.getInt("m4")));
+                } catch (NullPointerException npe) {
+                    lv.put("value", "0");
+                }
+                dataSeriesArray1.add(lv);
+                dataSeriesArray2.add(lv);
+                lv = new LinkedHashMap<String, String>();
+                try {
+                    lv.put("value", Integer.toString(rs2.getInt("m5")));
+                } catch (NullPointerException npe) {
+                    lv.put("value", "0");
+                }
+                dataSeriesArray1.add(lv);
+                dataSeriesArray2.add(lv);
             }
             //final categories string from the array
             CategoriesChartString = "[{\"category\":" + gson.toJson(categoryarray) + "}]";
@@ -497,7 +558,7 @@ public class Art_retentionBean implements Serializable {
         try {
             return Health_facility.getHealth_facilityByORMID(aHfId);
         } catch (PersistentException ex) {
-            Logger.getLogger(Art_retentionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Art_retentionBean_old2.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -506,7 +567,7 @@ public class Art_retentionBean implements Serializable {
         try {
             return District.getDistrictByORMID(aDsId);
         } catch (PersistentException ex) {
-            Logger.getLogger(Art_retentionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Art_retentionBean_old2.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -740,7 +801,7 @@ public class Art_retentionBean implements Serializable {
             if (this.getDistrictsStr().length() > 0) {
                 facilityList = Health_facility.queryHealth_facility("is_deleted=0 and district_id IN(" + this.getDistrictsStr() + ")", "district_id,health_facility_name");
             }
-        } catch (PersistentException | NullPointerException ex) {
+        } catch (Exception ex) {
         }
         this.facilities = facilityList;
         return facilities;
