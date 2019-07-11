@@ -3,251 +3,244 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
 
     </h:head>
-    <h:body>
-        <style type="text/css">
-		body,div,table,thead,tbody,tfoot,tr,th,td,p { font-family:"Calibri"; font-size:x-small }
-		a.comment-indicator:hover + comment { background:#ffd; position:absolute; display:block; border:1px solid black; padding:0.5em;  } 
-		a.comment-indicator { background:red; display:inline-block; border:1px solid black; width:0.5em; height:0.5em;  } 
-		comment { display:none;  } 
-	</style>
+    <h:body>      
         <table cellspacing="0" border="0">
-	<colgroup width="335"></colgroup>
-	<colgroup width="361"></colgroup>
-	<colgroup width="130"></colgroup>
-	<colgroup width="135"></colgroup>
-	<colgroup width="115"></colgroup>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="5" rowspan="2" height="64" align="center" valign="middle" bgcolor="#C9C9C9"><b><font face="Times New Roman" size="5" color="#000000">CHILD DAYS PLUS - Addendum for HCT, NUTRITION ASSESSMENT &amp; FAMILY PLANNING</font></b></td>
-		</tr>
-	<tr>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" colspan="2" height="32" align="center" valign="bottom"><font face="Times New Roman" size="4" color="#000000">Out Reach Site</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('1').data_element_value}" style="width: 100%;"/></font></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" height="32" align="left" valign="bottom" bgcolor="#C9C9C9"><i><font face="Times New Roman" size="4" color="#000000">ACTIVITY </font></i></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom" bgcolor="#C9C9C9"><b><font face="Times New Roman" size="4" color="#000000">FEMALE</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom" bgcolor="#C9C9C9"><b><font face="Times New Roman" size="4" color="#000000">MALE</font></b></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="63" align="left" valign="bottom"><i><font face="Times New Roman" size="4" color="#000000"><br/></font></i></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">Expected children</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('2').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('3').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="47" align="left" valign="bottom"><i><font face="Times New Roman" size="4" color="#000000"><br/></font></i></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top"><font face="Times New Roman" size="4" color="#000000">Total number of children who were reached with child days services</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><i><font face="Times New Roman" size="4" color="#000000"><br/></font></i></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('4').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('5').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="6" height="256" align="left" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">Nutrition screening</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4">Number screened</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Times New Roman" size="4">&lt; 2 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('6').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('7').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Times New Roman" size="4">2 - 5 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('8').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('9').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="middle"><font face="Times New Roman" size="4">Number Malnourished</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Times New Roman" size="3">MAM</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('10').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('11').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font face="Times New Roman" size="3">SAM without oedema</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('12').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('13').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font face="Times New Roman" size="3">SAM with oedema</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('14').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('15').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">No. referred/linked</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('16').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('17').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="7" height="338" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">HCT</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">Tested mothers</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('18').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">HIV Postive mothers</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('19').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">DBS taken from HEI</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('20').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('21').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">Children testing HIV +ve</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;2 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('22').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('23').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF" sdnum="1033;1033;D-MMM"><b><font face="Times New Roman" size="4" color="#000000">2-5 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('24').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('25').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">HIV +ve children linked to care</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;2 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('26').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('27').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF" sdnum="1033;1033;D-MMM"><b><font face="Times New Roman" size="4" color="#000000">2-5 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('28').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('29').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="9" height="416" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">Family Planning</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">Number of mothers/ partners reached FP messages</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;25 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('30').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('31').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&gt;25 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('32').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('33').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="4" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">FP method provided to the mother    </font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Injectable</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('34').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Implanon</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('35').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Jadelle</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('36').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Others</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('37').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="top"><font face="Times New Roman" size="4" color="#000000">Age of the yongest child</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;6 weeks</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('38').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('39').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">6 weeks - 1 yr</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('40').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('41').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&gt; 1 year</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('42').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('43').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="9" height="465" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">MNCH</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Mothers reached with key  MNCH messages</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;25 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('44').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&gt;25 yrs</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('45').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="4" align="left" valign="middle" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of mothers who received  ANC services </font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="1" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">1</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('46').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="2" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">2</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('47').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="3" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">3</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('48').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="4" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">4</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('49').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Infants with danger signs referred to the facility</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('50').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Pregnant and postpartum mothers with danger signs referred to the health facility</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('51').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of women referred to the health facility for ANC,PNC or facility delivery services</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('52').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="4" height="215" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">TB </font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of children screened for TB</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('53').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('54').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of  presumptive TB children identified and referred to health facility for diagnosis</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('55').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('56').data_element_value}" style="width: 100%;"/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of women screened for TB</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('57').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">No. of presumptive  TB women referred to health facility for diagnosis </font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{uploadBean.getInterface_dataCell('58').data_element_value}" style="width: 100%;"/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
-	</tr>
-</table>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="5" rowspan="2" height="64" align="center" valign="middle" bgcolor="#C9C9C9"><b><font face="Times New Roman" size="5" color="#000000">CHILD DAYS PLUS - Addendum for HCT, NUTRITION ASSESSMENT &amp; FAMILY PLANNING</font></b></td>
+            </tr>
+            <tr>
+            </tr>
+            <ui:repeat value="#{uploadBean.patient_level_data_list}" var="p" varStatus="status">
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" colspan="2" height="32" align="center" valign="bottom"><font face="Times New Roman" size="4" color="#000000">Out Reach Site</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_1}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" height="32" align="left" valign="bottom" bgcolor="#C9C9C9"><i><font face="Times New Roman" size="4" color="#000000">ACTIVITY </font></i></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom" bgcolor="#C9C9C9"><b><font face="Times New Roman" size="4" color="#000000">FEMALE</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom" bgcolor="#C9C9C9"><b><font face="Times New Roman" size="4" color="#000000">MALE</font></b></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="63" align="left" valign="bottom"><i><font face="Times New Roman" size="4" color="#000000"><br/></font></i></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">Expected children</font></td>
+
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_2}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_3}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="47" align="left" valign="bottom"><i><font face="Times New Roman" size="4" color="#000000"><br/></font></i></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top"><font face="Times New Roman" size="4" color="#000000">Total number of children who were reached with child days services</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><i><font face="Times New Roman" size="4" color="#000000"><br/></font></i></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_4}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_5}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="6" height="256" align="left" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">Nutrition screening</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4">Number screened</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Times New Roman" size="4">&lt; 2 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_6}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_7}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Times New Roman" size="4">2 - 5 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_8}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_9}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="middle"><font face="Times New Roman" size="4">Number Malnourished</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Times New Roman" size="3">MAM</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_10}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_11}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font face="Times New Roman" size="3">SAM without oedema</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_12}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_13}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font face="Times New Roman" size="3">SAM with oedema</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_14}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_15}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">No. referred/linked</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_16}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_17}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="7" height="338" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">HCT</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">Tested mothers</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_18}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">HIV Postive mothers</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_19}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000">DBS taken from HEI</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000"><br/></font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_20}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_21}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">Children testing HIV +ve</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;2 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_22}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_23}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF" sdnum="1033;1033;D-MMM"><b><font face="Times New Roman" size="4" color="#000000">2-5 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_24}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_25}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">HIV +ve children linked to care</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;2 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_26}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_27}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF" sdnum="1033;1033;D-MMM"><b><font face="Times New Roman" size="4" color="#000000">2-5 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_28}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_29}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="9" height="416" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">Family Planning</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">Number of mothers/ partners reached FP messages</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;25 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_30}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_31}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&gt;25 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_32}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_33}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="4" align="left" valign="middle"><font face="Times New Roman" size="4" color="#000000">FP method provided to the mother    </font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Injectable</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_34}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Implanon</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_35}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Jadelle</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_36}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">Others</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_37}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="top"><font face="Times New Roman" size="4" color="#000000">Age of the yongest child</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;6 weeks</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_38}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_39}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">6 weeks - 1 yr</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_40}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_41}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&gt; 1 year</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_42}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_43}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="9" height="465" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">MNCH</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Mothers reached with key  MNCH messages</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&lt;25 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_44}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle" bgcolor="#FFFFFF"><b><font face="Times New Roman" size="4" color="#000000">&gt;25 yrs</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_45}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="4" align="left" valign="middle" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of mothers who received  ANC services </font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="1" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">1</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_46}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="2" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">2</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_47}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="3" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">3</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_48}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign="bottom" bgcolor="#FFFFFF" sdval="4" sdnum="1033;"><b><font face="Times New Roman" size="4" color="#000000">4</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_49}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Infants with danger signs referred to the facility</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_50}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#808080"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Pregnant and postpartum mothers with danger signs referred to the health facility</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_51}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of women referred to the health facility for ANC,PNC or facility delivery services</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_52}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="4" height="215" align="center" valign="middle"><b><font face="Times New Roman" size="4" color="#000000">TB </font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of children screened for TB</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_53}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_54}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of  presumptive TB children identified and referred to health facility for diagnosis</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_55}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_56}" style="width: 100%;"/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="top" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">Number of women screened for TB</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_57}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#FFFFFF"><font face="Times New Roman" size="4" color="#000000">No. of presumptive  TB women referred to health facility for diagnosis </font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><font face="Times New Roman" size="4" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="middle"><font face="Times New Roman" size="4" color="#000000"><h:inputText value="#{p.dev_58}" style="width: 100%;"/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#767171"><font face="Cambria" size="4" color="#000000"><br/></font></td>
+                </tr>
+            </ui:repeat>
+        </table>
     </h:body>
     <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
         <f:facet name="default">

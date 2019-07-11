@@ -9,155 +9,155 @@
 
     </h:head>
     <h:body>
-        
+
         <table cellspacing="0" border="0">
-	<tr>
-		<td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="7" height="25" align="center" valign="bottom" bgcolor="#D9D9D9"><b><font size="4" color="#000000">EPI/EID/PMTCT INTEGRATION SUMMARY FORM</font></b></td>
-		</tr>
-	<ui:repeat value="#{uploadBean.patient_level_data_list}" var="p" varStatus="status">
             <tr>
-		<td style="border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" height="50" align="center" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><b><font size="4" color="#000000">Outreach Site</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" align="center" valign="bottom"><p:inputText value="#{p.dev_1}"/></td>
-		<td style="border-left: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
-		<td style="border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><b><font size="4" color="#000000">Date of Outreach</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" align="center" valign="bottom"><p:inputText value="#{p.dev_2}"/></td>
-		<td style="border-bottom: 1px solid #000000; border-left: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
-		<td style="border-bottom: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="left" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Outreach team</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font size="3" color="#000000">Names</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font size="3" color="#000000">Cadre</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="bottom"><b><font size="3" color="#000000">Phone</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font size="3" color="#000000">Role in outreach</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font size="3" color="#000000"><br/></font></b></td>
-	</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="1" sdnum="1033;"><font size="3" color="#000000">1</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_3}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_4}"/></td>
-		<td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_5}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_6}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="2" sdnum="1033;"><font size="3" color="#000000">2</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_7}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_8}"/></td>
-		<td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_9}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_10}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="3" sdnum="1033;"><font size="3" color="#000000">3</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_11}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_12}"/></td>
-		<td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_13}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_14}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="4" sdnum="1033;"><font size="3" color="#000000">4</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_15}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_16}"/></td>
-		<td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_17}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_18}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="5" sdnum="1033;"><font size="3" color="#000000">5</font></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_19}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_20}"/></td>
-		<td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_21}"/></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_22}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" height="88" align="center" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Children 1</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">Immunisation coverage</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">DPT 1</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_23}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">DPT 3</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_24}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">Measles</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_25}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="9" height="305" align="center" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Mothers</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of mothers attending the immunisation outreach</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">Total</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_26}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font size="3" color="#000000">P</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_27}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font size="3" color="#000000">BF</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_28}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># eligible for testing</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_29}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># tested 1st time</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_30}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Retested</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_31}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">#  New +ve</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_32}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">viral load tests done</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_33}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of Known positives</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_34}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="7" height="231" align="center" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Children 2</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Due for DBS </font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_35}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># DBS done</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">1st PCR</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_36}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">2nd PCR</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_37}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Rapid tests done </font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_38}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Positive rapid tests</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_39}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of MBP Linked to care</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_40}"/></td>
-		</tr>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of MBPs returned to care</font></b></td>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_41}"/></td>
-		</tr>
-        </ui:repeat>
-	<tr>
-		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="7" height="21" align="center" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000">P=Pregnant   BF=Breastfeeding</font></td>
-		</tr>
-</table>
+                <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="7" height="25" align="center" valign="bottom" bgcolor="#D9D9D9"><b><font size="4" color="#000000">EPI/EID/PMTCT INTEGRATION SUMMARY FORM</font></b></td>
+            </tr>
+            <ui:repeat value="#{uploadBean.patient_level_data_list}" var="p" varStatus="status">
+                <tr>
+                    <td style="border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" height="50" align="center" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><b><font size="4" color="#000000">Outreach Site</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" align="center" valign="bottom"><p:inputText value="#{p.dev_1}"/></td>
+                    <td style="border-left: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
+                    <td style="border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><b><font size="4" color="#000000">Date of Outreach</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="3" align="center" valign="bottom"><p:inputText value="#{p.dev_2}"/></td>
+                    <td style="border-bottom: 1px solid #000000; border-left: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
+                    <td style="border-bottom: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000"><br/></font></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="left" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Outreach team</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font size="3" color="#000000">Names</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font size="3" color="#000000">Cadre</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="bottom"><b><font size="3" color="#000000">Phone</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font size="3" color="#000000">Role in outreach</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="bottom"><b><font size="3" color="#000000"><br/></font></b></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="1" sdnum="1033;"><font size="3" color="#000000">1</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_3}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_4}"/></td>
+                    <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_5}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_6}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="2" sdnum="1033;"><font size="3" color="#000000">2</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_7}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_8}"/></td>
+                    <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_9}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_10}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="3" sdnum="1033;"><font size="3" color="#000000">3</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_11}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_12}"/></td>
+                    <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_13}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_14}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="4" sdnum="1033;"><font size="3" color="#000000">4</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_15}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_16}"/></td>
+                    <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_17}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_18}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" height="21" align="right" valign="bottom" bgcolor="#D9D9D9" sdval="5" sdnum="1033;"><font size="3" color="#000000">5</font></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_19}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom"><p:inputText value="#{p.dev_20}"/></td>
+                    <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_21}"/></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="center" valign="bottom"><p:inputText value="#{p.dev_22}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" height="88" align="center" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Children 1</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">Immunisation coverage</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">DPT 1</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_23}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">DPT 3</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_24}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">Measles</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_25}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="9" height="305" align="center" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Mothers</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="3" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of mothers attending the immunisation outreach</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">Total</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_26}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font size="3" color="#000000">P</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_27}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font size="3" color="#000000">BF</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_28}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># eligible for testing</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_29}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># tested 1st time</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_30}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Retested</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_31}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">#  New +ve</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_32}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">viral load tests done</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_33}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of Known positives</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_34}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="7" height="231" align="center" valign="middle" bgcolor="#D9D9D9"><b><font size="3" color="#000000">Children 2</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Due for DBS </font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_35}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># DBS done</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">1st PCR</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_36}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000">2nd PCR</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_37}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Rapid tests done </font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_38}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># Positive rapid tests</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_39}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of MBP Linked to care</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_40}"/></td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="2" align="left" valign="middle"><b><font face="Arial" size="3" color="#000000"># of MBPs returned to care</font></b></td>
+                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="4" align="center" valign="middle"><p:inputText value="#{p.dev_41}"/></td>
+                </tr>
+            </ui:repeat>
+            <tr>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan="7" height="21" align="center" valign="bottom" bgcolor="#D9D9D9"><font size="3" color="#000000">P=Pregnant   BF=Breastfeeding</font></td>
+            </tr>
+        </table>
     </h:body>
 
 </html>
